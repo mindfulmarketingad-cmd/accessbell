@@ -48,6 +48,7 @@ const schema = [
   ogType="article"
   article={{ published: article.data.updatedDate.toISOString(), modified: article.data.updatedDate.toISOString(), section: group.title }}
   breadcrumbs={[
+    { label: 'Resources', href: '/resources' },
     { label: 'Help Center', href: HELP_BASE },
     { label: group.title, href: categoryPath(group.id) },
     { label: article.data.title, href: articlePath(article) },

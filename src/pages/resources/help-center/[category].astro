@@ -28,6 +28,7 @@ const schema = [
   title={`${group.title} | AccessBell Help Center`}
   description={`${group.blurb} ${group.articles.length} step-by-step guides in the AccessBell Help Center.`}
   breadcrumbs={[
+    { label: 'Resources', href: '/resources' },
     { label: 'Help Center', href: HELP_BASE },
     { label: group.title, href: categoryPath(group.id) },
   ]}
