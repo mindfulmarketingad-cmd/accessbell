@@ -9,6 +9,7 @@ import { helpByCategory } from '../../lib/help';
 import { CHECKERS, checkerPath } from '../../data/checkers';
 import { PLATFORMS, platformPath } from '../../data/platforms';
 import { INDUSTRIES, industryPath } from '../../data/industries';
+import { STATE_LAWS, stateLawPath } from '../../data/state-laws';
 
 const helpCount = (await helpByCategory()).reduce((n, g) => n + g.articles.length, 0);
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
@@ -130,6 +131,29 @@ const schema = [
                 <small>Free Tool</small>
                 <strong>{ind.name} Accessibility Checker</strong>
                 <span>{ind.lead}</span>
+              </span>
+              <Icon name="arrow" class="res-arrow" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="res-states">
+    <div class="container">
+      <div class="section-head section-head-left">
+        <h2 id="res-states">Free Checkers by State</h2>
+        <p>The same free scanner, with the accessibility litigation landscape for the state you operate in.</p>
+      </div>
+      <ul class="res-grid">
+        {STATE_LAWS.map((st) => (
+          <li>
+            <a class="res-card" href={stateLawPath(st)}>
+              <span class="res-card-text">
+                <small>Free Tool</small>
+                <strong>{st.name} Website Accessibility Checker</strong>
+                <span>{st.lead}</span>
               </span>
               <Icon name="arrow" class="res-arrow" />
             </a>
