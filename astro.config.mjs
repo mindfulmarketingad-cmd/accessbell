@@ -3,7 +3,7 @@ import { defineConfig } from 'astro/config';
 import accessibleTables from './src/integrations/accessible-tables.mjs';
 
 export default defineConfig({
-  site: 'https://accessbell.co',
+  site: 'https://www.accessbell.co',
   trailingSlash: 'never',
   build: {
     // /about -> about.html, served at /about via Vercel cleanUrls

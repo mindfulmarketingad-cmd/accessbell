@@ -23,17 +23,6 @@
   },
   "redirects": [
     {
-      "source": "/:path*",
-      "has": [
-        {
-          "type": "host",
-          "value": "www.accessbell.co"
-        }
-      ],
-      "destination": "https://accessbell.co/:path*",
-      "permanent": true
-    },
-    {
       "source": "/Blog",
       "destination": "/blog",
       "permanent": true

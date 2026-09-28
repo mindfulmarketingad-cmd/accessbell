@@ -10,7 +10,7 @@ export const LIMITS = {
   timeoutMs: 12_000, // whole request, including redirects
 };
 
-const USER_AGENT = 'Mozilla/5.0 (compatible; AccessBellBot/1.0; +https://accessbell.co/about)';
+const USER_AGENT = 'Mozilla/5.0 (compatible; AccessBellBot/1.0; +https://www.accessbell.co/about)';
 
 export class FetchError extends Error {
   constructor(message, status = 502) {

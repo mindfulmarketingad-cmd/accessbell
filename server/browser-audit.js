@@ -167,7 +167,7 @@ export async function browserAudit(
     const context = await browser.newContext({
       ...(DEVICES[device] || DEVICES.desktop),
       bypassCSP: true,
-      userAgent: `Mozilla/5.0 (compatible; AccessBellBot/1.0; +https://accessbell.co/about)${device === 'mobile' ? ' Mobile' : ''}`,
+      userAgent: `Mozilla/5.0 (compatible; AccessBellBot/1.0; +https://www.accessbell.co/about)${device === 'mobile' ? ' Mobile' : ''}`,
     });
     const page = await context.newPage();
 

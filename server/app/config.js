@@ -24,7 +24,7 @@ export function config(env = process.env) {
     stripePaymentLink: env.STRIPE_PAYMENT_LINK || 'https://buy.stripe.com/8x2bJ2gyKdFe7My31kfrW0o',
     resendApiKey: env.RESEND_API_KEY || '',
     emailFrom: env.EMAIL_FROM || 'AccessBell <alerts@accessbell.co>',
-    appUrl: (env.APP_URL || 'https://accessbell.co').replace(/\/$/, ''),
+    appUrl: (env.APP_URL || 'https://www.accessbell.co').replace(/\/$/, ''),
   };
 }
 

@@ -1,7 +1,7 @@
 export const SITE = {
   name: 'AccessBell',
   domain: 'accessbell.co',
-  url: 'https://accessbell.co',
+  url: 'https://www.accessbell.co',
   tagline: 'Website Accessibility Checker',
   description:
     'AccessBell is a website accessibility checker that scans your pages against WCAG 2.2, ADA, Section 508 and EN 301 549, then shows you exactly what to fix.',

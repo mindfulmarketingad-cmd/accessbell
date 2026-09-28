@@ -46,7 +46,7 @@ tests/               node:test suites
 ## Deploying to Vercel
 
 1. Import the repository in Vercel. The framework is detected as Astro; no adapter is needed.
-2. Add the domain `accessbell.co` and `www.accessbell.co` (www redirects to the apex in `vercel.json`).
+2. Add the domains `www.accessbell.co` (primary) and `accessbell.co` (redirects to www in the Vercel domain settings). Do not also redirect www to the apex in `vercel.json`, or assets loop between the two.
 3. Set environment variables for the contact form (see `.env.example`):
    - `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL` (verify the sending domain in Resend)
    - Without them the form shows a friendly error and points people to the email address.
@@ -56,9 +56,9 @@ tests/               node:test suites
 ## Customer dashboard setup
 
 1. **Database:** Supabase -> SQL Editor -> paste `supabase/migrations/0001_app_schema.sql` -> Run. It creates a private `app` schema that Supabase's public API cannot reach.
-2. **Auth URLs:** Supabase -> Authentication -> URL Configuration. Site URL `https://accessbell.co`; add Redirect URLs `https://accessbell.co/app/auth/callback` and your Vercel preview domain's `/app/auth/callback`.
+2. **Auth URLs:** Supabase -> Authentication -> URL Configuration. Site URL `https://www.accessbell.co`; add Redirect URLs `https://www.accessbell.co/app/auth/callback` and your Vercel preview domain's `/app/auth/callback`.
 3. **Auth emails:** Supabase's built-in email is limited to a few messages per hour. For launch, set Authentication -> SMTP to Resend (`smtp.resend.com`, port 465, user `resend`, password = your Resend API key).
-4. **Stripe Payment Link:** in the link's settings, set "After payment" to redirect to `https://accessbell.co/app/billing`, and allow customers to adjust quantity (quantity = number of domains). Create a webhook to `https://accessbell.co/api/stripe-webhook` for `checkout.session.completed` and `customer.subscription.created/updated/deleted`. Activate the Customer Portal and allow quantity changes, card updates and cancellation.
+4. **Stripe Payment Link:** in the link's settings, set "After payment" to redirect to `https://www.accessbell.co/app/billing`, and allow customers to adjust quantity (quantity = number of domains). Create a webhook to `https://www.accessbell.co/api/stripe-webhook` for `checkout.session.completed` and `customer.subscription.created/updated/deleted`. Activate the Customer Portal and allow quantity changes, card updates and cancellation.
 5. **Inngest:** install the Inngest Vercel integration. It adds the keys and syncs `https://<your-domain>/api/inngest` on every deploy. Monitoring runs daily at 06:00 UTC.
 6. Add every variable from `.env.example` to Vercel, then redeploy.
 
@@ -122,5 +122,5 @@ It appears automatically on `/blog`, the homepage (if among the newest three), `
 - Configure the contact form env vars and the Vercel firewall rule.
 - The plan buttons send visitors to `/contact?topic=trial&plan=...`; point them at your signup flow when it exists.
 - Have a lawyer review `/privacy`, `/terms` and `/disclaimer`, and set the governing-law jurisdiction.
-- Verify the site in Google Search Console and submit `https://accessbell.co/sitemap.xml`.
+- Verify the site in Google Search Console and submit `https://www.accessbell.co/sitemap.xml`.
 - After the site has been live on HTTPS for a while, submit the domain at hstspreload.org.
