@@ -59,7 +59,7 @@ Because these barriers are easy to detect, they are also easy for plaintiffs' fi
 
 **3. Monitor continuously.** Sites change constantly. Scheduled scans catch regressions before they accumulate. This is the core of every [AccessBell plan](/pricing).
 
-**4. Publish an accessibility statement.** Explain the standard you are working toward, known limitations and how people can report problems or request help. A clear feedback path lets you resolve issues before they escalate.
+**4. Publish an accessibility statement.** Explain the standard you are working toward, known limitations and how people can report problems or request help. A clear feedback path lets you resolve issues before they escalate. Our free [accessibility statement generator](/resources/statement-generator) gives you a starting point.
 
 **5. Document your work.** Keep scan reports, remediation tickets and test results. A documented, good-faith program is useful evidence if a claim arrives.
 
@@ -84,4 +84,4 @@ Targeting WCAG 2.2 AA puts you in a strong position across all of them.
 
 The ADA applies to websites of businesses open to the public and of state and local governments. WCAG AA is the practical standard, with WCAG 2.1 AA required for public entities under the Title II rule and 2.2 AA as the forward-looking target. Find barriers, fix what blocks real tasks first, monitor continuously and document everything.
 
-[Run a free WCAG scan](/#scan) to see where your site stands today, or [talk to our team](/contact) about monitoring your domains.
+[Run a free ADA compliance check](/resources/ada-compliance-checker) to see where your site stands against WCAG 2.1 AA, work through the [WCAG 2 AA checklist](/blog/wcag-2-aa-checklist) for manual testing, or [talk to our team](/contact) about monitoring your domains.

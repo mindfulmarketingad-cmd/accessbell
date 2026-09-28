@@ -46,7 +46,7 @@ Success criterion **4.1.1 Parsing** is obsolete in WCAG 2.2. Modern browsers and
 
 ## Condensed WCAG 2.2 AA Checklist
 
-Use this as a working list. The criteria numbers help you cross-reference the full specification and our [website accessibility checker](/) reports.
+Use this as a working list. The criteria numbers help you cross-reference the full specification and our [WCAG 2.2 AA checker](/resources/wcag-2-2-aa-checker) reports. To record results issue by issue, use our free [WCAG 2 AA checklist spreadsheet](/blog/wcag-2-aa-checklist).
 
 ### Perceivable
 
@@ -86,7 +86,7 @@ Use this as a working list. The criteria numbers help you cross-reference the fu
 
 ## Which Criteria Can Be Tested Automatically
 
-A checker can reliably detect many failures under 1.1.1, 1.3.1, 1.4.3, 2.4.2, 3.1.1 and 4.1.2. Criteria like 2.4.3 focus order, 1.2.2 caption accuracy and 3.3.3 error suggestions require human judgment. Our guide to [automated vs manual accessibility testing](/blog/automated-vs-manual-accessibility-testing) explains how to split the work.
+A checker can reliably detect many failures under 1.1.1, 1.3.1, 1.4.3, 2.4.2, 3.1.1 and 4.1.2. Criteria like 2.4.3 focus order, 1.2.2 caption accuracy and 3.3.3 error suggestions require human judgment. The [WCAG 2.2 AA checker page](/resources/wcag-2-2-aa-checker#coverage) lists every criterion and whether automated rules cover it. Our guide to [automated vs manual accessibility testing](/blog/automated-vs-manual-accessibility-testing) explains how to split the work.
 
 ## Keep Your Checklist Current
 

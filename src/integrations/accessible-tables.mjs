@@ -9,9 +9,17 @@ const strip = (html) => html.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim()
 const escapeAttr = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 
 export function wrapTables(html) {
-  return html.replace(/<table>([\s\S]*?)<\/table>/g, (match, inner) => {
+  const used = new Map();
+  return html.replace(/<table>([\s\S]*?)<\/table>/g, (match, inner, offset) => {
+    // Name the region after the nearest heading above the table, falling back to its column headers.
+    const before = html.slice(0, offset);
+    const heads = [...before.matchAll(/<h[2-4][^>]*>([\s\S]*?)<\/h[2-4]>/g)];
+    const heading = heads.length ? strip(heads[heads.length - 1][1]) : '';
     const headers = [...inner.matchAll(/<th[^>]*>([\s\S]*?)<\/th>/g)].slice(0, 3).map((m) => strip(m[1]));
-    const label = headers.length ? `Table: ${headers.join(', ')}` : 'Table';
+    let label = heading ? `Table: ${heading}` : headers.length ? `Table: ${headers.join(', ')}` : 'Table';
+    const n = (used.get(label) || 0) + 1;
+    used.set(label, n);
+    if (n > 1) label += ` (${n})`;
     return `<div class="table-scroll" tabindex="0" role="region" aria-label="${escapeAttr(label)}">${match}</div>`;
   });
 }

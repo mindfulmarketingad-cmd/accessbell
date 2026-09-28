@@ -21,11 +21,14 @@ export type Checker = {
   manual: string[];
   faqs: { q: string; a: string }[];
   sources: { label: string; href: string }[];
+  /** Blog posts to recommend, by slug */
+  related: string[];
 };
 
 export const CHECKERS: Checker[] = [
   {
     slug: 'wcag-2-2-aa-checker',
+    related: ['wcag-2-2-checklist', 'wcag-2-aa-checklist', 'automated-vs-manual-accessibility-testing'],
     standardId: 'wcag22',
     name: 'WCAG 2.2 AA Checker',
     seoTitle: 'Free WCAG 2.2 AA Checker: Test Any Page',
@@ -91,6 +94,7 @@ export const CHECKERS: Checker[] = [
   },
   {
     slug: 'wcag-2-1-aa-checker',
+    related: ['wcag-2-aa-checklist', 'ada-website-compliance-guide', 'what-is-a-website-accessibility-checker'],
     standardId: 'wcag21',
     name: 'WCAG 2.1 AA Checker',
     seoTitle: 'Free WCAG 2.1 AA Checker: Test Any Page',
@@ -156,6 +160,7 @@ export const CHECKERS: Checker[] = [
   },
   {
     slug: 'ada-compliance-checker',
+    related: ['ada-website-compliance-guide', 'ada-lawsuit-process', 'free-tools-to-check-website-accessibility'],
     standardId: 'ada',
     name: 'ADA Compliance Checker',
     seoTitle: 'Free ADA Compliance Checker for Websites',
@@ -221,6 +226,7 @@ export const CHECKERS: Checker[] = [
   },
   {
     slug: 'section-508-checker',
+    related: ['wcag-2-aa-checklist', 'automated-vs-manual-accessibility-testing', 'free-tools-to-check-website-accessibility'],
     standardId: 'section508',
     name: 'Section 508 Checker',
     seoTitle: 'Free Section 508 Checker for Websites',
@@ -286,6 +292,7 @@ export const CHECKERS: Checker[] = [
   },
   {
     slug: 'en-301-549-checker',
+    related: ['wcag-2-aa-checklist', 'wcag-2-2-checklist', 'what-is-a-website-accessibility-checker'],
     standardId: 'en301549',
     name: 'EN 301 549 Checker',
     seoTitle: 'Free EN 301 549 Checker for Websites',

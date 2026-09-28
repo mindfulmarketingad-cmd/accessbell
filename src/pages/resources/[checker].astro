@@ -1,5 +1,5 @@
 ---
-import { getEntry } from 'astro:content';
+import { getEntry, getEntries } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
 import ScanForm from '../../components/ScanForm.astro';
@@ -24,6 +24,7 @@ const cov = coverageFor(c.version);
 const author = await getEntry('authors', 'accessbell-editorial-team');
 const others = CHECKERS.filter((o) => o.slug !== c.slug);
 const target = `WCAG ${c.version} Level ${c.level}`;
+const related = await getEntries(c.related.map((id) => ({ collection: 'blog' as const, id })));
 
 const schema = [
   {
@@ -159,6 +160,17 @@ const schema = [
         <li><strong>Rescan after each fix</strong> to confirm it, then run the manual checks above.</li>
         <li><strong>Monitor the whole site.</strong> A free scan checks one page. <a href="/pricing">AccessBell Lite</a> monitors up to 25 URLs per domain against {target} every day and alerts you to new issues.</li>
       </ol>
+    </section>
+
+    <section aria-labelledby="related-guides">
+      <h2 id="related-guides">Related Guides</h2>
+      <ul class="related-guides">
+        {related.map((p) => (
+          <li><a href={`/blog/${p.id}`}>{p.data.title}</a><span>{p.data.description}</span></li>
+        ))}
+        <li><a href="/resources/statement-generator">Free Accessibility Statement Generator</a><span>Publish a statement that names {target} as your target and tells people how to report barriers.</span></li>
+        <li><a href="/resources/help-center/scans-and-reports/filter-reports-by-wcag-version">Filter reports by WCAG version and level</a><span>Narrow your results to exactly the criteria in {target}.</span></li>
+      </ul>
     </section>
 
     <section aria-labelledby="faq-title">

@@ -36,6 +36,8 @@ Use NVDA on Windows (free), VoiceOver on Mac, iPhone and iPad (built in), or Tal
 
 ## Record What You Find
 
+Our free [WCAG 2 AA checklist spreadsheet](/blog/wcag-2-aa-checklist) has a row for every check, with columns for the result, the failing element and your recommended fix.
+
 Fix problems like any other issue. Keep notes of what you tested and when, alongside your [exported reports](/resources/help-center/scans-and-reports/export-reports), as evidence of your work.
 
 For more on splitting the work, read [automated vs manual accessibility testing](/blog/automated-vs-manual-accessibility-testing).

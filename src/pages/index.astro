@@ -16,21 +16,21 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .slice(0, 3);
 
 const standards = [
-  { name: 'WCAG 2.2', sub: 'W3C Recommendation, Levels A and AA', flag: 'intl' },
-  { name: 'ADA', sub: 'Titles II and III, United States', flag: 'us' },
-  { name: 'Section 508', sub: 'U.S. federal ICT', flag: 'us' },
-  { name: 'EN 301 549', sub: 'European Union harmonized standard', flag: 'eu' },
-  { name: 'AODA', sub: 'Ontario, Canada', flag: 'ca' },
-  { name: 'EAA', sub: 'European Accessibility Act', flag: 'eu' },
+  { name: 'WCAG 2.2', sub: 'W3C Recommendation, Levels A and AA', flag: 'intl', href: '/resources/wcag-2-2-aa-checker' },
+  { name: 'ADA', sub: 'Titles II and III, United States', flag: 'us', href: '/resources/ada-compliance-checker' },
+  { name: 'Section 508', sub: 'U.S. federal ICT', flag: 'us', href: '/resources/section-508-checker' },
+  { name: 'EN 301 549', sub: 'European Union harmonized standard', flag: 'eu', href: '/resources/en-301-549-checker' },
+  { name: 'AODA', sub: 'Ontario, Canada', flag: 'ca', href: undefined },
+  { name: 'EAA', sub: 'European Accessibility Act', flag: 'eu', href: '/resources/en-301-549-checker' },
 ] as const;
 
 // Standards named under the scanner, with the jurisdiction each belongs to.
 const compliance = [
-  { name: 'WCAG', flag: 'intl' },
-  { name: 'ADA', flag: 'us' },
-  { name: 'EAA', flag: 'eu' },
-  { name: 'Section 508', flag: 'us' },
-  { name: 'AODA', flag: 'ca' },
+  { name: 'WCAG', flag: 'intl', href: '/resources/wcag-2-2-aa-checker' },
+  { name: 'ADA', flag: 'us', href: '/resources/ada-compliance-checker' },
+  { name: 'EAA', flag: 'eu', href: '/resources/en-301-549-checker' },
+  { name: 'Section 508', flag: 'us', href: '/resources/section-508-checker' },
+  { name: 'AODA', flag: 'ca', href: undefined },
 ] as const;
 
 const regions = [
@@ -218,7 +218,7 @@ const faqs: FaqItem[] = [
         <div class="compliance-row">
           <span id="compliance-label">Checks for compliance with:</span>
           <ul aria-labelledby="compliance-label">
-            {compliance.map((s) => <li><Flag code={s.flag} eager />{s.name}</li>)}
+            {compliance.map((s) => <li><Flag code={s.flag} eager />{s.href ? <a href={s.href}>{s.name}</a> : s.name}</li>)}
           </ul>
         </div>
       </div>
@@ -233,7 +233,7 @@ const faqs: FaqItem[] = [
     <div class="container">
       <p id="std-strip">Checks aligned with global accessibility standards</p>
       <ul class="standards-list">
-        {standards.map((s) => <li><Flag code={s.flag} />{s.name}</li>)}
+        {standards.map((s) => <li><Flag code={s.flag} />{s.href ? <a href={s.href}>{s.name}</a> : s.name}</li>)}
       </ul>
     </div>
   </section>
@@ -279,7 +279,7 @@ const faqs: FaqItem[] = [
         {standards.map((s) => (
           <li class="std-badge">
             <span class="seal"><Icon name="shield" /><span class="seal-flag"><Flag code={s.flag} /></span></span>
-            <strong>{s.name}</strong>
+            <strong>{s.href ? <a href={s.href}>{s.name}</a> : s.name}</strong>
             <span>{s.sub}</span>
           </li>
         ))}
@@ -347,7 +347,7 @@ const faqs: FaqItem[] = [
           </tbody>
         </table>
       </div>
-      <p class="versions-note">Each version includes everything in the one before it, except 4.1.1 Parsing, which WCAG 2.2 retired. Content that meets WCAG 2.2 AA also meets 2.1 AA and 2.0 AA. <a href="/blog/wcag-2-2-checklist">See the WCAG 2.2 checklist</a>.</p>
+      <p class="versions-note">Each version includes everything in the one before it, except 4.1.1 Parsing, which WCAG 2.2 retired. Content that meets WCAG 2.2 AA also meets 2.1 AA and 2.0 AA. Test a page with our free <a href="/resources/wcag-2-2-aa-checker">WCAG 2.2 AA checker</a> or <a href="/resources/wcag-2-1-aa-checker">WCAG 2.1 AA checker</a>, or work through the <a href="/blog/wcag-2-aa-checklist">WCAG 2 AA checklist</a>.</p>
     </div>
   </section>
 
@@ -417,7 +417,7 @@ const faqs: FaqItem[] = [
           </article>
         ))}
       </div>
-      <p class="center more-link"><a class="btn btn-outline" href="/blog">View all articles <Icon name="arrow" /></a></p>
+      <p class="center more-link"><a class="btn btn-outline" href="/blog">View all articles <Icon name="arrow" /></a> <a class="btn btn-outline" href="/resources">Free tools and guides <Icon name="arrow" /></a></p>
     </div>
   </section>
 

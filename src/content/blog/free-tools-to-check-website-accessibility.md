@@ -70,7 +70,7 @@ The practical takeaway: use one or two automated tools to find and fix the objec
 - The free scan checks **one public page at a time**. For pages behind a login, use a browser extension below or AccessBell Lite with custom headers.
 - It reports what automated rules can detect. Pair it with the manual checks described later in this guide.
 
-[Run a free AccessBell scan](/#scan) to see how your page scores.
+[Run a free AccessBell scan](/#scan) to see how your page scores, or open it preset for [WCAG 2.2 AA](/resources/wcag-2-2-aa-checker), [WCAG 2.1 AA](/resources/wcag-2-1-aa-checker), the [ADA](/resources/ada-compliance-checker), [Section 508](/resources/section-508-checker) or [EN 301 549](/resources/en-301-549-checker).
 
 ## 2. WAVE by WebAIM
 

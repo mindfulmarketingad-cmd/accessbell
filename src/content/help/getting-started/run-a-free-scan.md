@@ -17,6 +17,8 @@ The free scan checks a single public page against WCAG and gives you a full repo
    - **ADA**, which uses WCAG 2.1 AA as the benchmark
    - **Section 508**, which uses WCAG 2.0 AA
    - **EN 301 549**, the European standard, which uses WCAG 2.1 AA
+
+   Each standard also has its own page with the checker preset and a breakdown of what it tests: [WCAG 2.2 AA](/resources/wcag-2-2-aa-checker), [WCAG 2.1 AA](/resources/wcag-2-1-aa-checker), [ADA](/resources/ada-compliance-checker), [Section 508](/resources/section-508-checker) and [EN 301 549](/resources/en-301-549-checker).
 4. Select **Check accessibility**.
 
 The standard you choose decides which rules run. If you pick WCAG 2.1 AA, rules that only apply to WCAG 2.2 or to Level AAA are not run.

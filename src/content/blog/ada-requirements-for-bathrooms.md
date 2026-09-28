@@ -222,4 +222,4 @@ Any "no" is a barrier to plan around. Record what you fix and when. That documen
 
 ADA-compliant bathrooms come down to measurable details: heights, lengths and clear space. Get the turning space, toilet clearances, grab bars and lavatory right, and most other requirements fall into place. For existing buildings, start with the readily achievable fixes, such as grab bars, lever handles, insulated pipes and signage, and plan larger changes into your next renovation.
 
-Physical access is only half of the picture. Customers also meet your business online, and the ADA applies there too. [Run a free WCAG scan](/#scan) of your website or read our [ADA website compliance guide](/blog/ada-website-compliance-guide) to see what else to check.
+Physical access is only half of the picture. Customers also meet your business online, and the ADA applies there too. [Run a free ADA compliance check](/resources/ada-compliance-checker) of your website or read our [ADA website compliance guide](/blog/ada-website-compliance-guide) to see what else to check.

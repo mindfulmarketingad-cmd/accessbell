@@ -42,3 +42,4 @@ AccessBell makes this clear in every report: items it cannot decide appear under
 - [Create your account](/resources/help-center/getting-started/create-your-account)
 - [Run a free scan](/resources/help-center/getting-started/run-a-free-scan)
 - [Add your first domain](/resources/help-center/getting-started/add-your-first-domain)
+- Browse our [free tools and guides](/resources), including checkers for each standard and an accessibility statement generator
