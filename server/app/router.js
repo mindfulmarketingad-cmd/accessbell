@@ -60,12 +60,10 @@ const publicRoutes = {
     limit('signup', ip);
     const { email, password } = credentials(body);
     const result = await auth.signUp(email, password, `${appOrigin(request)}/app/auth/callback`);
-    if (result.session) {
-      const user = result.session.user || (await auth.getUser(result.session.accessToken));
-      await ensureUserSetup(user);
-      return { body: { status: 'signed_in' }, cookies: sessionCookies(request, result.session) };
-    }
-    return { body: { status: 'confirm_email' } };
+    if (!result.session) throw new AppError(503, 'We could not create your account right now. Please try again in a moment.', 'signup_failed');
+    const user = result.session.user || (await auth.getUser(result.session.accessToken));
+    await ensureUserSetup(user);
+    return { body: { status: 'signed_in' }, cookies: sessionCookies(request, result.session) };
   },
 
   async 'POST auth/login'({ request, body, ip }) {
@@ -87,17 +85,6 @@ const publicRoutes = {
     // Same response whether or not the account exists.
     await auth.recover(email, `${appOrigin(request)}/app/auth/callback`).catch((err) => {
       if (err.status === 429 || err.code === 'email_send_failed') throw err;
-    });
-    return { body: { status: 'sent' } };
-  },
-
-  async 'POST auth/resend'({ request, body, ip }) {
-    limit('email', ip);
-    const email = String(body?.email || '').trim().toLowerCase();
-    if (!EMAIL.test(email)) throw badRequest('Enter a valid email address.');
-    // Same response whether or not the account exists, unless sending itself failed.
-    await auth.resendConfirmation(email, `${appOrigin(request)}/app/auth/callback`).catch((err) => {
-      if (err.status === 429 || ['email_send_failed', 'email_address_not_authorized'].includes(err.code)) throw err;
     });
     return { body: { status: 'sent' } };
   },

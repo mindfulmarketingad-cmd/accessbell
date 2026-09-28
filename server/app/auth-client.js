@@ -8,7 +8,6 @@ const TIMEOUT_MS = 8000;
 // Map Supabase error codes to messages that do not reveal whether an account exists.
 const FRIENDLY = {
   invalid_credentials: 'Email or password is incorrect.',
-  email_not_confirmed: 'Please confirm your email address first. Check your inbox for the link.',
   weak_password: 'Choose a stronger password: at least 8 characters.',
   over_email_send_rate_limit: 'Too many emails sent. Please wait a few minutes and try again.',
   over_request_rate_limit: 'Too many attempts. Please wait a few minutes and try again.',
@@ -21,7 +20,7 @@ const FRIENDLY = {
 };
 
 // Endpoints that send an email; a 5xx from these almost always means delivery failed.
-const SENDS_EMAIL = new Set(['/signup', '/resend', '/recover', '/invite']);
+const SENDS_EMAIL = new Set(['/recover', '/invite']);
 
 async function call(path, { method = 'POST', body, token, admin = false, query } = {}) {
   const c = config();
@@ -79,7 +78,6 @@ function toSession(data) {
 export const auth = {
   async signUp(email, password, redirectTo) {
     const data = await call('/signup', { body: { email, password }, query: { redirect_to: redirectTo } });
-    // With email confirmation on (recommended), no session is returned yet.
     return { session: toSession(data), user: data.user || (data.id ? data : null) };
   },
   async signIn(email, password) {
@@ -93,10 +91,6 @@ export const auth = {
   },
   async signOut(accessToken) {
     await call('/logout', { token: accessToken, query: { scope: 'local' } }).catch(() => {});
-  },
-  /** Send the sign-up confirmation email again. */
-  async resendConfirmation(email, redirectTo) {
-    await call('/resend', { body: { type: 'signup', email }, query: { redirect_to: redirectTo } });
   },
   async recover(email, redirectTo) {
     await call('/recover', { body: { email }, query: { redirect_to: redirectTo } });
