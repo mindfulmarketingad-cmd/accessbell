@@ -7,19 +7,19 @@
   var button = form.querySelector('button[type="submit"]');
   var startedAt = Date.now();
 
-  // Prefill topic and plan from links such as /contact?topic=trial&plan=starter
+  // Prefill from links such as /contact?topic=sales&plan=lite
   var params = new URLSearchParams(window.location.search);
-  ['topic', 'plan'].forEach(function (key) {
-    var value = params.get(key);
-    var select = form.elements[key];
-    if (!value || !select) return;
-    for (var i = 0; i < select.options.length; i++) {
-      if (select.options[i].value === value) {
-        select.value = value;
+  var topic = params.get('topic');
+  var topicSelect = form.elements.topic;
+  if (topic && topicSelect) {
+    for (var i = 0; i < topicSelect.options.length; i++) {
+      if (topicSelect.options[i].value === topic) {
+        topicSelect.value = topic;
         break;
       }
     }
-  });
+  }
+  if (params.get('plan') === 'lite' && form.elements.plan) form.elements.plan.value = 'lite';
 
   var show = function (state, message) {
     status.hidden = false;
@@ -62,6 +62,7 @@
       site: form.elements.site.value,
       topic: form.elements.topic.value,
       plan: form.elements.plan.value,
+      domains: form.elements.domains.value,
       message: form.elements.message.value,
       website: form.elements.website.value,
       consent: form.elements.consent.checked,

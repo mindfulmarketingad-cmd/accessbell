@@ -1,5 +1,5 @@
 import { SITE } from '../config/site';
-import { PLANS, ANNUAL_DISCOUNT } from '../data/pricing';
+import { PLAN } from '../data/pricing';
 
 export type FaqItem = { q: string; a: string };
 
@@ -31,22 +31,22 @@ export function softwareSchema() {
     publisher: { '@id': `${SITE.url}/#organization` },
     offers: [
       { '@type': 'Offer', name: 'Free scan', price: '0', priceCurrency: 'USD', url: `${SITE.url}/#scan` },
-      ...PLANS.filter((p) => p.monthly !== null).map((p) => ({
+      {
         '@type': 'Offer',
-        name: `${p.name} plan`,
-        price: String(p.monthly),
-        priceCurrency: 'USD',
+        name: `${PLAN.name} plan`,
+        description: `Up to ${PLAN.urlsPerDomain} URLs per domain, unlimited rescans and AI-assisted fixes`,
+        price: String(PLAN.price),
+        priceCurrency: PLAN.currency,
         url: `${SITE.url}/pricing`,
         priceSpecification: {
           '@type': 'UnitPriceSpecification',
-          price: String(p.monthly),
-          priceCurrency: 'USD',
-          unitText: 'MONTH',
+          price: String(PLAN.price),
+          priceCurrency: PLAN.currency,
+          unitText: 'per domain per month',
           billingDuration: 'P1M',
         },
-      })),
+      },
     ],
   };
 }
 
-export const annualMonthly = (monthly: number) => Math.round(monthly * (1 - ANNUAL_DISCOUNT));

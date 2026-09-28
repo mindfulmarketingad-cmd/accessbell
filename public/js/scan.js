@@ -194,7 +194,7 @@
     });
 
     var foot = el('div', { class: 'results-foot' }, [
-      el('p', { text: 'This free check tests one page with automated rules. Automated testing finds many, but not all, WCAG failures. Monitor every page and get scheduled rescans with a paid plan.' }),
+      el('p', { text: 'This free check tests one page with automated rules. Automated testing finds many, but not all, WCAG failures. Monitor up to 25 URLs per domain with unlimited rescans on the Lite plan, $79 per domain per month.' }),
       el('a', { class: 'btn btn-accent', href: '/pricing', text: 'Monitor your whole site' }),
     ]);
 

@@ -3,36 +3,36 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Icon from '../components/Icon.astro';
 import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { PLANS, ALL_PLANS_INCLUDE, TAILORED_INCLUDES, COMPARE, ANNUAL_DISCOUNT } from '../data/pricing';
-import { faqSchema, softwareSchema, annualMonthly, type FaqItem } from '../lib/schema';
-
-const discountPct = Math.round(ANNUAL_DISCOUNT * 100);
-const featuredIndex = PLANS.findIndex((p) => p.featured);
-const ctaHref = (id: string) => (id === 'tailored' ? '/contact?topic=sales' : `/contact?topic=trial&plan=${id}`);
+import { PLAN, FEATURE_GROUPS } from '../data/pricing';
+import { faqSchema, softwareSchema, type FaqItem } from '../lib/schema';
 
 const steps = [
-  { tag: 'Step 1', title: 'Automatic crawl', text: 'We discover every public page on your domain through links and your XML sitemap, then keep the list current as you publish.' },
-  { tag: 'Step 2', title: 'Scan', text: 'Each page is tested against WCAG 2.2 A and AA rules. Issues are grouped by success criterion and ranked by how much they block users.' },
-  { tag: 'Step 3', title: 'Improve', text: 'Your team gets element-level evidence, plain-language explanations and reviewed fix suggestions. Export straight to Jira or GitHub.' },
-  { tag: 'Step 4', title: 'Stay compliant', text: 'Scheduled rescans catch regressions as soon as they ship. Reports and your accessibility statement stay up to date automatically.' },
+  { tag: 'Step 1', title: 'Automatic crawl', text: 'We discover pages on your domain, subdomains and XML sitemap, then keep the list current as you publish. You choose which 25 URLs to monitor.' },
+  { tag: 'Step 2', title: 'Scan', text: 'Each page is tested in a real browser on desktop and mobile against the WCAG level you choose, up to WCAG 2.2 AAA. Issues are ranked by how much they block users.' },
+  { tag: 'Step 3', title: 'Improve', text: 'Your team gets the failing elements, grouped by component, with detailed fixing instructions and AI-assisted fix suggestions to review.' },
+  { tag: 'Step 4', title: 'Stay compliant', text: 'Unlimited rescans and continuous monitoring catch regressions as soon as they ship. Your accessibility statement and audit evidence update automatically.' },
 ];
 
 const faqs: FaqItem[] = [
   {
-    q: 'How many pages can I scan?',
-    a: 'Lite covers up to 500 pages, Starter up to 2,500, Growth up to 10,000 and Tailored plans are sized to your site. Pages are counted as unique URLs scanned per billing cycle.',
+    q: 'Is the price per domain?',
+    a: `Yes. Lite is $${PLAN.price} per domain per month. Add as many domains as you need, and each one gets ${PLAN.urlsPerDomain} URLs, unlimited rescans and every feature.`,
   },
   {
-    q: 'Is there a free trial?',
-    a: 'Yes. Every paid plan starts with a 14-day free trial. You can also run a <a href="/#scan">free single-page scan</a> at any time without an account.',
+    q: 'What counts as a URL?',
+    a: `Each unique page address you monitor counts as one URL. Lite includes up to ${PLAN.urlsPerDomain} URLs per domain. The automatic crawl suggests pages and you choose which ones to monitor.`,
   },
   {
-    q: 'Can I switch between monthly and annual billing?',
-    a: `Yes. Annual billing saves ${discountPct}% compared with paying monthly. You can switch at renewal, and upgrades take effect immediately with prorated billing.`,
+    q: 'Are rescans really unlimited?',
+    a: 'Yes. Rescan your monitored URLs whenever you like, and continuous monitoring runs automatically in the background. A fair-use limit only applies to automated abuse.',
   },
   {
-    q: 'Can I add more domains or pages later?',
-    a: 'Yes. Upgrade to a higher plan at any time, or <a href="/contact?topic=sales">contact sales</a> for a Tailored plan with custom limits.',
+    q: 'Which WCAG levels can I test against?',
+    a: 'You can choose Level A, AA or AAA for WCAG 2.0, 2.1 or 2.2. Most organizations target WCAG 2.2 Level AA.',
+  },
+  {
+    q: 'Can I cancel at any time?',
+    a: 'Yes. Lite is billed monthly and you can cancel whenever you like. Your access continues until the end of the current billing period.',
   },
   {
     q: 'Do you offer an overlay or widget?',
@@ -43,130 +43,55 @@ const faqs: FaqItem[] = [
     a: 'No tool can guarantee legal compliance on its own. AccessBell gives you continuous automated testing, fix guidance and documentation that support a compliance program. See our <a href="/disclaimer">disclaimer</a> for details.',
   },
 ];
-
 ---
 <BaseLayout
-  title="Pricing - Website Accessibility Checker Plans | AccessBell"
-  description="Compare AccessBell plans for continuous WCAG 2.2 monitoring. Lite, Starter, Growth and Tailored plans with monthly or annual billing and a 14-day free trial."
+  title="Pricing - Website Accessibility Checker | AccessBell"
+  description={`AccessBell Lite: $${PLAN.price} per domain per month for continuous WCAG monitoring of up to ${PLAN.urlsPerDomain} URLs, unlimited rescans and AI-assisted fixes.`}
   breadcrumbs={[{ label: 'Pricing', href: '/pricing' }]}
   schema={[softwareSchema(), faqSchema(faqs)]}
 >
-  <script slot="head" is:inline src="/js/pricing.js" defer></script>
   <section class="page-hero page-hero-center" aria-labelledby="pricing-title">
     <div class="container">
       <h1 id="pricing-title">
         <span class="h1-kicker">Website Accessibility Checker Pricing</span>
         Accessibility on <span class="accent">autopilot</span>
       </h1>
-      <p class="lead">Everything you need to detect, fix and monitor accessibility issues, in one place. Start with a 14-day free trial on any plan.</p>
+      <p class="lead">One simple plan with everything you need to detect, fix and monitor accessibility issues. Pay per domain, cancel anytime.</p>
     </div>
   </section>
 
-  <section class="section-tight pt-0" aria-labelledby="plans-title">
+  <section class="section-tight pt-0" aria-labelledby="plan-title">
     <div class="container">
-      <h2 id="plans-title" class="visually-hidden">Plans</h2>
-      <div class="billing-wrap">
-        <fieldset class="billing-toggle" data-billing>
-          <legend class="visually-hidden">Billing period</legend>
-          <input type="radio" id="bill-monthly" name="billing" value="monthly" checked />
-          <label for="bill-monthly">Monthly</label>
-          <input type="radio" id="bill-annual" name="billing" value="annual" />
-          <label for="bill-annual">Annual <span class="save-pill">Save {discountPct}%</span></label>
-        </fieldset>
-      </div>
-
-      <div class="plan-grid">
-        {PLANS.map((plan) => (
-          <article class:list={['plan', { 'plan-featured': plan.featured }]} aria-labelledby={`plan-${plan.id}`}>
-            {plan.featured && <span class="plan-flag">Most popular</span>}
-            <h3 id={`plan-${plan.id}`}>{plan.name}</h3>
-            {plan.monthly !== null ? (
-              <>
-                <p class="plan-price">
-                  <strong data-price data-monthly={`$${plan.monthly}`} data-annual={`$${annualMonthly(plan.monthly)}`}>${plan.monthly}</strong>
-                  <span>/ month</span>
-                </p>
-                <p class="plan-billed" data-billed data-monthly="Billed monthly" data-annual={`Billed $${(annualMonthly(plan.monthly) * 12).toLocaleString('en-US')} yearly`}>Billed monthly</p>
-              </>
-            ) : (
-              <>
-                <p class="plan-price"><strong class="plan-quote">Tailored quote</strong></p>
-                <p class="plan-billed">Custom contract</p>
-              </>
-            )}
-            <p class="plan-blurb">{plan.blurb}</p>
-            <ul class="check-list">
-              {plan.limits.map((l) => <li><Icon name="check" />{l}</li>)}
-            </ul>
-            <a class:list={['btn', 'btn-block', plan.featured ? 'btn-accent' : plan.id === 'tailored' ? 'btn-outline' : '']} href={ctaHref(plan.id)}>
-              {plan.cta} <Icon name="arrow" />
-              <span class="visually-hidden">with the {plan.name} plan</span>
-            </a>
-          </article>
-        ))}
-      </div>
-
-      <div class="includes">
-        <div>
-          <h3>All plans include</h3>
-          <ul class="check-list cols-2">
-            {ALL_PLANS_INCLUDE.map((i) => <li><Icon name="check" />{i}</li>)}
-          </ul>
-        </div>
-        <div>
-          <h3>Tailored plans add</h3>
+      <article class="plan-single">
+        <div class="plan-single-main">
+          <span class="plan-flag-inline">One plan, every feature</span>
+          <h2 id="plan-title">{PLAN.name}</h2>
+          <p class="plan-price">
+            <strong>${PLAN.price}</strong>
+            <span>/ domain / month</span>
+          </p>
+          <p class="plan-billed">Billed monthly. Cancel anytime.</p>
+          <p class="plan-blurb">{PLAN.blurb}</p>
           <ul class="check-list">
-            {TAILORED_INCLUDES.map((i) => <li><Icon name="check" />{i}</li>)}
+            {PLAN.highlights.map((h) => <li><Icon name="check" />{h}</li>)}
           </ul>
+          <a class="btn btn-accent btn-lg btn-block" href={PLAN.ctaHref}>{PLAN.cta} <Icon name="arrow" /></a>
+          <p class="plan-note">Need more than {PLAN.urlsPerDomain} URLs per domain? <a href="/contact?topic=sales">Talk to us</a>.</p>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="compare-title">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow">Compare</span>
-        <h2 id="compare-title">Compare plans</h2>
-        <p>Every feature, side by side.</p>
-      </div>
-      <div class="compare-wrap" tabindex="0" role="region" aria-label="Plan comparison table, scrolls horizontally">
-        <table class="compare">
-          <caption class="visually-hidden">Features included in each AccessBell plan</caption>
-          <thead>
-            <tr>
-              <th scope="col"><span class="visually-hidden">Feature</span></th>
-              {PLANS.map((p, i) => (
-                <th scope="col" class:list={{ 'featured-col': i === featuredIndex }}>
-                  <strong>{p.name}</strong>
-                  <span>{p.monthly !== null ? `$${p.monthly} / month` : 'Custom'}</span>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          {COMPARE.map((group) => (
-            <tbody>
-              <tr class="group"><th scope="colgroup" colspan={PLANS.length + 1}>{group.title}</th></tr>
-              {group.rows.map((row) => (
-                <tr>
-                  <th scope="row">{row.feature}</th>
-                  {row.values.map((v, i) => (
-                    <td class:list={{ 'featured-col': i === featuredIndex }}>
-                      {typeof v === 'string' ? (
-                        v
-                      ) : v ? (
-                        <span class="yes"><Icon name="check" label="Included" /></span>
-                      ) : (
-                        <span class="no"><Icon name="minus" label="Not included" /></span>
-                      )}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          ))}
-        </table>
-      </div>
+        <div class="plan-single-features">
+          <h3>Everything included</h3>
+          <div class="feature-groups">
+            {FEATURE_GROUPS.map((g) => (
+              <div class="feature-group">
+                <h4>{g.title}</h4>
+                <ul class="check-list">
+                  {g.features.map((f) => <li><Icon name="check" />{f}</li>)}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </article>
     </div>
   </section>
 
@@ -204,7 +129,7 @@ const faqs: FaqItem[] = [
           <li><Icon name="check" /><span><strong>Context aware.</strong> Suggestions use surrounding content, so alt text and labels start from something meaningful.</span></li>
           <li><Icon name="check" /><span><strong>Private by design.</strong> Your code is not used to train third-party models.</span></li>
         </ul>
-        <a class="btn" href="/contact?topic=trial&plan=starter">Start free trial <Icon name="arrow" /></a>
+        <a class="btn" href={PLAN.ctaHref}>{PLAN.cta} <Icon name="arrow" /></a>
       </div>
       <div class="mock" role="img" aria-label="Illustration of a suggested code fix adding a label to an email input field">
         <div class="mock-bar" aria-hidden="true"><i></i><i></i><i></i><span>Suggested fix - WCAG 1.3.1</span></div>
@@ -225,15 +150,15 @@ const faqs: FaqItem[] = [
       <div class="section-head">
         <span class="eyebrow">Dashboard</span>
         <h2 id="dash-title">Accessibility dashboard at a glance</h2>
-        <p>Scores, trends and open issues for every domain you manage, in one view.</p>
+        <p>A domain-wide compliance overview for every domain you manage, in one multi-domain view.</p>
       </div>
       <div class="grid-2">
-        <div class="mock" role="img" aria-label="Illustration of the dashboard: score 94, 1,284 pages scanned, 37 open issues and an upward trend">
+        <div class="mock" role="img" aria-label="Illustration of the dashboard: score 94, 25 URLs monitored, 37 open issues and an upward trend">
           <div class="mock-bar" aria-hidden="true"><i></i><i></i><i></i><span>example.com - Overview</span></div>
           <div class="mock-body" aria-hidden="true">
             <div class="mock-kpis">
               <div><span>Score</span><strong>94</strong></div>
-              <div><span>Pages</span><strong>1,284</strong></div>
+              <div><span>URLs</span><strong>25</strong></div>
               <div><span>Open issues</span><strong>37</strong></div>
             </div>
             <div class="bars"><i class="h-30"></i><i class="h-38"></i><i class="h-45"></i><i class="h-52"></i><i class="h-60"></i><i class="h-68"></i><i class="h-77"></i><i class="h-86"></i><i class="h-94"></i></div>
@@ -246,18 +171,18 @@ const faqs: FaqItem[] = [
         <div class="grid-3 dash-cards">
           <div class="card">
             <div class="icon-tile"><Icon name="doc" /></div>
-            <h3>Accessibility statement</h3>
-            <p>Generate and maintain a public statement that reflects your current conformance and how users can reach you.</p>
+            <h3>Auto-updating statement</h3>
+            <p>Publish an accessibility statement that updates itself as your conformance changes, with a way for users to reach you.</p>
           </div>
           <div class="card">
             <div class="icon-tile"><Icon name="layers" /></div>
             <h3>Audit-ready reporting</h3>
-            <p>Export PDF and CSV reports by domain, criterion or date range for auditors, clients and leadership.</p>
+            <p>Export PDF and Excel reports by domain, criterion or date range, with audit evidence collected automatically.</p>
           </div>
           <div class="card">
             <div class="icon-tile"><Icon name="bell" /></div>
-            <h3>Regression alerts</h3>
-            <p>Get notified by email when a deploy introduces a new critical issue, with a link straight to the failing element.</p>
+            <h3>Email notifications</h3>
+            <p>Get an email when a deploy introduces a new critical issue, with a link straight to the failing element.</p>
           </div>
         </div>
       </div>
@@ -275,5 +200,5 @@ const faqs: FaqItem[] = [
     </div>
   </section>
 
-  <CtaBand title="See where your site stands today" text="Run a free WCAG 2.2 scan on any page, then choose the plan that fits your domains." />
+  <CtaBand title="See where your site stands today" text="Run a free WCAG 2.2 scan on any page, then monitor your whole domain with Lite." />
 </BaseLayout>

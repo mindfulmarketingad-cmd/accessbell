@@ -2,12 +2,10 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Icon from '../components/Icon.astro';
 import { SITE } from '../config/site';
-import { PLANS } from '../data/pricing';
 
 const topics = [
   { value: 'general', label: 'General question' },
-  { value: 'trial', label: 'Start a free trial' },
-  { value: 'sales', label: 'Sales and Tailored plans' },
+  { value: 'sales', label: 'Getting started with Lite' },
   { value: 'support', label: 'Product support' },
   { value: 'billing', label: 'Billing' },
   { value: 'accessibility', label: 'Report an accessibility barrier on this site' },
@@ -28,8 +26,8 @@ const schema = [
 ];
 ---
 <BaseLayout
-  title="Contact AccessBell - Sales, Support and Free Trials"
-  description="Contact the AccessBell team about free trials, Tailored plans, product support or billing. We reply to every message within one business day."
+  title="Contact AccessBell - Sales and Support"
+  description="Contact the AccessBell team about getting started with Lite, product support, billing or your scan results. We reply within one business day."
   breadcrumbs={[{ label: 'Contact', href: '/contact' }]}
   schema={schema}
 >
@@ -38,7 +36,7 @@ const schema = [
     <div class="container">
       <span class="eyebrow">Contact</span>
       <h1 id="contact-title">Talk to the AccessBell team</h1>
-      <p class="lead">Questions about plans, a free trial or your scan results? Send us a message and we will reply within one business day.</p>
+      <p class="lead">Questions about the Lite plan, billing or your scan results? Send us a message and we will reply within one business day.</p>
     </div>
   </section>
 
@@ -74,17 +72,15 @@ const schema = [
             </select>
           </div>
           <div class="field">
-            <label for="c-plan">Plan <span class="hint">(optional)</span></label>
-            <select id="c-plan" name="plan">
-              <option value="">Not sure yet</option>
-              {PLANS.map((p) => <option value={p.id}>{p.name}</option>)}
-            </select>
+            <label for="c-domains">Number of domains <span class="hint">(optional)</span></label>
+            <input id="c-domains" name="domains" type="number" inputmode="numeric" min="1" max="1000" />
           </div>
         </div>
         <div class="field">
           <label for="c-message">Message</label>
           <textarea id="c-message" name="message" minlength="10" maxlength="5000" required></textarea>
         </div>
+        <input type="hidden" name="plan" value="" />
         <div class="hp" aria-hidden="true">
           <label for="c-hp">Leave this field empty</label>
           <input id="c-hp" name="website" type="text" tabindex="-1" autocomplete="off" />
@@ -114,7 +110,7 @@ const schema = [
       <div class="card">
         <div class="icon-tile"><Icon name="search" /></div>
         <h2>Need answers now?</h2>
-        <p>Run a <a href="/#scan">free accessibility scan</a>, compare <a href="/pricing">plans and pricing</a> or read our <a href="/blog">accessibility guides</a>.</p>
+        <p>Run a <a href="/#scan">free accessibility scan</a>, see <a href="/pricing">Lite plan pricing</a> or read our <a href="/blog">accessibility guides</a>.</p>
       </div>
     </aside>
   </div>

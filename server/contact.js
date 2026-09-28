@@ -1,6 +1,6 @@
 // Validation and delivery for the contact form.
-export const TOPICS = ['general', 'trial', 'sales', 'support', 'billing', 'accessibility', 'press'];
-export const PLAN_IDS = ['', 'lite', 'starter', 'growth', 'tailored'];
+export const TOPICS = ['general', 'sales', 'support', 'billing', 'accessibility', 'press'];
+export const PLAN_IDS = ['', 'lite'];
 
 const EMAIL = /^[^\s@<>()[\]\\,;:"]{1,64}@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)+$/i;
 // Control characters other than tab and newline
@@ -27,6 +27,7 @@ export function validateContact(input) {
     site: oneLine(input.site, 2048),
     topic: oneLine(input.topic, 30),
     plan: oneLine(input.plan, 30),
+    domains: oneLine(input.domains, 6),
     message: clean(input.message, 5000),
   };
 
@@ -34,6 +35,7 @@ export function validateContact(input) {
   if (!EMAIL.test(data.email)) return { ok: false, error: 'Please enter a valid email address.' };
   if (!TOPICS.includes(data.topic)) return { ok: false, error: 'Please choose a topic.' };
   if (!PLAN_IDS.includes(data.plan)) return { ok: false, error: 'Please choose a valid plan.' };
+  if (data.domains && !/^[1-9]\d{0,3}$/.test(data.domains)) return { ok: false, error: 'Please enter a valid number of domains.' };
   if (data.message.length < 10) return { ok: false, error: 'Please enter a message of at least 10 characters.' };
   if (input.consent !== true) return { ok: false, error: 'Please confirm you agree to the Privacy Policy.' };
   if ((data.message.match(/https?:\/\//gi) || []).length > 5) return { ok: false, spam: true };
@@ -46,6 +48,7 @@ export function formatEmail(d, meta) {
   return [
     `Topic: ${d.topic}`,
     `Plan: ${d.plan || 'not specified'}`,
+    `Domains: ${d.domains || '-'}`,
     `Name: ${d.name}`,
     `Email: ${d.email}`,
     `Company: ${d.company || '-'}`,
