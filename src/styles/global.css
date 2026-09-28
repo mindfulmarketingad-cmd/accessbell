@@ -3923,6 +3923,121 @@ a:hover {
   margin-top: auto;
 }
 
+/* ---------- Free scan: scanning checklist ---------- */
+.scan-panel {
+  padding: clamp(20px, 3vw, 28px);
+}
+.scan-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 14px;
+}
+.scan-head > div {
+  flex: 1 1 200px;
+  min-width: 0;
+}
+.scan-title {
+  margin: 0;
+  font-size: 1.125rem;
+  overflow-wrap: anywhere;
+}
+.scan-head p {
+  margin: 2px 0 0;
+  font-size: 0.875rem;
+  color: var(--ink-500);
+}
+.scan-count {
+  flex: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--sage-800);
+  font-variant-numeric: tabular-nums;
+}
+.scan-bar {
+  height: 6px;
+  margin: 18px 0 20px;
+  border-radius: 999px;
+  background: var(--sage-100);
+  overflow: hidden;
+}
+.scan-bar-fill {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--sage-700);
+  transition: width 0.4s ease;
+}
+.scan-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+@media (min-width: 760px) {
+  .scan-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 24px;
+  }
+}
+.scan-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  color: var(--ink-500);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.scan-step strong {
+  display: block;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+.scan-step small {
+  display: block;
+  font-size: 0.8125rem;
+  color: var(--ink-500);
+}
+.scan-step-icon {
+  flex: none;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  border-radius: 50%;
+  border: 2px solid var(--border-strong);
+}
+.scan-step[data-state='active'] {
+  background: var(--sage-50);
+  color: var(--ink-900);
+}
+.scan-step[data-state='active'] .scan-step-icon {
+  border-color: var(--sage-100);
+  border-top-color: var(--sage-700);
+  animation: spin 0.8s linear infinite;
+}
+.scan-step[data-state='done'] {
+  color: var(--ink-900);
+}
+.scan-step[data-state='done'] .scan-step-icon {
+  border-color: var(--sage-700);
+  background: var(--sage-700);
+}
+.scan-step[data-state='done'] .scan-step-icon::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 1px;
+  width: 5px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
 /* ---------- FAQ ---------- */
 .faq {
   max-width: 820px;

@@ -33,15 +33,112 @@ function setError(form, message) {
   }
 }
 
-function showLoading(url) {
+// What the scan checks, shown while it runs. The engine runs every rule at
+// once; the checklist is paced so people can see what is being tested.
+const TARGETS = {
+  wcag22: { label: 'WCAG 2.2 Level AA', v22: true },
+  wcag21: { label: 'WCAG 2.1 Level AA' },
+  ada: { label: 'ADA (WCAG 2.1 Level AA)' },
+  section508: { label: 'Section 508 (WCAG 2.0 Level AA)', v20: true },
+  en301549: { label: 'EN 301 549 (WCAG 2.1 Level AA)' },
+};
+
+function scanSteps(standard) {
+  const t = TARGETS[standard] || TARGETS.wcag22;
+  return [
+    ['Loading the page in a real Chrome browser', 'Runs your scripts so the real, rendered page is tested'],
+    ['Images and alternative text', 'WCAG 1.1.1'],
+    ['Text color contrast', 'WCAG 1.4.3'],
+    ['Form fields, labels and autocomplete', t.v20 ? 'WCAG 1.3.1, 3.3.2, 4.1.2' : 'WCAG 1.3.1, 1.3.5, 3.3.2, 4.1.2'],
+    ['Link and button names', 'WCAG 2.4.4, 4.1.2'],
+    ['Headings, landmarks and skip links', 'WCAG 1.3.1, 2.4.1'],
+    ['Page title and language', 'WCAG 2.4.2, 3.1.1, 3.1.2'],
+    ['Keyboard access and focusable content', 'WCAG 2.1.1'],
+    ['ARIA roles, states and properties', 'WCAG 4.1.2'],
+    [t.v22 ? 'Zoom, text spacing and touch target size' : t.v20 ? 'Zoom and text resizing' : 'Zoom and text spacing', t.v22 ? 'WCAG 1.4.4, 1.4.12, 2.5.8' : t.v20 ? 'WCAG 1.4.4' : 'WCAG 1.4.4, 1.4.12'],
+    ['Video, audio and moving content', 'WCAG 1.2.2, 1.4.2, 2.2.2'],
+    ['Mapping results to ' + t.label + ' and ranking by severity', 'Your report is almost ready'],
+  ];
+}
+
+const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+/** Animated checklist while the scan runs. Returns { finish, stop }. */
+function showLoading(url, standard) {
   section.hidden = false;
   section.setAttribute('aria-busy', 'true');
-  mount.replaceChildren(
-    el('div', { class: 'results-card' }, [
-      el('div', { class: 'loading' }, [el('span', { class: 'spinner', 'aria-hidden': 'true' }), el('span', { text: `Checking ${url} for accessibility issues...` })]),
+  const steps = scanSteps(standard);
+  const host = (() => {
+    try {
+      return new URL(url).hostname;
+    } catch {
+      return url;
+    }
+  })();
+  const bar = el('span', { class: 'scan-bar-fill' });
+  const items = steps.map(([title, note]) =>
+    el('li', { class: 'scan-step' }, [
+      el('span', { class: 'scan-step-icon', 'aria-hidden': 'true' }),
+      el('span', { class: 'scan-step-text' }, [el('strong', { text: title }), el('small', { text: note })]),
+      el('span', { class: 'visually-hidden', 'data-state': '', text: 'waiting' }),
     ]),
   );
-  section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const count = el('span', { class: 'scan-count', text: `0 of ${steps.length} checks` });
+  mount.replaceChildren(
+    el('div', { class: 'results-card scan-panel' }, [
+      el('div', { class: 'scan-head' }, [
+        el('span', { class: 'spinner', 'aria-hidden': 'true' }),
+        el('div', {}, [el('h2', { class: 'scan-title', text: `Scanning ${host}` }), el('p', { text: `Testing against ${(TARGETS[standard] || TARGETS.wcag22).label}` })]),
+        count,
+      ]),
+      el('div', { class: 'scan-bar', 'aria-hidden': 'true' }, [bar]),
+      el('ol', { class: 'scan-steps', 'aria-label': 'What we are checking' }, items),
+      el('p', { class: 'visually-hidden', role: 'status' }, [`Scanning ${host}. This usually takes 10 to 30 seconds.`]),
+    ]),
+  );
+  section.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' });
+
+  let done = 0;
+  let stopped = false;
+  const setState = (i, state) => {
+    const li = items[i];
+    if (!li) return;
+    li.dataset.state = state;
+    li.lastChild.textContent = state === 'done' ? 'checked' : state === 'active' ? 'checking' : 'waiting';
+  };
+  const progress = () => {
+    bar.style.setProperty('width', `${Math.round((done / steps.length) * 100)}%`);
+    count.textContent = `${done} of ${steps.length} checks`;
+  };
+  setState(0, 'active');
+  // Tick through the checklist, holding on the last step until results arrive.
+  const timer = setInterval(() => {
+    if (stopped || done >= steps.length - 1) return;
+    setState(done, 'done');
+    done++;
+    setState(done, 'active');
+    progress();
+  }, 1300);
+
+  return {
+    async finish() {
+      clearInterval(timer);
+      const fast = reducedMotion() ? 0 : 90;
+      while (done < steps.length) {
+        setState(done, 'done');
+        done++;
+        if (done < steps.length) setState(done, 'active');
+        progress();
+        if (fast) await wait(fast);
+      }
+      if (!reducedMotion()) await wait(350);
+    },
+    stop() {
+      stopped = true;
+      clearInterval(timer);
+    },
+  };
 }
 
 function showFailure(message) {
@@ -91,7 +188,7 @@ for (const form of forms) {
     busy = true;
     const button = form.querySelector('button[type="submit"]');
     button.disabled = true;
-    showLoading(parsed.url);
+    const scan = showLoading(parsed.url, form.elements.standard.value);
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 45000);
     try {
@@ -104,8 +201,10 @@ for (const form of forms) {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || 'The scan could not be completed. Please try again.');
+      await scan.finish();
       render(data);
     } catch (err) {
+      scan.stop();
       showFailure(err.name === 'AbortError' ? 'The page took too long to respond. Please try again later.' : err.message);
     } finally {
       clearTimeout(timer);
