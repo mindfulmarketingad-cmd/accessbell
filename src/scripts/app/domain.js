@@ -1,53 +1,170 @@
-// Domain view: compliance overview, monitored pages and scan settings.
-import { api, boot, el, svg, qs, fmtDate, scorePill, busy, can, setStatus, pool } from './core.js';
+// Domain view: last scan overview, scan history, WCAG coverage, issues with
+// fixes, manual review items, monitored pages and scan settings.
+import { api, boot, el, icon, avatar, qs, fmtDate, scorePill, busy, can, setStatus, pool, disclosure } from './core.js';
 import { wcagLabel } from './report.js';
 import { initTabs } from './tabs.js';
+import { scoreRing, historyChart } from './charts.js';
+import { fixExample } from '../shared/fix-examples.js';
+import { criteriaFor, PRINCIPLES } from '../../../server/wcag-criteria.js';
 
 const me = await boot();
 const id = qs('id');
 const $ = (s) => document.querySelector(s);
-initTabs($('[data-tabs]'));
+const selectTab = initTabs($('[data-tabs]'));
 
 const IMPACT_LABEL = { critical: 'Critical', serious: 'Serious', moderate: 'Moderate', minor: 'Minor' };
+const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
 let data;
 
-// ---------- Overview ----------
+/** "6 days ago", "in 14 hours". */
+function relative(value) {
+  const diff = (new Date(value).getTime() - Date.now()) / 1000;
+  const units = [['year', 31536000], ['month', 2592000], ['day', 86400], ['hour', 3600], ['minute', 60]];
+  const rtf = new Intl.RelativeTimeFormat(undefined, { numeric: 'auto' });
+  for (const [unit, secs] of units) if (Math.abs(diff) >= secs) return rtf.format(Math.round(diff / secs), unit);
+  return rtf.format(Math.round(diff), 'second');
+}
 
-function renderKpis() {
-  const total = Object.values(data.impacts).reduce((a, b) => a + b, 0);
-  const kpi = (label, value, note) => el('div', { class: 'kpi' }, [el('span', { text: label }), el('strong', { text: value }), note ? el('small', { text: note }) : null]);
-  $('[data-kpis]').replaceChildren(
-    kpi('Compliance score', data.score === null ? 'n/a' : String(data.score), data.domain.settings.wcagVersion ? `WCAG ${data.domain.settings.wcagVersion} Level ${data.domain.settings.wcagLevel}` : ''),
-    kpi('Failing elements', String(total), `${data.rules.length} rules`),
-    kpi('Monitored URLs', `${data.monitoredCount} / ${data.monitoredLimit}`),
-    kpi('Devices', data.domain.settings.devices.map((d) => d[0].toUpperCase() + d.slice(1)).join(' + ')),
+/** Scheduled monitoring runs daily at 06:00 UTC. */
+function nextScheduledScan() {
+  const now = new Date();
+  const next = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 6));
+  if (next <= now) next.setUTCDate(next.getUTCDate() + 1);
+  return next;
+}
+
+const chip = (kind, iconName, text) => el('span', { class: `chip chip-${kind}` }, [iconName ? icon(iconName) : null, text]);
+const target = () => ({ version: data.domain.settings.wcagVersion || '2.2', level: data.domain.settings.wcagLevel || 'AA' });
+
+// ---------- Overview: last scan ----------
+
+function renderLso() {
+  const { version, level } = target();
+  const issues = Object.values(data.impacts).reduce((a, b) => a + b, 0);
+  const wcagFailures = data.criteria.some((c) => c.level && c.level !== '-');
+  const reviewCount = data.review.reduce((n, r) => n + r.elements, 0);
+  let state;
+  let note;
+  if (data.score === null) {
+    state = ['none', 'Not scanned yet'];
+    note = 'Run a scan to see how this domain measures up.';
+  } else if (wcagFailures) {
+    state = ['bad', 'Not conformant'];
+    note = `Automated tests found failures of WCAG ${version} Level ${level} criteria. Fix them to reduce legal risk.`;
+  } else {
+    state = ['good', 'No automated failures'];
+    note = 'Automated tests found no WCAG failures. Complete the manual review to confirm conformance.';
+  }
+  const monitoring = me.subscribed && data.monitoredCount > 0;
+  const row = (label, value) => el('div', {}, [el('dt', { text: label }), el('dd', {}, [value])]);
+  const gotoTab = (name, text) => {
+    const b = el('button', { type: 'button', class: 'link-btn', text });
+    b.addEventListener('click', () => selectTab(name));
+    return b;
+  };
+  $('[data-lso]').replaceChildren(
+    el('div', { class: 'lso-left' }, [
+      el('p', { class: `lso-state lso-${state[0]}`, text: state[1] }),
+      el('p', { class: 'lso-note', text: note }),
+      scoreRing(data.score),
+      el('p', { class: 'lso-foot' }, [
+        el('a', { href: '/blog/what-is-a-website-accessibility-checker#how-results-are-scored', text: 'How we score' }),
+        ` against WCAG ${version} Level ${level}`,
+      ]),
+    ]),
+    el('div', { class: 'lso-right' }, [
+      el('h3', { class: 'lso-h' }, [gotoTab('issues', 'Automated tests')]),
+      el('dl', { class: 'dot-list' }, [
+        row('Active issues', chip(issues ? 'bad' : 'ok', 'alert', plural(issues, 'issue'))),
+        row('Resolved since last scan', chip('ok', 'check', `${data.resolved} solved`)),
+        row('Scanned pages', document.createTextNode(`${data.scannedPages} of ${data.monitoredCount}`)),
+        row('Last automated scan', document.createTextNode(data.lastScanAt ? relative(data.lastScanAt) : 'Never')),
+        row('Next scheduled scan', document.createTextNode(monitoring ? relative(nextScheduledScan()) : 'Not scheduled')),
+      ]),
+      el('h3', { class: 'lso-h' }, [gotoTab('review', 'Manual review')]),
+      el('dl', { class: 'dot-list' }, [row('Items to check', chip(reviewCount ? 'warn' : 'ok', reviewCount ? 'eye' : 'check', reviewCount ? plural(reviewCount, 'item') : 'None flagged'))]),
+    ]),
   );
 }
 
-function renderRules() {
-  const box = $('[data-rules]');
-  if (!data.rules.length) {
-    box.replaceChildren(el('p', { class: 'muted', text: data.score === null ? 'Run a scan to see issues across the domain.' : 'No automated issues found on monitored pages.' }));
+// ---------- Overview: scan history ----------
+
+function renderHistory() {
+  const days = Number($('[data-range]').value);
+  const since = Date.now() - days * 86400000;
+  const points = data.history.filter((h) => new Date(h.day).getTime() >= since);
+  const box = $('[data-history]');
+  if (!points.length) {
+    box.replaceChildren(el('div', { class: 'chart-empty' }, [el('p', { text: 'No scans in this period yet. The history fills in as scans run.' })]));
     return;
   }
-  box.replaceChildren(
-    el(
-      'ul',
-      { class: 'group-list' },
-      data.rules.slice(0, 25).map((r) =>
-        el('li', {}, [
-          el('div', { class: 'top' }, [el('strong', { text: r.title }), el('span', {}, [el('span', { class: `tag tag-${r.impact}`, text: IMPACT_LABEL[r.impact] }), ' ', el('span', { class: 'tag', text: wcagLabel(r.wcag) })])]),
-          el('p', { text: `${r.elements} element${r.elements === 1 ? '' : 's'} on ${r.pages} page${r.pages === 1 ? '' : 's'}` }),
-        ]),
-      ),
-    ),
+  box.replaceChildren(historyChart(points, { caption: `Scan history for the last ${days} days` }));
+}
+
+// ---------- Overview: coverage by principle ----------
+
+function coverageStatus(c) {
+  const cov = data.coverage[c.sc] || { issues: 0, passed: false, review: 0 };
+  const auto = cov.issues
+    ? chip('bad', 'alert', plural(cov.issues, 'issue'))
+    : cov.passed
+      ? chip('ok', 'check', 'Passed')
+      : chip('muted', null, 'Not covered');
+  const manual = cov.review ? chip('warn', 'eye', `Review ${cov.review}`) : cov.issues || cov.passed ? chip('muted', null, 'Spot check') : chip('outline', null, 'Manual test');
+  return { cov, auto, manual };
+}
+
+function renderCoverage() {
+  const { version, level } = target();
+  const onlyIssues = $('[data-cov-issues-only]').checked;
+  const all = criteriaFor(version, level);
+  const tbodies = Object.values(PRINCIPLES).map((principle) => {
+    const rows = all
+      .filter((c) => c.principle === principle)
+      .map((c) => ({ c, ...coverageStatus(c) }))
+      .filter((r) => !onlyIssues || r.cov.issues);
+    const failing = rows.filter((r) => r.cov.issues).length;
+    const toggle = el('button', { type: 'button', class: 'group-toggle', 'aria-expanded': 'true' }, [
+      icon('chevron'),
+      el('span', { text: principle }),
+      el('small', { text: failing ? `${plural(failing, 'criterion')} with issues`.replace('criterions', 'criteria') : `${rows.length} criteria` }),
+    ]);
+    const trs = rows.map((r) =>
+      el('tr', {}, [
+        el('td', { text: r.c.guideline }),
+        el('th', { scope: 'row' }, [el('span', { class: 'sc-num', text: r.c.sc }), ` ${r.c.name}`]),
+        el('td', {}, [el('span', { class: 'level-badge', text: r.c.level })]),
+        el('td', {}, [r.auto]),
+        el('td', {}, [r.manual]),
+      ]),
+    );
+    toggle.addEventListener('click', () => {
+      const open = toggle.getAttribute('aria-expanded') !== 'true';
+      toggle.setAttribute('aria-expanded', String(open));
+      trs.forEach((tr) => (tr.hidden = !open));
+    });
+    if (!rows.length) return null;
+    return el('tbody', {}, [el('tr', { class: 'group-row' }, [el('th', { colspan: '5', scope: 'colgroup' }, [toggle])]), ...trs]);
+  });
+  $('[data-cov-sub]').textContent = `All ${all.length} success criteria in WCAG ${version} Level ${level}, grouped by principle. Automated tests cover some criteria; the rest need a person to check.`;
+  const bodies = tbodies.filter(Boolean);
+  $('[data-coverage]').replaceChildren(
+    bodies.length
+      ? el('div', { class: 'table-wrap cov-wrap', role: 'region', 'aria-label': 'WCAG coverage table', tabindex: '0' }, [
+          el('table', { class: 'data-table cov-table' }, [
+            el('caption', { class: 'visually-hidden', text: `Test coverage for WCAG ${version} Level ${level}` }),
+            el('thead', {}, [el('tr', {}, ['Guideline', 'Success criterion', 'Level', 'Automated checks', 'Manual review'].map((h) => el('th', { scope: 'col', text: h })))]),
+            ...bodies,
+          ]),
+        ])
+      : el('p', { class: 'muted', text: 'No criteria with issues. Clear the filter to see every criterion.' }),
   );
 }
 
 function renderComponents() {
   const box = $('[data-components]');
   if (!data.components.length) {
-    box.replaceChildren(el('p', { class: 'muted', text: 'No repeated components found yet. They appear once several pages share the same failing element.' }));
+    box.replaceChildren(el('p', { class: 'muted mb-0', text: 'No repeated components found yet. They appear once several pages share the same failing element.' }));
     return;
   }
   box.replaceChildren(
@@ -64,55 +181,142 @@ function renderComponents() {
   );
 }
 
-function renderTrend() {
-  const box = $('[data-trend]');
-  const points = data.trend.map((t) => ({ day: new Date(t.day), score: t.score }));
-  if (points.length < 2) {
-    box.replaceChildren(el('p', { class: 'muted', text: 'The trend appears after scans on two or more days.' }));
+// ---------- Issues ----------
+
+/** Code block with line numbers and a Copy button. */
+function codeBlock(code, heading) {
+  const status = el('span', { class: 'visually-hidden', role: 'status', 'aria-live': 'polite' });
+  const copy = el('button', { type: 'button', class: 'copy-btn' }, [icon('copy'), el('span', { text: 'Copy' })]);
+  copy.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(code);
+      copy.lastChild.textContent = 'Copied';
+      status.textContent = 'Code copied to the clipboard.';
+      setTimeout(() => (copy.lastChild.textContent = 'Copy'), 2000);
+    } catch {
+      status.textContent = 'Copy is not available. Select the code and copy it manually.';
+    }
+  });
+  const lines = code.split('\n').map((line, i) => el('span', { class: 'code-line' }, [el('span', { class: 'ln', 'aria-hidden': 'true', text: String(i + 1) }), el('span', { class: line.trim().startsWith('<!--') || line.trim().startsWith('/*') ? 'cm' : '', text: line || ' ' })]));
+  return el('div', { class: 'code-block' }, [
+    el('div', { class: 'code-banner' }, [icon('check'), el('span', { text: heading })]),
+    el('div', { class: 'code-head' }, [el('span', { text: 'Code example' }), copy, status]),
+    el('pre', { tabindex: '0' }, [el('code', {}, lines)]),
+  ]);
+}
+
+function issueDetails(r) {
+  const ex = fixExample(r.id);
+  const where = r.samples.length
+    ? el('ul', { class: 'sample-list' }, r.samples.map((s) => el('li', {}, [s.url ? el('span', { class: 'sample-url', text: s.url }) : null, el('pre', {}, [el('code', { text: s.code })])])))
+    : el('p', { class: 'muted', text: 'No element snippets were captured for this rule.' });
+  const steps = ex
+    ? el('ol', { class: 'fix-steps' }, ex.steps.map(([t, d]) => el('li', {}, [el('strong', { text: `${t}: ` }), d])))
+    : el('p', { text: r.fix || 'Follow the detailed guidance linked below.' });
+  const guidance = r.helpUrl && r.helpUrl.startsWith('https://') ? el('a', { href: r.helpUrl, target: '_blank', rel: 'noopener noreferrer', text: 'Detailed guidance for this rule (opens in a new tab)' }) : null;
+  return el('div', { class: 'issue-body' }, [
+    el('h3', {}, ['1. What is ', el('span', { class: 'accent-text', text: 'wrong' })]),
+    el('p', { text: r.description || r.title }),
+    el('h3', {}, ['2. Where it ', el('span', { class: 'accent-text', text: 'happens' })]),
+    el('p', { class: 'muted', text: `${plural(r.elements, 'element')} on ${plural(r.pages, 'page')}${r.samples.length ? '. Examples:' : '.'}` }),
+    where,
+    el('h3', {}, ['3. How to ', el('span', { class: 'accent-text', text: 'solve it' })]),
+    steps,
+    ex ? codeBlock(ex.code, 'Correct markup solutions') : null,
+    r.fix && ex ? el('p', { class: 'muted' }, [el('strong', { text: 'For your page: ' }), r.fix]) : null,
+    guidance ? el('p', {}, [guidance]) : null,
+  ]);
+}
+
+const ruleOf = new WeakMap();
+
+// Printing (or saving as PDF) shows every issue with its fix.
+window.addEventListener('beforeprint', () => {
+  document.querySelectorAll('.issue-acc').forEach((d) => {
+    if (d.children.length === 1 && ruleOf.has(d)) d.append(issueDetails(ruleOf.get(d)));
+    d.open = true;
+  });
+});
+
+function renderRules() {
+  const filter = $('[data-issue-filter]').value;
+  const rules = data.rules.filter((r) => !filter || r.impact === filter);
+  $('[data-count-issues]').textContent = data.rules.length ? String(data.rules.length) : '';
+  $('[data-issues-sub]').textContent = data.rules.length
+    ? `${plural(data.rules.length, 'rule')} failing across ${plural(data.scannedPages, 'page')}. Open an issue to see where it happens and how to fix it.`
+    : '';
+  const box = $('[data-rules]');
+  if (!data.rules.length) {
+    box.replaceChildren(el('div', { class: 'empty-state empty-sm' }, [el('h2', { text: data.score === null ? 'No scans yet' : 'No automated issues' }), el('p', { text: data.score === null ? 'Run a scan to see issues across the domain.' : 'Nothing failed on your monitored pages. Check the Manual Review tab next.' })]));
     return;
   }
-  const W = 400;
-  const H = 120;
-  const x = (i) => (i / (points.length - 1)) * (W - 8) + 4;
-  const y = (s) => H - 6 - (s / 100) * (H - 12);
-  const line = points.map((p, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(p.score).toFixed(1)}`).join(' ');
-  const area = `${line} L${x(points.length - 1).toFixed(1)},${H - 6} L${x(0).toFixed(1)},${H - 6} Z`;
-  const first = points[0];
-  const last = points[points.length - 1];
   box.replaceChildren(
-    svg('svg', { viewBox: `0 0 ${W} ${H}`, preserveAspectRatio: 'none', role: 'img', 'aria-label': `Score went from ${first.score} on ${fmtDate(first.day)} to ${last.score} on ${fmtDate(last.day)}` }, [
-      svg('line', { class: 'axis', x1: 0, x2: W, y1: H - 6, y2: H - 6 }),
-      svg('path', { class: 'area', d: area }),
-      svg('path', { class: 'line', d: line }),
-    ]),
-    el('p', { class: 'muted mb-0', text: `${fmtDate(first.day)}: ${first.score}  -  ${fmtDate(last.day)}: ${last.score}` }),
+    el(
+      'div',
+      { class: 'issue-acc-list' },
+      rules.map((r) => {
+        const details = el('details', { class: 'issue-acc' }, [
+          el('summary', {}, [
+            el('span', { class: `sev-dot sev-${r.impact}`, 'aria-hidden': 'true' }),
+            el('span', { class: 'issue-acc-title', text: r.title }),
+            el('span', { class: 'issue-acc-meta' }, [
+              el('span', { class: `tag tag-${r.impact}`, text: IMPACT_LABEL[r.impact] }),
+              el('span', { class: 'tag', text: wcagLabel(r.wcag) }),
+              chip('bad', 'alert', String(r.elements)),
+            ]),
+          ]),
+        ]);
+        details.addEventListener('toggle', () => {
+          if (details.open && details.children.length === 1) details.append(issueDetails(r));
+        });
+        ruleOf.set(details, r);
+        return details;
+      }),
+    ),
   );
 }
 
-function renderImpacts() {
-  const max = Math.max(1, ...Object.values(data.impacts));
-  $('[data-impacts]').replaceChildren(
-    ...Object.entries(IMPACT_LABEL).map(([k, label]) => {
-      const fill = el('span', { class: 'fill', 'data-impact': k });
-      fill.style.setProperty('width', `${Math.round(((data.impacts[k] || 0) / max) * 100)}%`);
-      return el('div', { class: 'impact-bar' }, [el('span', { text: label }), el('span', { class: 'track', 'aria-hidden': 'true' }, [fill]), el('span', { class: 'num', text: String(data.impacts[k] || 0) })]);
-    }),
-  );
-}
-
-function renderCriteria() {
-  const box = $('[data-criteria]');
-  if (!data.criteria.length) {
-    box.replaceChildren(el('p', { class: 'muted', text: 'No failing criteria.' }));
+function renderReview() {
+  const total = data.review.reduce((n, r) => n + r.elements, 0);
+  $('[data-count-review]').textContent = total ? String(total) : '';
+  const box = $('[data-review]');
+  if (!data.review.length) {
+    box.replaceChildren(el('div', { class: 'empty-state empty-sm' }, [el('h2', { text: 'Nothing flagged' }), el('p', { text: 'Still test key pages with a keyboard and a screen reader. Automated tools cannot judge everything.' })]));
     return;
   }
   box.replaceChildren(
-    el('table', { class: 'data-table' }, [
-      el('caption', { class: 'visually-hidden', text: 'Failing WCAG success criteria' }),
-      el('thead', {}, [el('tr', {}, [el('th', { scope: 'col', text: 'Criterion' }), el('th', { scope: 'col', class: 'num', text: 'Elements' })])]),
-      el('tbody', {}, data.criteria.map((c) => el('tr', {}, [el('th', { scope: 'row', text: c.level === '-' ? 'Best practice' : `${c.sc} (${c.level})` }), el('td', { class: 'num', text: String(c.elements) })]))),
-    ]),
+    el(
+      'ul',
+      { class: 'review-list' },
+      data.review.map((r) =>
+        el('li', {}, [
+          el('div', {}, [el('strong', { text: r.title }), el('p', { class: 'muted', text: `${plural(r.elements, 'element')} on ${plural(r.pages, 'page')} - ${wcagLabel(r.wcag)}` })]),
+          r.helpUrl && r.helpUrl.startsWith('https://') ? el('a', { href: r.helpUrl, target: '_blank', rel: 'noopener noreferrer', text: 'How to review (opens in a new tab)' }) : null,
+        ]),
+      ),
+    ),
   );
+}
+
+// ---------- Export ----------
+
+function exportCsv() {
+  const cell = (v) => {
+    const t = String(v ?? '');
+    return /[",\n]/.test(t) ? `"${t.replace(/"/g, '""')}"` : t;
+  };
+  const rows = [['Issue', 'Severity', 'WCAG', 'Elements', 'Pages', 'Affected URLs', 'How to fix']];
+  for (const r of data.rules) rows.push([r.title, IMPACT_LABEL[r.impact], wcagLabel(r.wcag), r.elements, r.pages, (r.pageUrls || []).join(' '), r.fix]);
+  // Spreadsheet apps treat cells starting with = + - @ as formulas; prefix them.
+  const safe = rows.map((row) => row.map((v) => (/^[=+\-@]/.test(String(v ?? '')) ? `'${v}` : v)));
+  const blob = new Blob(['\ufeff' + safe.map((row) => row.map(cell).join(',')).join('\r\n')], { type: 'text/csv;charset=utf-8' });
+  const a = el('a', { href: URL.createObjectURL(blob), download: `${data.domain.hostname}-accessibility-issues-${new Date().toISOString().slice(0, 10)}.csv` });
+  document.body.append(a);
+  a.click();
+  setTimeout(() => {
+    URL.revokeObjectURL(a.href);
+    a.remove();
+  }, 0);
 }
 
 // ---------- Pages ----------
@@ -266,6 +470,25 @@ function bindSettings() {
 function bindActions() {
   const progress = $('[data-progress]');
   const discover = $('[data-discover]');
+  const setExport = disclosure($('[data-export]'), $('#export-menu'));
+  const setMore = disclosure($('[data-more]'), $('#more-menu'));
+  $('[data-export-csv]').addEventListener('click', () => {
+    setExport(false);
+    exportCsv();
+  });
+  $('[data-export-print]').addEventListener('click', () => {
+    setExport(false);
+    window.print();
+  });
+  document.querySelectorAll('[data-goto]').forEach((b) =>
+    b.addEventListener('click', () => {
+      setMore(false);
+      selectTab(b.dataset.goto);
+    }),
+  );
+  $('[data-range]').addEventListener('change', renderHistory);
+  $('[data-cov-issues-only]').addEventListener('change', renderCoverage);
+  $('[data-issue-filter]').addEventListener('change', renderRules);
   const rescanAll = $('[data-rescan-all]');
   const addForm = $('[data-add-page]');
   const pageStatus = $('[data-page-status]');
@@ -273,6 +496,7 @@ function bindActions() {
   discover.addEventListener(
     'click',
     busy(discover, progress, async () => {
+      setMore(false);
       progress.textContent = 'Crawling the domain and reading its sitemap...';
       const r = await api('domain/discover', { method: 'POST', body: { id } });
       progress.textContent = `Found ${r.found} pages (${r.fromSitemap} in the sitemap). ${r.added} new pages are ready to monitor in the Pages tab.`;
@@ -313,15 +537,19 @@ async function load() {
   data = await api(`domain?id=${encodeURIComponent(id || '')}`);
   document.title = `${data.domain.hostname} | AccessBell`;
   $('[data-title]').textContent = data.domain.hostname;
-  $('[data-subtitle]').textContent = data.domain.baseUrl;
+  $('[data-domain-avatar]').replaceChildren(avatar(data.domain.hostname, 'avatar-lg'));
+  $('[data-live-link]').setAttribute('href', data.domain.baseUrl);
+  const last = $('[data-last-scan]');
+  last.hidden = !data.lastScanAt;
+  if (data.lastScanAt) last.lastElementChild.textContent = `Last scan: ${relative(data.lastScanAt)}`;
   $('[data-discover]').hidden = !canEditPages();
   $('[data-rescan-all]').hidden = !canEditPages() || !data.monitoredCount;
-  renderKpis();
-  renderRules();
+  renderLso();
+  renderHistory();
+  renderCoverage();
   renderComponents();
-  renderTrend();
-  renderImpacts();
-  renderCriteria();
+  renderRules();
+  renderReview();
   renderPages();
 }
 
@@ -332,5 +560,5 @@ try {
   bindActions();
 } catch (err) {
   $('[data-title]').textContent = 'Domain not available';
-  $('[data-subtitle]').textContent = err.message;
+  $('[data-progress]').textContent = err.message;
 }

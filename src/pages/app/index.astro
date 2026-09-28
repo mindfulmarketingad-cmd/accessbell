@@ -1,34 +1,38 @@
 ---
 import AppLayout from '../../layouts/AppLayout.astro';
+import Icon from '../../components/Icon.astro';
 ---
-<AppLayout title="Domains" section="overview">
-  <header class="app-head">
-    <div>
-      <h1>Domains</h1>
-      <p>Domain-wide WCAG compliance across everything you monitor.</p>
-    </div>
+<AppLayout title="Your Domains" section="overview">
+  <header class="page-top">
+    <h1>Your Domains <span class="count-badge" data-domain-count>0</span></h1>
+    <button class="btn" type="button" data-open-add hidden><Icon name="plus" /> Add Domain</button>
   </header>
 
-  <section class="kpis" aria-label="Summary" data-kpis></section>
+  <section class="kpis" aria-label="Summary" data-kpis hidden></section>
+  <div data-domains><p class="muted">Loading...</p></div>
 
-  <section class="panel" aria-labelledby="domains-title">
-    <h2 id="domains-title">Your domains</h2>
-    <p class="panel-sub" data-quota></p>
-    <div data-domains><p class="muted">Loading...</p></div>
-  </section>
-
-  <section class="panel" aria-labelledby="add-title" data-add-panel hidden>
-    <h2 id="add-title">Add a domain</h2>
-    <p class="panel-sub">Enter a website or staging environment. We start by monitoring its home page.</p>
-    <form class="inline-form" data-add-domain novalidate>
-      <div class="field">
-        <label for="domain-url">Website address</label>
-        <input id="domain-url" name="url" type="text" inputmode="url" placeholder="example.com or staging.example.com" required maxlength="2048" />
+  <dialog class="dialog" data-add-dialog aria-labelledby="add-title">
+    <form method="dialog" class="dialog-body" data-add-domain novalidate>
+      <div class="dialog-head">
+        <h2 id="add-title">Add a domain</h2>
+        <button class="icon-btn" type="button" data-close-add><Icon name="x" /><span class="visually-hidden">Close</span></button>
       </div>
-      <button class="btn" type="submit">Add domain</button>
+      <div data-add-ready>
+        <p class="muted">Enter a website or staging environment. We start by monitoring its home page, then you can find and add more pages.</p>
+        <div class="field">
+          <label for="domain-url">Website address</label>
+          <input id="domain-url" name="url" type="text" inputmode="url" placeholder="example.com or staging.example.com" maxlength="2048" autocomplete="url" />
+        </div>
+        <p class="muted mb-0" data-add-quota></p>
+      </div>
+      <div data-add-blocked hidden></div>
+      <p class="status-line" data-add-status role="status" aria-live="polite"></p>
+      <div class="dialog-actions">
+        <button class="btn btn-outline" type="button" data-close-add>Cancel</button>
+        <button class="btn" type="submit" data-add-submit>Add domain</button>
+      </div>
     </form>
-    <p class="status-line" data-add-status role="status" aria-live="polite"></p>
-  </section>
+  </dialog>
 </AppLayout>
 <script>
   import '../../scripts/app/overview.js';

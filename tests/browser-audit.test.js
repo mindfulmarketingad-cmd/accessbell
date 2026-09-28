@@ -49,7 +49,7 @@ test('axe results map to the report shape used by the website', () => {
   assert.equal(r.issues[1].count, 4);
   assert.equal(r.issues[1].samples.length, 3);
   assert.ok(r.issues[1].samples.every((s) => s.length <= 220));
-  assert.deepEqual(r.issues[1].wcag, [{ sc: '1.4.3', name: 'Contrast (Minimum)', level: 'AA', version: '2.0', principle: 'Perceivable' }]);
+  assert.deepEqual(r.issues[1].wcag, [{ sc: '1.4.3', name: 'Contrast (Minimum)', level: 'AA', version: '2.0', principle: 'Perceivable', guideline: 'Distinguishable' }]);
   assert.match(r.issues[1].fix, /insufficient color contrast/);
   assert.doesNotMatch(r.issues[1].fix, /Fix any of the following/);
   assert.equal(r.issues[1].helpUrl, 'https://dequeuniversity.com/rules/axe/4.13/color-contrast');

@@ -25,4 +25,9 @@ export function initTabs(root) {
   });
   const initial = tabs.find((t) => t.id === `tab-${location.hash.slice(1)}`);
   if (initial) select(initial, false);
+  /** Switch to a tab by name (the id without "tab-") and move focus to it. */
+  return (name) => {
+    const tab = tabs.find((t) => t.id === `tab-${name}`);
+    if (tab) select(tab, true);
+  };
 }

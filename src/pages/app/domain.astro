@@ -1,58 +1,111 @@
 ---
 import AppLayout from '../../layouts/AppLayout.astro';
+import Icon from '../../components/Icon.astro';
 ---
 <AppLayout title="Domain" section="overview">
-  <a class="back-link" href="/app">&larr; All domains</a>
-  <header class="app-head">
-    <div>
+  <header class="domain-top">
+    <a class="icon-btn" href="/app"><Icon name="back" /><span class="visually-hidden">Back to all domains</span></a>
+    <span data-domain-avatar></span>
+    <div class="domain-title">
+      <nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="/app">Domains</a></li></ol></nav>
       <h1 data-title>Loading...</h1>
-      <p data-subtitle></p>
     </div>
-    <div class="app-head-actions">
-      <button class="btn btn-outline" type="button" data-discover hidden>Find pages</button>
-      <button class="btn" type="button" data-rescan-all hidden>Rescan all</button>
+    <div class="top-actions">
+      <span class="last-scan" data-last-scan hidden><Icon name="clock" /><span></span></span>
+      <button class="btn btn-outline" type="button" data-rescan-all hidden><Icon name="refresh" /> Re-Scan</button>
+      <div class="menu-wrap">
+        <button class="btn" type="button" data-export aria-expanded="false" aria-controls="export-menu"><Icon name="download" /> Export <Icon name="chevron" /></button>
+        <div class="menu menu-down" id="export-menu" hidden>
+          <button type="button" data-export-csv><Icon name="doc" /> Issues as CSV (Excel)</button>
+          <button type="button" data-export-print><Icon name="print" /> Print or save as PDF</button>
+        </div>
+      </div>
+      <div class="menu-wrap">
+        <button class="icon-btn" type="button" data-more aria-expanded="false" aria-controls="more-menu"><Icon name="more" /><span class="visually-hidden">More actions</span></button>
+        <div class="menu menu-down" id="more-menu" hidden>
+          <button type="button" data-discover hidden><Icon name="search" /> Find pages</button>
+          <button type="button" data-goto="settings"><Icon name="gear" /> Domain settings</button>
+          <a data-live-link href="/" target="_blank" rel="noopener noreferrer"><Icon name="external" /> Open website</a>
+        </div>
+      </div>
     </div>
   </header>
   <p class="progress-note" data-progress role="status" aria-live="polite"></p>
 
   <div class="app-tabs" data-tabs>
     <div class="tablist" role="tablist" aria-label="Domain views">
-      <button type="button" role="tab" id="tab-overview" aria-controls="panel-overview" aria-selected="true" tabindex="0">Overview</button>
-      <button type="button" role="tab" id="tab-pages" aria-controls="panel-pages" aria-selected="false" tabindex="-1">Pages</button>
-      <button type="button" role="tab" id="tab-settings" aria-controls="panel-settings" aria-selected="false" tabindex="-1">Settings</button>
+      <button type="button" role="tab" id="tab-overview" aria-controls="panel-overview" aria-selected="true" tabindex="0"><Icon name="chart" /> Overview</button>
+      <button type="button" role="tab" id="tab-issues" aria-controls="panel-issues" aria-selected="false" tabindex="-1"><Icon name="alert" /> Issues <span class="tab-count" data-count-issues></span></button>
+      <button type="button" role="tab" id="tab-review" aria-controls="panel-review" aria-selected="false" tabindex="-1"><Icon name="eye" /> Manual Review <span class="tab-count" data-count-review></span></button>
+      <button type="button" role="tab" id="tab-pages" aria-controls="panel-pages" aria-selected="false" tabindex="-1"><Icon name="list" /> Pages</button>
+      <button type="button" role="tab" id="tab-settings" aria-controls="panel-settings" aria-selected="false" tabindex="-1"><Icon name="gear" /> Settings</button>
     </div>
 
     <div role="tabpanel" id="panel-overview" aria-labelledby="tab-overview" tabindex="0">
-      <section class="kpis" aria-label="Domain summary" data-kpis></section>
-      <div class="split">
-        <div>
-          <section class="panel" aria-labelledby="rules-title">
-            <h2 id="rules-title">Issues across the domain</h2>
-            <p class="panel-sub">Grouped by rule, with the number of pages affected.</p>
-            <div data-rules></div>
-          </section>
-          <section class="panel" aria-labelledby="components-title">
-            <h2 id="components-title">Component grouping</h2>
-            <p class="panel-sub">The same failing element on several pages. Fix it once in the shared component.</p>
-            <div data-components></div>
-          </section>
-        </div>
-        <div>
-          <section class="panel trend" aria-labelledby="trend-title">
-            <h2 id="trend-title">Progress over 30 days</h2>
-            <p class="panel-sub">Average score per day.</p>
-            <div data-trend></div>
-          </section>
-          <section class="panel" aria-labelledby="impact-title">
-            <h2 id="impact-title">By severity</h2>
-            <div class="impact-bars" data-impacts></div>
-          </section>
-          <section class="panel" aria-labelledby="criteria-title">
-            <h2 id="criteria-title">WCAG criteria failing</h2>
-            <div data-criteria></div>
-          </section>
-        </div>
+      <div class="ov-grid">
+        <section class="box" aria-labelledby="lso-title">
+          <h2 id="lso-title" class="box-title">Last scan overview</h2>
+          <div class="lso" data-lso></div>
+        </section>
+        <section class="box" aria-labelledby="hist-title">
+          <div class="box-head">
+            <h2 id="hist-title" class="box-title">Scan history</h2>
+            <label class="select-sm">
+              <span class="visually-hidden">Time range</span>
+              <select data-range>
+                <option value="7">Last 7 days</option>
+                <option value="30" selected>Last 30 days</option>
+                <option value="90">Last 90 days</option>
+              </select>
+            </label>
+          </div>
+          <div data-history></div>
+        </section>
       </div>
+
+      <section class="coverage" aria-labelledby="cov-title">
+        <div class="coverage-head">
+          <div>
+            <h2 id="cov-title">Test Coverage by WCAG Principle</h2>
+            <p data-cov-sub>Every success criterion in your target, grouped by principle, with what automated testing found and what needs a person to check.</p>
+          </div>
+          <div class="coverage-tools">
+            <label class="check-inline"><input type="checkbox" data-cov-issues-only /> Only criteria with issues</label>
+            <button class="btn btn-outline" type="button" data-goto="settings"><Icon name="gear" /> Domain Settings</button>
+          </div>
+        </div>
+        <div data-coverage></div>
+      </section>
+
+      <section class="box" aria-labelledby="components-title">
+        <h2 id="components-title" class="box-title">Component grouping</h2>
+        <p class="muted">The same failing element on several pages. Fix it once in the shared component.</p>
+        <div data-components></div>
+      </section>
+    </div>
+
+    <div role="tabpanel" id="panel-issues" aria-labelledby="tab-issues" tabindex="0" hidden>
+      <h2 class="visually-hidden">Issues</h2>
+      <div class="issues-head">
+        <p class="muted" data-issues-sub></p>
+        <label class="select-sm">
+          <span>Severity</span>
+          <select data-issue-filter>
+            <option value="">All</option>
+            <option value="critical">Critical</option>
+            <option value="serious">Serious</option>
+            <option value="moderate">Moderate</option>
+            <option value="minor">Minor</option>
+          </select>
+        </label>
+      </div>
+      <div data-rules></div>
+    </div>
+
+    <div role="tabpanel" id="panel-review" aria-labelledby="tab-review" tabindex="0" hidden>
+      <h2 class="visually-hidden">Manual review</h2>
+      <p class="muted">Automated testing flagged these for a person to check. They are not counted as failures.</p>
+      <div data-review></div>
     </div>
 
     <div role="tabpanel" id="panel-pages" aria-labelledby="tab-pages" tabindex="0" hidden>

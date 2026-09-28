@@ -338,7 +338,11 @@ test('scans are stored per device, update the page, and feed the overview with c
 
   const navButton = '<button class="nav__toggle" aria-expanded="false"></button>';
   const issue = { id: 'button-name', title: 'Buttons must have discernible text', impact: 'critical', wcag: [{ sc: '4.1.2', level: 'A' }], count: 1, samples: [navButton] };
-  const browser = async (url, opts) => ({ ...fakeReport([issue]), device: opts.device, finalUrl: url });
+  const extras = {
+    passes: [{ id: 'image-alt', title: 'Images have alternative text', wcag: [{ sc: '1.1.1', level: 'A' }] }],
+    review: [{ id: 'color-contrast', title: 'Check text contrast', wcag: [{ sc: '1.4.3', level: 'AA' }], count: 2 }],
+  };
+  const browser = async (url, opts) => ({ ...fakeReport([issue]), ...extras, device: opts.device, finalUrl: url });
   process.env.BROWSER_WS_ENDPOINT = 'ws://fake';
   try {
     for (const p of pages) {
@@ -357,6 +361,33 @@ test('scans are stored per device, update the page, and feed the overview with c
   assert.equal(after.body.components[0].component, 'button.nav__toggle');
   assert.equal(after.body.components[0].pages, 3);
   assert.equal(after.body.criteria[0].sc, '4.1.2');
+  // Coverage by success criterion, review items, history and rule details for the dashboard.
+  assert.deepEqual(after.body.coverage['4.1.2'], { issues: 6, passed: false, review: 0 });
+  assert.equal(after.body.coverage['1.1.1'].passed, true);
+  assert.equal(after.body.coverage['1.4.3'].review, 12);
+  assert.equal(after.body.review[0].id, 'color-contrast');
+  assert.equal(after.body.history.length, 1);
+  assert.equal(after.body.history[0].pages, 3);
+  assert.equal(after.body.rules[0].samples[0].code, navButton);
+  assert.ok(pages.some((p) => p.url === after.body.rules[0].samples[0].url));
+  assert.equal(after.body.resolved, 0);
+  assert.ok(after.body.lastScanAt);
+  assert.ok((await owner.get('me')).body.account.members >= 1);
+
+  // Fixing the issue on one page counts as resolved (desktop and mobile), then restore it.
+  const rescan = async (pageId, issues) => {
+    const page = (await db.query('select p.*, d.settings from app.pages p join app.domains d on d.id = p.domain_id where p.id = $1', [pageId])).rows[0];
+    const fake = async (url, opts) => ({ ...fakeReport(issues), device: opts.device, finalUrl: url });
+    process.env.BROWSER_WS_ENDPOINT = 'ws://fake';
+    try {
+      await scanning.scanPage(page, { accountId: (await owner.get('me')).body.account.id, deps: { browser: fake } });
+    } finally {
+      delete process.env.BROWSER_WS_ENDPOINT;
+    }
+  };
+  await rescan(pages[2].id, []);
+  assert.equal((await owner.get(`domain?id=${domain.id}`)).body.resolved, 2);
+  await rescan(pages[2].id, [issue]);
 
   const history = await owner.get(`page?id=${pages[0].id}`);
   assert.equal(history.body.scans.length, 2);

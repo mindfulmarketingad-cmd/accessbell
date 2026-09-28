@@ -9,6 +9,7 @@ import {
   listDomains, createDomain, updateDomainSettings, deleteDomain, addPage, setMonitored, deletePage, discoverPages, domainOverview,
 } from './domains.js';
 import { rescanPage, getScan, pageHistory } from './scanning.js';
+import { one } from './db.js';
 import { listMembers, inviteMember, changeRole, removeMember } from './team.js';
 import { config, missingConfig } from './config.js';
 import { AppError, badRequest, unauthorized } from './errors.js';
@@ -142,7 +143,7 @@ const routes = {
   async 'GET me'({ ctx }) {
     return {
       user: { id: ctx.user.id, email: ctx.user.email },
-      account: { id: ctx.account.id, name: ctx.account.name },
+      account: { id: ctx.account.id, name: ctx.account.name, members: (await one('select count(*)::int as n from app.account_members where account_id = $1', [ctx.account.id])).n },
       role: ctx.role,
       subscribed: isSubscribed(ctx.account),
       billing: await billingSummary(ctx),

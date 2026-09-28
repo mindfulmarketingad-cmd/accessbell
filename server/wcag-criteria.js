@@ -3,6 +3,22 @@
 // the browser (report filters). 4.1.1 Parsing is obsolete in WCAG 2.2.
 export const PRINCIPLES = { 1: 'Perceivable', 2: 'Operable', 3: 'Understandable', 4: 'Robust' };
 
+export const GUIDELINES = {
+  '1.1': 'Text Alternatives',
+  '1.2': 'Time-based Media',
+  '1.3': 'Adaptable',
+  '1.4': 'Distinguishable',
+  '2.1': 'Keyboard Accessible',
+  '2.2': 'Enough Time',
+  '2.3': 'Seizures and Physical Reactions',
+  '2.4': 'Navigable',
+  '2.5': 'Input Modalities',
+  '3.1': 'Readable',
+  '3.2': 'Predictable',
+  '3.3': 'Input Assistance',
+  '4.1': 'Compatible',
+};
+
 // [success criterion, name, level, version]
 const DATA = [
   ['1.1.1', 'Non-text Content', 'A', '2.0'],
@@ -95,7 +111,10 @@ const DATA = [
 ];
 
 export const CRITERIA = Object.fromEntries(
-  DATA.map(([sc, name, level, version]) => [sc, { sc, name, level, version, principle: PRINCIPLES[sc[0]] }]),
+  DATA.map(([sc, name, level, version]) => [
+    sc,
+    { sc, name, level, version, principle: PRINCIPLES[sc[0]], guideline: GUIDELINES[sc.split('.').slice(0, 2).join('.')] },
+  ]),
 );
 
 /** Full metadata for a success criterion, or null for best-practice rules. */
@@ -107,3 +126,7 @@ export const VERSION_RANK = { '2.0': 1, '2.1': 2, '2.2': 3 };
 /** True when a criterion is part of the given WCAG version and level target. */
 export const withinTarget = (c, version, level) =>
   Boolean(c) && VERSION_RANK[c.version] <= VERSION_RANK[version] && LEVEL_RANK[c.level] <= LEVEL_RANK[level];
+
+/** Criteria in a WCAG version and level target, in document order. 4.1.1 is left out of 2.2. */
+export const criteriaFor = (version, level) =>
+  Object.values(CRITERIA).filter((c) => withinTarget(c, version, level) && !(c.sc === '4.1.1' && version === '2.2'));

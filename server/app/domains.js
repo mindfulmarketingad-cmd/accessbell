@@ -391,39 +391,67 @@ export async function domainOverview(ctx, domainId) {
       order by monitored desc, url asc`,
     [domain.id],
   );
-  const latest = await query(
-    `select distinct on (page_id, device) page_id, device, score, issues, created_at
-       from app.scans
-      where domain_id = $1 and status = 'done'
-        and page_id in (select id from app.pages where domain_id = $1 and monitored)
-      order by page_id, device, created_at desc`,
+  // The two most recent scans per monitored page and device: the latest drives
+  // the overview, the one before it shows what was resolved.
+  const recent = await query(
+    `select * from (
+       select s.page_id, s.device, s.score, s.issues, s.passes, s.review, s.created_at,
+              row_number() over (partition by s.page_id, s.device order by s.created_at desc) as rn
+         from app.scans s
+         join app.pages p on p.id = s.page_id and p.monitored
+        where s.domain_id = $1 and s.status = 'done'
+     ) t where rn <= 2`,
     [domain.id],
   );
-  const trend = await query(
-    `select date_trunc('day', created_at) as day, round(avg(score))::int as score
-       from app.scans
-      where domain_id = $1 and status = 'done' and created_at > now() - interval '30 days'
-      group by 1 order by 1`,
+  const latest = recent.filter((r) => Number(r.rn) === 1);
+  const previous = new Map(recent.filter((r) => Number(r.rn) === 2).map((r) => [`${r.page_id}|${r.device}`, r]));
+
+  // Daily history: for each page and device, its last scan of the day.
+  const history = await query(
+    `with daily as (
+       select distinct on (date_trunc('day', created_at), page_id, device)
+              date_trunc('day', created_at) as day, page_id, score, coalesce(issues_count, 0) as issues
+         from app.scans
+        where domain_id = $1 and status = 'done' and created_at > now() - interval '90 days'
+        order by date_trunc('day', created_at), page_id, device, created_at desc
+     )
+     select day, round(avg(score))::int as score, count(distinct page_id)::int as pages, sum(issues)::int as issues
+       from daily group by day order by day`,
     [domain.id],
   );
 
-  // Aggregate issues across pages: by rule, by WCAG criterion and by component.
+  const urlOf = new Map(pages.map((p) => [p.id, p.url]));
   const byRule = new Map();
   const byCriterion = new Map();
   const byComponent = new Map();
+  const byReview = new Map();
+  const coverage = {}; // sc -> { issues, passed, review }
+  const cov = (sc) => (coverage[sc] ||= { issues: 0, passed: false, review: 0 });
   const impacts = { critical: 0, serious: 0, moderate: 0, minor: 0 };
+  let resolved = 0;
+
   for (const scan of latest) {
+    const current = new Set((scan.issues || []).map((i) => i.id));
+    const prev = previous.get(`${scan.page_id}|${scan.device}`);
+    for (const i of prev?.issues || []) if (!current.has(i.id)) resolved += i.count || 1;
+
     for (const issue of scan.issues || []) {
       impacts[issue.impact] = (impacts[issue.impact] || 0) + issue.count;
-      const r = byRule.get(issue.id) || { id: issue.id, title: issue.title, impact: issue.impact, wcag: issue.wcag, helpUrl: issue.helpUrl, elements: 0, pages: new Set() };
+      const r =
+        byRule.get(issue.id) ||
+        { id: issue.id, title: issue.title, impact: issue.impact, wcag: issue.wcag, helpUrl: issue.helpUrl, description: issue.description, fix: issue.fix, elements: 0, pages: new Set(), samples: [] };
       r.elements += issue.count;
       r.pages.add(scan.page_id);
+      for (const sample of issue.samples || []) {
+        if (r.samples.length < 6 && !r.samples.some((x) => x.code === sample)) r.samples.push({ code: sample, url: urlOf.get(scan.page_id) });
+      }
       byRule.set(issue.id, r);
       for (const w of issue.wcag || []) {
         const c = byCriterion.get(w.sc) || { sc: w.sc, level: w.level, elements: 0, rules: new Set() };
         c.elements += issue.count;
         c.rules.add(issue.id);
         byCriterion.set(w.sc, c);
+        if (w.level && w.level !== '-') cov(w.sc).issues += issue.count;
       }
       for (const sample of issue.samples || []) {
         const key = `${issue.id}|${componentKey(sample)}`;
@@ -432,10 +460,19 @@ export async function domainOverview(ctx, domainId) {
         byComponent.set(key, g);
       }
     }
+    for (const pass of scan.passes || []) for (const w of pass.wcag || []) if (w.level && w.level !== '-') cov(w.sc).passed = true;
+    for (const item of scan.review || []) {
+      const r = byReview.get(item.id) || { id: item.id, title: item.title, wcag: item.wcag, helpUrl: item.helpUrl, elements: 0, pages: new Set() };
+      r.elements += item.count || 1;
+      r.pages.add(scan.page_id);
+      byReview.set(item.id, r);
+      for (const w of item.wcag || []) if (w.level && w.level !== '-') cov(w.sc).review += item.count || 1;
+    }
   }
   const order = { critical: 0, serious: 1, moderate: 2, minor: 3 };
   const monitored = pages.filter((p) => p.monitored);
   const scored = monitored.filter((p) => p.last_score !== null);
+  const lastScanAt = latest.reduce((m, s) => (!m || s.created_at > m ? s.created_at : m), null);
 
   return {
     domain: {
@@ -446,13 +483,19 @@ export async function domainOverview(ctx, domainId) {
     },
     score: scored.length ? Math.round(scored.reduce((n, p) => n + p.last_score, 0) / scored.length) : null,
     impacts,
+    resolved,
+    lastScanAt,
+    scannedPages: new Set(latest.map((s) => s.page_id)).size,
     monitoredCount: monitored.length,
     monitoredLimit: LIMITS.monitoredPagesPerDomain,
     pages,
-    trend,
+    history,
+    trend: history.map((h) => ({ day: h.day, score: h.score })),
+    coverage,
     rules: [...byRule.values()]
-      .map((r) => ({ ...r, pages: r.pages.size }))
+      .map((r) => ({ ...r, pageUrls: [...r.pages].map((id) => urlOf.get(id)).slice(0, 10), pages: r.pages.size }))
       .sort((a, b) => order[a.impact] - order[b.impact] || b.pages - a.pages || b.elements - a.elements),
+    review: [...byReview.values()].map((r) => ({ ...r, pages: r.pages.size })).sort((a, b) => b.elements - a.elements),
     criteria: [...byCriterion.values()].map((c) => ({ ...c, rules: c.rules.size })).sort((a, b) => b.elements - a.elements),
     components: [...byComponent.values()]
       .map((g) => ({ ...g, pages: g.pages.size }))
@@ -461,4 +504,3 @@ export async function domainOverview(ctx, domainId) {
       .slice(0, 20),
   };
 }
-

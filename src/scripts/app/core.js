@@ -1,5 +1,6 @@
 // Shared helpers for dashboard pages. All data is inserted with textContent
 // or DOM APIs, never as HTML.
+import { ICONS } from '../../lib/icons.js';
 
 export class ApiError extends Error {
   constructor(status, message, code) {
@@ -54,6 +55,27 @@ export function svg(tag, attrs, children) {
   return node;
 }
 
+/** Decorative stroke icon from the shared icon set (static, trusted markup). */
+export function icon(name) {
+  const node = svg('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': 1.8, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'aria-hidden': 'true', focusable: 'false' });
+  node.innerHTML = ICONS[name] || '';
+  return node;
+}
+
+/** Letter avatar for a domain or person; the colour is stable per name. */
+export function avatar(name, extra = '') {
+  const letter = (String(name || '?').replace(/^www\./, '').match(/[a-z0-9]/i) || ['?'])[0].toUpperCase();
+  let h = 0;
+  for (const c of String(name)) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  return el('span', { class: `avatar avatar-${h % 4} ${extra}`.trim(), 'aria-hidden': 'true', text: letter });
+}
+
+const initials = (email) => {
+  const local = String(email || '').split('@')[0].replace(/[^a-z0-9]+/gi, ' ').trim();
+  const parts = local.split(' ').filter(Boolean);
+  return ((parts[0]?.[0] || '?') + (parts[1]?.[0] || '')).toUpperCase();
+};
+
 export const qs = (name) => new URLSearchParams(location.search).get(name);
 
 export function fmtDate(value, withTime = false) {
@@ -96,19 +118,115 @@ export function busy(button, statusNode, fn) {
 const RANK = { viewer: 1, member: 2, admin: 3, owner: 4 };
 export const can = (me, role) => RANK[me.role] >= RANK[role];
 
-/** Load the signed-in user, fill the sidebar and show the billing banner. */
+/** Load the signed-in user and their domains, fill the sidebar and show the billing banner. */
 export async function boot() {
-  const me = await api('me');
-  const name = document.querySelector('[data-account-name]');
-  const email = document.querySelector('[data-user-email]');
-  if (name) name.textContent = me.account.name;
-  if (email) email.textContent = me.user.email;
+  initShell();
+  const [me, list] = await Promise.all([api('me'), api('domains')]);
+  me.domainList = list;
+  const set = (sel, text) => document.querySelectorAll(sel).forEach((n) => (n.textContent = text));
+  set('[data-account-name]', me.account.name);
+  set('[data-account-label]', me.account.name);
+  set('[data-account-members]', `${me.account.members} member${me.account.members === 1 ? '' : 's'}`);
+  set('[data-user-email]', me.user.email);
+  set('[data-user-initials]', initials(me.user.email));
+  set('[data-workspace-initial]', (me.account.name.match(/[a-z0-9]/i) || ['A'])[0].toUpperCase());
   document.querySelector('[data-signout]')?.addEventListener('click', async () => {
     await api('auth/logout', { method: 'POST', redirectOn401: false }).catch(() => {});
     location.assign('/app/login');
   });
+  renderSideDomains(list.domains, me);
   renderBanner(me);
   return me;
+}
+
+/** Domains listed under "Domains" in the sidebar, plus an "Add domain" link. */
+export function renderSideDomains(domains, me) {
+  const box = document.querySelector('[data-side-domains]');
+  if (!box) return;
+  const current = new URLSearchParams(location.search).get('id');
+  const onDomainPage = location.pathname.replace(/\.html$/, '') === '/app/domain';
+  const items = domains.map((d) =>
+    el('li', {}, [
+      el('a', { href: `/app/domain?id=${d.id}`, 'aria-current': onDomainPage && d.id === current ? 'page' : null }, [avatar(d.hostname, 'avatar-xs'), el('span', { text: d.hostname })]),
+    ]),
+  );
+  if (!me || can(me, 'admin')) items.push(el('li', {}, [el('a', { href: '/app?add=1', class: 'nav-add' }, [icon('plus'), el('span', { text: 'Add domain' })])]));
+  box.replaceChildren(...items);
+}
+
+const SIDE_KEY = 'ab-side-collapsed';
+
+/** Sidebar collapse (desktop), slide-out menu (phones) and the user menu. */
+function initShell() {
+  const shell = document.querySelector('[data-shell]');
+  if (!shell || shell.dataset.ready) return;
+  shell.dataset.ready = '1';
+  const side = document.getElementById('app-side');
+  const collapse = shell.querySelector('[data-side-collapse]');
+  const open = shell.querySelector('[data-side-open]');
+  const backdrop = shell.querySelector('[data-side-backdrop]');
+
+  const setCollapsed = (on) => {
+    shell.classList.toggle('is-collapsed', on);
+    collapse?.setAttribute('aria-expanded', String(!on));
+    const label = collapse?.querySelector('[data-collapse-label]');
+    if (label) label.textContent = on ? 'Expand sidebar' : 'Collapse sidebar';
+    try {
+      localStorage.setItem(SIDE_KEY, on ? '1' : '0');
+    } catch {}
+  };
+  try {
+    if (localStorage.getItem(SIDE_KEY) === '1') setCollapsed(true);
+  } catch {}
+  collapse?.addEventListener('click', () => setCollapsed(!shell.classList.contains('is-collapsed')));
+
+  const setOpen = (on) => {
+    shell.classList.toggle('is-open', on);
+    open?.setAttribute('aria-expanded', String(on));
+    if (backdrop) backdrop.hidden = !on;
+    if (on) side.querySelector('a, button')?.focus();
+    else if (document.activeElement && side.contains(document.activeElement)) open?.focus();
+  };
+  open?.addEventListener('click', () => setOpen(true));
+  backdrop?.addEventListener('click', () => setOpen(false));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && shell.classList.contains('is-open')) setOpen(false);
+  });
+
+  const toggle = shell.querySelector('[data-domains-toggle]');
+  toggle?.addEventListener('click', () => {
+    const on = toggle.getAttribute('aria-expanded') !== 'true';
+    toggle.setAttribute('aria-expanded', String(on));
+    document.getElementById('side-domains').hidden = !on;
+  });
+
+  const menuButton = shell.querySelector('[data-user-menu]');
+  if (menuButton) disclosure(menuButton, document.getElementById(menuButton.getAttribute('aria-controls')));
+}
+
+/** Button that shows and hides a small popover; closes on Escape and outside clicks. */
+export function disclosure(button, panel) {
+  const set = (on) => {
+    button.setAttribute('aria-expanded', String(on));
+    panel.hidden = !on;
+  };
+  button.addEventListener('click', (e) => {
+    e.stopPropagation();
+    set(panel.hidden);
+  });
+  document.addEventListener('click', (e) => {
+    if (!panel.hidden && !panel.contains(e.target)) set(false);
+  });
+  panel.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      set(false);
+      button.focus();
+    }
+  });
+  button.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') set(false);
+  });
+  return set;
 }
 
 export async function startCheckout() {
