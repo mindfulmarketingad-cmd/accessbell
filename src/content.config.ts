@@ -50,4 +50,21 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { blog, authors };
+/**
+ * Help Center articles at /resources/help-center/<category>/<file-name>.
+ * Files live in a folder named after their category.
+ */
+const help = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/help' }),
+  schema: z.object({
+    title: z.string().max(80),
+    description: z.string().min(80).max(165),
+    /** Position within its category */
+    order: z.number().int(),
+    /** Position in the Quick Start Guide, when the article belongs there */
+    quickStart: z.number().int().optional(),
+    updatedDate: z.coerce.date(),
+  }),
+});
+
+export const collections = { blog, authors, help };

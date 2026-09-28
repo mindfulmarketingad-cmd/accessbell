@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Icon from '../../../components/Icon.astro';
+import HelpSearch from '../../../components/HelpSearch.astro';
+import { SITE } from '../../../config/site';
+import { HELP_BASE } from '../../../data/help';
+import { helpByCategory, articlePath, categoryPath } from '../../../lib/help';
+
+export async function getStaticPaths() {
+  const groups = await helpByCategory();
+  return groups.map((g) => ({ params: { category: g.id }, props: { group: g, groups } }));
+}
+
+const { group, groups } = Astro.props;
+const url = `${SITE.url}${categoryPath(group.id)}`;
+const schema = [
+  {
+    '@type': 'CollectionPage',
+    '@id': `${url}#webpage`,
+    name: `${group.title} | AccessBell Help Center`,
+    url,
+    isPartOf: { '@id': `${SITE.url}${HELP_BASE}#webpage` },
+    hasPart: group.articles.map((a) => ({ '@type': 'TechArticle', headline: a.data.title, url: `${SITE.url}${articlePath(a)}` })),
+  },
+];
+---
+<BaseLayout
+  title={`${group.title} | AccessBell Help Center`}
+  description={`${group.blurb} ${group.articles.length} step-by-step guides in the AccessBell Help Center.`}
+  breadcrumbs={[
+    { label: 'Help Center', href: HELP_BASE },
+    { label: group.title, href: categoryPath(group.id) },
+  ]}
+  schema={schema}
+>
+  <section class="help-hero help-hero-sm" aria-labelledby="cat-title">
+    <div class="container">
+      <span class="help-cat-icon help-cat-icon-lg"><Icon name={group.icon} /></span>
+      <h1 id="cat-title">{group.title}</h1>
+      <p class="lead">{group.blurb}</p>
+      <HelpSearch size="sm" />
+    </div>
+  </section>
+
+  <div class="container help-layout">
+    <section aria-labelledby="articles-title">
+      <h2 id="articles-title" class="help-count-title">{group.articles.length} articles</h2>
+      <ul class="help-article-list">
+        {group.articles.map((a) => (
+          <li>
+            <a href={articlePath(a)}>
+              <strong>{a.data.title}</strong>
+              <span>{a.data.description}</span>
+            </a>
+            <Icon name="arrow" />
+          </li>
+        ))}
+      </ul>
+    </section>
+    <nav class="aside-card help-cat-nav" aria-labelledby="other-topics">
+      <h2 id="other-topics">All Topics</h2>
+      <ul>
+        {groups.map((g) => (
+          <li>
+            <a href={categoryPath(g.id)} aria-current={g.id === group.id ? 'page' : undefined}>
+              <Icon name={g.icon} />
+              <span>{g.title}</span>
+              <small>{g.articles.length}</small>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</BaseLayout>

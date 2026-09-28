@@ -28,6 +28,7 @@ export const FOOTER_NAV = [
   { label: 'Home', href: '/' },
   { label: 'About', href: '/about' },
   { label: 'Contact', href: '/contact' },
+  { label: 'Help Center', href: '/resources/help-center' },
   { label: 'Disclaimer', href: '/disclaimer' },
   { label: 'Privacy', href: '/privacy' },
   { label: 'Terms', href: '/terms' },

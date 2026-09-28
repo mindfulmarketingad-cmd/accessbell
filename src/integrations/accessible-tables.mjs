@@ -1,4 +1,4 @@
-// After the build, wrap every table in blog articles in a labelled,
+// After the build, wrap every table in blog and help articles in a labelled,
 // keyboard-focusable scroll region, so wide tables scroll on small screens
 // and keyboard users can scroll them too (WCAG 2.1.1).
 import { readdir, readFile, writeFile } from 'node:fs/promises';
@@ -21,18 +21,20 @@ export default function accessibleTables() {
     name: 'accessible-tables',
     hooks: {
       'astro:build:done': async ({ dir }) => {
-        const root = join(fileURLToPath(dir), 'blog');
-        let files = [];
-        try {
-          files = (await readdir(root, { recursive: true })).filter((f) => f.endsWith('.html'));
-        } catch {
-          return;
-        }
-        for (const f of files) {
-          const path = join(root, f);
-          const html = await readFile(path, 'utf8');
-          const out = wrapTables(html);
-          if (out !== html) await writeFile(path, out);
+        for (const section of ['blog', 'resources']) {
+          const root = join(fileURLToPath(dir), section);
+          let files = [];
+          try {
+            files = (await readdir(root, { recursive: true })).filter((f) => f.endsWith('.html'));
+          } catch {
+            continue;
+          }
+          for (const f of files) {
+            const path = join(root, f);
+            const html = await readFile(path, 'utf8');
+            const out = wrapTables(html);
+            if (out !== html) await writeFile(path, out);
+          }
         }
       },
     },

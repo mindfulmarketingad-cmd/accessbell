@@ -1,0 +1,23 @@
+---
+/** Help Center search box. Results come from /resources/help-center/search.json. */
+import Icon from './Icon.astro';
+import { HELP_BASE } from '../data/help';
+
+interface Props {
+  size?: 'lg' | 'sm';
+}
+const { size = 'lg' } = Astro.props;
+---
+<form class:list={['help-search', `help-search-${size}`]} role="search" action={HELP_BASE} data-help-search data-index={`${HELP_BASE}/search.json`}>
+  <label class="visually-hidden" for={`help-q-${size}`}>Search the Help Center</label>
+  <Icon name="search" />
+  <input id={`help-q-${size}`} name="q" type="search" placeholder="Search for articles..." autocomplete="off" maxlength="120" aria-describedby={`help-q-${size}-hint`} />
+  <span id={`help-q-${size}-hint`} class="visually-hidden">Results appear below as you type.</span>
+  <div class="help-results" data-help-results hidden>
+    <p class="help-results-count" role="status" aria-live="polite" data-help-count></p>
+    <ul data-help-list></ul>
+  </div>
+</form>
+<script>
+  import '../scripts/help-search.js';
+</script>

@@ -1,6 +1,7 @@
 import { getCollection } from 'astro:content';
+import { helpByCategory, articlePath, categoryPath } from './help';
 
-export type RouteEntry = { path: string; label: string; note?: string; lastmod: Date; group: 'main' | 'blog' | 'authors' | 'company' };
+export type RouteEntry = { path: string; label: string; note?: string; lastmod: Date; group: 'main' | 'blog' | 'authors' | 'help' | 'company' };
 
 /** Date the static pages were last meaningfully changed. Bump when editing them. */
 const STATIC_LASTMOD = new Date('2026-09-28');
@@ -10,6 +11,7 @@ const STATIC: Omit<RouteEntry, 'lastmod'>[] = [
   { path: '/pricing', label: 'Pricing', note: 'Lite plan and features', group: 'main' },
   { path: '/blog', label: 'Blog', note: 'Accessibility guides and compliance insights', group: 'main' },
   { path: '/reviews', label: 'Reviews', note: 'Verified customer reviews', group: 'main' },
+  { path: '/resources/help-center', label: 'Help Center', note: 'Guides for every AccessBell feature', group: 'help' },
   { path: '/authors', label: 'Authors', note: 'The writers and reviewers behind our guides', group: 'authors' },
   { path: '/about', label: 'About', note: 'Our mission and approach', group: 'company' },
   { path: '/contact', label: 'Contact', note: 'Sales and support', group: 'company' },
@@ -26,13 +28,24 @@ export async function getRoutes(): Promise<RouteEntry[]> {
   );
   const newestPost = posts[0]?.data.updatedDate ?? posts[0]?.data.pubDate ?? STATIC_LASTMOD;
   const authors = await getCollection('authors');
+  const help = await helpByCategory();
+  const helpUpdated = (list: { data: { updatedDate: Date } }[]) => new Date(Math.max(+STATIC_LASTMOD, ...list.map((a) => +a.data.updatedDate)));
 
   return [
     ...STATIC.map((r) => ({
       ...r,
       // Home and the blog hub list the latest posts, so they change when a post is published.
-      lastmod: r.path === '/' || r.path === '/blog' || r.path === '/authors' ? new Date(Math.max(+STATIC_LASTMOD, +newestPost)) : STATIC_LASTMOD,
+      lastmod:
+        r.path === '/' || r.path === '/blog' || r.path === '/authors'
+          ? new Date(Math.max(+STATIC_LASTMOD, +newestPost))
+          : r.path === '/resources/help-center'
+            ? helpUpdated(help.flatMap((g) => g.articles))
+            : STATIC_LASTMOD,
     })),
+    ...help.flatMap((g) => [
+      { path: categoryPath(g.id), label: g.title, note: `${g.articles.length} articles`, lastmod: helpUpdated(g.articles), group: 'help' as const },
+      ...g.articles.map((a) => ({ path: articlePath(a), label: a.data.title, lastmod: a.data.updatedDate, group: 'help' as const })),
+    ]),
     ...posts.map((p) => ({
       path: `/blog/${p.id}`,
       label: p.data.title,

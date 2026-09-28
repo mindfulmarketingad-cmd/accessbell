@@ -1,0 +1,106 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Icon from '../../../../components/Icon.astro';
+import TableOfContents from '../../../../components/TableOfContents.astro';
+import { SITE } from '../../../../config/site';
+import { HELP_BASE } from '../../../../data/help';
+import { formatDate } from '../../../../lib/format';
+import { helpByCategory, articlePath, categoryPath, plainText } from '../../../../lib/help';
+
+export async function getStaticPaths() {
+  const groups = await helpByCategory();
+  return groups.flatMap((g) =>
+    g.articles.map((a, i) => ({
+      params: { category: g.id, article: a.id.split('/')[1] },
+      props: { article: a, group: g, prev: g.articles[i - 1] ?? null, next: g.articles[i + 1] ?? null },
+    })),
+  );
+}
+
+const { article, group, prev, next } = Astro.props;
+const { Content, headings } = await render(article);
+const url = `${SITE.url}${articlePath(article)}`;
+const toc = headings.filter((h) => h.depth === 2);
+
+const schema = [
+  {
+    '@type': 'TechArticle',
+    '@id': `${url}#article`,
+    headline: article.data.title,
+    description: article.data.description,
+    dateModified: article.data.updatedDate.toISOString(),
+    datePublished: article.data.updatedDate.toISOString(),
+    mainEntityOfPage: { '@id': `${url}#webpage` },
+    url,
+    articleSection: group.title,
+    wordCount: plainText(article.body ?? '').split(/\s+/).filter(Boolean).length,
+    inLanguage: 'en-US',
+    author: { '@id': `${SITE.url}/#organization` },
+    publisher: { '@id': `${SITE.url}/#organization` },
+    isPartOf: { '@id': `${SITE.url}${HELP_BASE}#webpage` },
+  },
+];
+---
+<BaseLayout
+  title={`${article.data.title} | AccessBell Help`}
+  description={article.data.description}
+  ogType="article"
+  article={{ published: article.data.updatedDate.toISOString(), modified: article.data.updatedDate.toISOString(), section: group.title }}
+  breadcrumbs={[
+    { label: 'Help Center', href: HELP_BASE },
+    { label: group.title, href: categoryPath(group.id) },
+    { label: article.data.title, href: articlePath(article) },
+  ]}
+  schema={schema}
+>
+  <article>
+    <header class="container article-head help-article-head">
+      <a class="eyebrow" href={categoryPath(group.id)}>{group.title}</a>
+      <h1>{article.data.title}</h1>
+      <p class="lead">{article.data.description}</p>
+      <p class="article-meta"><span>Updated <time datetime={article.data.updatedDate.toISOString()}>{formatDate(article.data.updatedDate)}</time></span></p>
+    </header>
+
+    <div class="container article-layout">
+      <div class="article-main">
+        {toc.length >= 3 && <TableOfContents headings={toc} variant="inline" />}
+        <div class="prose">
+          <Content />
+        </div>
+
+        <nav class="help-pager" aria-label="More in this topic">
+          {prev ? (
+            <a href={articlePath(prev)} class="help-pager-prev"><small>Previous</small><span>{prev.data.title}</span></a>
+          ) : <span></span>}
+          {next && (
+            <a href={articlePath(next)} class="help-pager-next"><small>Next</small><span>{next.data.title}</span></a>
+          )}
+        </nav>
+
+        <section class="help-contact help-contact-sm" aria-labelledby="need-help">
+          <div>
+            <h2 id="need-help">Still Need Help?</h2>
+            <p>Search the <a href={HELP_BASE}>Help Center</a> or send us a message. We reply within one business day.</p>
+          </div>
+          <a class="btn btn-outline" href="/contact?topic=support">Contact support</a>
+        </section>
+      </div>
+
+      <aside class="article-aside" aria-label="Help topics">
+        {toc.length >= 3 && <TableOfContents headings={toc} variant="aside" />}
+        <nav class="aside-card help-cat-nav" aria-labelledby="in-topic">
+          <h2 id="in-topic">{group.title}</h2>
+          <ul>
+            {group.articles.map((a) => (
+              <li>
+                <a href={articlePath(a)} aria-current={a.id === article.id ? 'page' : undefined}><span>{a.data.title}</span></a>
+              </li>
+            ))}
+          </ul>
+          <p class="help-cat-all"><a class="link-arrow" href={HELP_BASE}>All topics <Icon name="arrow" /></a></p>
+        </nav>
+      </aside>
+    </div>
+  </article>
+</BaseLayout>

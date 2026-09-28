@@ -1,0 +1,82 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Icon from '../../../components/Icon.astro';
+import HelpSearch from '../../../components/HelpSearch.astro';
+import { SITE } from '../../../config/site';
+import { HELP_BASE, QUICK_START_ICONS } from '../../../data/help';
+import { helpByCategory, articlePath, categoryPath } from '../../../lib/help';
+
+const groups = await helpByCategory();
+const all = groups.flatMap((g) => g.articles);
+const quickStart = all
+  .filter((a) => a.data.quickStart !== undefined)
+  .sort((a, b) => (a.data.quickStart ?? 0) - (b.data.quickStart ?? 0));
+
+const schema = [
+  {
+    '@type': 'CollectionPage',
+    '@id': `${SITE.url}${HELP_BASE}#webpage`,
+    name: 'AccessBell Help Center',
+    url: `${SITE.url}${HELP_BASE}`,
+    about: { '@id': `${SITE.url}/#organization` },
+    hasPart: groups.map((g) => ({ '@type': 'CollectionPage', name: g.title, url: `${SITE.url}${categoryPath(g.id)}` })),
+  },
+];
+---
+<BaseLayout
+  title="Help Center: How to Use AccessBell | AccessBell"
+  description="Step-by-step guides for everything in AccessBell: free scans, adding domains, reading reports, fixing issues, team roles, billing and troubleshooting."
+  breadcrumbs={[{ label: 'Help Center', href: HELP_BASE }]}
+  schema={schema}
+>
+  <section class="help-hero" aria-labelledby="help-title">
+    <div class="container">
+      <h1 id="help-title">AccessBell Help Center</h1>
+      <p class="lead">Guides for everything you can do with AccessBell, from your first free scan to monitoring every domain you run.</p>
+      <HelpSearch />
+    </div>
+  </section>
+
+  <div class="container help-body">
+    <section class="help-quick" aria-labelledby="quick-title">
+      <h2 id="quick-title"><span class="icon-tile icon-tile-sm"><Icon name="sparkle" /></span> Quick Start Guide</h2>
+      <ul class="help-quick-grid">
+        {quickStart.map((a) => (
+          <li>
+            <a href={articlePath(a)}>
+              <Icon name={QUICK_START_ICONS[a.id] ?? 'doc'} />
+              <span>{a.data.title}</span>
+              <Icon name="chevron" class="help-chev" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section aria-labelledby="topics-title">
+      <h2 id="topics-title" class="visually-hidden">Browse by topic</h2>
+      <ul class="help-cats">
+        {groups.map((g) => (
+          <li>
+            <a class="help-cat" href={categoryPath(g.id)}>
+              <span class="help-cat-icon"><Icon name={g.icon} /></span>
+              <span class="help-cat-text">
+                <strong>{g.title}</strong>
+                <small>{g.articles.length} articles</small>
+                <span>{g.blurb}</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="help-contact" aria-labelledby="help-contact-title">
+      <div>
+        <h2 id="help-contact-title">Still Need Help?</h2>
+        <p>Our team replies within one business day, Monday to Friday.</p>
+      </div>
+      <a class="btn" href="/contact?topic=support">Contact support <Icon name="arrow" /></a>
+    </section>
+  </div>
+</BaseLayout>
