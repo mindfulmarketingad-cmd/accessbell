@@ -1,8 +1,10 @@
 import { getCollection } from 'astro:content';
 import { helpByCategory, articlePath, categoryPath } from './help';
 import { CHECKERS, checkerPath } from '../data/checkers';
+import { CRITERIA } from '../../server/wcag-criteria.js';
+import { criterionPath } from './wcag-pages';
 
-export type RouteEntry = { path: string; label: string; note?: string; lastmod: Date; group: 'main' | 'blog' | 'authors' | 'help' | 'company' };
+export type RouteEntry = { path: string; label: string; note?: string; lastmod: Date; group: 'main' | 'blog' | 'authors' | 'help' | 'company' | 'wcag' };
 
 /** Date the static pages were last meaningfully changed. Bump when editing them. */
 const STATIC_LASTMOD = new Date('2026-09-28');
@@ -14,6 +16,7 @@ const STATIC: Omit<RouteEntry, 'lastmod'>[] = [
   { path: '/reviews', label: 'Reviews', note: 'Verified customer reviews', group: 'main' },
   { path: '/resources', label: 'Resources', note: 'Free tools and guides', group: 'main' },
   { path: '/resources/statement-generator', label: 'Accessibility Statement Generator', note: 'Free custom accessibility statement', group: 'main' },
+  { path: '/resources/wcag', label: 'WCAG Success Criteria Library', note: 'Every WCAG criterion explained', group: 'main' },
   { path: '/resources/help-center', label: 'Help Center', note: 'Guides for every AccessBell feature', group: 'help' },
   { path: '/authors', label: 'Authors', note: 'The writers and reviewers behind our guides', group: 'authors' },
   { path: '/about', label: 'About', note: 'Our mission and approach', group: 'company' },
@@ -46,6 +49,7 @@ export async function getRoutes(): Promise<RouteEntry[]> {
             : STATIC_LASTMOD,
     })),
     ...CHECKERS.map((c) => ({ path: checkerPath(c), label: c.name, note: `Free WCAG ${c.version} Level ${c.level} scan`, lastmod: STATIC_LASTMOD, group: 'main' as const })),
+    ...Object.values(CRITERIA).map((c) => ({ path: criterionPath(c.sc), label: `${c.sc} ${c.name}`, note: `Level ${c.level} · WCAG ${c.version}`, lastmod: STATIC_LASTMOD, group: 'wcag' as const })),
     ...help.flatMap((g) => [
       { path: categoryPath(g.id), label: g.title, note: `${g.articles.length} articles`, lastmod: helpUpdated(g.articles), group: 'help' as const },
       ...g.articles.map((a) => ({ path: articlePath(a), label: a.data.title, lastmod: a.data.updatedDate, group: 'help' as const })),

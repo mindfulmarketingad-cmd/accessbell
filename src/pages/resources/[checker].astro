@@ -168,6 +168,7 @@ const schema = [
         {related.map((p) => (
           <li><a href={`/blog/${p.id}`}>{p.data.title}</a><span>{p.data.description}</span></li>
         ))}
+        <li><a href="/resources/wcag">WCAG Success Criteria Library</a><span>Look up any of the {cov.total} criteria in {target} in plain language, with how to test it by hand.</span></li>
         <li><a href="/resources/statement-generator">Free Accessibility Statement Generator</a><span>Publish a statement that names {target} as your target and tells people how to report barriers.</span></li>
         <li><a href="/resources/help-center/scans-and-reports/filter-reports-by-wcag-version">Filter reports by WCAG version and level</a><span>Narrow your results to exactly the criteria in {target}.</span></li>
       </ul>

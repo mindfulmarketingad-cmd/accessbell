@@ -988,6 +988,20 @@ a:hover {
   margin-top: 3px;
   color: var(--sage-700);
 }
+.check-list-warn svg {
+  color: var(--warn);
+}
+.fix-code {
+  margin: 16px 0 0;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
 
 /* ---------- Mock UI (illustrative product visuals) ---------- */
 .mock {
@@ -3827,6 +3841,10 @@ a:hover {
 .sc-no {
   font-weight: 700;
   font-variant-numeric: tabular-nums;
+}
+.sc-no-lg {
+  margin-right: 6px;
+  color: var(--sage-700);
 }
 .since {
   margin-left: 8px;
