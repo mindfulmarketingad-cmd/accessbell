@@ -97,6 +97,34 @@ const regions = [
   },
 ];
 
+// "What a WCAG check actually tests": the four POUR principles.
+const pour = [
+  {
+    name: 'Perceivable',
+    question: 'Can people see, hear or otherwise take in the content?',
+    auto: [['Images without alternative text', '1.1.1'], ['Text with too little contrast', '1.4.3'], ['Pinch zoom turned off', '1.4.4']],
+    person: [['Whether alt text is meaningful', '1.1.1'], ['Accurate video captions', '1.2.2'], ['Meaning shown by color alone', '1.4.1']],
+  },
+  {
+    name: 'Operable',
+    question: 'Can people use the page with a keyboard, a screen reader or a touch screen?',
+    auto: [['Links with no name', '2.4.4'], ['No way to skip repeated content', '2.4.1'], ['Tap targets under 24px, new in WCAG 2.2', '2.5.8']],
+    person: [['Keyboard traps', '2.1.2'], ['Visible focus indicator', '2.4.7'], ['Logical focus order', '2.4.3']],
+  },
+  {
+    name: 'Understandable',
+    question: 'Is the page predictable and the content clear?',
+    auto: [['Missing page language', '3.1.1'], ['Invalid language codes', '3.1.1'], ['Foreign-language passages marked with invalid codes', '3.1.2']],
+    person: [['Unexpected changes on focus', '3.2.1'], ['Helpful error messages', '3.3.3'], ['Help in the same place on every page', '3.2.6']],
+  },
+  {
+    name: 'Robust',
+    question: 'Will it work with assistive technology, today and tomorrow?',
+    auto: [['Form fields without labels', '4.1.2'], ['Buttons with no name', '4.1.2'], ['Invalid or misused ARIA', '4.1.2']],
+    person: [['Status messages that are announced', '4.1.3'], ['Custom widgets that behave as expected', '4.1.2']],
+  },
+];
+
 // WCAG version comparison. Counts come from server/wcag-criteria.js.
 const wcagVersions = [
   { id: 'v20', name: 'WCAG 2.0' },
@@ -256,6 +284,33 @@ const faqs: FaqItem[] = [
           </li>
         ))}
       </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="pour-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Beyond a single score</span>
+        <h2 id="pour-title">What a WCAG Check Actually Tests</h2>
+        <p>WCAG 2.2 organizes its success criteria under four principles: <strong>Perceivable, Operable, Understandable and Robust</strong> (POUR). A real WCAG check reports against each one, and is clear about what a person still needs to test. A generic accessibility score is not.</p>
+      </div>
+      <ul class="pour-grid">
+        {pour.map((p) => (
+          <li class="pour-card">
+            <h3>{p.name}</h3>
+            <p class="pour-q">{p.question}</p>
+            <p class="pour-label"><Icon name="scan" /> Automated check flags</p>
+            <ul class="pour-list">
+              {p.auto.map(([t, sc]) => <li>{t} <span class="pour-sc">({sc})</span></li>)}
+            </ul>
+            <p class="pour-label pour-label-person"><Icon name="eye" /> Needs a person</p>
+            <ul class="pour-list pour-list-person">
+              {p.person.map(([t, sc]) => <li>{t} <span class="pour-sc">({sc})</span></li>)}
+            </ul>
+          </li>
+        ))}
+      </ul>
+      <p class="pour-note">Every issue in an AccessBell report links to the exact success criterion it fails, its conformance level (A, AA or AAA) and a severity rank. Items only a person can judge are listed separately for manual review.</p>
     </div>
   </section>
 
