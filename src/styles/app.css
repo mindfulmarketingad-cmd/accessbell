@@ -615,3 +615,12 @@ fieldset.field legend {
   font-size: 1rem;
   margin: 0;
 }
+.resend-box {
+  margin-top: 16px;
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+}
+[data-confirm] .btn {
+  margin-top: 4px;
+}

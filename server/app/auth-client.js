@@ -15,7 +15,13 @@ const FRIENDLY = {
   otp_expired: 'That link has expired. Please request a new one.',
   same_password: 'Choose a password different from your current one.',
   signup_disabled: 'Sign-ups are currently closed.',
+  // Supabase's built-in test mailer only delivers to members of the Supabase organization.
+  email_address_not_authorized: 'We could not send email to that address. Please contact support.',
+  email_send_failed: 'We could not send the email right now. Please try again in a few minutes or contact support.',
 };
+
+// Endpoints that send an email; a 5xx from these almost always means delivery failed.
+const SENDS_EMAIL = new Set(['/signup', '/resend', '/recover', '/invite']);
 
 async function call(path, { method = 'POST', body, token, admin = false, query } = {}) {
   const c = config();
@@ -49,7 +55,10 @@ async function call(path, { method = 'POST', body, token, admin = false, query }
     data = {};
   }
   if (!res.ok) {
-    const code = data.error_code || data.code || data.error || '';
+    let code = data.error_code || data.code || data.error || '';
+    if (res.status >= 500 && SENDS_EMAIL.has(path)) code = 'email_send_failed';
+    // Log the reason for Vercel logs. Status and code only: messages can contain the address.
+    console.warn(`auth ${path} failed: ${res.status} ${code || 'unknown'}${res.status >= 500 ? ` (${String(data.msg || data.message || '').slice(0, 120)})` : ''}`);
     const status = res.status === 429 ? 429 : res.status >= 500 ? 503 : res.status === 401 || res.status === 403 ? 401 : 400;
     throw new AppError(status, FRIENDLY[code] || 'That did not work. Please check your details and try again.', String(code || 'auth_error'));
   }
@@ -84,6 +93,10 @@ export const auth = {
   },
   async signOut(accessToken) {
     await call('/logout', { token: accessToken, query: { scope: 'local' } }).catch(() => {});
+  },
+  /** Send the sign-up confirmation email again. */
+  async resendConfirmation(email, redirectTo) {
+    await call('/resend', { body: { type: 'signup', email }, query: { redirect_to: redirectTo } });
   },
   async recover(email, redirectTo) {
     await call('/recover', { body: { email }, query: { redirect_to: redirectTo } });

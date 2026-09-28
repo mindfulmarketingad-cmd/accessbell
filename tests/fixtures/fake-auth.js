@@ -62,6 +62,10 @@ export function startFakeAuth(pool) {
       return send(204, {});
     }
     if (path === '/recover') return send(200, {});
+    if (path === '/resend') {
+      if (data.email === 'mailer-down@example.com') return send(500, { code: 'unexpected_failure', msg: 'Error sending confirmation email' });
+      return send(200, {});
+    }
     if (path === '/invite') {
       if (bearer !== 'service-key') return send(401, {});
       const u = await createUser(data.email, 'invited-password');

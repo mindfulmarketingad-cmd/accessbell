@@ -85,7 +85,18 @@ const publicRoutes = {
     if (!EMAIL.test(email)) throw badRequest('Enter a valid email address.');
     // Same response whether or not the account exists.
     await auth.recover(email, `${appOrigin(request)}/app/auth/callback`).catch((err) => {
-      if (err.status === 429) throw err;
+      if (err.status === 429 || err.code === 'email_send_failed') throw err;
+    });
+    return { body: { status: 'sent' } };
+  },
+
+  async 'POST auth/resend'({ request, body, ip }) {
+    limit('email', ip);
+    const email = String(body?.email || '').trim().toLowerCase();
+    if (!EMAIL.test(email)) throw badRequest('Enter a valid email address.');
+    // Same response whether or not the account exists, unless sending itself failed.
+    await auth.resendConfirmation(email, `${appOrigin(request)}/app/auth/callback`).catch((err) => {
+      if (err.status === 429 || ['email_send_failed', 'email_address_not_authorized'].includes(err.code)) throw err;
     });
     return { body: { status: 'sent' } };
   },

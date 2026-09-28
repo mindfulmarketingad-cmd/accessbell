@@ -7,6 +7,32 @@ function safeNext(fallback = '/app') {
   return /^\/app(\/[\w\-./?=&%]*)?$/.test(next) && !next.startsWith('//') ? next : fallback;
 }
 
+/** "Resend confirmation email" buttons. `getEmail` returns the address to use. */
+function wireResend(scope, getEmail) {
+  const btn = scope.querySelector('[data-resend]');
+  const status = scope.querySelector('[data-resend-status]');
+  if (!btn || btn.dataset.wired) return;
+  btn.dataset.wired = '1';
+  btn.addEventListener('click', async () => {
+    const email = getEmail();
+    if (!email) {
+      setStatus(status, 'error', 'Enter your email address above first.');
+      return;
+    }
+    btn.disabled = true;
+    setStatus(status, '', 'Sending...');
+    try {
+      await api('auth/resend', { method: 'POST', body: { email }, redirectOn401: false });
+      setStatus(status, 'success', `If ${email} is waiting for confirmation, a new link is on its way. Check your spam folder too.`);
+      // Supabase only allows one resend per minute.
+      setTimeout(() => (btn.disabled = false), 60_000);
+    } catch (err) {
+      setStatus(status, 'error', err.message);
+      btn.disabled = false;
+    }
+  });
+}
+
 const form = document.querySelector('[data-auth-form]');
 if (form) {
   const mode = form.getAttribute('data-auth-form');
@@ -27,7 +53,16 @@ if (form) {
     const password = form.elements.password?.value;
     try {
       if (mode === 'login') {
-        await api('auth/login', { method: 'POST', body: { email, password }, redirectOn401: false });
+        try {
+          await api('auth/login', { method: 'POST', body: { email, password }, redirectOn401: false });
+        } catch (err) {
+          if (err.code === 'email_not_confirmed') {
+            const box = document.querySelector('[data-unconfirmed]');
+            box.hidden = false;
+            wireResend(box, () => form.elements.email.value.trim());
+          }
+          throw err;
+        }
         location.assign(safeNext());
       } else if (mode === 'signup') {
         const r = await api('auth/signup', { method: 'POST', body: { email, password }, redirectOn401: false });
@@ -37,6 +72,7 @@ if (form) {
           const done = document.querySelector('[data-confirm]');
           done.hidden = false;
           done.querySelector('[data-email]').textContent = email;
+          wireResend(done, () => email);
           done.querySelector('h1')?.focus();
         }
       } else if (mode === 'forgot') {

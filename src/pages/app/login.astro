@@ -19,6 +19,10 @@ import AuthLayout from '../../layouts/AuthLayout.astro';
     <p class="status-line" data-status role="status" aria-live="polite"></p>
     <button class="btn btn-lg" type="submit">Sign in</button>
   </form>
+  <div class="resend-box" data-unconfirmed hidden>
+    <p class="status-line" data-resend-status role="status" aria-live="polite"></p>
+    <button class="btn btn-outline" type="button" data-resend>Resend confirmation email</button>
+  </div>
   <p class="auth-alt">New to AccessBell? <a href="/app/signup">Create an account</a></p>
 </AuthLayout>
 <script>

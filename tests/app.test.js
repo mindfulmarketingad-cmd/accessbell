@@ -170,6 +170,18 @@ test('wrong password gives a generic error', { skip }, async () => {
   assert.equal(r.body.error, 'Email or password is incorrect.');
 });
 
+test('confirmation emails can be resent, and delivery failures are reported', { skip }, async () => {
+  const c = new Client('10.0.0.40');
+  const ok = await c.post('auth/resend', { email: 'nobody@example.com' });
+  assert.equal(ok.status, 200);
+  assert.equal(ok.body.status, 'sent');
+  const bad = await c.post('auth/resend', { email: 'not-an-email' });
+  assert.equal(bad.status, 400);
+  const down = await c.post('auth/resend', { email: 'mailer-down@example.com' });
+  assert.equal(down.status, 503);
+  assert.equal(down.body.code, 'email_send_failed');
+});
+
 test('expired access token is refreshed from the refresh cookie', { skip }, async () => {
   const c = new Client('10.0.0.4');
   await c.post('auth/login', { email: 'owner@acme.test', password: 'correct horse' });
