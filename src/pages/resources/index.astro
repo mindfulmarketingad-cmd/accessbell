@@ -7,6 +7,7 @@ import { SITE } from '../../config/site';
 import { formatDate } from '../../lib/format';
 import { helpByCategory } from '../../lib/help';
 import { CHECKERS, checkerPath } from '../../data/checkers';
+import { PLATFORMS, platformPath } from '../../data/platforms';
 
 const helpCount = (await helpByCategory()).reduce((n, g) => n + g.articles.length, 0);
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
@@ -82,6 +83,29 @@ const schema = [
                 <small>WCAG {c.version} Level {c.level}</small>
                 <strong>{c.name}</strong>
                 <span>{c.lead.split('. ')[0]}.</span>
+              </span>
+              <Icon name="arrow" class="res-arrow" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="res-platforms">
+    <div class="container">
+      <div class="section-head section-head-left">
+        <h2 id="res-platforms">Free Checkers by Platform</h2>
+        <p>The same free scanner, framed for the CMS or e-commerce platform your site runs on, with the issues that platform sees most.</p>
+      </div>
+      <ul class="res-grid">
+        {PLATFORMS.map((p) => (
+          <li>
+            <a class="res-card" href={platformPath(p)}>
+              <span class="res-card-text">
+                <small>Free Tool</small>
+                <strong>{p.name} Accessibility Checker</strong>
+                <span>{p.lead}</span>
               </span>
               <Icon name="arrow" class="res-arrow" />
             </a>
