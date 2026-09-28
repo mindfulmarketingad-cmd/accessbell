@@ -23,6 +23,7 @@ const STATIC: Omit<RouteEntry, 'lastmod'>[] = [
   { path: '/resources/help-center', label: 'Help Center', note: 'Guides for every AccessBell feature', group: 'help' },
   { path: '/authors', label: 'Authors', note: 'The writers and reviewers behind our guides', group: 'authors' },
   { path: '/about', label: 'About', note: 'Our mission and approach', group: 'company' },
+  { path: '/methodology', label: 'Methodology', note: 'How we test: the engine, coverage and review process', group: 'company' },
   { path: '/contact', label: 'Contact', note: 'Sales and support', group: 'company' },
   { path: '/disclaimer', label: 'Disclaimer', group: 'company' },
   { path: '/privacy', label: 'Privacy Policy', group: 'company' },

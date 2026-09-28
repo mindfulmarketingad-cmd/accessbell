@@ -35,6 +35,7 @@ export const HEADER_NAV = [
 export const FOOTER_NAV = [
   { label: 'Home', href: '/' },
   { label: 'About', href: '/about' },
+  { label: 'Methodology', href: '/methodology' },
   { label: 'Contact', href: '/contact' },
   { label: 'Resources', href: '/resources' },
   { label: 'Help Center', href: '/resources/help-center' },

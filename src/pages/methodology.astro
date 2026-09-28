@@ -1,0 +1,108 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import AuthorAvatar from '../components/AuthorAvatar.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { SITE } from '../config/site';
+import { authorPath, authorSchema } from '../lib/authors';
+import { formatDate } from '../lib/format';
+import { coverageFor } from '../lib/checker-coverage';
+
+const REVIEWED = new Date('2026-09-28');
+const author = await getEntry('authors', 'accessbell-editorial-team');
+const cov22 = coverageFor('2.2');
+const cov21 = coverageFor('2.1');
+const cov20 = coverageFor('2.0');
+
+const url = `${SITE.url}/methodology`;
+const schema = [
+  {
+    '@type': 'TechArticle',
+    '@id': `${url}#article`,
+    headline: 'How AccessBell Tests Your Website',
+    description: 'The exact engine, rules and review process AccessBell uses to test a website against WCAG, and what it cannot check automatically.',
+    dateModified: REVIEWED.toISOString(),
+    author: author ? { '@id': `${SITE.url}${authorPath(author)}#author` } : { '@id': `${SITE.url}/#organization` },
+    publisher: { '@id': `${SITE.url}/#organization` },
+    mainEntityOfPage: { '@id': `${url}#webpage` },
+  },
+  ...(author ? [authorSchema(author)] : []),
+];
+---
+<BaseLayout
+  title="How AccessBell Tests Your Website | Methodology"
+  description="The exact engine, rules and review process behind every AccessBell scan: what runs automatically, what still needs a person, and how we keep it accurate."
+  breadcrumbs={[{ label: 'Methodology', href: '/methodology' }]}
+  schema={schema}
+>
+  <section class="page-hero" aria-labelledby="method-title">
+    <div class="container container-narrow">
+      <span class="eyebrow">Methodology</span>
+      <h1 id="method-title">How AccessBell Tests Your Website</h1>
+      <p class="lead">The exact engine, rules and review process behind every scan, so you know what a result actually means, and what it does not.</p>
+    </div>
+  </section>
+
+  <article class="container container-narrow prose">
+    <div class="checker-byline">
+      {author && <a class="byline-person" href={authorPath(author)}><AuthorAvatar name={author.data.name} /><span><strong>{author.data.name}</strong><small>Author</small></span></a>}
+      <span>Reviewed <time datetime={REVIEWED.toISOString()}>{formatDate(REVIEWED)}</time></span>
+    </div>
+
+    <h2>The Engine: A Real Browser, Not a Guess</h2>
+    <p>
+      Every scan loads your page in a real, headless Chrome browser, the same rendering engine behind Chrome and Chrome DevTools, not a static parse of your HTML source. That matters because most modern sites render content with JavaScript: a static parser sees the page before your scripts run, while AccessBell sees exactly what a visitor's browser sees, including content added by React, Vue, a page builder or a third-party app.
+    </p>
+    <p>
+      Once the page is loaded, AccessBell runs <a href="https://github.com/dequelabs/axe-core" rel="noopener noreferrer" target="_blank">axe-core<span class="visually-hidden"> (opens in a new tab)</span></a>, the open-source accessibility testing engine built by Deque Systems and used inside Chrome DevTools, Lighthouse, and most professional accessibility tools. axe-core is built specifically to avoid false positives: when it reports a failure, it is checking against an explicit, machine-testable condition in the WCAG success criteria, not a guess.
+    </p>
+    <p>
+      If a page cannot be reached in a full browser (for example, a target that blocks our scanner), AccessBell falls back to a direct HTML analysis so you still get a result, and the report says clearly which engine ran and what that means for coverage.
+    </p>
+
+    <h2>What We Check</h2>
+    <p>
+      You choose the standard: WCAG 2.2, 2.1 or 2.0 at Level AA, or a preset mapped to the ADA, Section 508 or EN 301 549. The table below is computed directly from the same rule engine your scan runs, not a marketing estimate, and updates automatically as axe-core adds rules.
+    </p>
+    <div class="table-scroll" role="region" aria-label="Automated rule coverage by WCAG version" tabindex="0">
+      <table class="facts-table">
+        <caption class="visually-hidden">Automated coverage by WCAG version, Level AA</caption>
+        <thead><tr><th scope="col">Standard</th><th scope="col">Automated rules</th><th scope="col">Success criteria tested automatically</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">WCAG 2.2 AA</th><td>{cov22.ruleCount}</td><td>{cov22.automated} of {cov22.total}</td></tr>
+          <tr><th scope="row">WCAG 2.1 AA</th><td>{cov21.ruleCount}</td><td>{cov21.automated} of {cov21.total}</td></tr>
+          <tr><th scope="row">WCAG 2.0 AA</th><td>{cov20.ruleCount}</td><td>{cov20.automated} of {cov20.total}</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Every automated rule is mapped to the specific success criterion it tests. Browse the full list, with what each criterion requires and how to test it by hand, in the <a href="/resources/wcag">WCAG Success Criteria Library</a>.
+    </p>
+
+    <h2>What Automated Testing Cannot Catch</h2>
+    <p>
+      No tool, ours included, can automatically test everything in WCAG. Roughly a third of success criteria at Level AA require human judgment: whether alt text actually describes an image's purpose, whether a focus order is logical to a real user, whether captions are accurate, or whether an error message is genuinely helpful. AccessBell lists these as items for manual review in every report, rather than silently skipping them or claiming a false pass.
+    </p>
+    <p>
+      This is also why AccessBell does not sell an overlay widget. A script that patches your page in the browser cannot make the manual judgment calls above, and it does not change the code a screen reader or a future audit actually reads. See our breakdown of the <a href="/blog/accessibe-alternative">FTC's findings on overlay claims</a> for why regulators have taken a skeptical view of that approach.
+    </p>
+
+    <h2>How We Turn a Failure Into a Fix</h2>
+    <p>
+      Every issue in a report includes the specific failing HTML, the WCAG success criterion it violates, and a corrected code example for the most common patterns, drawn from how the issue is actually fixed in real markup, not a generic description. The goal is that a developer can act on a report without first translating "color contrast" into a line of CSS to change.
+    </p>
+
+    <h2>How We Keep This Accurate</h2>
+    <p>
+      Every guide on this site is checked against a primary source: the W3C's WCAG specification and Understanding documents, the DOJ's or HHS's published rules, or axe-core's own rule documentation. Where a page cites a statistic, a deadline or a legal requirement, it links to that source directly so you can verify it yourself. Pages carry a review history showing when they were last checked and what changed. If you find an error, <a href="/contact">tell us</a> and we will review it.
+    </p>
+
+    <h2>What This Does Not Mean</h2>
+    <p>
+      A clean AccessBell report is a strong signal, not a certification. It means the specific rules described above found no failures on the pages you scanned, at the moment you scanned them. It does not mean your site is guaranteed to meet WCAG in full, and it is not legal advice about your compliance obligations under the ADA or any other law. See our <a href="/disclaimer">disclaimer</a> for the full picture, and pair automated scans with the manual testing your report calls out.
+    </p>
+  </article>
+
+  <CtaBand />
+</BaseLayout>
