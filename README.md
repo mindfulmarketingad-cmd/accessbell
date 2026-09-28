@@ -21,7 +21,8 @@ Marketing site and free **website accessibility checker** for [accessbell.co](ht
 ```
 api/                 Vercel functions (thin handlers)
 server/              Checker engine and security helpers
-  audit.js           WCAG rules over parsed HTML (parse5)
+  browser-audit.js   axe-core in a real browser (Browserless), used when BROWSER_WS_ENDPOINT is set
+  audit.js           WCAG rules over parsed HTML (parse5), the fallback engine
   fetch-page.js      Size/time-limited page fetcher, manual redirects
   net-guard.js       SSRF protection (private IP ranges, connect-time DNS check)
   rate-limit.js      Per-instance rate limiter
@@ -45,7 +46,8 @@ tests/               node:test suites
 3. Set environment variables for the contact form (see `.env.example`):
    - `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL` (verify the sending domain in Resend)
    - Without them the form shows a friendly error and points people to the email address.
-4. In **Firewall**, add a rate-limit rule for `/api/*` (for example 20 requests per minute per IP). The built-in limiter is per instance only.
+4. Set `BROWSER_WS_ENDPOINT` to your Browserless URL (`wss://production-sfo.browserless.io?token=...`) so scans run axe-core in a real browser. If it is missing or the browser is down, scans fall back to the HTML checker automatically.
+5. In **Firewall**, add a rate-limit rule for `/api/*` (for example 20 requests per minute per IP). The built-in limiter is per instance only.
 
 ## Security
 

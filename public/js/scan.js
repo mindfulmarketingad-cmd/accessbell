@@ -97,6 +97,20 @@
 
   var impactLabel = { critical: 'Critical', serious: 'Serious', moderate: 'Moderate', minor: 'Minor' };
 
+  var wcagLabel = function (list) {
+    return list
+      .map(function (w) {
+        return w.level === '-' ? 'Best practice' : 'WCAG ' + w.sc + ' (' + w.level + ')';
+      })
+      .join(', ');
+  };
+
+  var helpLink = function (href, label) {
+    // Links come from our API; only https documentation links are rendered.
+    if (!href || href.indexOf('https://') !== 0) return null;
+    return el('a', { href: href, rel: 'noopener noreferrer', target: '_blank', text: label + ' (opens in a new tab)' });
+  };
+
   var render = function (r) {
     section.setAttribute('aria-busy', 'false');
     var band = r.score >= 90 ? 'high' : r.score >= 60 ? 'mid' : 'low';
@@ -128,16 +142,15 @@
         var tags = el('span', null, [
           el('span', { class: 'tag tag-' + issue.impact, text: impactLabel[issue.impact] || issue.impact }),
           ' ',
-          el('span', {
-            class: 'tag',
-            text: issue.wcag.map(function (w) { return 'WCAG ' + w.sc + ' (' + w.level + ')'; }).join(', '),
-          }),
+          el('span', { class: 'tag', text: wcagLabel(issue.wcag) }),
         ]);
         var item = el('li', { class: 'issue' }, [
           el('div', { class: 'issue-top' }, [el('h4', { text: issue.title + (issue.count > 1 ? ' - ' + issue.count + ' instances' : '') }), tags]),
           el('p', { text: issue.description }),
           el('p', null, [el('strong', { text: 'How to fix: ' }), issue.fix]),
         ]);
+        var link = helpLink(issue.helpUrl, 'Learn how to fix this');
+        if (link) item.appendChild(el('p', null, [link]));
         (issue.samples || []).forEach(function (s) {
           item.appendChild(el('pre', null, [el('code', { text: s })]));
         });
@@ -149,11 +162,29 @@
       body.appendChild(el('p', { text: 'Great start. Automated checks cover part of WCAG, so follow up with keyboard and screen reader testing.' }));
     }
 
+    if (r.review && r.review.length) {
+      body.appendChild(el('h3', { text: 'Needs manual review (' + r.review.length + ')' }));
+      body.appendChild(el('p', { text: 'Automated testing could not decide these. A person should check them, for example text over background images.' }));
+      var review = el('ul', { class: 'issue-list' });
+      r.review.forEach(function (item) {
+        var li = el('li', { class: 'issue' }, [
+          el('div', { class: 'issue-top' }, [
+            el('h4', { text: item.title + (item.count > 1 ? ' - ' + item.count + ' elements' : '') }),
+            el('span', { class: 'tag', text: wcagLabel(item.wcag) }),
+          ]),
+        ]);
+        var link = helpLink(item.helpUrl, 'How to review this');
+        if (link) li.appendChild(el('p', null, [link]));
+        review.appendChild(li);
+      });
+      body.appendChild(review);
+    }
+
     if (r.passes.length) {
       body.appendChild(el('h3', { text: 'Checks passed (' + r.passes.length + ')' }));
       var passes = el('ul', { class: 'pass-list' });
       r.passes.forEach(function (p) {
-        passes.appendChild(el('li', null, [checkIcon(), el('span', { text: p.title + ' (WCAG ' + p.wcag.map(function (w) { return w.sc; }).join(', ') + ')' })]));
+        passes.appendChild(el('li', null, [checkIcon(), el('span', { text: p.title + ' (' + wcagLabel(p.wcag) + ')' })]));
       });
       body.appendChild(passes);
     }
