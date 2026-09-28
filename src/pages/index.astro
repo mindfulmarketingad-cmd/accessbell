@@ -6,6 +6,8 @@ import Icon from '../components/Icon.astro';
 import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
 import Flag from '../components/Flag.astro';
+import { Picture } from 'astro:assets';
+import ownerPhoto from '../assets/website-owner-at-laptop.jpg';
 import { faqSchema, softwareSchema, type FaqItem } from '../lib/schema';
 import { formatDate, readingTime } from '../lib/format';
 
@@ -371,7 +373,23 @@ const faqs: FaqItem[] = [
         <h2 id="built-title">Built for Website Owners Who Want Accessibility <span class="accent">Done Right</span></h2>
         <p>No overlays and no shortcuts. Real issues, found in your code, fixed at the source.</p>
       </div>
-      <div class="grid-3">
+      <div class="built-grid">
+        <figure class="built-photo">
+          <Picture
+            src={ownerPhoto}
+            formats={['avif', 'webp']}
+            widths={[360, 540, 720, 900]}
+            sizes="(min-width: 960px) 460px, calc(100vw - 32px)"
+            alt="A website owner working on a laptop at an office desk"
+            loading="lazy"
+            decoding="async"
+          />
+          <div class="built-chip" aria-hidden="true">
+            <span class="built-chip-icon"><Icon name="check" /></span>
+            <span><strong>WCAG 2.2 AA</strong><small>Monitored daily</small></span>
+          </div>
+        </figure>
+        <div class="built-list">
         <div class="card">
           <div class="icon-tile"><Icon name="scan" /></div>
           <h3>Accessibility for the Whole Domain</h3>
@@ -402,6 +420,7 @@ const faqs: FaqItem[] = [
             <li><Icon name="check" />Email notifications</li>
           </ul>
         </div>
+      </div>
       </div>
     </div>
   </section>
