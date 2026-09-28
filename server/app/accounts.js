@@ -1,6 +1,6 @@
 // Accounts, membership and role checks.
 import { one, tx } from './db.js';
-import { ROLE_RANK, ACTIVE_STATUSES } from './config.js';
+import { ROLE_RANK, ACTIVE_STATUSES, config } from './config.js';
 import { forbidden, paymentRequired } from './errors.js';
 
 const defaultAccountName = (email) => {
@@ -48,10 +48,16 @@ export function requireRole(ctx, minimum) {
   if (!ctx || ROLE_RANK[ctx.role] < ROLE_RANK[minimum]) throw forbidden();
 }
 
-export const isSubscribed = (account) => ACTIVE_STATUSES.has(account.subscription_status);
+/** True for the site's own admins (ADMIN_EMAILS), who get the dashboard free. */
+export const isAdminUser = (user) => {
+  const emails = config().adminEmails;
+  return emails.length > 0 && emails.includes(String(user?.email || '').trim().toLowerCase());
+};
+
+export const isSubscribed = (account, user) => ACTIVE_STATUSES.has(account.subscription_status) || isAdminUser(user);
 
 export function requireSubscription(ctx) {
-  if (!isSubscribed(ctx.account)) {
+  if (!isSubscribed(ctx.account, ctx.user)) {
     throw paymentRequired(
       ctx.account.subscription_status === 'past_due'
         ? 'Your last payment failed. Update your payment method to continue.'

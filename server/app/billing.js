@@ -5,10 +5,10 @@
 // /api/stripe-webhook, and we link the subscription to that account. The
 // number of domains the account may monitor equals the subscription quantity.
 import crypto from 'node:crypto';
-import { config } from './config.js';
+import { config, ACTIVE_STATUSES, ADMIN_DOMAIN_QUOTA } from './config.js';
 import { one } from './db.js';
 import { AppError } from './errors.js';
-import { requireRole } from './accounts.js';
+import { requireRole, isAdminUser } from './accounts.js';
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -189,12 +189,15 @@ async function processStripeEvent(event, fetchSubscription) {
   return 'ignored';
 }
 
-/** Domains used vs. allowed, for the dashboard. */
+/** Domains used vs. allowed, for the dashboard. Admins (ADMIN_EMAILS) see a
+ *  quota without ever needing a real subscription. */
 export async function billingSummary(ctx) {
   const row = await one('select count(*)::int as used from app.domains where account_id = $1', [ctx.account.id]);
+  const admin = isAdminUser(ctx.user);
+  const alreadyActive = ACTIVE_STATUSES.has(ctx.account.subscription_status);
   return {
-    status: ctx.account.subscription_status,
-    domainQuota: ctx.account.domain_quota,
+    status: admin && !alreadyActive ? 'active' : ctx.account.subscription_status,
+    domainQuota: admin ? Math.max(ctx.account.domain_quota, ADMIN_DOMAIN_QUOTA) : ctx.account.domain_quota,
     domainsUsed: row.used,
     trialEndsAt: ctx.account.trial_ends_at,
     currentPeriodEnd: ctx.account.current_period_end,

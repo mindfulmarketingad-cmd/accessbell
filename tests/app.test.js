@@ -194,6 +194,31 @@ test('paid features require a subscription; checkout link carries the account id
   assert.equal(link.searchParams.get('prefilled_email'), 'owner@acme.test');
 });
 
+test('an admin (ADMIN_EMAILS) gets a dashboard and can add a domain without subscribing', { skip }, async () => {
+  process.env.ADMIN_EMAILS = 'Site-Admin@ops.test, other@example.com';
+  try {
+    const admin = new Client('10.0.1.9');
+    await admin.post('auth/signup', { email: 'site-admin@ops.test', password: 'correct horse' });
+    const me = await admin.get('me');
+    assert.equal(me.body.subscribed, true);
+    assert.equal(me.body.billing.status, 'active');
+    assert.ok(me.body.billing.domainQuota > 0);
+
+    const created = await admin.post('domains', { url: 'admin-example.com' });
+    assert.equal(created.status, 200);
+  } finally {
+    delete process.env.ADMIN_EMAILS;
+  }
+});
+
+test('a non-admin still needs to subscribe', { skip }, async () => {
+  const someone = new Client('10.0.1.10');
+  await someone.post('auth/signup', { email: 'not-admin@acme.test', password: 'correct horse' });
+  const me = await someone.get('me');
+  assert.equal(me.body.subscribed, false);
+  assert.equal(me.body.billing.domainQuota, 0);
+});
+
 test('Stripe webhook signatures are verified', { skip }, () => {
   const secret = 'whsec_test';
   const body = '{"id":"evt_1"}';

@@ -132,7 +132,7 @@ const routes = {
       user: { id: ctx.user.id, email: ctx.user.email },
       account: { id: ctx.account.id, name: ctx.account.name, members: (await one('select count(*)::int as n from app.account_members where account_id = $1', [ctx.account.id])).n },
       role: ctx.role,
-      subscribed: isSubscribed(ctx.account),
+      subscribed: isSubscribed(ctx.account, ctx.user),
       billing: await billingSummary(ctx),
     };
   },

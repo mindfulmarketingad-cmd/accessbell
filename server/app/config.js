@@ -13,6 +13,9 @@ export const LIMITS = {
 /** Subscription states that unlock the paid features. */
 export const ACTIVE_STATUSES = new Set(['trialing', 'active']);
 
+/** Domains an admin account (see ADMIN_EMAILS) may monitor without paying. */
+export const ADMIN_DOMAIN_QUOTA = 25;
+
 export function config(env = process.env) {
   return {
     supabaseUrl: (env.SUPABASE_URL || 'https://ucqlkhhjoriakjyeogbx.supabase.co').replace(/\/$/, ''),
@@ -25,6 +28,12 @@ export function config(env = process.env) {
     resendApiKey: env.RESEND_API_KEY || '',
     emailFrom: env.EMAIL_FROM || 'AccessBell <alerts@accessbell.co>',
     appUrl: (env.APP_URL || 'https://www.accessbell.co').replace(/\/$/, ''),
+    // Comma-separated emails (e.g. "you@example.com,co-founder@example.com")
+    // that get full dashboard access without a Stripe subscription.
+    adminEmails: (env.ADMIN_EMAILS || '')
+      .split(',')
+      .map((e) => e.trim().toLowerCase())
+      .filter(Boolean),
   };
 }
 

@@ -1,9 +1,9 @@
 // Domains, monitored pages, discovery and the domain-wide overview.
 import { parse } from 'parse5';
 import { query, one, tx } from './db.js';
-import { LIMITS } from './config.js';
+import { LIMITS, ADMIN_DOMAIN_QUOTA } from './config.js';
 import { badRequest, notFound, AppError } from './errors.js';
-import { requireRole, requireSubscription } from './accounts.js';
+import { requireRole, requireSubscription, isAdminUser } from './accounts.js';
 import { assertSafeUrl } from '../net-guard.js';
 import { fetchPage } from '../fetch-page.js';
 import { VERSIONS, LEVELS } from '../wcag.js';
@@ -186,12 +186,9 @@ export async function createDomain(ctx, input) {
     // Lock the account row so concurrent requests cannot exceed the quota.
     const [account] = await q('select domain_quota from app.accounts where id = $1 for update', [ctx.account.id]);
     const [{ n }] = await q('select count(*)::int as n from app.domains where account_id = $1', [ctx.account.id]);
-    if (n >= account.domain_quota) {
-      throw new AppError(
-        402,
-        `Your plan covers ${account.domain_quota} domain${account.domain_quota === 1 ? '' : 's'}. Add another domain in Billing to monitor more.`,
-        'domain_quota',
-      );
+    const quota = isAdminUser(ctx.user) ? Math.max(account.domain_quota, ADMIN_DOMAIN_QUOTA) : account.domain_quota;
+    if (n >= quota) {
+      throw new AppError(402, `Your plan covers ${quota} domain${quota === 1 ? '' : 's'}. Add another domain in Billing to monitor more.`, 'domain_quota');
     }
     const existing = await q('select id from app.domains where account_id = $1 and hostname = $2', [ctx.account.id, hostname]);
     if (existing.length) throw badRequest(`${hostname} is already in your account.`);
