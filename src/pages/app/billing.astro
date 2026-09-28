@@ -1,0 +1,21 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+---
+<AppLayout title="Billing" section="billing">
+  <header class="app-head">
+    <div>
+      <h1>Billing</h1>
+      <p>AccessBell Lite: $79 per domain per month. Up to 25 URLs per domain, unlimited rescans and AI-assisted fixes.</p>
+    </div>
+  </header>
+  <section class="kpis" aria-label="Billing summary" data-billing-kpis></section>
+  <section class="panel" aria-labelledby="manage-title">
+    <h2 id="manage-title">Manage your subscription</h2>
+    <p class="panel-sub" data-billing-note></p>
+    <div class="app-head-actions" data-billing-actions></div>
+    <p class="status-line" data-billing-status role="status" aria-live="polite"></p>
+  </section>
+</AppLayout>
+<script>
+  import '../../scripts/app/billing.js';
+</script>

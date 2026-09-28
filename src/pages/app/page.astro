@@ -1,0 +1,20 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+---
+<AppLayout title="Scan history" section="overview">
+  <a class="back-link" href="/app" data-back>&larr; Back</a>
+  <header class="app-head">
+    <div>
+      <h1 data-title>Scan history</h1>
+      <p data-subtitle>Every scan is kept as audit evidence.</p>
+    </div>
+  </header>
+  <section class="panel" aria-labelledby="history-title">
+    <h2 id="history-title">Audit evidence</h2>
+    <p class="panel-sub">Timestamped results for every manual and scheduled scan of this page.</p>
+    <div data-history><p class="muted">Loading...</p></div>
+  </section>
+</AppLayout>
+<script>
+  import '../../scripts/app/history.js';
+</script>

@@ -1,0 +1,64 @@
+---
+import '../styles/global.css';
+import '../styles/app.css';
+import LogoMark from '../components/LogoMark.astro';
+import Icon from '../components/Icon.astro';
+
+interface Props {
+  title: string;
+  /** Sidebar item to highlight. */
+  section?: 'overview' | 'team' | 'billing' | 'account';
+}
+const { title, section = 'overview' } = Astro.props;
+const nav = [
+  { id: 'overview', label: 'Domains', href: '/app', icon: 'globe' },
+  { id: 'team', label: 'Team', href: '/app/team', icon: 'users' },
+  { id: 'billing', label: 'Billing', href: '/app/billing', icon: 'layers' },
+  { id: 'account', label: 'Account', href: '/app/account', icon: 'lock' },
+];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{`${title} | AccessBell`}</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#353A47" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <slot name="head" />
+  </head>
+  <body class="app-body">
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <div class="app-shell" data-shell>
+      <aside class="app-side" aria-label="Dashboard">
+        <a class="brand" href="/app" aria-label="AccessBell dashboard">
+          <LogoMark />
+          <span>Access<span class="brand-bell">Bell</span></span>
+        </a>
+        <nav aria-label="Dashboard sections">
+          <ul class="app-nav">
+            {nav.map((n) => (
+              <li>
+                <a href={n.href} aria-current={n.id === section ? 'page' : undefined}>
+                  <Icon name={n.icon} />
+                  {n.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <div class="app-side-foot">
+          <p class="app-account" data-account-name></p>
+          <p class="app-user" data-user-email></p>
+          <button class="btn btn-outline btn-sm" type="button" data-signout>Sign out</button>
+        </div>
+      </aside>
+      <main id="main" class="app-main" tabindex="-1">
+        <div class="app-banner-slot" data-banner></div>
+        <slot />
+      </main>
+    </div>
+  </body>
+</html>

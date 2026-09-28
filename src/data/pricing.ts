@@ -7,8 +7,8 @@ export const PLAN = {
   urlsPerDomain: 25,
   blurb: 'Continuous WCAG monitoring and AI-assisted fixes for every domain you run.',
   highlights: ['Up to 25 URLs per domain', 'Unlimited rescans', 'AI-assisted fixes', 'Email support'],
-  cta: 'Get started',
-  ctaHref: '/contact?topic=sales&plan=lite',
+  cta: 'Start 3-day free trial',
+  ctaHref: '/app/signup',
 } as const;
 
 export type FeatureGroup = { title: string; features: string[] };

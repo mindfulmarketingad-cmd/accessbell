@@ -1,0 +1,12 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+---
+<AppLayout title="Scan report" section="overview">
+  <a class="back-link" href="/app" data-back>&larr; Back</a>
+  <div class="results-card" data-report>
+    <div class="results-body"><p class="muted">Loading...</p></div>
+  </div>
+</AppLayout>
+<script>
+  import '../../scripts/app/scan.js';
+</script>

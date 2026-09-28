@@ -1,0 +1,42 @@
+// Environment configuration for the customer app. Read lazily so tests can
+// set process.env before first use.
+export const ROLES = ['viewer', 'member', 'admin', 'owner'];
+export const ROLE_RANK = { viewer: 1, member: 2, admin: 3, owner: 4 };
+
+/** Lite plan limits. */
+export const LIMITS = {
+  monitoredPagesPerDomain: 25,
+  discoveredPagesPerDomain: 200,
+  scansPerAccountPerHour: 600, // "unlimited rescans", fair use only
+};
+
+/** Subscription states that unlock the paid features. */
+export const ACTIVE_STATUSES = new Set(['trialing', 'active']);
+
+export function config(env = process.env) {
+  return {
+    supabaseUrl: (env.SUPABASE_URL || 'https://ucqlkhhjoriakjyeogbx.supabase.co').replace(/\/$/, ''),
+    supabaseAnonKey: env.SUPABASE_ANON_KEY || '',
+    supabaseServiceKey: env.SUPABASE_SERVICE_ROLE_KEY || '',
+    databaseUrl: env.DATABASE_URL || '',
+    stripeSecretKey: env.STRIPE_SECRET_KEY || '',
+    stripeWebhookSecret: env.STRIPE_WEBHOOK_SECRET || '',
+    stripePaymentLink: env.STRIPE_PAYMENT_LINK || 'https://buy.stripe.com/8x2bJ2gyKdFe7My31kfrW0o',
+    resendApiKey: env.RESEND_API_KEY || '',
+    emailFrom: env.EMAIL_FROM || 'AccessBell <alerts@accessbell.co>',
+    appUrl: (env.APP_URL || 'https://accessbell.co').replace(/\/$/, ''),
+  };
+}
+
+/** Which required settings are missing, for a clear error instead of a crash. */
+export function missingConfig(keys, env = process.env) {
+  const c = config(env);
+  const names = {
+    supabaseAnonKey: 'SUPABASE_ANON_KEY',
+    supabaseServiceKey: 'SUPABASE_SERVICE_ROLE_KEY',
+    databaseUrl: 'DATABASE_URL',
+    stripeSecretKey: 'STRIPE_SECRET_KEY',
+    stripeWebhookSecret: 'STRIPE_WEBHOOK_SECRET',
+  };
+  return keys.filter((k) => !c[k]).map((k) => names[k] || k);
+}

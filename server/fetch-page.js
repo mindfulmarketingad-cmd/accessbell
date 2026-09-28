@@ -21,7 +21,7 @@ export class FetchError extends Error {
   }
 }
 
-function requestOnce(url, deadline) {
+function requestOnce(url, deadline, accept) {
   return new Promise((resolve, reject) => {
     const remaining = deadline - Date.now();
     if (remaining <= 0) return reject(new FetchError('The page took too long to respond.', 504));
@@ -36,7 +36,7 @@ function requestOnce(url, deadline) {
         timeout: remaining,
         headers: {
           'User-Agent': USER_AGENT,
-          Accept: 'text/html,application/xhtml+xml;q=0.9,*/*;q=0.1',
+          Accept: accept,
           'Accept-Encoding': 'gzip, deflate, br',
           'Accept-Language': 'en-US,en;q=0.8',
         },
@@ -108,16 +108,24 @@ function decode(buffer, contentType) {
   }
 }
 
+const KINDS = {
+  html: { accept: 'text/html,application/xhtml+xml;q=0.9,*/*;q=0.1', types: ['text/html', 'application/xhtml+xml'], label: 'an HTML page. Enter the URL of a web page' },
+  xml: { accept: 'application/xml,text/xml;q=0.9,*/*;q=0.1', types: ['xml'], label: 'an XML sitemap' },
+  text: { accept: 'text/plain,*/*;q=0.1', types: ['text/plain'], label: 'a text file' },
+};
+
 /**
- * Fetch an HTML page. Redirects are followed manually and every hop is
- * re-validated, so a public URL cannot redirect into a private network.
+ * Fetch an HTML page (or, with kind 'xml' / 'text', a sitemap or robots.txt).
+ * Redirects are followed manually and every hop is re-validated, so a public
+ * URL cannot redirect into a private network.
  */
-export async function fetchPage(input) {
+export async function fetchPage(input, { kind = 'html' } = {}) {
+  const spec = KINDS[kind] || KINDS.html;
   const deadline = Date.now() + LIMITS.timeoutMs;
   let url = assertSafeUrl(input);
 
   for (let hop = 0; hop <= LIMITS.maxRedirects; hop++) {
-    const { res } = await requestOnce(url, deadline);
+    const { res } = await requestOnce(url, deadline, spec.accept);
     const status = res.statusCode || 0;
 
     if (status >= 300 && status < 400 && res.headers.location) {
@@ -139,9 +147,9 @@ export async function fetchPage(input) {
     }
 
     const type = String(res.headers['content-type'] || '').toLowerCase();
-    if (type && !type.includes('text/html') && !type.includes('application/xhtml+xml')) {
+    if (type && !spec.types.some((t) => type.includes(t))) {
       res.destroy();
-      throw new FetchError('That address is not an HTML page. Enter the URL of a web page.', 422);
+      throw new FetchError(`That address is not ${spec.label}.`, 422);
     }
 
     const declared = Number(res.headers['content-length']);
@@ -151,7 +159,8 @@ export async function fetchPage(input) {
     }
 
     const body = await readBody(res, deadline);
-    return { finalUrl: url.toString(), status, html: decode(body, type) };
+    const text = decode(body, type);
+    return { finalUrl: url.toString(), status, html: text, text };
   }
   throw new FetchError('The page redirected too many times.', 422);
 }

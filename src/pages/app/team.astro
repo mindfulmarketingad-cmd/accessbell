@@ -1,0 +1,39 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+---
+<AppLayout title="Team" section="team">
+  <header class="app-head">
+    <div>
+      <h1>Team</h1>
+      <p>Invite people and choose what they can do.</p>
+    </div>
+  </header>
+  <section class="panel" aria-labelledby="invite-title" data-invite-panel hidden>
+    <h2 id="invite-title">Invite a teammate</h2>
+    <form class="inline-form" data-invite novalidate>
+      <div class="field">
+        <label for="invite-email">Email</label>
+        <input id="invite-email" name="email" type="email" autocomplete="off" required maxlength="254" />
+      </div>
+      <div class="field">
+        <label for="invite-role">Role</label>
+        <select id="invite-role" name="role">
+          <option value="viewer">Viewer - read only</option>
+          <option value="member" selected>Member - manage pages and scans</option>
+          <option value="admin">Admin - manage domains, settings and team</option>
+        </select>
+      </div>
+      <button class="btn" type="submit">Send invite</button>
+    </form>
+    <p class="status-line" data-invite-status role="status" aria-live="polite"></p>
+  </section>
+  <section class="panel" aria-labelledby="members-title">
+    <h2 id="members-title">Members</h2>
+    <p class="panel-sub">Owner: billing and everything else. Admin: domains, settings and team. Member: pages and scans. Viewer: read only.</p>
+    <div data-members><p class="muted">Loading...</p></div>
+    <p class="status-line" data-members-status role="status" aria-live="polite"></p>
+  </section>
+</AppLayout>
+<script>
+  import '../../scripts/app/team.js';
+</script>

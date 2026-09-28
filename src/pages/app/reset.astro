@@ -1,0 +1,18 @@
+---
+import AuthLayout from '../../layouts/AuthLayout.astro';
+---
+<AuthLayout title="Choose a new password">
+  <h1>Choose a password</h1>
+  <p>Set the password you will use to sign in to AccessBell.</p>
+  <form class="form" data-auth-form="reset" novalidate>
+    <div class="field">
+      <label for="password">New password <span class="hint">(at least 8 characters)</span></label>
+      <input id="password" name="password" type="password" autocomplete="new-password" required minlength="8" maxlength="72" />
+    </div>
+    <p class="status-line" data-status role="status" aria-live="polite"></p>
+    <button class="btn btn-lg" type="submit">Save password</button>
+  </form>
+</AuthLayout>
+<script>
+  import '../../scripts/app/auth.js';
+</script>

@@ -1,0 +1,19 @@
+---
+import AuthLayout from '../../layouts/AuthLayout.astro';
+---
+<AuthLayout title="Reset your password">
+  <h1>Reset your password</h1>
+  <p>Enter your email and we will send you a link to choose a new password.</p>
+  <form class="form" data-auth-form="forgot" novalidate>
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" autocomplete="email" required maxlength="254" />
+    </div>
+    <p class="status-line" data-status role="status" aria-live="polite"></p>
+    <button class="btn btn-lg" type="submit">Send reset link</button>
+  </form>
+  <p class="auth-alt"><a href="/app/login">Back to sign in</a></p>
+</AuthLayout>
+<script>
+  import '../../scripts/app/auth.js';
+</script>

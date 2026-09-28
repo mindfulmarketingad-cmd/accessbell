@@ -1,0 +1,35 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+---
+<AppLayout title="Domains" section="overview">
+  <header class="app-head">
+    <div>
+      <h1>Domains</h1>
+      <p>Domain-wide WCAG compliance across everything you monitor.</p>
+    </div>
+  </header>
+
+  <section class="kpis" aria-label="Summary" data-kpis></section>
+
+  <section class="panel" aria-labelledby="domains-title">
+    <h2 id="domains-title">Your domains</h2>
+    <p class="panel-sub" data-quota></p>
+    <div data-domains><p class="muted">Loading...</p></div>
+  </section>
+
+  <section class="panel" aria-labelledby="add-title" data-add-panel hidden>
+    <h2 id="add-title">Add a domain</h2>
+    <p class="panel-sub">Enter a website or staging environment. We start by monitoring its home page.</p>
+    <form class="inline-form" data-add-domain novalidate>
+      <div class="field">
+        <label for="domain-url">Website address</label>
+        <input id="domain-url" name="url" type="text" inputmode="url" placeholder="example.com or staging.example.com" required maxlength="2048" />
+      </div>
+      <button class="btn" type="submit">Add domain</button>
+    </form>
+    <p class="status-line" data-add-status role="status" aria-live="polite"></p>
+  </section>
+</AppLayout>
+<script>
+  import '../../scripts/app/overview.js';
+</script>

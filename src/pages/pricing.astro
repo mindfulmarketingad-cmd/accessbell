@@ -31,6 +31,10 @@ const faqs: FaqItem[] = [
     a: 'You can choose Level A, AA or AAA for WCAG 2.0, 2.1 or 2.2. Most organizations target WCAG 2.2 Level AA.',
   },
   {
+    q: 'Is there a free trial?',
+    a: 'Yes. Lite starts with a 3-day free trial. Cancel before it ends and you will not be charged.',
+  },
+  {
     q: 'Can I cancel at any time?',
     a: 'Yes. Lite is billed monthly and you can cancel whenever you like. Your access continues until the end of the current billing period.',
   },
@@ -70,7 +74,7 @@ const faqs: FaqItem[] = [
             <strong>${PLAN.price}</strong>
             <span>/ domain / month</span>
           </p>
-          <p class="plan-billed">Billed monthly. Cancel anytime.</p>
+          <p class="plan-billed">3-day free trial, then billed monthly. Cancel anytime.</p>
           <p class="plan-blurb">{PLAN.blurb}</p>
           <ul class="check-list">
             {PLAN.highlights.map((h) => <li><Icon name="check" />{h}</li>)}

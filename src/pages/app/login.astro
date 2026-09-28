@@ -1,0 +1,26 @@
+---
+import AuthLayout from '../../layouts/AuthLayout.astro';
+---
+<AuthLayout title="Sign in">
+  <h1>Sign in</h1>
+  <p>Welcome back. Sign in to your AccessBell dashboard.</p>
+  <form class="form" data-auth-form="login" novalidate>
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" autocomplete="email" required maxlength="254" />
+    </div>
+    <div class="field">
+      <div class="field-row-between">
+        <label for="password">Password</label>
+        <a href="/app/forgot">Forgot password?</a>
+      </div>
+      <input id="password" name="password" type="password" autocomplete="current-password" required minlength="8" maxlength="72" />
+    </div>
+    <p class="status-line" data-status role="status" aria-live="polite"></p>
+    <button class="btn btn-lg" type="submit">Sign in</button>
+  </form>
+  <p class="auth-alt">New to AccessBell? <a href="/app/signup">Create an account</a></p>
+</AuthLayout>
+<script>
+  import '../../scripts/app/auth.js';
+</script>

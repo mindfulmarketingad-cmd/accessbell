@@ -1,0 +1,37 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+---
+<AppLayout title="Account" section="account">
+  <header class="app-head">
+    <div>
+      <h1>Account</h1>
+      <p>Your team name and your sign-in details.</p>
+    </div>
+  </header>
+  <form class="panel" data-account-form novalidate aria-labelledby="team-name-title">
+    <h2 id="team-name-title">Team name</h2>
+    <div class="inline-form">
+      <div class="field">
+        <label for="team-name">Name</label>
+        <input id="team-name" name="name" type="text" maxlength="120" required />
+      </div>
+      <button class="btn" type="submit">Save</button>
+    </div>
+    <p class="status-line" data-account-status role="status" aria-live="polite"></p>
+  </form>
+  <form class="panel" data-password-form novalidate aria-labelledby="password-title">
+    <h2 id="password-title">Change password</h2>
+    <p class="panel-sub" data-email></p>
+    <div class="inline-form">
+      <div class="field">
+        <label for="new-password">New password <span class="hint">(at least 8 characters)</span></label>
+        <input id="new-password" name="password" type="password" autocomplete="new-password" minlength="8" maxlength="72" required />
+      </div>
+      <button class="btn" type="submit">Update password</button>
+    </div>
+    <p class="status-line" data-password-status role="status" aria-live="polite"></p>
+  </form>
+</AppLayout>
+<script>
+  import '../../scripts/app/account.js';
+</script>

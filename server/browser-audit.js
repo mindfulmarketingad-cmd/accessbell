@@ -61,9 +61,12 @@ function fixText(node) {
   return lines.length ? lines.slice(0, 3).map((l) => l.replace(/\.+$/, '')).join('. ') + '.' : '';
 }
 
-/** Convert raw axe results into the report shape the website renders. */
+/**
+ * Convert raw axe results into the report shape the website renders.
+ * `standard` is a free-scan standard id or a { id, label } object.
+ */
 export function mapAxeResults(results, standard = 'wcag22') {
-  const std = STANDARDS[standard] || STANDARDS.wcag22;
+  const std = typeof standard === 'object' ? standard : STANDARDS[standard] || STANDARDS.wcag22;
 
   const issues = results.violations
     .map((v) => ({
@@ -99,27 +102,68 @@ export function mapAxeResults(results, standard = 'wcag22') {
   const notes = [
     `Tested in a real browser with axe-core ${results.testEngine?.version || axe.version}. Automated testing finds many, but not all, WCAG failures.`,
   ];
-  if (standard === 'section508') notes.push('Section 508 incorporates WCAG 2.0 Level AA, so only WCAG 2.0 rules were run.');
+  if (std.id === 'section508') notes.push('Section 508 incorporates WCAG 2.0 Level AA, so only WCAG 2.0 rules were run.');
 
+  if (std.id.endsWith('-AAA')) {
+    notes.push('Few Level AAA criteria can be tested automatically. Use the assisted manual testing procedures for the rest.');
+  }
   return { engine: 'browser', standard: std, score: scoreFrom(issues), summary, issues, passes, review, notes };
 }
+
+export const DEVICES = {
+  desktop: { viewport: { width: 1280, height: 900 } },
+  mobile: {
+    viewport: { width: 390, height: 844 },
+    isMobile: true,
+    hasTouch: true,
+    deviceScaleFactor: 3,
+  },
+};
+
+const BLOCKED_HEADERS = new Set([
+  'host', 'content-length', 'connection', 'transfer-encoding', 'upgrade', 'te', 'trailer',
+  'keep-alive', 'expect', 'origin', 'referer',
+]);
+
+/** Keep only safe, well-formed custom headers (max 10). */
+export function sanitizeHeaders(list) {
+  const out = {};
+  for (const h of Array.isArray(list) ? list.slice(0, 10) : []) {
+    const name = String(h?.name || '').trim().toLowerCase();
+    const value = String(h?.value ?? '');
+    if (!/^[a-z0-9-]{1,64}$/.test(name) || BLOCKED_HEADERS.has(name) || name.startsWith('proxy-') || name.startsWith('sec-')) continue;
+    if (value.length > 2048 || /[\r\n\0]/.test(value)) continue;
+    out[name] = value;
+  }
+  return out;
+}
+
+const sameSite = (host, target) => host === target || host.endsWith('.' + target);
 
 /**
  * Load the page in remote Chromium and run axe-core.
  * Throws UnsafeUrlError for disallowed targets; any other error means the
  * browser path failed and the caller should fall back to the HTML audit.
+ *
+ * Options: standard (free-scan id or { id, label }), tags, device,
+ * headers (sent only to the scanned site's own host), delayMs, scroll.
  */
-export async function browserAudit(input, { standard = 'wcag22', endpoint = process.env.BROWSER_WS_ENDPOINT } = {}) {
+export async function browserAudit(
+  input,
+  { standard = 'wcag22', tags, device = 'desktop', headers = {}, delayMs = 0, scroll = false, endpoint = process.env.BROWSER_WS_ENDPOINT } = {},
+) {
   if (!endpoint) throw new Error('BROWSER_WS_ENDPOINT is not set');
   const url = assertSafeUrl(input);
+  const siteHost = url.hostname.replace(/^www\./, '');
+  const extraHeaders = Object.keys(headers).length ? headers : null;
 
   const browser = await chromium.connectOverCDP(endpoint, { timeout: LIMITS.connectMs });
   try {
     // bypassCSP lets axe run on sites whose own Content-Security-Policy would block it.
     const context = await browser.newContext({
+      ...(DEVICES[device] || DEVICES.desktop),
       bypassCSP: true,
-      viewport: { width: 1280, height: 900 },
-      userAgent: 'Mozilla/5.0 (compatible; AccessBellBot/1.0; +https://accessbell.co/about)',
+      userAgent: `Mozilla/5.0 (compatible; AccessBellBot/1.0; +https://accessbell.co/about)${device === 'mobile' ? ' Mobile' : ''}`,
     });
     const page = await context.newPage();
 
@@ -135,6 +179,14 @@ export async function browserAudit(input, { standard = 'wcag22', endpoint = proc
           return route.abort('blockedbyclient');
         }
       }
+      // Custom headers (for example staging credentials) never go to third parties.
+      if (extraHeaders) {
+        let host = '';
+        try {
+          host = new URL(req.url()).hostname.replace(/^www\./, '');
+        } catch {}
+        if (sameSite(host, siteHost)) return route.continue({ headers: { ...req.headers(), ...extraHeaders } });
+      }
       return route.continue();
     });
 
@@ -142,15 +194,31 @@ export async function browserAudit(input, { standard = 'wcag22', endpoint = proc
     if (response && response.status() >= 400) throw new Error(`HTTP ${response.status()}`);
     await page.waitForLoadState('load', { timeout: LIMITS.settleMs }).catch(() => {});
 
+    if (scroll) {
+      // Scroll through the page so lazy-loaded content renders, then return to the top.
+      await page
+        .evaluate(async () => {
+          const step = Math.max(200, window.innerHeight * 0.8);
+          for (let y = 0, i = 0; y < document.body.scrollHeight && i < 40; y += step, i++) {
+            window.scrollTo(0, y);
+            await new Promise((r) => setTimeout(r, 120));
+          }
+          window.scrollTo(0, 0);
+        })
+        .catch(() => {});
+    }
+    const delay = Math.min(Math.max(Number(delayMs) || 0, 0), 10_000);
+    if (delay) await page.waitForTimeout(delay);
+
     const finalUrl = page.url();
     assertSafeUrl(finalUrl);
 
     await page.evaluate(axe.source);
     const results = await page.evaluate(
-      (tags) => window.axe.run(document, { runOnly: { type: 'tag', values: tags }, resultTypes: ['violations', 'incomplete'] }),
-      TAGS_FOR_STANDARD[standard] || TAGS.wcag22,
+      (t) => window.axe.run(document, { runOnly: { type: 'tag', values: t }, resultTypes: ['violations', 'incomplete'] }),
+      tags || TAGS_FOR_STANDARD[standard] || TAGS.wcag22,
     );
-    return { finalUrl, ...mapAxeResults(results, standard) };
+    return { finalUrl, device, ...mapAxeResults(results, standard) };
   } finally {
     await browser.close().catch(() => {});
   }

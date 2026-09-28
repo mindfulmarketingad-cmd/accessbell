@@ -1,0 +1,13 @@
+---
+import AuthLayout from '../../../layouts/AuthLayout.astro';
+---
+<AuthLayout title="Signing you in">
+  <div data-auth-callback>
+    <h1>Signing you in</h1>
+    <p data-message role="status" aria-live="polite">One moment...</p>
+    <p data-retry hidden><a class="btn" href="/app/login">Go to sign in</a></p>
+  </div>
+</AuthLayout>
+<script>
+  import '../../../scripts/app/auth.js';
+</script>

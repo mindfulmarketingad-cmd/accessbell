@@ -1,0 +1,142 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+---
+<AppLayout title="Domain" section="overview">
+  <a class="back-link" href="/app">&larr; All domains</a>
+  <header class="app-head">
+    <div>
+      <h1 data-title>Loading...</h1>
+      <p data-subtitle></p>
+    </div>
+    <div class="app-head-actions">
+      <button class="btn btn-outline" type="button" data-discover hidden>Find pages</button>
+      <button class="btn" type="button" data-rescan-all hidden>Rescan all</button>
+    </div>
+  </header>
+  <p class="progress-note" data-progress role="status" aria-live="polite"></p>
+
+  <div class="app-tabs" data-tabs>
+    <div class="tablist" role="tablist" aria-label="Domain views">
+      <button type="button" role="tab" id="tab-overview" aria-controls="panel-overview" aria-selected="true" tabindex="0">Overview</button>
+      <button type="button" role="tab" id="tab-pages" aria-controls="panel-pages" aria-selected="false" tabindex="-1">Pages</button>
+      <button type="button" role="tab" id="tab-settings" aria-controls="panel-settings" aria-selected="false" tabindex="-1">Settings</button>
+    </div>
+
+    <div role="tabpanel" id="panel-overview" aria-labelledby="tab-overview" tabindex="0">
+      <section class="kpis" aria-label="Domain summary" data-kpis></section>
+      <div class="split">
+        <div>
+          <section class="panel" aria-labelledby="rules-title">
+            <h2 id="rules-title">Issues across the domain</h2>
+            <p class="panel-sub">Grouped by rule, with the number of pages affected.</p>
+            <div data-rules></div>
+          </section>
+          <section class="panel" aria-labelledby="components-title">
+            <h2 id="components-title">Component grouping</h2>
+            <p class="panel-sub">The same failing element on several pages. Fix it once in the shared component.</p>
+            <div data-components></div>
+          </section>
+        </div>
+        <div>
+          <section class="panel trend" aria-labelledby="trend-title">
+            <h2 id="trend-title">Progress over 30 days</h2>
+            <p class="panel-sub">Average score per day.</p>
+            <div data-trend></div>
+          </section>
+          <section class="panel" aria-labelledby="impact-title">
+            <h2 id="impact-title">By severity</h2>
+            <div class="impact-bars" data-impacts></div>
+          </section>
+          <section class="panel" aria-labelledby="criteria-title">
+            <h2 id="criteria-title">WCAG criteria failing</h2>
+            <div data-criteria></div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <div role="tabpanel" id="panel-pages" aria-labelledby="tab-pages" tabindex="0" hidden>
+      <section class="panel" aria-labelledby="monitored-title">
+        <h2 id="monitored-title">Monitored URLs</h2>
+        <p class="panel-sub" data-monitored-count></p>
+        <form class="inline-form" data-add-page novalidate>
+          <div class="field">
+            <label for="page-url">Add a URL</label>
+            <input id="page-url" name="url" type="text" inputmode="url" placeholder="/pricing or https://example.com/pricing" maxlength="2048" />
+          </div>
+          <button class="btn" type="submit">Add and monitor</button>
+        </form>
+        <p class="status-line" data-page-status role="status" aria-live="polite"></p>
+        <div data-monitored></div>
+      </section>
+      <section class="panel" aria-labelledby="found-title">
+        <h2 id="found-title">Discovered pages</h2>
+        <p class="panel-sub">Found by the automatic crawl and sitemap scan. Choose which ones to monitor.</p>
+        <div data-found></div>
+      </section>
+    </div>
+
+    <div role="tabpanel" id="panel-settings" aria-labelledby="tab-settings" tabindex="0" hidden>
+      <form class="panel" data-settings novalidate aria-labelledby="settings-title">
+        <h2 id="settings-title">Scan settings</h2>
+        <p class="panel-sub">Applied to every scan of this domain, including scheduled monitoring.</p>
+        <div class="form-grid cols-2">
+          <div class="field">
+            <label for="s-version">WCAG version</label>
+            <select id="s-version" name="wcagVersion"><option>2.2</option><option>2.1</option><option>2.0</option></select>
+          </div>
+          <div class="field">
+            <label for="s-level">Conformance level</label>
+            <select id="s-level" name="wcagLevel"><option>A</option><option selected>AA</option><option>AAA</option></select>
+          </div>
+          <fieldset class="field">
+            <legend>Devices</legend>
+            <div class="check-row">
+              <label><input type="checkbox" name="device" value="desktop" /> Desktop</label>
+              <label><input type="checkbox" name="device" value="mobile" /> Mobile</label>
+            </div>
+          </fieldset>
+          <fieldset class="field">
+            <legend>Coverage</legend>
+            <div class="check-row">
+              <label><input type="checkbox" name="includeSubdomains" /> Include subdomains</label>
+              <label><input type="checkbox" name="scroll" /> Scroll the page before testing</label>
+            </div>
+          </fieldset>
+          <div class="field">
+            <label for="s-delay">Page load delay (milliseconds)</label>
+            <input id="s-delay" name="delayMs" type="number" min="0" max="10000" step="100" />
+            <span class="help">Wait for animations or late content before testing. 0 to 10,000.</span>
+          </div>
+          <div></div>
+          <div class="field">
+            <label for="s-include">Only include URLs matching <span class="hint">(optional)</span></label>
+            <textarea id="s-include" name="include" rows="3" placeholder="/docs/*"></textarea>
+            <span class="help">One rule per line. Use * as a wildcard.</span>
+          </div>
+          <div class="field">
+            <label for="s-exclude">Exclude URLs matching <span class="hint">(optional)</span></label>
+            <textarea id="s-exclude" name="exclude" rows="3" placeholder="/blog/tag/*"></textarea>
+            <span class="help">Applied when discovering pages.</span>
+          </div>
+        </div>
+        <fieldset class="field">
+          <legend>Custom HTTP headers</legend>
+          <p class="help">For staging environments, for example an Authorization header. Headers are only sent to this domain, and saved values are never shown again.</p>
+          <div class="header-rows" data-header-rows></div>
+          <button class="btn btn-outline btn-sm" type="button" data-add-header>Add header</button>
+        </fieldset>
+        <p class="status-line" data-settings-status role="status" aria-live="polite"></p>
+        <button class="btn" type="submit">Save settings</button>
+      </form>
+      <section class="panel" aria-labelledby="danger-title" data-danger>
+        <h2 id="danger-title">Remove domain</h2>
+        <p class="panel-sub">Deletes the domain, its pages and all scan history. This cannot be undone.</p>
+        <button class="btn btn-danger" type="button" data-delete-domain>Remove domain</button>
+      </section>
+    </div>
+  </div>
+</AppLayout>
+<script>
+  import '../../scripts/app/domain.js';
+</script>

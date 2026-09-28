@@ -4,6 +4,7 @@ Marketing site and free **website accessibility checker** for [accessbell.co](ht
 
 - **Site:** Astro 7, fully static HTML, no framework JavaScript (15 KB of plain scripts, loaded only on the pages that need them), self-hosted Inter font
 - **Checker API:** Vercel serverless functions in `api/` (`/api/scan`, `/api/contact`)
+- **Customer dashboard:** `/app` pages (static HTML + bundled scripts) backed by `/api/app/*`, Supabase (Auth + Postgres), Stripe Payment Link billing and Inngest background monitoring
 - **Hosting target:** Vercel (`vercel.json` holds headers, redirects and function config)
 
 ## Commands
@@ -13,13 +14,16 @@ Marketing site and free **website accessibility checker** for [accessbell.co](ht
 | `npm install` | Install dependencies (Node 22.12+) |
 | `npm run dev` | Astro dev server at `localhost:4321` (pages only, no `/api`) |
 | `npm run preview` | Production build plus a local server that mirrors `vercel.json` (headers, clean URLs, redirects) **and** runs the `/api` functions |
-| `npm test` | Unit tests: SSRF guard, audit rules, contact validation, origin checks |
+| `npm test` | Unit tests. Set `TEST_DATABASE_URL` to a disposable Postgres to also run the dashboard integration tests |
 | `npm run assets` | Regenerate favicon, icons, `logo.png`, `logo.svg` and `og-default.png` from `public/favicon.svg` (needs Playwright) |
 
 ## Project layout
 
 ```
-api/                 Vercel functions (thin handlers)
+api/                 Vercel functions (thin handlers): scan, contact, app, stripe-webhook, inngest
+server/app/          Dashboard backend: auth, accounts and roles, billing, domains, scanning, team, monitoring
+server/inngest/      Scheduled monitoring functions
+supabase/migrations/ Database schema (run once in the Supabase SQL editor)
 server/              Checker engine and security helpers
   browser-audit.js   axe-core in a real browser (Browserless), used when BROWSER_WS_ENDPOINT is set
   audit.js           WCAG rules over parsed HTML (parse5), the fallback engine
@@ -48,6 +52,17 @@ tests/               node:test suites
    - Without them the form shows a friendly error and points people to the email address.
 4. Set `BROWSER_WS_ENDPOINT` to your Browserless URL (`wss://production-sfo.browserless.io?token=...`) so scans run axe-core in a real browser. If it is missing or the browser is down, scans fall back to the HTML checker automatically.
 5. In **Firewall**, add a rate-limit rule for `/api/*` (for example 20 requests per minute per IP). The built-in limiter is per instance only.
+
+## Customer dashboard setup
+
+1. **Database:** Supabase -> SQL Editor -> paste `supabase/migrations/0001_app_schema.sql` -> Run. It creates a private `app` schema that Supabase's public API cannot reach.
+2. **Auth URLs:** Supabase -> Authentication -> URL Configuration. Site URL `https://accessbell.co`; add Redirect URLs `https://accessbell.co/app/auth/callback` and your Vercel preview domain's `/app/auth/callback`.
+3. **Auth emails:** Supabase's built-in email is limited to a few messages per hour. For launch, set Authentication -> SMTP to Resend (`smtp.resend.com`, port 465, user `resend`, password = your Resend API key).
+4. **Stripe Payment Link:** in the link's settings, set "After payment" to redirect to `https://accessbell.co/app/billing`, and allow customers to adjust quantity (quantity = number of domains). Create a webhook to `https://accessbell.co/api/stripe-webhook` for `checkout.session.completed` and `customer.subscription.created/updated/deleted`. Activate the Customer Portal and allow quantity changes, card updates and cancellation.
+5. **Inngest:** install the Inngest Vercel integration. It adds the keys and syncs `https://<your-domain>/api/inngest` on every deploy. Monitoring runs daily at 06:00 UTC.
+6. Add every variable from `.env.example` to Vercel, then redeploy.
+
+How it fits together: a user signs up (Supabase Auth, session kept in httpOnly cookies scoped to `/api`), an account is created with them as owner, "Start 3-day free trial" sends them to the Stripe Payment Link with `client_reference_id` = account id, and the webhook activates the account with a domain quota equal to the subscription quantity. Roles: owner (billing), admin (domains, settings, team), member (pages, scans), viewer (read only).
 
 ## Security
 

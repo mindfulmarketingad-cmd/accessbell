@@ -29,6 +29,9 @@ function headersFor(path) {
 const handlers = {
   '/api/scan': await import(join(root, 'api/scan.js')),
   '/api/contact': await import(join(root, 'api/contact.js')),
+  '/api/app': await import(join(root, 'api/app.js')),
+  '/api/stripe-webhook': await import(join(root, 'api/stripe-webhook.js')),
+  '/api/inngest': await import(join(root, 'api/inngest.js')).catch(() => ({})),
 };
 
 async function tryFile(p) {
@@ -55,16 +58,31 @@ http
       }
     }
 
-    if (handlers[path]) {
+    // vercel.json rewrites (for example /api/app/domains -> /api/app?route=domains)
+    for (const r of config.rewrites || []) {
+      const m = toRegex(r.source).exec(path);
+      if (m) {
+        const dest = new URL(r.destination.replace(/:(\w+)\*?/g, (_, k) => encodeURIComponent(m.groups?.[k] ?? '')), url);
+        for (const [k, v] of dest.searchParams) url.searchParams.set(k, decodeURIComponent(v));
+        url.pathname = dest.pathname;
+        break;
+      }
+    }
+    const fnPath = url.pathname;
+
+    if (handlers[fnPath]) {
       const chunks = [];
       for await (const c of req) chunks.push(c);
       const headers = new Headers();
       for (const [k, v] of Object.entries(req.headers)) if (typeof v === 'string') headers.set(k, v);
       headers.set('x-real-ip', req.socket.remoteAddress || 'local');
       const request = new Request(url, { method: req.method, headers, body: ['GET', 'HEAD'].includes(req.method) ? undefined : Buffer.concat(chunks) });
-      const fn = handlers[path][req.method];
+      const fn = handlers[fnPath][req.method];
       const response = fn ? await fn(request) : new Response('Method not allowed', { status: 405 });
-      res.writeHead(response.status, { ...headersFor(path), ...Object.fromEntries(response.headers) });
+      const outHeaders = { ...headersFor(path), ...Object.fromEntries(response.headers) };
+      const setCookie = response.headers.getSetCookie?.() || [];
+      if (setCookie.length) outHeaders['Set-Cookie'] = setCookie;
+      res.writeHead(response.status, outHeaders);
       return res.end(Buffer.from(await response.arrayBuffer()));
     }
 
