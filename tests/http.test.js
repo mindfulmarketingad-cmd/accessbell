@@ -11,6 +11,7 @@ test('origin check allows the site and rejects others', () => {
   assert.equal(checkOrigin(req({}), prod), false);
   assert.equal(checkOrigin(req({ origin: 'https://accessbell.co', 'sec-fetch-site': 'cross-site' }), prod), false);
   assert.equal(checkOrigin(req({ origin: 'http://localhost:4321' }), prod), false);
+  assert.equal(checkOrigin(req({ origin: 'https://project-voiul.vercel.app' }), { ...prod, VERCEL_PROJECT_PRODUCTION_URL: 'project-voiul.vercel.app' }), true);
 });
 
 test('readJson enforces content type and size', async () => {

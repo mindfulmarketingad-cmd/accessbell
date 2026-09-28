@@ -16,6 +16,8 @@ export function json(status, body, extra = {}) {
 export function allowedOrigins(env = process.env) {
   const list = [...SITE_ORIGINS];
   if (env.VERCEL_URL) list.push(`https://${env.VERCEL_URL}`);
+  // The project's production address, e.g. project-name.vercel.app before a custom domain is added.
+  if (env.VERCEL_PROJECT_PRODUCTION_URL) list.push(`https://${env.VERCEL_PROJECT_PRODUCTION_URL}`);
   if (env.VERCEL_BRANCH_URL) list.push(`https://${env.VERCEL_BRANCH_URL}`);
   if (env.ALLOWED_ORIGINS) {
     for (const o of env.ALLOWED_ORIGINS.split(',')) if (o.trim()) list.push(o.trim().replace(/\/$/, ''));
