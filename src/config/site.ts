@@ -20,7 +20,14 @@ export const HEADER_NAV = [
   { label: 'Home', href: '/' },
   { label: 'Pricing', href: '/pricing' },
   { label: 'Blog', href: '/blog' },
-  { label: 'Resources', href: '/resources' },
+  {
+    label: 'Resources',
+    href: '/resources',
+    children: [
+      { label: 'Free Tools', href: '/resources', note: 'Scanner, checkers, statement generator and more' },
+      { label: 'Help Center', href: '/resources/help-center', note: 'Guides for every AccessBell feature' },
+    ],
+  },
   { label: 'Reviews', href: '/reviews' },
   { label: 'About', href: '/about' },
 ] as const;

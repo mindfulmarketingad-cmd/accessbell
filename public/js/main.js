@@ -26,6 +26,35 @@
     });
   }
 
+  // Header "Resources" dropdown (button + hidden menu, WAI-ARIA disclosure pattern)
+  document.querySelectorAll('[data-nav-dropdown-trigger]').forEach(function (trigger) {
+    var menu = document.getElementById(trigger.getAttribute('aria-controls'));
+    if (!menu) return;
+    var setOpen = function (open) {
+      trigger.setAttribute('aria-expanded', String(open));
+      menu.hidden = !open;
+    };
+    trigger.addEventListener('click', function () {
+      setOpen(trigger.getAttribute('aria-expanded') !== 'true');
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && trigger.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        trigger.focus();
+      }
+    });
+    document.addEventListener('click', function (e) {
+      if (trigger.getAttribute('aria-expanded') === 'true' && !menu.contains(e.target) && !trigger.contains(e.target)) {
+        setOpen(false);
+      }
+    });
+    document.addEventListener('focusin', function (e) {
+      if (trigger.getAttribute('aria-expanded') === 'true' && !menu.contains(e.target) && !trigger.contains(e.target)) {
+        setOpen(false);
+      }
+    });
+  });
+
   // Tabs (WAI-ARIA Authoring Practices, automatic activation)
   document.querySelectorAll('[data-tabs]').forEach(function (root) {
     var tabs = Array.prototype.slice.call(root.querySelectorAll('[role="tab"]'));

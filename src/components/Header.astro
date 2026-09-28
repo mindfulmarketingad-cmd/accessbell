@@ -16,9 +16,35 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path === href
       <nav class="primary-nav" id="primary-nav" aria-label="Primary">
         <ul>
           {HEADER_NAV.map((item) => (
-            <li>
-              <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>
-            </li>
+            'children' in item && item.children ? (
+              <li class="nav-has-children">
+                <button
+                  type="button"
+                  class="nav-dropdown-trigger"
+                  aria-expanded="false"
+                  aria-controls={`nav-dd-${item.label.toLowerCase()}`}
+                  data-nav-dropdown-trigger
+                  aria-current={isCurrent(item.href) ? 'page' : undefined}
+                >
+                  {item.label}
+                  <Icon name="chevron" />
+                </button>
+                <ul class="nav-dropdown" id={`nav-dd-${item.label.toLowerCase()}`} hidden>
+                  {item.children.map((child) => (
+                    <li>
+                      <a href={child.href} aria-current={isCurrent(child.href) ? 'page' : undefined}>
+                        <span>{child.label}</span>
+                        {child.note && <small>{child.note}</small>}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ) : (
+              <li>
+                <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>
+              </li>
+            )
           ))}
         </ul>
       </nav>

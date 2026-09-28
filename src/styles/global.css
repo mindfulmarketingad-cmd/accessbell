@@ -190,7 +190,6 @@ a:hover {
 }
 .accent {
   color: var(--sage-700);
-  text-transform: uppercase;
 }
 /* Jurisdiction flags next to standards and regions */
 .flag {
@@ -390,6 +389,72 @@ a:hover {
   font-weight: 600;
   background: var(--sage-50);
 }
+.nav-has-children {
+  position: relative;
+}
+.nav-dropdown-trigger {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 10px 8px 14px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--ink-700);
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+.nav-dropdown-trigger:hover {
+  color: var(--ink-900);
+  background: var(--surface);
+}
+.nav-dropdown-trigger[aria-current='page'] {
+  color: var(--ink-900);
+  font-weight: 600;
+  background: var(--sage-50);
+}
+.nav-dropdown-trigger svg {
+  width: 15px;
+  height: 15px;
+  transition: transform 0.15s ease;
+}
+.nav-dropdown-trigger[aria-expanded='true'] svg {
+  transform: rotate(180deg);
+}
+.nav-dropdown {
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 240px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+.nav-dropdown a {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--ink-900);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.nav-dropdown a:hover {
+  background: var(--surface);
+}
+.nav-dropdown a small {
+  color: var(--ink-500);
+  font-size: 0.8125rem;
+  font-weight: 400;
+}
 .header-cta {
   display: flex;
   gap: 6px;
@@ -460,6 +525,24 @@ a:hover {
   .primary-nav a {
     padding: 12px;
     font-size: 1rem;
+  }
+  .nav-dropdown-trigger {
+    width: 100%;
+    justify-content: space-between;
+    padding: 12px;
+    font-size: 1rem;
+  }
+  .nav-dropdown {
+    position: static;
+    margin: 2px 0 6px;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+    background: var(--surface);
+    border-radius: var(--radius-sm);
+  }
+  .nav-dropdown a {
+    padding: 10px 12px 10px 24px;
   }
 }
 @media (max-width: 560px) {
