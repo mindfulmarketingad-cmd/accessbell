@@ -1,0 +1,155 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import Faq from '../../components/Faq.astro';
+import { faqSchema, type FaqItem } from '../../lib/schema';
+import { SITE } from '../../config/site';
+
+const PATH = '/resources/statement-generator';
+const standards = [
+  { value: 'wcag22aa', label: 'WCAG 2.2 AA (most common)' },
+  { value: 'wcag21aa', label: 'WCAG 2.1 AA' },
+  { value: 'wcag20aa', label: 'WCAG 2.0 AA' },
+  { value: 'wcag22aaa', label: 'WCAG 2.2 AAA' },
+  { value: 'ada', label: 'ADA (WCAG 2.1 AA)' },
+  { value: 'section508', label: 'Section 508 (WCAG 2.0 AA)' },
+  { value: 'en301549', label: 'EN 301 549 / European Accessibility Act (WCAG 2.1 AA)' },
+];
+
+const faqs: FaqItem[] = [
+  {
+    q: 'What is an accessibility statement?',
+    a: 'A public page that explains the accessibility standard your website aims for, how well it meets that standard, and how people can report barriers. It shows visitors, including people with disabilities, that you take accessibility seriously and gives them a way to reach you.',
+  },
+  {
+    q: 'Is an accessibility statement required by law?',
+    a: 'In some places, yes. Public sector bodies in the EU and UK must publish one, and the European Accessibility Act requires information about how products and services meet accessibility requirements. In the United States it is not required by the ADA, but it is widely recommended and often part of settlement agreements.',
+  },
+  {
+    q: 'Does publishing a statement make my website compliant?',
+    a: 'No. A statement describes your accessibility work; it does not replace it. Only choose "My website is accessible" if you have tested your site against the standard. If you are still fixing issues, say so. An honest statement builds more trust than an inaccurate one.',
+  },
+  {
+    q: 'Where should I put my accessibility statement?',
+    a: 'On its own page, for example /accessibility, linked from your site footer on every page so it is easy to find. Keep the contact details current and update the date whenever you review it.',
+  },
+  {
+    q: 'Do you store the information I enter?',
+    a: 'No. The statement is generated in your browser. Nothing you type is sent to AccessBell or anyone else.',
+  },
+];
+
+const schema = [
+  {
+    '@type': 'WebApplication',
+    name: 'Accessibility Statement Generator',
+    url: `${SITE.url}${PATH}`,
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'Any',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    publisher: { '@id': `${SITE.url}/#organization` },
+  },
+  faqSchema(faqs),
+];
+---
+<BaseLayout
+  title="Free Accessibility Statement Generator | AccessBell"
+  description="Generate a free, custom accessibility statement for your website in seconds. Choose WCAG 2.2, ADA, Section 508 or EN 301 549, then copy or download it."
+  breadcrumbs={[{ label: 'Accessibility Statement Generator', href: PATH }]}
+  schema={schema}
+>
+  <section class="gen-hero" aria-labelledby="gen-title">
+    <div class="container">
+      <span class="gen-hero-icon"><Icon name="doc" /></span>
+      <h1 id="gen-title">Generate Free Custom <span class="accent">Accessibility Statement</span></h1>
+      <p class="lead">Create your accessibility statement below in under a minute. It is free, and nothing you type leaves your browser.</p>
+    </div>
+  </section>
+
+  <div class="container gen-body" data-generator>
+    <fieldset class="gen-choice">
+      <legend>Before we continue, which option best describes you?</legend>
+      <div class="gen-choice-grid">
+        <label class="gen-option">
+          <input type="radio" name="status" value="conformant" />
+          <span class="gen-option-icon"><Icon name="check-circle" /></span>
+          <strong>My website is accessible</strong>
+          <span>I have tested my site, for example with AccessBell, and fixed the issues I found.</span>
+        </label>
+        <label class="gen-option">
+          <input type="radio" name="status" value="partial" checked />
+          <span class="gen-option-icon"><Icon name="wrench" /></span>
+          <strong>I'm still working on my site's accessibility</strong>
+          <span>Some parts do not meet the standard yet, and we are improving them.</span>
+        </label>
+      </div>
+    </fieldset>
+
+    <section class="gen-main" aria-labelledby="gen-sub">
+      <h2 id="gen-sub">Get Your Custom Accessibility Statement</h2>
+      <p class="gen-intro">Fill in your details, then copy the statement to a page on your website, such as <code>/accessibility</code>. You can edit the text to reflect your own work, and remember to link to it from your site's footer.</p>
+
+      <div class="gen-grid">
+        <form class="gen-card" data-gen-form novalidate aria-labelledby="gen-input-title">
+          <div class="gen-card-head"><h3 id="gen-input-title">Input Information</h3></div>
+          <div class="gen-card-body">
+            <div class="field">
+              <label for="g-org">Organization name</label>
+              <input id="g-org" name="org" type="text" maxlength="120" autocomplete="organization" required aria-describedby="g-org-err" />
+              <p class="field-error" id="g-org-err" hidden></p>
+            </div>
+            <div class="field">
+              <label for="g-email">Email address for accessibility feedback</label>
+              <input id="g-email" name="email" type="email" maxlength="254" autocomplete="email" required aria-describedby="g-email-hint g-email-err" />
+              <p class="help" id="g-email-hint">Shown in the statement so visitors can report barriers.</p>
+              <p class="field-error" id="g-email-err" hidden></p>
+            </div>
+            <div class="field">
+              <label for="g-site">Website address</label>
+              <input id="g-site" name="site" type="text" inputmode="url" maxlength="253" autocomplete="url" placeholder="example.com" required aria-describedby="g-site-err" />
+              <p class="field-error" id="g-site-err" hidden></p>
+            </div>
+            <div class="field">
+              <label for="g-phone">Phone number <span class="hint">(optional)</span></label>
+              <input id="g-phone" name="phone" type="tel" maxlength="40" autocomplete="tel" />
+            </div>
+            <div class="field">
+              <label for="g-standard">Which accessibility standard do you want to add here?</label>
+              <select id="g-standard" name="standard">
+                {standards.map((s) => <option value={s.value}>{s.label}</option>)}
+              </select>
+            </div>
+            <p class="gen-privacy"><Icon name="lock" /> Your details stay in your browser. Nothing is sent to AccessBell.</p>
+            <button class="btn btn-lg btn-block gen-submit" type="submit"><Icon name="sparkle" /> Generate My Accessibility Statement</button>
+          </div>
+        </form>
+
+        <section class="gen-card gen-output" aria-labelledby="gen-out-title">
+          <div class="gen-card-head">
+            <h3 id="gen-out-title" tabindex="-1">Accessibility Statement for <span class="accent-text" data-out-site>your website</span></h3>
+            <div class="gen-actions">
+              <button class="btn btn-outline btn-sm" type="button" data-copy><Icon name="copy" /> <span>Copy</span></button>
+              <button class="btn btn-outline btn-sm" type="button" data-download><Icon name="download" /> <span>HTML</span></button>
+            </div>
+          </div>
+          <p class="visually-hidden" role="status" aria-live="polite" data-gen-status></p>
+          <div class="gen-card-body gen-statement" data-statement></div>
+        </section>
+      </div>
+    </section>
+  </div>
+
+  <section class="section section-surface" aria-labelledby="gen-faq-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">FAQ</span>
+        <h2 id="gen-faq-title">Accessibility Statement Questions</h2>
+        <p>Want to know where your site stands before you publish? <a href="/#scan">Run a free WCAG scan</a>.</p>
+      </div>
+      <Faq items={faqs} />
+    </div>
+  </section>
+</BaseLayout>
+<script>
+  import '../../scripts/statement-generator.js';
+</script>
