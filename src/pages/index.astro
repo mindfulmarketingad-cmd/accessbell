@@ -248,7 +248,7 @@ const faqs: FaqItem[] = [
       <ul class="badge-row" role="list">
         {standards.map((s) => (
           <li class="std-badge">
-            <span class="seal"><Icon name="shield" /></span>
+            <span class="seal"><Icon name="shield" /><span class="seal-flag"><Flag code={s.flag} /></span></span>
             <strong>{s.name}</strong>
             <span>{s.sub}</span>
           </li>

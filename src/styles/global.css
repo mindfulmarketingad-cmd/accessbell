@@ -1228,6 +1228,33 @@ a:hover {
   width: 26px;
   height: 26px;
 }
+/* Jurisdiction flag pinned to the seal */
+.std-badge .seal {
+  position: relative;
+}
+.std-badge .seal-flag {
+  position: absolute;
+  right: -8px;
+  bottom: -2px;
+  display: grid;
+  place-items: center;
+  padding: 3px;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: var(--shadow);
+  line-height: 0;
+}
+.std-badge .seal-flag .flag {
+  width: 26px;
+  height: 19px;
+}
+.std-badge .seal-flag .flag-intl {
+  color: var(--sage-700);
+}
+.std-badge .seal-flag svg {
+  width: 18px;
+  height: 18px;
+}
 .std-badge strong {
   font-size: 0.9375rem;
   color: var(--ink-900);
