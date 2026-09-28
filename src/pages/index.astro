@@ -192,6 +192,10 @@ const faqs: FaqItem[] = [
     a: 'No. AccessBell does not inject a widget into your site. It finds issues in your source code and helps your team fix them properly, so the improvements are permanent.',
   },
   {
+    q: 'How does AccessBell fit into a development and QA workflow?',
+    a: 'Use the free scanner to check any public page on demand. With AccessBell Lite, scan staging before release, using custom HTTP headers to get past authentication, and production after each deploy. Each issue includes the failing HTML and the WCAG criterion, so it can go straight into a ticket, and the CSV export drops into your test tracker. Monitored pages are rescanned daily, and owners and admins are emailed when a new critical or serious issue appears.',
+  },
+  {
     q: 'How often should I scan my website for accessibility issues?',
     a: 'Scan at least weekly and after every major release. Websites change constantly, and new content is the most common source of regressions. The Lite plan monitors your pages continuously and includes unlimited rescans.',
   },
@@ -212,7 +216,7 @@ const faqs: FaqItem[] = [
           Find Out if Your Website Is <span class="accent">Accessible and Compliant</span>
         </h1>
         <p class="lead">
-          Scan any page against WCAG 2.2 in seconds, free and with no account needed. See every barrier, the success criterion it fails and the exact code to fix.
+          Paste a URL and get a WCAG 2.2 audit in seconds, free and with no signup. Every failure comes with the offending HTML, the success criterion it breaks and the fix, so developers, QA and content teams can act on it straight away.
         </p>
         <ScanForm id="hero" />
         <div class="compliance-row">
@@ -249,7 +253,7 @@ const faqs: FaqItem[] = [
         <ul class="check-list">
           <li><Icon name="check" />Every issue mapped to its WCAG 2.2 success criterion</li>
           <li><Icon name="check" />Severity ranking so you fix what blocks users first</li>
-          <li><Icon name="check" />Element-level evidence your developers can act on</li>
+          <li><Icon name="check" />The failing HTML for every issue, ready to paste into a ticket</li>
         </ul>
         <a class="btn" href="/#scan">Scan your site now <Icon name="arrow" /></a>
       </div>
@@ -311,6 +315,54 @@ const faqs: FaqItem[] = [
         ))}
       </ul>
       <p class="pour-note">Every issue in an AccessBell report links to the exact success criterion it fails, its conformance level (A, AA or AAA) and a severity rank. Items only a person can judge are listed separately for manual review.</p>
+    </div>
+  </section>
+
+  <section class="section section-surface" aria-labelledby="roles-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Built for your role</span>
+        <h2 id="roles-title">One Report, <span class="accent">Three Ways to Use It</span></h2>
+        <p>Accessibility is a team sport. AccessBell gives each person the detail they need, in the language they work in.</p>
+      </div>
+      <div class="grid-3 roles">
+        <article class="card">
+          <div class="icon-tile"><Icon name="code" /></div>
+          <h3>For Web Developers</h3>
+          <p>Failing markup, not vague warnings. Pages render in headless Chromium and run through axe-core, so what you see is the real DOM after your JavaScript runs.</p>
+          <ul class="check-list">
+            <li><Icon name="check" />The offending HTML snippet for every failing element</li>
+            <li><Icon name="check" />Correct-markup examples you can copy</li>
+            <li><Icon name="check" />Component grouping: fix the shared template once</li>
+            <li><Icon name="check" />Scan staging behind auth with custom HTTP headers</li>
+          </ul>
+          <a class="link-arrow" href="/resources/help-center/fixing-issues/read-an-issue">How to read an issue <Icon name="arrow" /></a>
+        </article>
+        <article class="card">
+          <div class="icon-tile"><Icon name="check-circle" /></div>
+          <h3>For QA Testers</h3>
+          <p>Repeatable accessibility tests you can sign off. Pin each domain to a WCAG version and level, and every run is tested the same way.</p>
+          <ul class="check-list">
+            <li><Icon name="check" />Pass and fail by success criterion, with a coverage table</li>
+            <li><Icon name="check" />Desktop and mobile viewports in the same run</li>
+            <li><Icon name="check" />Daily regression scans with alerts on new serious issues</li>
+            <li><Icon name="check" />CSV export for your test tracker, plus a manual checklist</li>
+          </ul>
+          <a class="link-arrow" href="/blog/wcag-2-aa-checklist">Get the WCAG 2 AA checklist <Icon name="arrow" /></a>
+        </article>
+        <article class="card">
+          <div class="icon-tile"><Icon name="doc" /></div>
+          <h3>For Content Creators</h3>
+          <p>Publish without breaking accessibility. Rescan a page after every update and catch the problems content edits introduce most.</p>
+          <ul class="check-list">
+            <li><Icon name="check" />Images published without alt text</li>
+            <li><Icon name="check" />Empty headings and links with no text</li>
+            <li><Icon name="check" />Text colors with too little contrast</li>
+            <li><Icon name="check" />Plain-language fixes, no code knowledge needed</li>
+          </ul>
+          <a class="link-arrow" href="/resources/help-center/fixing-issues/fix-common-errors">Fix the most common errors <Icon name="arrow" /></a>
+        </article>
+      </div>
     </div>
   </section>
 
@@ -425,7 +477,7 @@ const faqs: FaqItem[] = [
     <div class="container">
       <div class="section-head">
         <span class="eyebrow">Why AccessBell</span>
-        <h2 id="built-title">Built for Website Owners Who Want Accessibility <span class="accent">Done Right</span></h2>
+        <h2 id="built-title">Built for Teams Who Want Accessibility <span class="accent">Done Right</span></h2>
         <p>No overlays and no shortcuts. Real issues, found in your code, fixed at the source.</p>
       </div>
       <div class="built-grid">

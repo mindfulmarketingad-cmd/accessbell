@@ -3911,6 +3911,18 @@ a:hover {
   margin-left: 8px;
 }
 
+/* Role cards on the homepage */
+.roles .card {
+  display: flex;
+  flex-direction: column;
+}
+.roles .check-list {
+  margin: 14px 0 20px;
+}
+.roles .link-arrow {
+  margin-top: auto;
+}
+
 /* ---------- FAQ ---------- */
 .faq {
   max-width: 820px;
