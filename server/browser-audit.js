@@ -8,6 +8,7 @@ import axe from 'axe-core';
 import { chromium } from 'playwright-core';
 import { assertSafeUrl } from './net-guard.js';
 import { STANDARDS, scoreFrom } from './audit.js';
+import { criterion } from './wcag-criteria.js';
 
 const LIMITS = {
   connectMs: 10_000,
@@ -39,9 +40,12 @@ export function scFromTag(tag) {
 }
 
 function wcagRefs(tags) {
-  const level = tags.some((t) => /^wcag2\d*aaa$/.test(t)) ? 'AAA' : tags.some((t) => /^wcag2\d*aa$/.test(t)) ? 'AA' : 'A';
-  const refs = tags.map(scFromTag).filter(Boolean).map((sc) => ({ sc, name: '', level }));
-  return refs.length ? refs : [{ sc: 'Best practice', name: '', level: '-' }];
+  const tagLevel = tags.some((t) => /^wcag2\d*aaa$/.test(t)) ? 'AAA' : tags.some((t) => /^wcag2\d*aa$/.test(t)) ? 'AA' : 'A';
+  const refs = tags
+    .map(scFromTag)
+    .filter(Boolean)
+    .map((sc) => criterion(sc) || { sc, name: '', level: tagLevel, version: null, principle: null });
+  return refs.length ? refs : [{ sc: 'Best practice', name: '', level: '-', version: null, principle: null }];
 }
 
 const clip = (s, n) => {

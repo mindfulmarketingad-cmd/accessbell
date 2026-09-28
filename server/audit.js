@@ -4,6 +4,7 @@
 // (color contrast, focus visibility, reflow) are out of scope for the free
 // single-page scan and are reported as a note instead of a pass.
 import { parse } from 'parse5';
+import { criterion } from './wcag-criteria.js';
 
 export const STANDARDS = {
   wcag22: { id: 'wcag22', label: 'WCAG 2.2 Level AA' },
@@ -593,7 +594,7 @@ export function audit(html, { standard = 'wcag22' } = {}) {
 
   for (const rule of RULES) {
     const { applicable, failures } = rule.run(ctx);
-    const wcag = rule.wcag.map((k) => SC[k]);
+    const wcag = rule.wcag.map((k) => ({ ...SC[k], ...criterion(k) }));
     if (failures.length) {
       issues.push({
         id: rule.id,

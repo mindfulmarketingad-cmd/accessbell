@@ -113,7 +113,6 @@ const faqs: FaqItem[] = [
   description="Free website accessibility checker. Scan any page against WCAG 2.2, ADA and Section 508 in seconds and get clear, code-level fixes for every issue found."
   schema={[softwareSchema(), faqSchema(faqs)]}
 >
-  <script slot="head" is:inline src="/js/scan.js" defer></script>
   <script slot="head" is:inline src="/js/flow.js" defer></script>
   <section class="hero hero-flow" id="scan" aria-labelledby="hero-title">
     <canvas class="flow-canvas" data-flow aria-hidden="true"></canvas>
@@ -354,3 +353,6 @@ const faqs: FaqItem[] = [
 
   <CtaBand withForm />
 </BaseLayout>
+<script>
+  import '../scripts/free-scan.js';
+</script>

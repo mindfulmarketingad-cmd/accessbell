@@ -1,6 +1,6 @@
 // A single stored scan report.
 import { api, boot, el, qs, fmtDate } from './core.js';
-import { renderReport } from './report.js';
+import { mountFilteredReport } from './report.js';
 
 await boot();
 const box = document.querySelector('[data-report]');
@@ -24,7 +24,13 @@ try {
       el('li', {}, [el('strong', { text: String((scan.passes || []).length) }), el('span', { text: 'Passed' })]),
     ]),
   ]);
-  box.replaceChildren(scan.status === 'failed' ? el('div', { class: 'results-body' }, [el('h1', { class: 'h3-size', text: 'This scan failed' }), el('p', { text: scan.error })]) : head, scan.status === 'failed' ? '' : renderReport(scan));
+  if (scan.status === 'failed') {
+    box.replaceChildren(el('div', { class: 'results-body' }, [el('h1', { class: 'h3-size', text: 'This scan failed' }), el('p', { text: scan.error })]));
+  } else {
+    const reportBox = el('div', { class: 'results-filtered' });
+    box.replaceChildren(head, reportBox);
+    mountFilteredReport(reportBox, scan, { level: 2 });
+  }
 } catch (err) {
   box.replaceChildren(el('div', { class: 'results-body' }, [el('h1', { class: 'h3-size', text: 'Report not available' }), el('p', { text: err.message })]));
 }

@@ -2637,3 +2637,81 @@ h2[tabindex='-1']:focus {
   height: 18px;
   color: var(--sage-700);
 }
+
+/* ---------- Report filters ---------- */
+.report-filters {
+  padding: 18px clamp(20px, 3vw, 32px);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  display: grid;
+  gap: 14px;
+}
+.report-filters-row {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+.report-filters .field label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ink-700);
+  margin-bottom: 4px;
+}
+.report-filters select {
+  width: 100%;
+  min-height: 40px;
+  padding: 6px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  font: inherit;
+  font-size: 0.875rem;
+  color: var(--ink-900);
+}
+.report-filters select:focus {
+  outline: none;
+  border-color: var(--sage-700);
+  box-shadow: 0 0 0 3px rgb(68 114 63 / 0.2);
+}
+.report-filters-impact {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  align-items: center;
+  font-size: 0.875rem;
+}
+.report-filters-impact legend {
+  float: left;
+  margin-right: 8px;
+  padding: 0;
+  font-weight: 600;
+  color: var(--ink-700);
+}
+.report-filters-impact label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink-700);
+}
+.report-filters-impact input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--sage-700);
+}
+.report-filters-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  align-items: center;
+  justify-content: space-between;
+}
+.report-filters-summary {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--ink-700);
+  max-width: 760px;
+}
