@@ -28,7 +28,7 @@ export const FEATURE_GROUPS: FeatureGroup[] = [
     ],
   },
   {
-    title: 'Scanning and configuration',
+    title: 'Scanning and Configuration',
     features: [
       'Unlimited Rescans',
       'Automatic Domain Crawl',
@@ -42,7 +42,7 @@ export const FEATURE_GROUPS: FeatureGroup[] = [
     ],
   },
   {
-    title: 'Issue detection and debugging',
+    title: 'Issue Detection and Debugging',
     features: [
       'Automatic Issue Detection',
       'Detailed Fixing Instructions',
@@ -53,11 +53,11 @@ export const FEATURE_GROUPS: FeatureGroup[] = [
     ],
   },
   {
-    title: 'Dashboard and reporting',
+    title: 'Dashboard and Reporting',
     features: ['Multi-Domain View', 'Language Support', 'PDF Exports', 'Excel Exports', 'Email Notifications'],
   },
   {
-    title: 'Team and workflow',
+    title: 'Team and Workflow',
     features: ['Role-Based Permissions', 'User Management'],
   },
   {

@@ -8,10 +8,10 @@ import { PLAN, FEATURE_GROUPS } from '../data/pricing';
 import { faqSchema, softwareSchema, type FaqItem } from '../lib/schema';
 
 const steps = [
-  { tag: 'Step 1', title: 'Automatic crawl', text: 'We discover pages on your domain, subdomains and XML sitemap, then keep the list current as you publish. You choose which 25 URLs to monitor.' },
+  { tag: 'Step 1', title: 'Automatic Crawl', text: 'We discover pages on your domain, subdomains and XML sitemap, then keep the list current as you publish. You choose which 25 URLs to monitor.' },
   { tag: 'Step 2', title: 'Scan', text: 'Each page is tested in a real browser on desktop and mobile against the WCAG level you choose, up to WCAG 2.2 AAA. Issues are ranked by how much they block users.' },
   { tag: 'Step 3', title: 'Improve', text: 'Your team gets the failing elements, grouped by component, with detailed fixing instructions and AI-assisted fix suggestions to review.' },
-  { tag: 'Step 4', title: 'Stay compliant', text: 'Unlimited rescans and continuous monitoring catch regressions as soon as they ship. Your accessibility statement and audit evidence update automatically.' },
+  { tag: 'Step 4', title: 'Stay Compliant', text: 'Unlimited rescans and continuous monitoring catch regressions as soon as they ship. Your accessibility statement and audit evidence update automatically.' },
 ];
 
 const faqs: FaqItem[] = [
@@ -59,7 +59,7 @@ const faqs: FaqItem[] = [
     <div class="container">
       <h1 id="pricing-title">
         <span class="h1-kicker">Website Accessibility Checker Pricing</span>
-        Accessibility on <span class="accent">autopilot</span>
+        Accessibility on <span class="accent">Autopilot</span>
       </h1>
       <p class="lead">One simple plan with everything you need to detect, fix and monitor accessibility issues. Pay per domain, cancel anytime.</p>
     </div>
@@ -84,7 +84,7 @@ const faqs: FaqItem[] = [
           <p class="plan-note">Need more than {PLAN.urlsPerDomain} URLs per domain? <a href="/contact?topic=sales">Talk to us</a>.</p>
         </div>
         <div class="plan-single-features">
-          <h3>Everything included</h3>
+          <h3>Everything Included</h3>
           <div class="feature-groups">
             {FEATURE_GROUPS.map((g) => (
               <div class="feature-group">
@@ -104,7 +104,7 @@ const faqs: FaqItem[] = [
     <div class="container">
       <div class="section-head">
         <span class="eyebrow">How it works</span>
-        <h2 id="process-title">Every problem has a process. <span class="accent">Here is ours.</span></h2>
+        <h2 id="process-title">Every Problem Has a Process. <span class="accent">Here Is Ours.</span></h2>
         <p>A repeatable loop that takes you from first scan to continuous compliance.</p>
       </div>
       <ProcessTour steps={steps} />
@@ -115,7 +115,7 @@ const faqs: FaqItem[] = [
     <div class="container grid-2">
       <div class="feature-copy">
         <span class="eyebrow">AI-assisted fixes</span>
-        <h2 id="ai-title">AI-assisted fixes, <span class="accent">done responsibly</span></h2>
+        <h2 id="ai-title">AI-Assisted Fixes, <span class="accent">Done Responsibly</span></h2>
         <p class="lead">Suggestions speed up remediation. Your team stays in control of every change.</p>
         <ul class="check-list">
           <li><Icon name="check" /><span><strong>Grounded in WCAG.</strong> Every suggestion cites the success criterion it resolves.</span></li>
@@ -143,7 +143,7 @@ const faqs: FaqItem[] = [
     <div class="container">
       <div class="section-head">
         <span class="eyebrow">Dashboard</span>
-        <h2 id="dash-title">Accessibility dashboard at a glance</h2>
+        <h2 id="dash-title">Accessibility Dashboard at a Glance</h2>
         <p>A domain-wide compliance overview for every domain you manage, in one multi-domain view.</p>
       </div>
       <div class="grid-2">
@@ -165,17 +165,17 @@ const faqs: FaqItem[] = [
         <div class="grid-3 dash-cards">
           <div class="card">
             <div class="icon-tile"><Icon name="doc" /></div>
-            <h3>Auto-updating statement</h3>
+            <h3>Auto-Updating Statement</h3>
             <p>Publish an accessibility statement that updates itself as your conformance changes, with a way for users to reach you.</p>
           </div>
           <div class="card">
             <div class="icon-tile"><Icon name="layers" /></div>
-            <h3>Audit-ready reporting</h3>
+            <h3>Audit-Ready Reporting</h3>
             <p>Export PDF and Excel reports by domain, criterion or date range, with audit evidence collected automatically.</p>
           </div>
           <div class="card">
             <div class="icon-tile"><Icon name="bell" /></div>
-            <h3>Email notifications</h3>
+            <h3>Email Notifications</h3>
             <p>Get an email when a deploy introduces a new critical issue, with a link straight to the failing element.</p>
           </div>
         </div>
@@ -187,12 +187,12 @@ const faqs: FaqItem[] = [
     <div class="container">
       <div class="section-head">
         <span class="eyebrow">FAQ</span>
-        <h2 id="pfaq-title">Frequently asked questions</h2>
+        <h2 id="pfaq-title">Frequently Asked Questions</h2>
         <p>Have another question? <a href="/contact">Contact our team</a>.</p>
       </div>
       <Faq items={faqs} />
     </div>
   </section>
 
-  <CtaBand title="See where your site stands today" text="Run a free WCAG 2.2 scan on any page, then monitor your whole domain with Lite." />
+  <CtaBand title="See Where Your Site Stands Today" text="Run a free WCAG 2.2 scan on any page, then monitor your whole domain with Lite." />
 </BaseLayout>

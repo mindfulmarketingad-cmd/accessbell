@@ -190,6 +190,27 @@ a:hover {
 }
 .accent {
   color: var(--sage-700);
+  text-transform: uppercase;
+}
+/* Jurisdiction flags next to standards and regions */
+.flag {
+  flex: none;
+  display: inline-block;
+  width: 20px;
+  height: 15px;
+  border-radius: 2px;
+  object-fit: cover;
+  box-shadow: 0 0 0 1px rgb(34 38 47 / 0.12);
+}
+.flag-intl {
+  display: inline-grid;
+  place-items: center;
+  box-shadow: none;
+  color: var(--sage-700);
+}
+.flag-intl svg {
+  width: 18px;
+  height: 18px;
 }
 .mark {
   background: linear-gradient(transparent 62%, rgb(132 176 130 / 0.45) 62%, rgb(132 176 130 / 0.45) 92%, transparent 92%);
@@ -1235,6 +1256,9 @@ a:hover {
 }
 .tablist button {
   flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   min-height: 40px;
   padding: 8px 16px;
   border: 1px solid transparent;

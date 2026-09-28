@@ -34,13 +34,13 @@ This guide explains each requirement in the **2010 ADA Standards for Accessible 
 
 *This is general information, not legal or design advice. Local building codes can be stricter, so confirm details with your code official.*
 
-## What counts as a ramp under the ADA
+## What Counts as a Ramp Under the ADA
 
 The ADA defines a ramp as a walking surface with a **running slope steeper than 1:20** (5 percent). Anything flatter is a walking surface, not a ramp, and does not need ramp features like handrails and landings.
 
 Ramps are part of an **accessible route**, the continuous path people take from parking, sidewalks and transit stops into and through a building. They serve wheelchair users and people who use walkers, canes or crutches. Parents with strollers, delivery drivers and older adults benefit too.
 
-## Quick reference: ADA ramp requirements
+## Quick Reference: ADA Ramp Requirements
 
 | Element | Requirement | 2010 Standards |
 | --- | --- | --- |
@@ -57,13 +57,13 @@ Ramps are part of an **accessible route**, the continuous path people take from 
 | Handrail clearance | 1-1/2 in minimum from the wall | 505.5 |
 | Edge protection | 12 in extended surface, or a curb or barrier | 405.9 |
 
-## Maximum slope and cross slope
+## Maximum Slope and Cross Slope
 
-### Running slope
+### Running Slope
 
 The running slope is the slope in the direction of travel. For new construction, it can be no steeper than **1:12** (405.2): for every inch of rise, the ramp needs at least 12 inches of length. Gentler slopes are easier for everyone, so use a flatter slope where space allows.
 
-### Steeper slopes in existing buildings
+### Steeper Slopes in Existing Buildings
 
 When space is limited in an existing building or site, the Standards allow steeper slopes for very short rises only (Table 405.2):
 
@@ -72,11 +72,11 @@ When space is limited in an existing building or site, the Standards allow steep
 
 These exceptions are meant for things like a single step at an old storefront. They are not available for new construction.
 
-### Cross slope
+### Cross Slope
 
 The cross slope is the side-to-side tilt. It can be no steeper than **1:48** (405.3). A steeper cross slope pushes wheelchairs toward one edge and makes them harder to steer.
 
-## How long does an ADA ramp need to be?
+## How Long Does an ADA Ramp Need to Be?
 
 Multiply the total rise in inches by 12 to find the minimum ramp length at a 1:12 slope. Because a single run can rise no more than 30 inches, higher rises need more than one run, with level landings between them.
 
@@ -93,7 +93,7 @@ Multiply the total rise in inches by 12 to find the minimum ramp length at a 1:1
 
 Landings add to the total length. Each intermediate landing is at least 60 inches long, and top and bottom landings are needed as well. For large rises, a lift or elevator may take less space than a long ramp.
 
-## How wide must an ADA ramp be?
+## How Wide Must an ADA Ramp Be?
 
 The clear width of a ramp run must be at least **36 inches** (405.5). When handrails are installed, the 36 inches is measured **between the handrails**, so plan the structure wider than 36 inches.
 
@@ -103,13 +103,13 @@ The ADA minimum is often not enough in practice:
 - **Local codes:** some building codes require wider ramps, commonly 44 inches or more on egress routes.
 - **Turns:** a ramp that changes direction needs a larger landing at the turn, described below.
 
-## Rise and landings
+## Rise and Landings
 
-### Maximum rise per run
+### Maximum Rise per Run
 
 No single ramp run can rise more than **30 inches** (405.6). There is no limit on the total height a ramp system can climb, as long as each run stays within 30 inches and has a landing at each end.
 
-### Landing requirements
+### Landing Requirements
 
 Landings give people a flat place to rest, turn and open doors (405.7):
 
@@ -120,13 +120,13 @@ Landings give people a flat place to rest, turn and open doors (405.7):
 - **Change in direction:** where a ramp turns, the landing must be at least **60 by 60 inches**.
 - **Doorways:** where a door is next to a landing, the landing must also provide the maneuvering clearance required at that door (404.2.4). A door that swings onto a landing usually means the landing has to be larger.
 
-## Surfaces and wet conditions
+## Surfaces and Wet Conditions
 
-### Surface requirements
+### Surface Requirements
 
 Ramp runs and landings must be **firm, stable and slip resistant** (302). Changes in level other than the running slope and cross slope are **not allowed on ramp runs** (405.4). A lip, seam or raised joint that would be tolerable on a sidewalk is not permitted on the ramp itself.
 
-### Outdoor ramps and wet conditions
+### Outdoor Ramps and Wet Conditions
 
 Outdoor ramps and landings must be designed so **water does not accumulate** on their surfaces (405.10). In practice that means:
 
@@ -136,7 +136,7 @@ Outdoor ramps and landings must be designed so **water does not accumulate** on 
 
 Maintenance counts too. The ADA requires businesses to keep accessible features in working order (28 CFR 36.211). Clear snow, ice, leaves and debris promptly, and repair cracks before they become trip hazards.
 
-## Edge protection
+## Edge Protection
 
 Edge protection keeps wheels, crutch tips and feet from slipping off the side of a ramp. It is required on each side of ramp runs and landings (405.9), with a few exceptions, such as curb ramps and landings that adjoin a wall. You can meet it in one of two ways:
 
@@ -145,7 +145,7 @@ Edge protection keeps wheels, crutch tips and feet from slipping off the side of
 
 Older guidance called for a 2-inch curb. The 2010 Standards use the 4-inch sphere test instead.
 
-## Handrail requirements
+## Handrail Requirements
 
 Handrails are required on **both sides** of any ramp run with a rise greater than 6 inches (405.8). They must meet section 505:
 
@@ -159,7 +159,7 @@ Handrails are required on **both sides** of any ramp run with a rise greater tha
 
 Building codes, not the ADA Standards, set the structural load that handrails must carry. Follow your local code for strength and attachment.
 
-## Curb ramps
+## Curb Ramps
 
 **Curb ramps** connect a sidewalk to a street or parking area. They follow section 406 of the 2010 Standards:
 
@@ -171,7 +171,7 @@ Building codes, not the ADA Standards, set the structural load that handrails mu
 
 Curb ramps in public streets are also governed by the Access Board's public right-of-way guidelines and state transportation standards. These include **detectable warnings**, the truncated dome surfaces that alert people who are blind to the edge of the street.
 
-## Altering and adding ramps in existing buildings
+## Altering and Adding Ramps in Existing Buildings
 
 - **Alterations:** when you alter an existing building, the altered elements must meet the Standards for new construction. Where full compliance is **technically infeasible**, such as when a structural wall prevents a longer ramp, you must comply to the maximum extent feasible.
 - **Steeper short ramps:** the 1:10 and 1:8 slopes described above are available for short rises in existing sites where space is limited.
@@ -180,7 +180,7 @@ Curb ramps in public streets are also governed by the Access Board's public righ
 
 Small businesses may be able to offset costs with the federal Disabled Access Credit (IRS Form 8826) and the barrier removal deduction under Section 190 of the tax code.
 
-## Printable ADA ramp checklist
+## Printable ADA Ramp Checklist
 
 1. Is the running slope 1:12 or gentler (or within the existing-building exceptions for rises of 6 inches or less)?
 2. Is the cross slope 1:48 or less?

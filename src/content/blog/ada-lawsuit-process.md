@@ -32,7 +32,7 @@ This guide walks through each stage of an ADA Title III lawsuit, how long each o
 
 *This article is general information, not legal advice. Court rules and deadlines vary. If you have been served with a lawsuit or demand letter, speak with a lawyer experienced in ADA defense right away.*
 
-## The ADA lawsuit process at a glance
+## The ADA Lawsuit Process at a Glance
 
 | Phase | Typical duration | What happens |
 | --- | --- | --- |
@@ -47,7 +47,7 @@ This guide walks through each stage of an ADA Title III lawsuit, how long each o
 
 The durations are typical ranges, not rules. Every court and every case moves at its own pace.
 
-## What Title III lawsuits can and cannot win
+## What Title III Lawsuits Can and Cannot Win
 
 Title III covers public accommodations: businesses open to the public, such as stores, restaurants, hotels, banks and service providers. It helps to know what is at stake:
 
@@ -57,13 +57,13 @@ Title III covers public accommodations: businesses open to the public, such as s
 
 Because attorney fees drive much of the cost, resolving a case early is usually cheaper than fighting it for months.
 
-## Before the lawsuit: demand letters
+## Before the Lawsuit: Demand Letters
 
 Many cases start with a **demand letter** instead of a lawsuit. The letter claims your website or facility has barriers and asks you to fix them and pay fees, often within a short deadline.
 
 A demand letter is not a court filing, so there is no formal response deadline. Still, ignoring it often leads to a lawsuit. Share it with a lawyer, check whether the claims are accurate, and start fixing real barriers right away.
 
-## Stage 1: Service of the complaint
+## Stage 1: Service of the Complaint
 
 The case formally begins when you are **served** with the summons and complaint. The complaint names the plaintiff, describes the barriers they say they encountered and states what they want the court to order.
 
@@ -74,7 +74,7 @@ What to do immediately:
 - **Notify your insurer**, since some policies cover defense costs but require prompt notice.
 - **Preserve evidence.** Keep website versions, scan reports, accessibility statements, remediation tickets and communications.
 
-## Stage 2: The deadline to respond
+## Stage 2: The Deadline to Respond
 
 Under Federal Rule of Civil Procedure 12(a), a defendant must respond:
 
@@ -92,7 +92,7 @@ Your lawyer will usually do one of the following:
 
 **Missing the deadline is the worst outcome.** The court can enter a default judgment against you, and you lose the chance to contest the claims.
 
-## Stage 3: Early mediation
+## Stage 3: Early Mediation
 
 Some courts have programs that pause ADA cases so both sides can try to resolve them early. For example, some federal districts have programs for access cases that require a joint inspection and a mediation session before full litigation. Where these programs exist, this stage usually takes **3 to 8 weeks**.
 
@@ -109,7 +109,7 @@ If the case is not resolved early, both sides exchange evidence during **discove
 
 Discovery is where defense costs rise quickly. It is also why records of continuous monitoring and remediation are valuable: they show a documented, good-faith effort.
 
-## Stage 5: Settlement negotiations
+## Stage 5: Settlement Negotiations
 
 **Most ADA cases end in settlement.** Negotiations can start at any point and often conclude within **6 to 12 months**. Talks usually focus on:
 
@@ -120,7 +120,7 @@ Discovery is where defense costs rise quickly. It is also why records of continu
 - **Staff training** and an accessibility policy
 - The plaintiff's **attorney fees and costs**, and in state-law cases, damages
 
-## Stage 6: The settlement agreement
+## Stage 6: The Settlement Agreement
 
 The final agreement is typically signed **6 to 18 months** after the case was filed. It records the remediation deadline, the monitoring period and any payment, and the case is then dismissed. Some agreements are filed with the court as a consent decree the court can enforce.
 
@@ -137,7 +137,7 @@ Trials are **rare** in ADA Title III cases, and almost no website accessibility 
 
 After a final judgment, either side can appeal. Under Federal Rule of Appellate Procedure 4(a), the notice of appeal is generally due **30 days** after the judgment is entered. Certain post-judgment motions, such as a motion for a new trial, reset that clock to 30 days after the court rules on the motion. Appeals can add a year or more.
 
-## What to do if you are sued
+## What to Do if You Are Sued
 
 1. **Do not ignore the complaint.** Calendar the response deadline immediately.
 2. **Hire experienced counsel.** ADA defense is a specialty, and an experienced lawyer knows local judges, programs and typical terms.
@@ -148,7 +148,7 @@ After a final judgment, either side can appeal. Under Federal Rule of Appellate 
 7. **Avoid quick fixes.** Accessibility overlay widgets do not fix the underlying code, and sites using them continue to be sued.
 8. **Document everything**: what you fixed, when and how you verified it.
 
-## How to reduce the risk of a lawsuit
+## How to Reduce the Risk of a Lawsuit
 
 The strongest protection is an accessible website and a record that proves it. Most website complaints cite barriers that automated tools catch quickly, such as missing alt text, unlabeled form fields, low color contrast and buttons without names.
 

@@ -5,6 +5,7 @@ import ScanForm from '../components/ScanForm.astro';
 import Icon from '../components/Icon.astro';
 import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
+import Flag from '../components/Flag.astro';
 import { faqSchema, softwareSchema, type FaqItem } from '../lib/schema';
 import { formatDate, readingTime } from '../lib/format';
 
@@ -13,17 +14,27 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .slice(0, 3);
 
 const standards = [
-  { name: 'WCAG 2.2', sub: 'W3C Recommendation, Levels A and AA' },
-  { name: 'ADA', sub: 'Titles II and III, United States' },
-  { name: 'Section 508', sub: 'U.S. federal ICT' },
-  { name: 'EN 301 549', sub: 'European Union harmonized standard' },
-  { name: 'AODA', sub: 'Ontario, Canada' },
-  { name: 'EAA', sub: 'European Accessibility Act' },
-];
+  { name: 'WCAG 2.2', sub: 'W3C Recommendation, Levels A and AA', flag: 'intl' },
+  { name: 'ADA', sub: 'Titles II and III, United States', flag: 'us' },
+  { name: 'Section 508', sub: 'U.S. federal ICT', flag: 'us' },
+  { name: 'EN 301 549', sub: 'European Union harmonized standard', flag: 'eu' },
+  { name: 'AODA', sub: 'Ontario, Canada', flag: 'ca' },
+  { name: 'EAA', sub: 'European Accessibility Act', flag: 'eu' },
+] as const;
+
+// Standards named under the scanner, with the jurisdiction each belongs to.
+const compliance = [
+  { name: 'WCAG', flag: 'intl' },
+  { name: 'ADA', flag: 'us' },
+  { name: 'EAA', flag: 'eu' },
+  { name: 'Section 508', flag: 'us' },
+  { name: 'AODA', flag: 'ca' },
+] as const;
 
 const regions = [
   {
     id: 'us',
+    flag: 'us',
     label: 'United States',
     title: 'ADA and Section 508',
     body: [
@@ -39,6 +50,7 @@ const regions = [
   },
   {
     id: 'eu',
+    flag: 'eu',
     label: 'European Union',
     title: 'European Accessibility Act and EN 301 549',
     body: [
@@ -53,6 +65,7 @@ const regions = [
   },
   {
     id: 'uk',
+    flag: 'gb',
     label: 'United Kingdom',
     title: 'Equality Act and Public Sector Regulations',
     body: [
@@ -67,6 +80,7 @@ const regions = [
   },
   {
     id: 'ca',
+    flag: 'ca',
     label: 'Canada',
     title: 'AODA and the Accessible Canada Act',
     body: [
@@ -120,7 +134,7 @@ const faqs: FaqItem[] = [
       <div class="hero-copy">
         <h1 id="hero-title">
           <span class="h1-kicker">Website Accessibility Checker</span>
-          Find out if your website is <span class="accent">accessible and compliant</span>
+          Find Out if Your Website Is <span class="accent">Accessible and Compliant</span>
         </h1>
         <p class="lead">
           Scan any page against WCAG 2.2 in seconds, free and with no account needed. See every barrier, the success criterion it fails and the exact code to fix.
@@ -129,7 +143,7 @@ const faqs: FaqItem[] = [
         <div class="compliance-row">
           <span id="compliance-label">Checks for compliance with:</span>
           <ul aria-labelledby="compliance-label">
-            {['WCAG', 'ADA', 'EAA', 'Section 508', 'AODA'].map((s) => <li><Icon name="check" />{s}</li>)}
+            {compliance.map((s) => <li><Flag code={s.flag} eager />{s.name}</li>)}
           </ul>
         </div>
       </div>
@@ -144,7 +158,7 @@ const faqs: FaqItem[] = [
     <div class="container">
       <p id="std-strip">Checks aligned with global accessibility standards</p>
       <ul class="standards-list">
-        {standards.map((s) => <li><Icon name="shield" />{s.name}</li>)}
+        {standards.map((s) => <li><Flag code={s.flag} />{s.name}</li>)}
       </ul>
     </div>
   </section>
@@ -153,7 +167,7 @@ const faqs: FaqItem[] = [
     <div class="container grid-2">
       <div class="feature-copy">
         <span class="eyebrow">Reduce legal risk</span>
-        <h2 id="legal-title">Find and fix accessibility issues <span class="accent">before they become legal problems</span></h2>
+        <h2 id="legal-title">Find and Fix Accessibility Issues <span class="accent">Before They Become Legal Problems</span></h2>
         <p class="lead">
           Most accessibility claims start with barriers a scan can find in seconds: missing alt text, unlabeled form fields and buttons with no name. AccessBell surfaces them first, ranked by impact.
         </p>
@@ -183,7 +197,7 @@ const faqs: FaqItem[] = [
     <div class="container">
       <div class="section-head">
         <span class="eyebrow">One scan, every standard</span>
-        <h2 id="reaudit-title">Re-audit your domains against every accessibility standard, <span class="accent">worldwide</span></h2>
+        <h2 id="reaudit-title">Re-Audit Your Domains Against Every Accessibility Standard, <span class="accent">Worldwide</span></h2>
         <p>WCAG is the technical foundation of accessibility law around the world. AccessBell checks against it once and reports in the language each regulation uses.</p>
       </div>
       <ul class="badge-row" role="list">
@@ -202,7 +216,7 @@ const faqs: FaqItem[] = [
     <div class="container">
       <div class="section-head">
         <span class="eyebrow">Legislation tracker</span>
-        <h2 id="laws-title">Latest updates on global accessibility legislation and standards</h2>
+        <h2 id="laws-title">Latest Updates on Global Accessibility Legislation and Standards</h2>
         <p>Key requirements and dates for the regions where most of our customers operate.</p>
       </div>
       <div class="tabs" data-tabs>
@@ -216,7 +230,7 @@ const faqs: FaqItem[] = [
               aria-selected={i === 0 ? 'true' : 'false'}
               tabindex={i === 0 ? '0' : '-1'}
             >
-              {r.label}
+              <Flag code={r.flag} />{r.label}
             </button>
           ))}
         </div>
@@ -228,7 +242,7 @@ const faqs: FaqItem[] = [
               <a class="link-arrow" href={r.link.href}>{r.link.label} <Icon name="arrow" /></a>
             </div>
             <div class="keydates">
-              <h4>Key dates</h4>
+              <h4>Key Dates</h4>
               <dl>
                 {r.dates.map((d) => (
                   <div><dt>{d.d}</dt><dd>{d.t}</dd></div>
@@ -245,7 +259,7 @@ const faqs: FaqItem[] = [
     <div class="container">
       <div class="section-head">
         <span class="eyebrow">From the blog</span>
-        <h2 id="blog-title">Guidance on digital accessibility and compliance</h2>
+        <h2 id="blog-title">Guidance on Digital Accessibility and Compliance</h2>
         <p>Practical articles on WCAG, the ADA and building accessible websites that stay that way.</p>
       </div>
       <div class="post-grid post-grid-3">
@@ -272,13 +286,13 @@ const faqs: FaqItem[] = [
     <div class="container">
       <div class="section-head">
         <span class="eyebrow">Why AccessBell</span>
-        <h2 id="built-title">Built for website owners who want accessibility <span class="accent">done right</span></h2>
+        <h2 id="built-title">Built for Website Owners Who Want Accessibility <span class="accent">Done Right</span></h2>
         <p>No overlays and no shortcuts. Real issues, found in your code, fixed at the source.</p>
       </div>
       <div class="grid-3">
         <div class="card">
           <div class="icon-tile"><Icon name="scan" /></div>
-          <h3>Accessibility for the whole domain</h3>
+          <h3>Accessibility for the Whole Domain</h3>
           <p>Crawl every page on a schedule, not just the homepage. New pages are picked up automatically.</p>
           <ul class="check-list">
             <li><Icon name="check" />Automatic domain crawl</li>
@@ -288,7 +302,7 @@ const faqs: FaqItem[] = [
         </div>
         <div class="card">
           <div class="icon-tile"><Icon name="wrench" /></div>
-          <h3>Expert-grade fix guidance</h3>
+          <h3>Expert-Grade Fix Guidance</h3>
           <p>Each issue includes the failing element, the WCAG criterion and a clear explanation of the fix.</p>
           <ul class="check-list">
             <li><Icon name="check" />Element-level code snippets</li>
@@ -298,7 +312,7 @@ const faqs: FaqItem[] = [
         </div>
         <div class="card">
           <div class="icon-tile"><Icon name="chart" /></div>
-          <h3>Proof of progress</h3>
+          <h3>Proof of Progress</h3>
           <p>Track your score over time and export reports that show auditors and leadership what has changed.</p>
           <ul class="check-list">
             <li><Icon name="check" />Audit-ready PDF reports</li>
@@ -326,7 +340,7 @@ const faqs: FaqItem[] = [
       </div>
       <div class="feature-copy">
         <span class="eyebrow">Scales with you</span>
-        <h2 id="scale-title">Monitoring for <span class="accent">every domain you run</span></h2>
+        <h2 id="scale-title">Monitoring for <span class="accent">Every Domain You Run</span></h2>
         <p class="lead">
           Start with a free scan of a single page. When you are ready, monitor every domain you manage from one dashboard, with continuous monitoring, alerts and team permissions.
         </p>
@@ -344,7 +358,7 @@ const faqs: FaqItem[] = [
     <div class="container">
       <div class="section-head">
         <span class="eyebrow">FAQ</span>
-        <h2 id="faq-title">Website accessibility checker questions</h2>
+        <h2 id="faq-title">Website Accessibility Checker Questions</h2>
         <p>Still deciding? Read <a href="/reviews">customer reviews</a> or <a href="/about">learn about our approach</a>.</p>
       </div>
       <Faq items={faqs} />

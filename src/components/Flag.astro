@@ -1,0 +1,19 @@
+---
+/**
+ * Small flag for a standard's jurisdiction (SVGs from flag-icons, MIT, in
+ * /public/flags). "intl" standards such as WCAG get a globe instead.
+ * Decorative: the standard or region name next to it carries the meaning.
+ */
+import Icon from './Icon.astro';
+
+interface Props {
+  code: 'us' | 'eu' | 'gb' | 'ca' | 'intl';
+  eager?: boolean;
+}
+const { code, eager = false } = Astro.props;
+---
+{code === 'intl' ? (
+  <span class="flag flag-intl"><Icon name="globe" /></span>
+) : (
+  <img class="flag" src={`/flags/${code}.svg`} alt="" width="20" height="15" loading={eager ? 'eager' : 'lazy'} decoding="async" />
+)}

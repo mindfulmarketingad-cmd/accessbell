@@ -32,7 +32,7 @@ This guide walks through each requirement in the **2010 ADA Standards for Access
 
 *This is general information, not legal or design advice. Local building codes can be stricter, so confirm details with your code official.*
 
-## Quick reference: key ADA bathroom measurements
+## Quick Reference: Key ADA Bathroom Measurements
 
 | Element | Requirement | 2010 Standards |
 | --- | --- | --- |
@@ -52,7 +52,7 @@ This guide walks through each requirement in the **2010 ADA Standards for Access
 | Ambulatory accessible stall | 35 to 37 in wide, 60 in deep | 604.8.2.1 |
 | Accessible urinal rim | 17 in maximum | 605.2 |
 
-## Who has to comply
+## Who Has to Comply
 
 The ADA applies to businesses of every size. Retail stores, restaurants, offices, clinics, hotels and schools all fall under it. What that means for a restroom depends on the building:
 
@@ -62,45 +62,45 @@ The ADA applies to businesses of every size. Retail stores, restaurants, offices
 
 Small businesses can offset costs with the federal Disabled Access Credit (IRS Form 8826) and the barrier removal deduction under Section 190 of the tax code.
 
-## Toilets (water closets)
+## Toilets (Water Closets)
 
 The toilet is where most bathroom accessibility complaints start. The requirements cover its position, height, controls and the space around it.
 
-### Position and clearance
+### Position and Clearance
 
 - **Centerline:** 16 to 18 inches from the side wall or partition (604.2). In an ambulatory stall, it is 17 to 19 inches.
 - **Clearance:** a clear space at least 60 inches wide, measured from the side wall, and 56 inches deep, measured from the rear wall (604.3.1). This lets a wheelchair user pull alongside the toilet and transfer.
 - Only the toilet's own grab bars, dispensers and similar accessories may sit inside that clearance.
 
-### Seat height and flush controls
+### Seat Height and Flush Controls
 
 - **Seat height:** 17 to 19 inches from the floor to the top of the seat (604.4). Seats must not spring back to a raised position.
 - **Flush controls:** hand-operated or automatic, and located on the **open side** of the toilet, the side away from the wall (604.6).
 - Hand-operated controls must work with one hand, without tight grasping, pinching or twisting, and with no more than 5 pounds of force (309.4). A lever handle is the usual choice.
 
-### Toilet paper dispensers
+### Toilet Paper Dispensers
 
 Place dispensers 7 to 9 inches in front of the toilet, measured to the centerline of the dispenser, with the outlet 15 to 48 inches above the floor (604.7). A dispenser cannot sit behind a grab bar, and it must allow continuous paper flow.
 
-## Grab bars
+## Grab Bars
 
 Grab bars help people transfer between a wheelchair and the toilet, sit down and stand up safely. The 2010 Standards regulate their size, position and strength.
 
-### Size, spacing and strength
+### Size, Spacing and Strength
 
 - **Height:** 33 to 36 inches above the floor, measured to the top of the gripping surface (609.4).
 - **Diameter:** 1-1/4 to 2 inches for round bars. Non-round bars need a perimeter of 4 to 4.8 inches, with a cross-section no larger than 2 inches (609.2).
 - **Space from the wall:** exactly 1-1/2 inches between the bar and the wall (609.3), so a hand fits without getting trapped.
 - **Strength:** each bar and its mounting must hold 250 pounds of force applied at any point (609.8). The bar must not rotate in its fittings.
 
-### Where toilet grab bars go
+### Where Toilet Grab Bars Go
 
 - **Side wall:** at least 42 inches long, starting no more than 12 inches from the rear wall and extending at least 54 inches from the rear wall (604.5.1).
 - **Rear wall:** at least 36 inches long, extending at least 12 inches past the toilet's centerline on one side and 24 inches on the other (604.5.2).
 
 A common mistake is installing a short 36-inch bar on the side wall. The side bar is the longer of the two because it supports a sideways transfer.
 
-### Showers and bathtubs
+### Showers and Bathtubs
 
 Grab bar layouts for bathing depend on the fixture type:
 
@@ -108,9 +108,9 @@ Grab bar layouts for bathing depend on the fixture type:
 - **Roll-in showers:** bars on all three walls, but not behind a folding seat (608.3.2).
 - **Bathtubs:** two horizontal bars on the back wall, one 33 to 36 inches above the floor and one 8 to 10 inches above the tub rim, plus bars on the end walls (607.4).
 
-## Lavatories, sinks and mirrors
+## Lavatories, Sinks and Mirrors
 
-### Height and knee clearance
+### Height and Knee Clearance
 
 - **Height:** the rim or counter surface is no higher than 34 inches above the floor (606.3).
 - **Knee clearance:** at least 27 inches high, 30 inches wide and 11 to 25 inches deep (306.3).
@@ -119,19 +119,19 @@ Grab bar layouts for bathing depend on the fixture type:
 
 You will often see 29 inches quoted for knee clearance. That figure comes from the older 1991 guidelines and measured to the bottom of the apron. Under the 2010 Standards, 27 inches is the minimum, though many designers still aim higher.
 
-### Faucets, pipes and bowl depth
+### Faucets, Pipes and Bowl Depth
 
 - **Faucets:** operable with one hand, with no tight grasping, pinching or twisting. Lever and sensor faucets both qualify. Self-closing faucets must stay open for at least 10 seconds (606.4).
 - **Pipes:** insulate or shield water supply and drain pipes under the lavatory so they cannot burn or cut someone's legs (606.5).
 - **Sinks** such as kitchen and utility sinks, as opposed to lavatories, can be no deeper than 6-1/2 inches.
 
-### Mirrors and accessories
+### Mirrors and Accessories
 
 - A mirror above a lavatory or countertop must have the bottom of its reflecting surface no higher than **40 inches** above the floor (603.3).
 - A mirror not above a lavatory must be no higher than **35 inches** to the bottom edge.
 - Soap dispensers, hand dryers, towel dispensers and coat hooks must have their controls within reach: no higher than **48 inches** for an unobstructed reach (308).
 
-## Clear floor space, turning space and doors
+## Clear Floor Space, Turning Space and Doors
 
 Space is what makes a restroom usable for a wheelchair user, and it is the hardest thing to fix after construction.
 
@@ -142,7 +142,7 @@ Space is what makes a restroom usable for a wheelchair user, and it is the harde
 - **Floors** must be firm, stable and slip resistant (302).
 - **Protruding objects:** anything with its leading edge between 27 and 80 inches above the floor can project no more than 4 inches into the path (307.2). This covers wall-mounted items like towel dispensers and shelves.
 
-## Restroom signage
+## Restroom Signage
 
 Signs help people who are blind or have low vision find and identify restrooms. Requirements apply to permanent room identification signs.
 
@@ -155,11 +155,11 @@ Signs help people who are blind or have low vision find and identify restrooms. 
 
 Contrast matters on screens as much as on walls. The same principle applies to your website's text and buttons, which you can test with our [website accessibility checker](/).
 
-## Multi-user restrooms
+## Multi-User Restrooms
 
 Restrooms with more than one toilet have additional requirements for stalls, urinals, lavatories and mirrors.
 
-### Wheelchair accessible stall
+### Wheelchair Accessible Stall
 
 Where toilet stalls are provided, at least one must be wheelchair accessible (213.3.1).
 
@@ -168,7 +168,7 @@ Where toilet stalls are provided, at least one must be wheelchair accessible (21
 - **Grab bars:** a 42-inch bar on the side wall and a 36-inch bar on the rear wall, as described above.
 - **Toe clearance:** under the front partition and at least one side partition, unless the stall is larger than the minimum (604.8.1.4).
 
-### Ambulatory accessible stall
+### Ambulatory Accessible Stall
 
 When a restroom has **six or more** toilets and urinals combined, it also needs at least one ambulatory accessible stall (213.3.1). This stall serves people who walk but need support, such as people using crutches or walkers.
 
@@ -185,11 +185,11 @@ Where more than one urinal is provided, at least one must be accessible (213.3.3
 - It needs a 30 by 48 inch clear floor space for a forward approach (605.3).
 - Flush controls must be hand-operated or automatic and within reach range (605.4).
 
-### Lavatories and mirrors
+### Lavatories and Mirrors
 
 At least one lavatory in each multi-user room must be accessible. It must be located outside of any stall so everyone can reach it. Where mirrors are provided, at least one must meet the mounting heights above.
 
-## Children's restrooms
+## Children's Restrooms
 
 The 2010 Standards let facilities that primarily serve children, like schools and daycare centers, use children's dimensions for toilets (604.9). The Access Board's advisory guidance recommends these ranges by age:
 
@@ -202,7 +202,7 @@ The 2010 Standards let facilities that primarily serve children, like schools an
 
 Pick one age group for a room and apply its dimensions consistently. For lavatories used mainly by children ages 6 to 12, a rim no higher than **31 inches** with at least **24 inches** of knee clearance is permitted (606.2). A parallel approach is allowed for children 5 and younger.
 
-## A quick bathroom accessibility checklist
+## A Quick Bathroom Accessibility Checklist
 
 Use this list for a first walk-through:
 

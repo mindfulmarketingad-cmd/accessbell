@@ -19,7 +19,7 @@ const id = `toc-${variant}`;
     </details>
   ) : (
     <nav class="aside-card toc toc-aside" aria-labelledby={id}>
-      <h2 id={id}>On this page</h2>
+      <h2 id={id}>On This Page</h2>
       <ol>{headings.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
     </nav>
   ))}

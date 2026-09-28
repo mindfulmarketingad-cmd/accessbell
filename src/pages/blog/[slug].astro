@@ -28,8 +28,8 @@ const contributors = post.data.contributors.map((c, i) => ({ role: c.role, autho
 // Table of contents: every H2 in the article, plus the FAQ and author sections.
 const toc = [
   ...headings.filter((h) => h.depth === 2),
-  ...(faqs.length ? [{ depth: 2, slug: 'faq', text: 'Frequently asked questions' }] : []),
-  { depth: 2, slug: 'about-the-authors', text: contributors.length > 1 ? 'About the authors' : 'About the author' },
+  ...(faqs.length ? [{ depth: 2, slug: 'faq', text: 'Frequently Asked Questions' }] : []),
+  { depth: 2, slug: 'about-the-authors', text: contributors.length > 1 ? 'About the Authors' : 'About the Author' },
 ];
 
 const related = post.data.related
@@ -110,7 +110,7 @@ const schema = [
 
           {faqs.length > 0 && (
             <section class="article-faq" aria-labelledby="faq">
-              <h2 id="faq">Frequently asked questions</h2>
+              <h2 id="faq">Frequently Asked Questions</h2>
               {faqs.map((f) => (
                 <>
                   <h3>{f.q}</h3>
@@ -122,7 +122,7 @@ const schema = [
         </div>
 
         <section class="author-box" aria-labelledby="about-the-authors">
-          <h2 id="about-the-authors">{contributors.length > 1 ? 'About the authors' : 'About the author'}</h2>
+          <h2 id="about-the-authors">{contributors.length > 1 ? 'About the Authors' : 'About the Author'}</h2>
           {contributors.map((c) => (
             <div class="author-box-item">
               <AuthorAvatar name={c.author.data.name} size="lg" />
@@ -158,7 +158,7 @@ const schema = [
       <aside class="article-aside" aria-label="Article tools">
         <TableOfContents headings={toc} variant="aside" />
         <div class="aside-card">
-          <h2>Check your website</h2>
+          <h2>Check Your Website</h2>
           <p>Run our free website accessibility checker and get a WCAG 2.2 report in seconds.</p>
           <a class="btn btn-block" href="/#scan">Run a free scan <Icon name="arrow" /></a>
         </div>
@@ -170,7 +170,7 @@ const schema = [
     <section class="section section-surface" aria-labelledby="related-title">
       <div class="container">
         <div class="section-head section-head-left">
-          <h2 id="related-title">Keep reading</h2>
+          <h2 id="related-title">Keep Reading</h2>
         </div>
         <div class="post-grid">
           {related.map((p) => (

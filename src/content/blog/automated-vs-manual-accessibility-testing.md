@@ -12,7 +12,7 @@ related: ['what-is-a-website-accessibility-checker', 'wcag-2-2-checklist']
 
 Accessibility teams often frame testing as a choice: buy a tool or hire an auditor. In practice you need both. Automated testing gives you coverage and speed. Manual testing gives you judgment. The skill is knowing which questions each one can answer.
 
-## What automated testing does well
+## What Automated Testing Does Well
 
 An automated [website accessibility checker](/) reads your page's code and applies rules that have a clear right or wrong answer. It excels at:
 
@@ -23,7 +23,7 @@ An automated [website accessibility checker](/) reads your page's code and appli
 
 These are also the barriers most often cited in legal complaints, which is why automated scanning is the foundation of any program.
 
-## What only a person can judge
+## What Only a Person Can Judge
 
 Automated rules cannot understand meaning, intent or experience. A human tester needs to answer questions like:
 
@@ -34,7 +34,7 @@ Automated rules cannot understand meaning, intent or experience. A human tester 
 - **Does the page work with a screen reader?** Real assistive technology reveals issues with live regions, custom widgets and dynamic content.
 - **Does content reflow at 400 percent zoom?** This needs a person looking at the layout.
 
-## A side-by-side comparison
+## A Side-by-Side Comparison
 
 | Question | Automated | Manual |
 | --- | --- | --- |
@@ -47,7 +47,7 @@ Automated rules cannot understand meaning, intent or experience. A human tester 
 | Are captions accurate? | No | Yes |
 | Can it run on every page, every day? | Yes | No |
 
-## A process that combines both
+## A Process That Combines Both
 
 The most effective programs we see follow a simple loop.
 
@@ -61,17 +61,17 @@ The most effective programs we see follow a simple loop.
 
 **5. Listen to users.** An accessibility statement with a clear feedback channel surfaces barriers that neither tools nor auditors anticipated.
 
-## Where AI-assisted fixes fit
+## Where AI-Assisted Fixes Fit
 
 Newer tools, including ours, can suggest code fixes for common failures, such as a label for an unlabeled input or alt text for an image. Suggestions speed up remediation, but they should always be reviewed by a person who understands the content. A suggested alt text is a draft, not a decision.
 
-## How often to test
+## How Often to Test
 
 - **Automated scans:** at least weekly, and after every major deploy
 - **Template reviews:** whenever a template or design system component changes
 - **Full manual audit:** annually, or before a major launch or procurement review
 
-## The takeaway
+## The Takeaway
 
 Automated testing tells you what is broken across your whole site, every day. Manual testing tells you whether your site actually works for people. Use automation for coverage and people for judgment, and you will find more issues, fix them faster and keep them fixed.
 

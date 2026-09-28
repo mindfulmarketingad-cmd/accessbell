@@ -14,7 +14,7 @@ The Web Content Accessibility Guidelines (WCAG) 2.2 became a W3C Recommendation 
 
 This checklist focuses on what changed in 2.2, then gives you a condensed AA checklist you can work through page by page.
 
-## What is new in WCAG 2.2
+## What Is New in WCAG 2.2
 
 WCAG 2.2 added nine success criteria. Six of them apply at Level A or AA.
 
@@ -30,11 +30,11 @@ WCAG 2.2 added nine success criteria. Six of them apply at Level A or AA.
 | 3.3.8 Accessible Authentication (Minimum) | AA | Logging in does not require a cognitive function test, such as remembering a password or solving a puzzle, unless an alternative or assistance is provided. |
 | 3.3.9 Accessible Authentication (Enhanced) | AAA | Stricter version of 3.3.8 with fewer exceptions. |
 
-### What was removed
+### What Was Removed
 
 Success criterion **4.1.1 Parsing** is obsolete in WCAG 2.2. Modern browsers and assistive technologies handle markup errors consistently, so duplicate attributes and unclosed tags no longer need to be reported as accessibility failures on their own. Problems they cause, such as a broken accessible name, are still caught by other criteria.
 
-## How to test the new AA criteria
+## How to Test the New AA Criteria
 
 **Focus Not Obscured (2.4.11).** Tab through the page with a sticky header, a cookie banner and any chat widget visible. Every focused element must remain at least partially visible. A common fix is adding `scroll-padding-top` equal to the header height.
 
@@ -44,7 +44,7 @@ Success criterion **4.1.1 Parsing** is obsolete in WCAG 2.2. Modern browsers and
 
 **Accessible Authentication (3.3.8).** Confirm your login allows password managers to fill fields and allows pasting. Avoid puzzles as the only verification method. Email magic links and passkeys are accessible alternatives.
 
-## Condensed WCAG 2.2 AA checklist
+## Condensed WCAG 2.2 AA Checklist
 
 Use this as a working list. The criteria numbers help you cross-reference the full specification and our [website accessibility checker](/) reports.
 
@@ -84,10 +84,10 @@ Use this as a working list. The criteria numbers help you cross-reference the fu
 - **4.1.2** Custom controls expose a name, role and state to assistive technology.
 - **4.1.3** Status messages, such as "Added to cart", are announced without moving focus.
 
-## Which criteria can be tested automatically
+## Which Criteria Can Be Tested Automatically
 
 A checker can reliably detect many failures under 1.1.1, 1.3.1, 1.4.3, 2.4.2, 3.1.1 and 4.1.2. Criteria like 2.4.3 focus order, 1.2.2 caption accuracy and 3.3.3 error suggestions require human judgment. Our guide to [automated vs manual accessibility testing](/blog/automated-vs-manual-accessibility-testing) explains how to split the work.
 
-## Keep your checklist current
+## Keep Your Checklist Current
 
 A checklist is only useful if you run it more than once. Every new template, plugin or marketing page is a chance for regressions. Scheduled scans catch the automated failures, and a short manual pass on new templates catches the rest. See how [continuous monitoring plans](/pricing) keep your whole domain checked against WCAG 2.2 AA.

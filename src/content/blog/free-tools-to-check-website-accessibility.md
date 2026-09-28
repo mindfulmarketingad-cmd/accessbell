@@ -30,7 +30,7 @@ The best **free tools to check website accessibility** are AccessBell, WAVE, axe
 
 This guide compares all six so you can pick the right mix for your team. We make AccessBell, so we have marked it clearly and explained where it fits and where another tool is the better choice.
 
-## Quick comparison
+## Quick Comparison
 
 | Tool | How you run it | Best for | Tests pages behind a login | Engine |
 | --- | --- | --- | --- | --- |
@@ -43,19 +43,19 @@ This guide compares all six so you can pick the right mix for your team. We make
 
 All six are free to use. Some have paid tiers for extra features.
 
-## What free accessibility checkers can and cannot do
+## What Free Accessibility Checkers Can and Cannot Do
 
 Every tool on this list is an automated checker, and automated testing has limits. It is excellent at finding **objective, code-level failures**, and those are the barriers most often cited in accessibility complaints. It cannot judge whether alt text is meaningful, whether focus order makes sense or whether an error message is helpful. Industry research consistently finds that automated rules catch only a portion of WCAG issues, commonly estimated at around a third.
 
 The practical takeaway: use one or two automated tools to find and fix the objective problems, then test key pages with a keyboard and a screen reader. Our guide to [automated vs manual accessibility testing](/blog/automated-vs-manual-accessibility-testing) explains how to split the work.
 
-## 1. AccessBell (our tool)
+## 1. AccessBell (Our Tool)
 
 **Best for:** anyone who wants a clear accessibility report in seconds, without installing anything.
 
 [AccessBell](/) is a free **website accessibility checker** that runs in your browser. Paste a URL, choose a standard, and it loads the page in a real browser, runs the open-source axe-core engine and returns a report mapped to WCAG success criteria.
 
-### Why we think it is the best place to start
+### Why We Think It Is the Best Place to Start
 
 - **Nothing to install.** It works in any browser, on any device, including phones and tablets. That makes it easy to use on locked-down work computers and to share with non-technical teammates.
 - **Choose exactly what to test against.** Pick WCAG 2.2 AA, WCAG 2.1 AA, ADA, Section 508 or EN 301 549. If your goal is WCAG 2.1 AA, choose it, and the scan runs only the rules for that version and level. Nothing beyond your target appears in the report.
@@ -143,7 +143,7 @@ ANDI is a free **bookmarklet** created by the U.S. Social Security Administratio
 
 **Limitations:** ANDI is an inspection tool rather than a one-click report. It works best when you already know what you are looking for, and its interface takes some practice.
 
-## Free manual testing tools worth adding
+## Free Manual Testing Tools Worth Adding
 
 Automated checkers cover a portion of WCAG. These free tools help with the rest:
 
@@ -154,7 +154,7 @@ Automated checkers cover a portion of WCAG. These free tools help with the rest:
 - **Colour Contrast Analyser** by TPGi, a free desktop app for checking contrast anywhere on screen, including images and PDFs.
 - **Browser zoom.** Zoom to 200 and 400 percent to check that text resizes and content reflows without horizontal scrolling.
 
-## How to choose the right mix
+## How to Choose the Right Mix
 
 Most teams do not need all six tools. Pick based on who is testing:
 

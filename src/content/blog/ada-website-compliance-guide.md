@@ -16,13 +16,13 @@ This guide explains how the ADA applies to websites, what "compliance" means in 
 
 *This article is general information, not legal advice. Talk to a qualified attorney about your specific situation.*
 
-## Which parts of the ADA apply to websites
+## Which Parts of the ADA Apply to Websites
 
 **Title III** covers "places of public accommodation," such as retailers, restaurants, hotels, banks and healthcare providers. The Department of Justice (DOJ) has stated for decades that Title III applies to the goods and services these businesses offer online. In March 2022, the DOJ published guidance confirming that businesses open to the public must make their websites accessible, and it pointed to WCAG as a helpful reference.
 
 **Title II** covers state and local governments, including public schools, universities, transit agencies and courts. In April 2024, the DOJ published a final rule that, for the first time, sets a specific technical standard for their websites and mobile apps: **WCAG 2.1 Level AA**.
 
-## The Title II rule and its deadlines
+## The Title II Rule and Its Deadlines
 
 As published, the Title II rule gives public entities two compliance dates based on population:
 
@@ -31,13 +31,13 @@ As published, the Title II rule gives public entities two compliance dates based
 
 The rule includes limited exceptions, such as certain archived content and some preexisting documents, but these are narrow. Deadlines and enforcement policy can change, so confirm the current status on ADA.gov before planning around a date.
 
-## What standard applies to private businesses
+## What Standard Applies to Private Businesses
 
 For Title III, there is no regulation that names a specific technical standard. In practice, courts, plaintiffs and settlement agreements overwhelmingly use **WCAG 2.1 Level AA** as the benchmark, and many recent agreements reference WCAG 2.2.
 
 Because WCAG 2.2 is backward compatible, building to **WCAG 2.2 AA** is the most practical target. It covers everything in 2.1 AA and positions you for future requirements. Our [WCAG 2.2 checklist](/blog/wcag-2-2-checklist) lists each requirement.
 
-## Where lawsuits usually start
+## Where Lawsuits Usually Start
 
 Most website accessibility claims begin with barriers that are easy to find with automated tools and a keyboard:
 
@@ -51,7 +51,7 @@ Most website accessibility claims begin with barriers that are easy to find with
 
 Because these barriers are easy to detect, they are also easy for plaintiffs' firms to find at scale. Fixing them first is the highest-return activity for most businesses. If a claim does arrive, our guide to the [ADA lawsuit process](/blog/ada-lawsuit-process) explains each stage and its deadlines.
 
-## Steps that reduce risk
+## Steps That Reduce Risk
 
 **1. Audit your current state.** Start with a [website accessibility checker](/) on your key templates: home, product or service pages, forms, checkout and account areas. Then test the same pages with a keyboard and a screen reader.
 
@@ -65,11 +65,11 @@ Because these barriers are easy to detect, they are also easy for plaintiffs' fi
 
 **6. Train your team.** Content editors who know to add alt text and use real headings prevent many issues from reaching production.
 
-## A note on overlay widgets
+## A Note on Overlay Widgets
 
 Some products claim a single line of JavaScript makes a site "ADA compliant." Accessibility overlays modify a page after it loads but do not fix the source code, and they often conflict with the assistive technology people already use. Sites using overlays continue to be sued. Durable compliance comes from fixing the underlying code and keeping it fixed.
 
-## International requirements to be aware of
+## International Requirements to Be Aware Of
 
 If you serve customers outside the U.S., other laws may apply:
 
