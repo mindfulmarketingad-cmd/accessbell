@@ -33,6 +33,16 @@ function wireResend(scope, getEmail) {
   });
 }
 
+// Show or hide the password. The button keeps its name and reports its state.
+document.querySelectorAll('[data-password-toggle]').forEach((btn) => {
+  const input = document.getElementById(btn.getAttribute('aria-controls'));
+  btn.addEventListener('click', () => {
+    const show = input.type === 'password';
+    input.type = show ? 'text' : 'password';
+    btn.setAttribute('aria-pressed', String(show));
+  });
+});
+
 const form = document.querySelector('[data-auth-form]');
 if (form) {
   const mode = form.getAttribute('data-auth-form');
@@ -43,7 +53,17 @@ if (form) {
     event.preventDefault();
     const invalid = [...form.elements].find((f) => f.willValidate && !f.checkValidity());
     if (invalid) {
-      setStatus(status, 'error', invalid.type === 'email' ? 'Enter a valid email address.' : invalid.type === 'password' ? 'Passwords must be at least 8 characters.' : 'Please complete this form.');
+      setStatus(
+        status,
+        'error',
+        invalid.type === 'email'
+          ? 'Enter a valid email address.'
+          : invalid.type === 'password'
+            ? 'Passwords must be at least 8 characters.'
+            : invalid.type === 'checkbox'
+              ? 'Please agree to the Terms of Service and Privacy Policy to continue.'
+              : 'Please complete this form.',
+      );
       invalid.focus();
       return;
     }
@@ -69,6 +89,7 @@ if (form) {
         if (r.status === 'signed_in') location.assign('/app');
         else {
           form.replaceChildren();
+          document.querySelectorAll('[data-auth-intro]').forEach((n) => (n.hidden = true));
           const done = document.querySelector('[data-confirm]');
           done.hidden = false;
           done.querySelector('[data-email]').textContent = email;

@@ -2,11 +2,30 @@
 import '../styles/global.css';
 import '../styles/app.css';
 import LogoMark from '../components/LogoMark.astro';
+import Icon from '../components/Icon.astro';
 
 interface Props {
   title: string;
 }
 const { title } = Astro.props;
+
+// Illustrative numbers for the brand panel. It is labelled as an example.
+const severity = [
+  { label: 'Critical', count: 12, pct: 18, kind: 'crit' },
+  { label: 'Serious', count: 31, pct: 44, kind: 'ser' },
+  { label: 'Moderate', count: 57, pct: 76, kind: 'mod' },
+];
+const levels = [
+  { label: 'Level A', note: 'Essential requirements', value: '27 / 31' },
+  { label: 'Level AA', note: 'The legal benchmark', value: '19 / 24' },
+  { label: 'Level AAA', note: 'Enhanced requirements', value: 'Optional' },
+];
+const totals = [
+  { icon: 'check-circle', value: '412', label: 'Passed checks', kind: 'ok' },
+  { icon: 'x', value: '100', label: 'Failed checks', kind: 'bad' },
+  { icon: 'eye', value: '38', label: 'Needs manual review', kind: 'warn' },
+  { icon: 'doc', value: '25', label: 'Pages monitored', kind: 'muted' },
+];
 ---
 <!doctype html>
 <html lang="en">
@@ -21,15 +40,59 @@ const { title } = Astro.props;
     <slot name="head" />
   </head>
   <body class="auth-body">
-    <main id="main" class="auth-main">
-      <a class="brand auth-brand" href="/" aria-label="AccessBell home">
-        <LogoMark />
-        <span>Access<span class="brand-bell">Bell</span></span>
-      </a>
-      <div class="auth-card">
-        <slot />
-      </div>
-      <p class="auth-foot"><a href="/privacy">Privacy</a> <span aria-hidden="true">&middot;</span> <a href="/terms">Terms</a> <span aria-hidden="true">&middot;</span> <a href="/contact">Help</a></p>
-    </main>
+    <div class="auth-split">
+      <aside class="auth-panel" aria-label="About AccessBell">
+        <div class="auth-mock" aria-hidden="true">
+          <span class="auth-mock-tag">Example report</span>
+          <div class="amock amock-issues">
+            <div class="amock-head"><strong>Issues</strong><span>Total: 100 <b>Critical: 12</b></span></div>
+            {severity.map((s) => (
+              <div class="amock-bar">
+                <span>{s.label}</span>
+                <i class:list={[`fill-${s.kind}`, `w-${s.pct}`]}></i>
+                <small>{s.count} issues</small>
+              </div>
+            ))}
+          </div>
+          <div class="amock amock-levels">
+            <strong class="amock-title">WCAG 2.2 Criteria</strong>
+            {levels.map((l) => (
+              <div class="amock-level">
+                <span class="amock-level-icon"><Icon name="check-circle" /></span>
+                <span><b>{l.label}</b><small>{l.note}</small></span>
+                <em>{l.value}</em>
+              </div>
+            ))}
+            <span class="amock-link">Criteria passing automated checks</span>
+          </div>
+          <div class="amock amock-totals">
+            <strong class="amock-title">Scan Overview</strong>
+            <div class="amock-tiles">
+              {totals.map((t) => (
+                <div class:list={['amock-tile', `tile-${t.kind}`]}>
+                  <Icon name={t.icon} />
+                  <span><b>{t.value}</b><small>{t.label}</small></span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div class="auth-panel-copy">
+          <p class="auth-panel-title">Find and Fix Accessibility Issues</p>
+          <p>Scan every page, see exactly what fails WCAG and how to fix it, and track your progress over time.</p>
+        </div>
+      </aside>
+
+      <main id="main" class="auth-main" tabindex="-1">
+        <a class="brand auth-brand" href="/" aria-label="AccessBell home">
+          <LogoMark />
+          <span>Access<span class="brand-bell">Bell</span></span>
+        </a>
+        <div class="auth-card">
+          <slot />
+        </div>
+        <p class="auth-foot"><a href="/privacy">Privacy</a> <span aria-hidden="true">&middot;</span> <a href="/terms">Terms</a> <span aria-hidden="true">&middot;</span> <a href="/resources/help-center">Help Center</a></p>
+      </main>
+    </div>
   </body>
 </html>
