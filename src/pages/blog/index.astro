@@ -1,0 +1,64 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { SITE } from '../../config/site';
+import { formatDate, readingTime } from '../../lib/format';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const schema = [
+  {
+    '@type': 'Blog',
+    '@id': `${SITE.url}/blog#blog`,
+    name: 'AccessBell Blog',
+    url: `${SITE.url}/blog`,
+    publisher: { '@id': `${SITE.url}/#organization` },
+    blogPost: posts.map((p) => ({
+      '@type': 'BlogPosting',
+      headline: p.data.title,
+      url: `${SITE.url}/blog/${p.id}`,
+      datePublished: p.data.pubDate.toISOString(),
+    })),
+  },
+];
+---
+<BaseLayout
+  title="Accessibility Blog: WCAG and ADA Guides | AccessBell"
+  description="Practical guides on WCAG 2.2, ADA website compliance and accessibility testing from the team behind the AccessBell website accessibility checker."
+  breadcrumbs={[{ label: 'Blog', href: '/blog' }]}
+  schema={schema}
+>
+  <section class="page-hero" aria-labelledby="blog-title">
+    <div class="container">
+      <span class="eyebrow">AccessBell Blog</span>
+      <h1 id="blog-title">Web accessibility guides and compliance insights</h1>
+      <p class="lead">Clear, practical articles on WCAG, the ADA and testing your website for accessibility. Written for the people who have to make it work.</p>
+    </div>
+  </section>
+
+  <section class="section-tight pt-0" aria-label="All articles">
+    <div class="container">
+      <div class="post-grid post-grid-3">
+        {posts.map((post) => (
+          <article class="post-card">
+            <div class="post-cover" aria-hidden="true"><span>{post.data.category}</span></div>
+            <div class="post-card-body">
+              <h2><a href={`/blog/${post.id}`}>{post.data.title}</a></h2>
+              <p>{post.data.description}</p>
+              <div class="post-meta">
+                <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+                <span aria-hidden="true">&middot;</span>
+                <span>{readingTime(post.body ?? '')} min read</span>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>

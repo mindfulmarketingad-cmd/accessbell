@@ -1,0 +1,39 @@
+---
+import ScanForm from './ScanForm.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  title?: string;
+  text?: string;
+  /** Show the scan form (homepage) or plain buttons (other pages). */
+  withForm?: boolean;
+}
+const {
+  title = 'Find out if your website is accessible',
+  text = 'Run a free WCAG check in seconds. No sign-up, no credit card. See what fails, why it matters and how to fix it.',
+  withForm = false,
+} = Astro.props;
+---
+<section class="section-tight" aria-labelledby="cta-title">
+  <div class="container">
+    <div class="cta-band">
+      <h2 id="cta-title">{title}</h2>
+      <p>{text}</p>
+      {withForm ? (
+        <>
+          <ScanForm id="cta" buttonLabel="Run free check" />
+          <ul class="scan-meta">
+            <li><Icon name="check" />Free, no account needed</li>
+            <li><Icon name="check" />Results in under 30 seconds</li>
+            <li><Icon name="check" />Mapped to WCAG success criteria</li>
+          </ul>
+        </>
+      ) : (
+        <div class="cta-actions">
+          <a class="btn btn-accent btn-lg" href="/#scan">Run a free scan <Icon name="arrow" /></a>
+          <a class="btn btn-outline btn-lg" href="/pricing">See pricing</a>
+        </div>
+      )}
+    </div>
+  </div>
+</section>

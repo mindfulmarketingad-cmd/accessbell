@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getRoutes } from '../lib/routes';
+
+const routes = await getRoutes();
+const groups = [
+  { key: 'main', title: 'Main pages' },
+  { key: 'blog', title: 'Blog articles' },
+  { key: 'company', title: 'Company and legal' },
+] as const;
+---
+<BaseLayout
+  title="Sitemap | AccessBell"
+  description="Browse every page on the AccessBell website: the free website accessibility checker, pricing, blog articles, reviews, company information and legal pages."
+  breadcrumbs={[{ label: 'Sitemap', href: '/sitemap' }]}
+>
+  <section class="page-hero" aria-labelledby="sitemap-title">
+    <div class="container">
+      <h1 id="sitemap-title">Sitemap</h1>
+      <p class="lead">Every page on AccessBell in one place. Search engines can use our <a href="/sitemap.xml">XML sitemap</a>.</p>
+    </div>
+  </section>
+  <div class="container sitemap-grid">
+    {groups.map((g) => (
+      <section class="card" aria-labelledby={`sm-${g.key}`}>
+        <h2 id={`sm-${g.key}`}>{g.title}</h2>
+        <ul>
+          {routes.filter((r) => r.group === g.key).map((r) => (
+            <li>
+              <a href={r.path}>{r.label}</a>
+              {r.note && <span>{r.note}</span>}
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+</BaseLayout>

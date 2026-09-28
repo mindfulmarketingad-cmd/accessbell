@@ -1,0 +1,56 @@
+---
+import { FOOTER_NAV, SITE } from '../config/site';
+import LogoMark from './LogoMark.astro';
+
+const year = new Date().getFullYear();
+const socials = [
+  {
+    label: 'Instagram',
+    href: SITE.social.instagram,
+    svg: '<rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/>',
+  },
+  {
+    label: 'Twitter (X)',
+    href: SITE.social.twitter,
+    svg: '<path fill="currentColor" d="M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.3L5.3 21H2.2l7.2-8.2L1.8 3h6.4l4.4 5.8Zm-1.1 16.2h1.7L7.4 4.7H5.6Z"/>',
+  },
+  {
+    label: 'Facebook',
+    href: SITE.social.facebook,
+    svg: '<path fill="currentColor" d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 3.9v2.3H7.9v3h2.6V21Z"/>',
+  },
+];
+---
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <a class="brand" href="/" aria-label="AccessBell home">
+          <LogoMark />
+          <span>Access<span class="brand-bell">Bell</span></span>
+        </a>
+        <p class="footer-tagline">The website accessibility checker for teams that take WCAG, ADA and global compliance seriously.</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <ul>
+          {FOOTER_NAV.map((item) => (
+            <li><a href={item.href}>{item.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; {year} AccessBell. All rights reserved.</p>
+      <ul class="social" aria-label="AccessBell on social media">
+        {socials.map((s) => (
+          <li>
+            <a href={s.href} rel="me noopener noreferrer" target="_blank">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" set:html={s.svg} />
+              <span class="visually-hidden">{s.label} (opens in a new tab)</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</footer>

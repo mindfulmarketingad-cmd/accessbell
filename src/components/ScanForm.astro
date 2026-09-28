@@ -1,0 +1,41 @@
+---
+import { STANDARDS } from '../config/site';
+import Icon from './Icon.astro';
+
+interface Props {
+  /** Unique id prefix when more than one form is on a page. */
+  id: string;
+  buttonLabel?: string;
+}
+const { id, buttonLabel = 'Check accessibility' } = Astro.props;
+---
+<form class="scan-form" data-scan-form novalidate aria-describedby={`${id}-error`}>
+  <div class="scan-field">
+    <Icon name="globe" />
+    <label class="visually-hidden" for={`${id}-url`}>Website URL to check</label>
+    <input
+      id={`${id}-url`}
+      name="url"
+      type="text"
+      inputmode="url"
+      autocomplete="url"
+      spellcheck="false"
+      autocapitalize="off"
+      placeholder="Enter your website URL"
+      maxlength="2048"
+      required
+    />
+  </div>
+  <div>
+    <label class="visually-hidden" for={`${id}-standard`}>Accessibility standard</label>
+    <select id={`${id}-standard`} name="standard">
+      {STANDARDS.map((s) => <option value={s.id}>{s.label}</option>)}
+    </select>
+  </div>
+  <button class="btn btn-accent" type="submit">
+    {buttonLabel}
+    <Icon name="arrow" />
+  </button>
+</form>
+<p class="scan-error" id={`${id}-error`} role="alert" data-scan-error hidden></p>
+<noscript><p class="scan-error">The free checker needs JavaScript enabled to display results.</p></noscript>

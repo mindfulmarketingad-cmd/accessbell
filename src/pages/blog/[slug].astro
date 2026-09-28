@@ -1,0 +1,121 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { SITE } from '../../config/site';
+import { formatDate, readingTime } from '../../lib/format';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post, all: posts } }));
+}
+
+const { post, all } = Astro.props;
+const { Content, headings } = await render(post);
+const toc = headings.filter((h) => h.depth === 2);
+const url = `${SITE.url}/blog/${post.id}`;
+const minutes = readingTime(post.body ?? '');
+
+const related = post.data.related
+  .map((slug) => all.find((p) => p.id === slug))
+  .filter((p): p is NonNullable<typeof p> => Boolean(p));
+
+const schema = [
+  {
+    '@type': 'BlogPosting',
+    '@id': `${url}#article`,
+    headline: post.data.title,
+    description: post.data.description,
+    datePublished: post.data.pubDate.toISOString(),
+    dateModified: (post.data.updatedDate ?? post.data.pubDate).toISOString(),
+    mainEntityOfPage: { '@id': `${url}#webpage` },
+    url,
+    image: `${SITE.url}${SITE.ogImage}`,
+    articleSection: post.data.category,
+    wordCount: (post.body ?? '').split(/\s+/).filter(Boolean).length,
+    inLanguage: 'en-US',
+    author: { '@type': 'Organization', name: 'AccessBell Editorial Team', url: `${SITE.url}/about` },
+    publisher: { '@id': `${SITE.url}/#organization` },
+  },
+];
+---
+<BaseLayout
+  title={`${post.data.seoTitle ?? post.data.title} | AccessBell`}
+  description={post.data.description}
+  ogType="article"
+  article={{
+    published: post.data.pubDate.toISOString(),
+    modified: post.data.updatedDate?.toISOString(),
+    section: post.data.category,
+  }}
+  breadcrumbs={[
+    { label: 'Blog', href: '/blog' },
+    { label: post.data.title, href: `/blog/${post.id}` },
+  ]}
+  schema={schema}
+>
+  <article>
+    <header class="container article-head">
+      <span class="eyebrow">{post.data.category}</span>
+      <h1>{post.data.title}</h1>
+      <p class="lead">{post.data.description}</p>
+      <div class="article-meta">
+        <span>By <a href="/about">AccessBell Editorial Team</a></span>
+        <span>Published <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time></span>
+        {post.data.updatedDate && (
+          <span>Updated <time datetime={post.data.updatedDate.toISOString()}>{formatDate(post.data.updatedDate)}</time></span>
+        )}
+        <span>{minutes} min read</span>
+      </div>
+    </header>
+
+    <div class="container article-layout">
+      <div class="prose">
+        <Content />
+      </div>
+      <aside class="article-aside" aria-label="Article tools">
+        {toc.length > 1 && (
+          <nav class="aside-card toc" aria-labelledby="toc-title">
+            <h2 id="toc-title">On this page</h2>
+            <ol>
+              {toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}
+            </ol>
+          </nav>
+        )}
+        <div class="aside-card">
+          <h2>Check your website</h2>
+          <p>Run our free website accessibility checker and get a WCAG 2.2 report in seconds.</p>
+          <a class="btn btn-block" href="/#scan">Run a free scan <Icon name="arrow" /></a>
+        </div>
+      </aside>
+    </div>
+  </article>
+
+  {related.length > 0 && (
+    <section class="section section-surface" aria-labelledby="related-title">
+      <div class="container">
+        <div class="section-head section-head-left">
+          <h2 id="related-title">Keep reading</h2>
+        </div>
+        <div class="post-grid">
+          {related.map((p) => (
+            <article class="post-card">
+              <div class="post-card-body">
+                <span class="eyebrow">{p.data.category}</span>
+                <h3><a href={`/blog/${p.id}`}>{p.data.title}</a></h3>
+                <p>{p.data.description}</p>
+                <div class="post-meta">
+                  <time datetime={p.data.pubDate.toISOString()}>{formatDate(p.data.pubDate)}</time>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+        <p class="more-link"><a class="link-arrow" href="/blog">All articles <Icon name="arrow" /></a></p>
+      </div>
+    </section>
+  )}
+
+  <CtaBand />
+</BaseLayout>

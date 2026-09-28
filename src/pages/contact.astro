@@ -1,0 +1,121 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import { SITE } from '../config/site';
+import { PLANS } from '../data/pricing';
+
+const topics = [
+  { value: 'general', label: 'General question' },
+  { value: 'trial', label: 'Start a free trial' },
+  { value: 'sales', label: 'Sales and Tailored plans' },
+  { value: 'support', label: 'Product support' },
+  { value: 'billing', label: 'Billing' },
+  { value: 'accessibility', label: 'Report an accessibility barrier on this site' },
+  { value: 'press', label: 'Press and partnerships' },
+];
+
+const schema = [
+  {
+    '@type': 'ContactPage',
+    '@id': `${SITE.url}/contact#contact`,
+    url: `${SITE.url}/contact`,
+    name: 'Contact AccessBell',
+    mainEntity: {
+      '@id': `${SITE.url}/#organization`,
+      contactPoint: { '@type': 'ContactPoint', contactType: 'customer support', email: SITE.email, availableLanguage: 'English' },
+    },
+  },
+];
+---
+<BaseLayout
+  title="Contact AccessBell - Sales, Support and Free Trials"
+  description="Contact the AccessBell team about free trials, Tailored plans, product support or billing. We reply to every message within one business day."
+  breadcrumbs={[{ label: 'Contact', href: '/contact' }]}
+  schema={schema}
+>
+  <script slot="head" is:inline src="/js/contact.js" defer></script>
+  <section class="page-hero" aria-labelledby="contact-title">
+    <div class="container">
+      <span class="eyebrow">Contact</span>
+      <h1 id="contact-title">Talk to the AccessBell team</h1>
+      <p class="lead">Questions about plans, a free trial or your scan results? Send us a message and we will reply within one business day.</p>
+    </div>
+  </section>
+
+  <div class="container contact-grid">
+    <div class="card">
+      <form class="form" id="contact-form" data-contact-form data-endpoint="/api/contact" novalidate>
+        <p class="mb-0">All fields are required unless marked optional.</p>
+        <div class="form-row">
+          <div class="field">
+            <label for="c-name">Full name</label>
+            <input id="c-name" name="name" type="text" autocomplete="name" maxlength="100" required />
+          </div>
+          <div class="field">
+            <label for="c-email">Work email</label>
+            <input id="c-email" name="email" type="email" autocomplete="email" maxlength="254" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="c-company">Company <span class="hint">(optional)</span></label>
+            <input id="c-company" name="company" type="text" autocomplete="organization" maxlength="120" />
+          </div>
+          <div class="field">
+            <label for="c-website">Website <span class="hint">(optional)</span></label>
+            <input id="c-website" name="site" type="text" inputmode="url" autocomplete="url" maxlength="2048" placeholder="example.com" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="c-topic">Topic</label>
+            <select id="c-topic" name="topic" required>
+              {topics.map((t) => <option value={t.value}>{t.label}</option>)}
+            </select>
+          </div>
+          <div class="field">
+            <label for="c-plan">Plan <span class="hint">(optional)</span></label>
+            <select id="c-plan" name="plan">
+              <option value="">Not sure yet</option>
+              {PLANS.map((p) => <option value={p.id}>{p.name}</option>)}
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="c-message">Message</label>
+          <textarea id="c-message" name="message" minlength="10" maxlength="5000" required></textarea>
+        </div>
+        <div class="hp" aria-hidden="true">
+          <label for="c-hp">Leave this field empty</label>
+          <input id="c-hp" name="website" type="text" tabindex="-1" autocomplete="off" />
+        </div>
+        <label class="field-check">
+          <input type="checkbox" name="consent" value="yes" required />
+          <span>I agree that AccessBell may use these details to respond to my message, as described in the <a href="/privacy">Privacy Policy</a>.</span>
+        </label>
+        <div class="form-status" data-form-status role="status" aria-live="polite" hidden></div>
+        <div>
+          <button class="btn btn-lg" type="submit">Send message <Icon name="arrow" /></button>
+        </div>
+      </form>
+    </div>
+
+    <aside class="contact-side" aria-label="Other ways to reach us">
+      <div class="card">
+        <div class="icon-tile"><Icon name="mail" /></div>
+        <h2>Email</h2>
+        <p><a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+      </div>
+      <div class="card">
+        <div class="icon-tile"><Icon name="clock" /></div>
+        <h2>Response time</h2>
+        <p>We reply within one business day, Monday to Friday.</p>
+      </div>
+      <div class="card">
+        <div class="icon-tile"><Icon name="search" /></div>
+        <h2>Need answers now?</h2>
+        <p>Run a <a href="/#scan">free accessibility scan</a>, compare <a href="/pricing">plans and pricing</a> or read our <a href="/blog">accessibility guides</a>.</p>
+      </div>
+    </aside>
+  </div>
+</BaseLayout>

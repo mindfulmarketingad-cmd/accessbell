@@ -1,0 +1,353 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ScanForm from '../components/ScanForm.astro';
+import Icon from '../components/Icon.astro';
+import LogoMark from '../components/LogoMark.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { faqSchema, softwareSchema, type FaqItem } from '../lib/schema';
+import { formatDate, readingTime } from '../lib/format';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+const standards = [
+  { name: 'WCAG 2.2', sub: 'W3C Recommendation, Levels A and AA' },
+  { name: 'ADA', sub: 'Titles II and III, United States' },
+  { name: 'Section 508', sub: 'U.S. federal ICT' },
+  { name: 'EN 301 549', sub: 'European Union harmonized standard' },
+  { name: 'AODA', sub: 'Ontario, Canada' },
+  { name: 'EAA', sub: 'European Accessibility Act' },
+];
+
+const regions = [
+  {
+    id: 'us',
+    label: 'United States',
+    title: 'ADA and Section 508',
+    body: [
+      'The Department of Justice final rule under ADA Title II sets WCAG 2.1 Level AA as the technical standard for state and local government websites and mobile apps.',
+      'For private businesses under Title III, courts and settlements consistently reference WCAG 2.1 AA, and increasingly WCAG 2.2 AA. Federal agencies and their vendors follow Section 508, which incorporates WCAG 2.0 AA.',
+    ],
+    link: { href: '/blog/ada-website-compliance-guide', label: 'Read the ADA compliance guide' },
+    dates: [
+      { d: 'April 24, 2026', t: 'Title II compliance date for public entities serving 50,000 or more people' },
+      { d: 'April 26, 2027', t: 'Title II compliance date for smaller entities and special districts' },
+      { d: 'January 18, 2018', t: 'Revised Section 508 standards take effect' },
+    ],
+  },
+  {
+    id: 'eu',
+    label: 'European Union',
+    title: 'European Accessibility Act and EN 301 549',
+    body: [
+      'The European Accessibility Act applies to many consumer-facing products and services, including e-commerce, banking, transport and e-books. Conformance is measured against the harmonized standard EN 301 549, which incorporates WCAG 2.1 AA for web content.',
+      'The Web Accessibility Directive already requires public sector websites and apps in member states to meet the same standard.',
+    ],
+    link: { href: '/blog/wcag-2-2-checklist', label: 'Work through the WCAG 2.2 checklist' },
+    dates: [
+      { d: 'June 28, 2025', t: 'European Accessibility Act requirements apply' },
+      { d: 'June 23, 2021', t: 'Web Accessibility Directive applies to public sector mobile apps' },
+    ],
+  },
+  {
+    id: 'uk',
+    label: 'United Kingdom',
+    title: 'Equality Act and Public Sector Regulations',
+    body: [
+      'The Equality Act 2010 requires service providers to make reasonable adjustments for disabled people, which includes digital services.',
+      'Public sector bodies must meet WCAG 2.2 AA under the Public Sector Bodies Accessibility Regulations 2018 and publish an accessibility statement.',
+    ],
+    link: { href: '/blog/wcag-2-2-checklist', label: 'See what changed in WCAG 2.2' },
+    dates: [
+      { d: 'October 2024', t: 'Government monitoring moves to WCAG 2.2 AA' },
+      { d: 'September 23, 2018', t: 'Public Sector Bodies Accessibility Regulations in force' },
+    ],
+  },
+  {
+    id: 'ca',
+    label: 'Canada',
+    title: 'AODA and the Accessible Canada Act',
+    body: [
+      'In Ontario, the Accessibility for Ontarians with Disabilities Act requires designated public sector organizations and businesses with 50 or more employees to meet WCAG 2.0 Level AA for public websites.',
+      'Federally regulated organizations are subject to the Accessible Canada Act, with standards developed by Accessibility Standards Canada.',
+    ],
+    link: { href: '/blog/what-is-a-website-accessibility-checker', label: 'How accessibility checkers work' },
+    dates: [
+      { d: 'January 1, 2021', t: 'AODA WCAG 2.0 AA requirement for public websites in effect' },
+      { d: 'July 11, 2019', t: 'Accessible Canada Act in force' },
+    ],
+  },
+];
+
+const faqs: FaqItem[] = [
+  {
+    q: 'What is a website accessibility checker?',
+    a: 'A website accessibility checker is a tool that scans the code of a web page and flags barriers for people with disabilities, such as missing alt text, unlabeled form fields and missing page language. AccessBell maps every finding to the relevant WCAG success criterion and explains how to fix it.',
+  },
+  {
+    q: 'Is the AccessBell accessibility checker free?',
+    a: 'Yes. You can scan any public page for free with no account. Paid plans add full-domain crawling, scheduled monitoring, reports and team features.',
+  },
+  {
+    q: 'Which accessibility standards does AccessBell check?',
+    a: 'Scans are based on WCAG 2.2 success criteria at Levels A and AA. Because WCAG is the technical benchmark behind the ADA, Section 508, EN 301 549, AODA and the European Accessibility Act, results are relevant to each of them.',
+  },
+  {
+    q: 'Can an automated checker make my website fully compliant?',
+    a: 'No automated tool can guarantee compliance. Automated rules reliably catch objective, code-level failures, but some requirements, such as whether alt text is meaningful or focus order is logical, need human review. Read our guide to <a href="/blog/automated-vs-manual-accessibility-testing">automated vs manual accessibility testing</a>.',
+  },
+  {
+    q: 'Does AccessBell use an accessibility overlay?',
+    a: 'No. AccessBell does not inject a widget into your site. It finds issues in your source code and helps your team fix them properly, so the improvements are permanent.',
+  },
+  {
+    q: 'How often should I scan my website for accessibility issues?',
+    a: 'Scan at least weekly and after every major release. Websites change constantly, and new content is the most common source of regressions. Paid plans run scheduled scans automatically.',
+  },
+];
+---
+<BaseLayout
+  title="Website Accessibility Checker - Free WCAG Scan | AccessBell"
+  description="Free website accessibility checker. Scan any page against WCAG 2.2, ADA and Section 508 in seconds and get clear, code-level fixes for every issue found."
+  schema={[softwareSchema(), faqSchema(faqs)]}
+>
+  <script slot="head" is:inline src="/js/scan.js" defer></script>
+  <section class="hero" id="scan" aria-labelledby="hero-title">
+    <div class="container">
+      <LogoMark class="hero-badge" />
+      <h1 id="hero-title">
+        <span class="h1-kicker">Website Accessibility Checker</span>
+        Find out if your website is <span class="accent">accessible and compliant</span>
+      </h1>
+      <p class="lead">
+        Scan any page against WCAG 2.2 in seconds. See every barrier, the success criterion it fails and the exact code to fix.
+      </p>
+      <ScanForm id="hero" />
+      <ul class="scan-meta">
+        <li><Icon name="check" />Free, no account needed</li>
+        <li><Icon name="check" />WCAG 2.2 A and AA rules</li>
+        <li><Icon name="check" />Code-level fix guidance</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="results" id="scan-results" aria-live="polite" aria-busy="false" hidden>
+    <div class="container" data-results></div>
+  </section>
+
+  <section class="standards-strip" aria-labelledby="std-strip">
+    <div class="container">
+      <p id="std-strip">Checks aligned with global accessibility standards</p>
+      <ul class="standards-list">
+        {standards.map((s) => <li><Icon name="shield" />{s.name}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="legal-title">
+    <div class="container grid-2">
+      <div class="feature-copy">
+        <span class="eyebrow">Reduce legal risk</span>
+        <h2 id="legal-title">Find and fix accessibility issues <span class="accent">before they become legal problems</span></h2>
+        <p class="lead">
+          Most accessibility claims start with barriers a scan can find in seconds: missing alt text, unlabeled form fields and buttons with no name. AccessBell surfaces them first, ranked by impact.
+        </p>
+        <ul class="check-list">
+          <li><Icon name="check" />Every issue mapped to its WCAG 2.2 success criterion</li>
+          <li><Icon name="check" />Severity ranking so you fix what blocks users first</li>
+          <li><Icon name="check" />Element-level evidence your developers can act on</li>
+        </ul>
+        <a class="btn" href="/#scan">Scan your site now <Icon name="arrow" /></a>
+      </div>
+      <div class="mock" role="img" aria-label="Illustration of an AccessBell scan report showing a score of 72 and three issues ranked by severity">
+        <div class="mock-bar" aria-hidden="true"><i></i><i></i><i></i><span>accessbell.co/report</span></div>
+        <div class="mock-body" aria-hidden="true">
+          <div class="mock-score">
+            <div class="score-ring pct-72"><span>72</span></div>
+            <div><strong>Needs attention</strong><p>14 issues across 6 WCAG criteria</p></div>
+          </div>
+          <div class="mock-row"><span><span class="dot dot-red"></span><strong>Form field has no label</strong></span><span class="tag tag-critical">1.3.1</span></div>
+          <div class="mock-row"><span><span class="dot dot-red"></span><strong>Image missing alt text</strong></span><span class="tag tag-serious">1.1.1</span></div>
+          <div class="mock-row"><span><span class="dot dot-amber"></span><strong>Heading level skipped</strong></span><span class="tag tag-moderate">1.3.1</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-surface" aria-labelledby="reaudit-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">One scan, every standard</span>
+        <h2 id="reaudit-title">Re-audit your domains against every accessibility standard, <span class="accent">worldwide</span></h2>
+        <p>WCAG is the technical foundation of accessibility law around the world. AccessBell checks against it once and reports in the language each regulation uses.</p>
+      </div>
+      <ul class="badge-row" role="list">
+        {standards.map((s) => (
+          <li class="std-badge">
+            <span class="seal"><Icon name="shield" /></span>
+            <strong>{s.name}</strong>
+            <span>{s.sub}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="laws-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Legislation tracker</span>
+        <h2 id="laws-title">Latest updates on global accessibility legislation and standards</h2>
+        <p>Key requirements and dates for the regions where most of our customers operate.</p>
+      </div>
+      <div class="tabs" data-tabs>
+        <div class="tablist" role="tablist" aria-label="Regions">
+          {regions.map((r, i) => (
+            <button
+              type="button"
+              role="tab"
+              id={`tab-${r.id}`}
+              aria-controls={`panel-${r.id}`}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              tabindex={i === 0 ? '0' : '-1'}
+            >
+              {r.label}
+            </button>
+          ))}
+        </div>
+        {regions.map((r, i) => (
+          <div class="tabpanel" role="tabpanel" id={`panel-${r.id}`} aria-labelledby={`tab-${r.id}`} tabindex="0" hidden={i !== 0}>
+            <div>
+              <h3>{r.title}</h3>
+              {r.body.map((p) => <p>{p}</p>)}
+              <a class="link-arrow" href={r.link.href}>{r.link.label} <Icon name="arrow" /></a>
+            </div>
+            <div class="keydates">
+              <h4>Key dates</h4>
+              <dl>
+                {r.dates.map((d) => (
+                  <div><dt>{d.d}</dt><dd>{d.t}</dd></div>
+                ))}
+              </dl>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-surface" aria-labelledby="blog-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">From the blog</span>
+        <h2 id="blog-title">Guidance on digital accessibility and compliance</h2>
+        <p>Practical articles on WCAG, the ADA and building accessible websites that stay that way.</p>
+      </div>
+      <div class="post-grid post-grid-3">
+        {posts.map((post) => (
+          <article class="post-card">
+            <div class="post-cover" aria-hidden="true"><span>{post.data.category}</span></div>
+            <div class="post-card-body">
+              <h3><a href={`/blog/${post.id}`}>{post.data.title}</a></h3>
+              <p>{post.data.description}</p>
+              <div class="post-meta">
+                <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+                <span aria-hidden="true">&middot;</span>
+                <span>{readingTime(post.body ?? '')} min read</span>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+      <p class="center more-link"><a class="btn btn-outline" href="/blog">View all articles <Icon name="arrow" /></a></p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="built-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Why AccessBell</span>
+        <h2 id="built-title">Built for website owners who want accessibility <span class="accent">done right</span></h2>
+        <p>No overlays and no shortcuts. Real issues, found in your code, fixed at the source.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <div class="icon-tile"><Icon name="scan" /></div>
+          <h3>Accessibility for the whole domain</h3>
+          <p>Crawl every page on a schedule, not just the homepage. New pages are picked up automatically.</p>
+          <ul class="check-list">
+            <li><Icon name="check" />Automatic domain crawl</li>
+            <li><Icon name="check" />Sitemap import</li>
+            <li><Icon name="check" />Multi-device checks</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="icon-tile"><Icon name="wrench" /></div>
+          <h3>Expert-grade fix guidance</h3>
+          <p>Each issue includes the failing element, the WCAG criterion and a clear explanation of the fix.</p>
+          <ul class="check-list">
+            <li><Icon name="check" />Element-level code snippets</li>
+            <li><Icon name="check" />AI-assisted fix suggestions</li>
+            <li><Icon name="check" />Export to Jira and GitHub</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="icon-tile"><Icon name="chart" /></div>
+          <h3>Proof of progress</h3>
+          <p>Track your score over time and export reports that show auditors and leadership what has changed.</p>
+          <ul class="check-list">
+            <li><Icon name="check" />Audit-ready PDF reports</li>
+            <li><Icon name="check" />Accessibility statement generator</li>
+            <li><Icon name="check" />Regression alerts</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-surface" aria-labelledby="scale-title">
+    <div class="container grid-2">
+      <div class="mock" role="img" aria-label="Illustration of the AccessBell dashboard showing an accessibility score trending upward to 94 over nine weeks">
+        <div class="mock-bar" aria-hidden="true"><i></i><i></i><i></i><span>Dashboard</span></div>
+        <div class="mock-body" aria-hidden="true">
+          <div class="mock-kpis">
+            <div><span>Score</span><strong>94</strong></div>
+            <div><span>Pages</span><strong>1,284</strong></div>
+            <div><span>Open issues</span><strong>37</strong></div>
+          </div>
+          <div class="bars"><i class="h-30"></i><i class="h-38"></i><i class="h-45"></i><i class="h-52"></i><i class="h-60"></i><i class="h-68"></i><i class="h-77"></i><i class="h-86"></i><i class="h-94"></i></div>
+          <div class="mock-row"><span><span class="dot"></span><strong>Weekly scan complete</strong></span><span class="tag tag-pass">+6 pts</span></div>
+        </div>
+      </div>
+      <div class="feature-copy">
+        <span class="eyebrow">Scales with you</span>
+        <h2 id="scale-title">Accessibility for one site or <span class="accent">thousands of pages</span></h2>
+        <p class="lead">
+          Start with a free scan of a single page. When you are ready, monitor every domain you manage from one dashboard, with scheduled scans, alerts and team workflows.
+        </p>
+        <ul class="check-list">
+          <li><Icon name="check" />Plans from 500 to 10,000+ pages</li>
+          <li><Icon name="check" />Role-based access for teams and agencies</li>
+          <li><Icon name="check" />Monthly or annual billing</li>
+        </ul>
+        <a class="btn" href="/pricing">Compare plans <Icon name="arrow" /></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="faq-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">FAQ</span>
+        <h2 id="faq-title">Website accessibility checker questions</h2>
+        <p>Still deciding? Read <a href="/reviews">customer reviews</a> or <a href="/about">learn about our approach</a>.</p>
+      </div>
+      <Faq items={faqs} />
+    </div>
+  </section>
+
+  <CtaBand withForm />
+</BaseLayout>

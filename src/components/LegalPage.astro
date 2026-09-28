@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+interface Props {
+  title: string;
+  heading: string;
+  description: string;
+  path: string;
+  updated: string;
+}
+const { title, heading, description, path, updated } = Astro.props;
+const updatedDate = new Date(updated);
+---
+<BaseLayout title={title} description={description} breadcrumbs={[{ label: heading, href: path }]}>
+  <section class="legal" aria-labelledby="legal-title">
+    <div class="container container-narrow prose">
+      <h1 id="legal-title">{heading}</h1>
+      <p class="updated">
+        Last updated:
+        <time datetime={updated}>{updatedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}</time>
+      </p>
+      <slot />
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,33 @@
+---
+import { HEADER_NAV, normalizePath } from '../config/site';
+import LogoMark from './LogoMark.astro';
+import Icon from './Icon.astro';
+
+const path = normalizePath(Astro.url.pathname);
+const isCurrent = (href: string) => (href === '/' ? path === '/' : path === href || path.startsWith(href + '/'));
+---
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="/" aria-label="AccessBell home">
+      <LogoMark />
+      <span>Access<span class="brand-bell">Bell</span></span>
+    </a>
+    <nav class="primary-nav" id="primary-nav" aria-label="Primary">
+      <ul>
+        {HEADER_NAV.map((item) => (
+          <li>
+            <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <div class="header-cta">
+      <a class="btn btn-outline" href="/contact">Contact sales</a>
+      <a class="btn" href="/#scan">Free scan</a>
+      <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" data-nav-toggle>
+        <Icon name="menu" />
+        <span class="visually-hidden">Menu</span>
+      </button>
+    </div>
+  </div>
+</header>

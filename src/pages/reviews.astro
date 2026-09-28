@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { SITE } from '../config/site';
+import { REVIEWS } from '../data/reviews';
+import { formatDate } from '../lib/format';
+
+const hasReviews = REVIEWS.length > 0;
+const average = hasReviews ? REVIEWS.reduce((s, r) => s + r.rating, 0) / REVIEWS.length : 0;
+
+// Review markup is only emitted for real, published reviews.
+const schema = hasReviews
+  ? [
+      {
+        '@type': 'SoftwareApplication',
+        '@id': `${SITE.url}/#software`,
+        name: 'AccessBell Website Accessibility Checker',
+        applicationCategory: 'BusinessApplication',
+        operatingSystem: 'Web',
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: average.toFixed(1),
+          reviewCount: REVIEWS.length,
+          bestRating: 5,
+          worstRating: 1,
+        },
+        review: REVIEWS.map((r) => ({
+          '@type': 'Review',
+          name: r.title,
+          reviewBody: r.body,
+          datePublished: r.date,
+          author: { '@type': 'Person', name: r.author },
+          reviewRating: { '@type': 'Rating', ratingValue: r.rating, bestRating: 5, worstRating: 1 },
+        })),
+      },
+    ]
+  : [];
+
+const standards = [
+  { title: 'Verified customers only', text: 'We publish reviews from people with an active or past AccessBell account, confirmed against our records.' },
+  { title: 'Published as written', text: 'We do not edit reviews beyond removing personal data. Critical reviews are published alongside positive ones.' },
+  { title: 'No paid or incentivized reviews', text: 'We never pay for reviews or offer discounts in exchange for a rating.' },
+];
+---
+<BaseLayout
+  title="AccessBell Reviews - Website Accessibility Checker Reviews"
+  description="Read verified customer reviews of the AccessBell website accessibility checker, see how we publish reviews, and share your own experience with our team."
+  breadcrumbs={[{ label: 'Reviews', href: '/reviews' }]}
+  schema={schema}
+>
+  <section class="page-hero page-hero-center" aria-labelledby="reviews-title">
+    <div class="container">
+      <span class="eyebrow">Reviews</span>
+      <h1 id="reviews-title">What customers say about AccessBell</h1>
+      <p class="lead">Honest feedback from teams using our website accessibility checker to find, fix and monitor WCAG issues.</p>
+    </div>
+  </section>
+
+  <section class="section-tight pt-0" aria-label="Customer reviews">
+    <div class="container">
+      {hasReviews ? (
+        <div class="review-list">
+          {REVIEWS.map((r) => (
+            <figure class="card review">
+              <div class="stars" role="img" aria-label={`${r.rating} out of 5 stars`}>
+                {Array.from({ length: r.rating }).map(() => <Icon name="star" />)}
+              </div>
+              <h2 class="h3-size">{r.title}</h2>
+              <blockquote><p>{r.body}</p></blockquote>
+              <figcaption>
+                <footer>
+                  <strong>{r.author}</strong>{r.role && `, ${r.role}`}{r.company && ` at ${r.company}`}
+                  <br /><time datetime={r.date}>{formatDate(new Date(r.date))}</time>
+                </footer>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      ) : (
+        <div class="review-empty">
+          <h2>Verified reviews are on the way</h2>
+          <p>We only publish reviews from verified customers, and we are collecting them now. In the meantime, the best review is your own: run a free scan and judge the results for yourself.</p>
+          <div class="cta-actions">
+            <a class="btn" href="/#scan">Run a free scan <Icon name="arrow" /></a>
+            <a class="btn btn-outline" href="/contact?topic=general">Share your experience</a>
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section class="section section-surface" aria-labelledby="policy-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Review policy</span>
+        <h2 id="policy-title">How we publish reviews</h2>
+        <p>Reviews help you make a decision. They are only useful if they are real.</p>
+      </div>
+      <div class="grid-3">
+        {standards.map((s) => (
+          <div class="card">
+            <div class="icon-tile"><Icon name="check-circle" /></div>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </div>
+        ))}
+      </div>
+      <p class="center more-link">Using AccessBell? <a href="/contact?topic=general">Send us your review</a> or read <a href="/about">how we work</a>.</p>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>

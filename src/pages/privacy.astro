@@ -1,0 +1,81 @@
+---
+import LegalPage from '../components/LegalPage.astro';
+import { SITE } from '../config/site';
+---
+<LegalPage
+  title="Privacy Policy | AccessBell"
+  heading="Privacy Policy"
+  description="How AccessBell collects, uses and protects personal information when you use our website accessibility checker, contact forms and paid services."
+  path="/privacy"
+  updated="2026-09-28"
+>
+  <p>
+    This Privacy Policy explains how AccessBell ("AccessBell", "we", "us") collects, uses and protects personal information when you visit accessbell.co, use our free website accessibility checker or subscribe to our services. We collect as little personal information as we need to operate.
+  </p>
+
+  <h2>Information we collect</h2>
+  <h3>Information you give us</h3>
+  <ul>
+    <li><strong>Contact form:</strong> your name, email address, optional company and website, the topic and plan you select, and your message.</li>
+    <li><strong>Accounts and billing:</strong> if you subscribe, your account details and billing information. Payment card details are processed by our payment provider and are not stored on our servers.</li>
+  </ul>
+  <h3>Information collected when you use the checker</h3>
+  <ul>
+    <li>The URL you submit and the accessibility standard you select.</li>
+    <li>The public HTML of that page, which we fetch to run the scan. We analyze it in memory and do not store the page content after the scan completes.</li>
+    <li>Your IP address, used temporarily to prevent abuse through rate limiting.</li>
+  </ul>
+  <h3>Technical information</h3>
+  <p>
+    Our hosting provider records standard server logs, such as IP address, browser type, requested page and time, for security and reliability. This website does not use advertising cookies or third-party tracking scripts.
+  </p>
+
+  <h2>How we use information</h2>
+  <ul>
+    <li>To run accessibility scans and display results.</li>
+    <li>To respond to your messages and provide support.</li>
+    <li>To provide, bill for and improve paid services.</li>
+    <li>To protect our services against fraud, abuse and security threats.</li>
+    <li>To comply with legal obligations.</li>
+  </ul>
+  <p>We do not sell or rent personal information, and we do not share it for cross-context behavioral advertising.</p>
+
+  <h2>Legal bases (EEA and UK)</h2>
+  <p>
+    Where the GDPR or UK GDPR applies, we process personal information on the basis of your consent (for example, when you submit the contact form), to perform a contract with you, to comply with legal obligations, or for our legitimate interests in operating and securing our services.
+  </p>
+
+  <h2>Service providers</h2>
+  <p>
+    We use trusted providers to host our website, deliver email and process payments. They process personal information only on our instructions and under contractual confidentiality and security obligations.
+  </p>
+
+  <h2>Data retention</h2>
+  <p>
+    Scan inputs used for rate limiting are held in memory for a short period and are not written to permanent storage. Contact messages are retained for as long as needed to handle your request and for a reasonable period afterward. Account and billing records are kept for as long as your account is active and as required by law.
+  </p>
+
+  <h2>Security</h2>
+  <p>
+    We protect information with encryption in transit (HTTPS with HSTS), strict security headers, input validation, rate limiting and the principle of least privilege. No method of transmission or storage is completely secure, but we work to protect your information and review our safeguards regularly.
+  </p>
+
+  <h2>Your rights</h2>
+  <p>
+    Depending on where you live, you may have the right to access, correct, delete or port your personal information, to object to or restrict certain processing, and to withdraw consent. California residents have rights under the CCPA/CPRA, including the right to know and to delete. To exercise any right, email <a href={`mailto:${SITE.email}`}>{SITE.email}</a>. We will not discriminate against you for exercising your rights.
+  </p>
+
+  <h2>Children</h2>
+  <p>Our services are not directed to children under 16, and we do not knowingly collect their personal information.</p>
+
+  <h2>International transfers</h2>
+  <p>
+    We may process information in countries other than your own. Where required, we use appropriate safeguards such as standard contractual clauses.
+  </p>
+
+  <h2>Changes to this policy</h2>
+  <p>We may update this policy from time to time. The "Last updated" date above shows when it was last changed.</p>
+
+  <h2>Contact</h2>
+  <p>Questions about privacy can be sent to <a href={`mailto:${SITE.email}`}>{SITE.email}</a> or through our <a href="/contact">contact page</a>.</p>
+</LegalPage>
