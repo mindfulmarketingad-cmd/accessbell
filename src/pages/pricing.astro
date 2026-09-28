@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Icon from '../components/Icon.astro';
 import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
+import ProcessTour from '../components/ProcessTour.astro';
 import { PLAN, FEATURE_GROUPS } from '../data/pricing';
 import { faqSchema, softwareSchema, type FaqItem } from '../lib/schema';
 
@@ -106,18 +107,7 @@ const faqs: FaqItem[] = [
         <h2 id="process-title">Every problem has a process. <span class="accent">Here is ours.</span></h2>
         <p>A repeatable loop that takes you from first scan to continuous compliance.</p>
       </div>
-      <ol class="process">
-        {steps.map((s, i) => (
-          <li>
-            <span class="num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-            <div>
-              <small>{s.tag}</small>
-              <h3>{s.title}</h3>
-              <p>{s.text}</p>
-            </div>
-          </li>
-        ))}
-      </ol>
+      <ProcessTour steps={steps} />
     </div>
   </section>
 

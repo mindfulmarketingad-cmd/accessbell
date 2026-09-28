@@ -15,6 +15,10 @@ export default defineConfig({
     // Shiki writes inline style attributes, which the CSP blocks
     syntaxHighlight: false,
   },
+  vite: {
+    // Never inline scripts or assets: the Content-Security-Policy forbids inline scripts
+    build: { assetsInlineLimit: 0 },
+  },
   compressHTML: true,
   devToolbar: { enabled: false },
   integrations: [accessibleTables()],
