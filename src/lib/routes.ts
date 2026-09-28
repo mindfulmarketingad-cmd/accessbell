@@ -2,6 +2,7 @@ import { getCollection } from 'astro:content';
 import { helpByCategory, articlePath, categoryPath } from './help';
 import { CHECKERS, checkerPath } from '../data/checkers';
 import { PLATFORMS, platformPath } from '../data/platforms';
+import { INDUSTRIES, industryPath } from '../data/industries';
 import { CRITERIA } from '../../server/wcag-criteria.js';
 import { criterionPath } from './wcag-pages';
 
@@ -51,6 +52,7 @@ export async function getRoutes(): Promise<RouteEntry[]> {
     })),
     ...CHECKERS.map((c) => ({ path: checkerPath(c), label: c.name, note: `Free WCAG ${c.version} Level ${c.level} scan`, lastmod: STATIC_LASTMOD, group: 'main' as const })),
     ...PLATFORMS.map((p) => ({ path: platformPath(p), label: `${p.name} Accessibility Checker`, note: 'Free scan for this platform', lastmod: STATIC_LASTMOD, group: 'main' as const })),
+    ...INDUSTRIES.map((ind) => ({ path: industryPath(ind), label: `${ind.name} Accessibility Checker`, note: 'Free scan for this industry', lastmod: STATIC_LASTMOD, group: 'main' as const })),
     ...Object.values(CRITERIA).map((c) => ({ path: criterionPath(c.sc), label: `${c.sc} ${c.name}`, note: `Level ${c.level} · WCAG ${c.version}`, lastmod: STATIC_LASTMOD, group: 'wcag' as const })),
     ...help.flatMap((g) => [
       { path: categoryPath(g.id), label: g.title, note: `${g.articles.length} articles`, lastmod: helpUpdated(g.articles), group: 'help' as const },

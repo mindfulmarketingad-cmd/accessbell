@@ -8,6 +8,7 @@ import { formatDate } from '../../lib/format';
 import { helpByCategory } from '../../lib/help';
 import { CHECKERS, checkerPath } from '../../data/checkers';
 import { PLATFORMS, platformPath } from '../../data/platforms';
+import { INDUSTRIES, industryPath } from '../../data/industries';
 
 const helpCount = (await helpByCategory()).reduce((n, g) => n + g.articles.length, 0);
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
@@ -106,6 +107,29 @@ const schema = [
                 <small>Free Tool</small>
                 <strong>{p.name} Accessibility Checker</strong>
                 <span>{p.lead}</span>
+              </span>
+              <Icon name="arrow" class="res-arrow" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="res-industries">
+    <div class="container">
+      <div class="section-head section-head-left">
+        <h2 id="res-industries">Free Checkers by Industry</h2>
+        <p>The same free scanner, framed for the compliance rules and common failures in your industry.</p>
+      </div>
+      <ul class="res-grid">
+        {INDUSTRIES.map((ind) => (
+          <li>
+            <a class="res-card" href={industryPath(ind)}>
+              <span class="res-card-text">
+                <small>Free Tool</small>
+                <strong>{ind.name} Accessibility Checker</strong>
+                <span>{ind.lead}</span>
               </span>
               <Icon name="arrow" class="res-arrow" />
             </a>

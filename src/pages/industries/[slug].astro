@@ -1,0 +1,155 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import ScanForm from '../../components/ScanForm.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import AuthorAvatar from '../../components/AuthorAvatar.astro';
+import { SITE } from '../../config/site';
+import { authorPath, authorSchema } from '../../lib/authors';
+import { faqSchema } from '../../lib/schema';
+import { formatDate } from '../../lib/format';
+import { INDUSTRIES, industryPath, type Industry } from '../../data/industries';
+
+export function getStaticPaths() {
+  return INDUSTRIES.map((i) => ({ params: { slug: i.slug }, props: { i } }));
+}
+
+const { i } = Astro.props as { i: Industry };
+const REVIEWED = new Date('2026-09-28');
+const url = `${SITE.url}${industryPath(i)}`;
+const author = await getEntry('authors', 'accessbell-editorial-team');
+const others = INDUSTRIES.filter((o) => o.slug !== i.slug);
+const related = (await Promise.all(i.related.map((id) => getEntry('blog', id)))).filter(Boolean);
+
+const schema = [
+  {
+    '@type': 'WebApplication',
+    '@id': `${url}#app`,
+    name: `${i.name} Accessibility Checker`,
+    url,
+    description: i.description,
+    applicationCategory: 'DeveloperApplication',
+    operatingSystem: 'Any',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    publisher: { '@id': `${SITE.url}/#organization` },
+  },
+  {
+    '@type': 'Article',
+    '@id': `${url}#article`,
+    headline: `${i.name} Website Accessibility Checker`,
+    description: i.description,
+    dateModified: REVIEWED.toISOString(),
+    author: author ? { '@id': `${SITE.url}${authorPath(author)}#author` } : { '@id': `${SITE.url}/#organization` },
+    publisher: { '@id': `${SITE.url}/#organization` },
+    mainEntityOfPage: { '@id': `${url}#webpage` },
+  },
+  ...(author ? [authorSchema(author)] : []),
+  faqSchema(i.faqs),
+];
+---
+<BaseLayout
+  title={`${i.seoTitle} | AccessBell`}
+  description={i.description}
+  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: `${i.name} Accessibility Checker`, href: industryPath(i) }]}
+  schema={schema}
+>
+  <section class="checker-hero" id="scan" aria-labelledby="industry-title">
+    <div class="container">
+      <span class="eyebrow">Free Tool</span>
+      <h1 id="industry-title">{i.name} Accessibility Checker</h1>
+      <p class="lead">{i.lead}</p>
+      <ScanForm id="industry" buttonLabel="Check My Site" />
+      <p class="checker-meta">
+        <Icon name="check" /> Real Chrome browser scan, powered by axe-core
+        <span aria-hidden="true">&middot;</span> Free, no account needed
+      </p>
+    </div>
+  </section>
+
+  <section class="results" id="scan-results" aria-live="polite" aria-busy="false" hidden>
+    <div class="container" data-results></div>
+  </section>
+
+  <article class="container checker-body">
+    <div class="checker-byline">
+      {author && <a class="byline-person" href={authorPath(author)}><AuthorAvatar name={author.data.name} /><span><strong>{author.data.name}</strong><small>Author</small></span></a>}
+      <span>Reviewed <time datetime={REVIEWED.toISOString()}>{formatDate(REVIEWED)}</time></span>
+    </div>
+
+    <section aria-labelledby="what-is">
+      <h2 id="what-is">Accessibility Requirements for {i.name}</h2>
+      {i.whatIs.map((para) => <p>{para}</p>)}
+      <p><a href={i.stat.href} rel="noopener noreferrer" target="_blank">{i.stat.text}<span class="visually-hidden"> (opens in a new tab, source: {i.stat.label})</span></a></p>
+    </section>
+
+    <section aria-labelledby="common-issues">
+      <h2 id="common-issues">Common Issues on {i.name} Sites</h2>
+      <ul class="focus-grid">
+        {i.commonIssues.map((x) => <li><h3>{x.title}</h3><p>{x.text}</p></li>)}
+      </ul>
+    </section>
+
+    <section aria-labelledby="fixing">
+      <h2 id="fixing">How to Fix What the Scan Finds</h2>
+      <ol class="steps-list">
+        {i.fixNotes.map((n) => <li>{n}</li>)}
+        <li>Run a free scan above on your homepage and a few key pages, fix issues starting with critical and serious, then rescan to confirm.</li>
+        <li>For ongoing protection, <a href="/pricing">AccessBell Lite</a> monitors up to 25 URLs per domain every day and alerts you when something regresses.</li>
+      </ol>
+    </section>
+
+    <section aria-labelledby="related-guides">
+      <h2 id="related-guides">Related Guides</h2>
+      <ul class="related-guides">
+        {related.map((post) => post && (
+          <li><a href={`/blog/${post.id}`}>{post.data.title}</a><span>{post.data.description}</span></li>
+        ))}
+        <li><a href="/resources/wcag">WCAG Success Criteria Library</a><span>Look up any success criterion the scan flags, in plain language.</span></li>
+        <li><a href="/resources/statement-generator">Free Accessibility Statement Generator</a><span>Publish a statement once your known issues are fixed.</span></li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="faq-title">
+      <h2 id="faq-title">{i.name} Accessibility Questions</h2>
+      <Faq items={i.faqs} />
+    </section>
+
+    <section aria-labelledby="sources" class="checker-sources">
+      <h2 id="sources">Sources</h2>
+      <ul>
+        <li><a href={i.stat.href} rel="noopener noreferrer" target="_blank">{i.stat.label}<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+      </ul>
+      <p class="muted">This page explains general accessibility and legal context for {i.name.toLowerCase()} websites and is not legal advice. See our <a href="/disclaimer">disclaimer</a>.</p>
+    </section>
+  </article>
+
+  <section class="section section-surface" aria-labelledby="more-industries">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="more-industries">Checkers for Other Industries</h2>
+        <p>The same free scanner, framed for the compliance drivers your industry faces.</p>
+      </div>
+      <ul class="res-grid">
+        {others.map((o) => (
+          <li>
+            <a class="res-card" href={industryPath(o)}>
+              <span class="res-card-text">
+                <small>Free Tool</small>
+                <strong>{o.name} Accessibility Checker</strong>
+                <span>{o.lead}</span>
+              </span>
+              <Icon name="arrow" class="res-arrow" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>
+<script>
+  import '../../scripts/free-scan.js';
+</script>
