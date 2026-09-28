@@ -2507,6 +2507,141 @@ a:hover {
   50% { box-shadow: 0 0 0 12px rgb(132 176 130 / 0.1), 0 8px 24px rgb(68 114 63 / 0.25); }
 }
 
+/* ---------- WCAG version comparison (dark band) ---------- */
+.section-ink {
+  background:
+    radial-gradient(50% 80% at 100% 0%, rgb(132 176 130 / 0.16), transparent 70%),
+    var(--ink);
+  color: #d9dde3;
+}
+.section-ink .eyebrow {
+  color: var(--sage);
+}
+.section-ink h2 {
+  color: #fff;
+}
+.section-ink .section-head p {
+  color: #c9ced6;
+}
+.section-ink a {
+  color: #b9d4b8;
+}
+.section-ink a:hover {
+  color: #fff;
+}
+.versions-wrap {
+  overflow-x: auto;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-radius: var(--radius-lg);
+}
+.versions-wrap:focus-visible {
+  outline: 2px solid var(--sage);
+  outline-offset: 3px;
+}
+.versions {
+  width: 100%;
+  min-width: 820px;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+.versions th,
+.versions td {
+  padding: 16px 18px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid rgb(255 255 255 / 0.1);
+}
+.versions tbody tr:last-child > * {
+  border-bottom: 0;
+}
+.versions th + td,
+.versions td + td,
+.versions td + th,
+.versions th + th {
+  border-left: 1px solid rgb(255 255 255 / 0.1);
+}
+.versions thead th {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+}
+.versions thead th.current {
+  color: var(--sage);
+}
+.versions tbody th {
+  width: 22%;
+  font-weight: 600;
+  color: #fff;
+}
+.versions td {
+  color: #d9dde3;
+}
+.versions .current {
+  background: rgb(132 176 130 / 0.08);
+}
+.versions-label {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.versions-label .flag {
+  margin-top: 4px;
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.25);
+}
+.versions-tag {
+  margin-left: 10px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  vertical-align: middle;
+  color: var(--ink-900);
+  background: var(--sage);
+}
+/* Keep row labels in view while the table scrolls sideways */
+.versions tbody th,
+.versions thead td {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: var(--ink);
+  box-shadow: 1px 0 0 rgb(255 255 255 / 0.1);
+}
+.versions-hint {
+  display: none;
+  margin: 0 0 10px;
+  font-size: 0.8125rem;
+  color: #c9ced6;
+}
+@media (max-width: 859px) {
+  .versions {
+    min-width: 700px;
+    font-size: 0.875rem;
+  }
+  .versions tbody th {
+    width: 128px;
+    min-width: 128px;
+  }
+  .versions th,
+  .versions td {
+    padding: 12px 14px;
+  }
+  .versions-hint {
+    display: block;
+  }
+}
+.versions-note {
+  max-width: 820px;
+  margin: 20px auto 0;
+  text-align: center;
+  font-size: 0.9375rem;
+  color: #c9ced6;
+}
+
 /* ---------- FAQ ---------- */
 .faq {
   max-width: 820px;

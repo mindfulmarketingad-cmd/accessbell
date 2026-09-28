@@ -95,6 +95,51 @@ const regions = [
   },
 ];
 
+// WCAG version comparison. Counts come from server/wcag-criteria.js.
+const wcagVersions = [
+  { id: 'v20', name: 'WCAG 2.0' },
+  { id: 'v21', name: 'WCAG 2.1' },
+  { id: 'v22', name: 'WCAG 2.2', current: true },
+];
+const wcagRows: { label: string; flag?: 'us' | 'eu' | 'gb' | 'ca'; cells: string[] }[] = [
+  { label: 'Published', cells: ['December 2008', 'June 2018', 'October 2023'] },
+  { label: 'Success criteria', cells: ['61', '78 (17 new)', '86 (9 new, 4.1.1 Parsing removed)'] },
+  { label: 'Level A and AA criteria', cells: ['38', '50', '55'] },
+  {
+    label: 'What it added',
+    cells: [
+      'The foundation: four principles (perceivable, operable, understandable, robust) and three conformance levels',
+      'Mobile, low vision and cognitive needs: reflow, orientation, text spacing, non-text contrast and status messages',
+      'Focus not obscured, dragging alternatives, 24px minimum targets, consistent help, redundant entry and accessible sign-in',
+    ],
+  },
+  {
+    label: 'United States',
+    flag: 'us',
+    cells: [
+      'Section 508 standard for federal agencies and vendors',
+      'DOJ Title II rule for state and local government; the usual benchmark in ADA Title III cases',
+      'Not required yet; the safest target because it also covers 2.1 and 2.0',
+    ],
+  },
+  {
+    label: 'European Union (EAA)',
+    flag: 'eu',
+    cells: ['Not enough on its own', 'Required through EN 301 549', 'Expected in the next EN 301 549 revision'],
+  },
+  {
+    label: 'United Kingdom public sector',
+    flag: 'gb',
+    cells: ['Not enough on its own', 'Previous benchmark', 'Monitored against since October 2024'],
+  },
+  {
+    label: 'Ontario, Canada (AODA)',
+    flag: 'ca',
+    cells: ['Required for public websites', 'Exceeds the requirement', 'Exceeds the requirement'],
+  },
+  { label: 'In AccessBell', cells: ['Available', 'Available, plus ADA and EN 301 549 presets', 'Default (Level AA)'] },
+];
+
 const faqs: FaqItem[] = [
   {
     q: 'What is a website accessibility checker?',
@@ -209,6 +254,43 @@ const faqs: FaqItem[] = [
           </li>
         ))}
       </ul>
+    </div>
+  </section>
+
+  <section class="section section-ink" aria-labelledby="versions-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Which version applies</span>
+        <h2 id="versions-title">WCAG 2.0 vs 2.1 vs 2.2</h2>
+        <p>Most US accessibility lawsuits and settlements cite WCAG 2.1 AA today. The UK public sector already monitors against WCAG 2.2, and it is the version the next rules are expected to adopt. AccessBell checks WCAG 2.2 AA by default and lets you switch to 2.1 or 2.0 for legacy reports.</p>
+      </div>
+      <p class="versions-hint" aria-hidden="true">Scroll sideways to compare all three versions.</p>
+      <div class="versions-wrap" role="region" aria-label="Table: WCAG 2.0, 2.1 and 2.2 compared" tabindex="0">
+        <table class="versions">
+          <caption class="visually-hidden">Comparison of WCAG 2.0, 2.1 and 2.2: release dates, criteria counts, what each added and where each is required</caption>
+          <thead>
+            <tr>
+              <td></td>
+              {wcagVersions.map((v) => (
+                <th scope="col" id={v.id} class:list={{ current: v.current }}>
+                  {v.name}{v.current && <span class="versions-tag">Current</span>}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {wcagRows.map((row) => (
+              <tr>
+                <th scope="row">
+                  <span class="versions-label">{row.flag && <Flag code={row.flag} />}{row.label}</span>
+                </th>
+                {row.cells.map((c, i) => <td class:list={{ current: wcagVersions[i].current }}>{c}</td>)}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="versions-note">Each version includes everything in the one before it, except 4.1.1 Parsing, which WCAG 2.2 retired. Content that meets WCAG 2.2 AA also meets 2.1 AA and 2.0 AA. <a href="/blog/wcag-2-2-checklist">See the WCAG 2.2 checklist</a>.</p>
     </div>
   </section>
 
