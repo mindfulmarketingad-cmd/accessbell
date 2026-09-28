@@ -2268,3 +2268,55 @@ h2[tabindex='-1']:focus {
   margin-top: 8px;
   gap: 8px;
 }
+
+/* ---------- Hero with flowing ribbon (homepage) ---------- */
+.hero-flow {
+  text-align: left;
+  background: #fff;
+  padding-block: clamp(56px, 9vw, 120px) clamp(48px, 7vw, 96px);
+  isolation: isolate;
+}
+.hero-flow::before {
+  display: none;
+}
+.flow-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+/* Shown when WebGL is unavailable. */
+.flow-canvas[data-fallback='true'] {
+  background:
+    radial-gradient(40% 70% at 88% 30%, rgb(132 176 130 / 0.55), transparent 70%),
+    radial-gradient(30% 50% at 78% 80%, rgb(239 217 160 / 0.45), transparent 70%),
+    radial-gradient(35% 60% at 98% 70%, rgb(53 58 71 / 0.35), transparent 70%);
+}
+.hero-copy {
+  max-width: 660px;
+}
+.hero-flow h1 {
+  margin-inline: 0;
+  max-width: 640px;
+}
+.hero-flow .lead {
+  margin: 0 0 32px;
+}
+.hero-flow .scan-form {
+  margin-inline: 0;
+  max-width: 660px;
+}
+.hero-flow .scan-meta {
+  justify-content: flex-start;
+}
+.hero-flow .scan-error {
+  margin-inline: 0;
+}
+@media (max-width: 899px) {
+  /* On small screens the ribbon sits behind a soft white veil so text stays readable. */
+  .flow-canvas {
+    opacity: 0.25;
+  }
+}
