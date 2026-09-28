@@ -6,6 +6,7 @@ import CtaBand from '../../components/CtaBand.astro';
 import { SITE } from '../../config/site';
 import { formatDate } from '../../lib/format';
 import { helpByCategory } from '../../lib/help';
+import { CHECKERS, checkerPath } from '../../data/checkers';
 
 const helpCount = (await helpByCategory()).reduce((n, g) => n + g.articles.length, 0);
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
@@ -57,6 +58,29 @@ const schema = [
                 <small>{t.tag}</small>
                 <strong>{t.title}</strong>
                 <span>{t.text}</span>
+              </span>
+              <Icon name="arrow" class="res-arrow" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="res-checkers">
+    <div class="container">
+      <div class="section-head section-head-left">
+        <h2 id="res-checkers">Free Checkers by Standard</h2>
+        <p>The same free scanner, preset for the standard you need to meet, with a full breakdown of what it tests.</p>
+      </div>
+      <ul class="res-grid">
+        {CHECKERS.map((c) => (
+          <li>
+            <a class="res-card" href={checkerPath(c)}>
+              <span class="res-card-text">
+                <small>WCAG {c.version} Level {c.level}</small>
+                <strong>{c.name}</strong>
+                <span>{c.lead.split('. ')[0]}.</span>
               </span>
               <Icon name="arrow" class="res-arrow" />
             </a>

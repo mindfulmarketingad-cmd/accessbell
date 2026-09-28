@@ -1,0 +1,205 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import ScanForm from '../../components/ScanForm.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import AuthorAvatar from '../../components/AuthorAvatar.astro';
+import { SITE } from '../../config/site';
+import { CHECKERS, checkerPath, type Checker } from '../../data/checkers';
+import { coverageFor } from '../../lib/checker-coverage';
+import { authorPath, authorSchema } from '../../lib/authors';
+import { faqSchema } from '../../lib/schema';
+import { formatDate } from '../../lib/format';
+
+export function getStaticPaths() {
+  return CHECKERS.map((c) => ({ params: { checker: c.slug }, props: { c } }));
+}
+
+const { c } = Astro.props as { c: Checker };
+const REVIEWED = new Date('2026-09-28');
+const url = `${SITE.url}${checkerPath(c)}`;
+const cov = coverageFor(c.version);
+const author = await getEntry('authors', 'accessbell-editorial-team');
+const others = CHECKERS.filter((o) => o.slug !== c.slug);
+const target = `WCAG ${c.version} Level ${c.level}`;
+
+const schema = [
+  {
+    '@type': 'WebApplication',
+    '@id': `${url}#app`,
+    name: c.name,
+    url,
+    description: c.description,
+    applicationCategory: 'DeveloperApplication',
+    operatingSystem: 'Any',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    publisher: { '@id': `${SITE.url}/#organization` },
+  },
+  {
+    '@type': 'Article',
+    '@id': `${url}#article`,
+    headline: c.whatIs.heading,
+    description: c.description,
+    dateModified: REVIEWED.toISOString(),
+    author: author ? { '@id': `${SITE.url}${authorPath(author)}#author` } : { '@id': `${SITE.url}/#organization` },
+    publisher: { '@id': `${SITE.url}/#organization` },
+    mainEntityOfPage: { '@id': `${url}#webpage` },
+    citation: c.sources.map((s) => s.href),
+  },
+  ...(author ? [authorSchema(author)] : []),
+  faqSchema(c.faqs),
+];
+---
+<BaseLayout
+  title={`${c.seoTitle} | AccessBell`}
+  description={c.description}
+  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: c.name, href: checkerPath(c) }]}
+  schema={schema}
+>
+  <section class="checker-hero" id="scan" aria-labelledby="checker-title">
+    <div class="container">
+      <span class="eyebrow">Free Tool</span>
+      <h1 id="checker-title">{c.name}</h1>
+      <p class="lead">{c.lead}</p>
+      <ScanForm id="checker" standard={c.standardId} buttonLabel={`Check ${c.name.replace(/ Checker$/, '')}`} />
+      <p class="checker-meta">
+        <Icon name="check" /> Runs {cov.ruleCount} automated rules for {target}
+        <span aria-hidden="true">&middot;</span> Covers {cov.automated} of {cov.total} success criteria automatically
+      </p>
+    </div>
+  </section>
+
+  <section class="results" id="scan-results" aria-live="polite" aria-busy="false" hidden>
+    <div class="container" data-results></div>
+  </section>
+
+  <article class="container checker-body">
+    <div class="checker-byline">
+      {author && <a class="byline-person" href={authorPath(author)}><AuthorAvatar name={author.data.name} /><span><strong>{author.data.name}</strong><small>Author</small></span></a>}
+      <span>Reviewed <time datetime={REVIEWED.toISOString()}>{formatDate(REVIEWED)}</time> against the official sources below</span>
+    </div>
+
+    <section aria-labelledby="what-is">
+      <h2 id="what-is">{c.whatIs.heading}</h2>
+      {c.whatIs.paragraphs.map((p) => <p>{p}</p>)}
+      <div class="table-scroll" role="region" aria-label={`${c.name.replace(/ Checker$/, '')} at a glance`} tabindex="0">
+        <table class="facts-table">
+          <caption>{c.name.replace(/ Checker$/, '')} at a glance</caption>
+          <tbody>
+            {c.facts.map(([k, v]) => <tr><th scope="row">{k}</th><td>{v}</td></tr>)}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section aria-labelledby="who">
+      <h2 id="who">{c.who.heading}</h2>
+      <ul class="check-list">
+        {c.who.items.map((i) => <li><Icon name="check" /><span>{i}</span></li>)}
+      </ul>
+    </section>
+
+    <section aria-labelledby="focus">
+      <h2 id="focus">{c.focus.heading}</h2>
+      <p>{c.focus.intro}</p>
+      <ul class="focus-grid">
+        {c.focus.items.map((i) => <li><h3>{i.title}</h3><p>{i.text}</p></li>)}
+      </ul>
+    </section>
+
+    <section aria-labelledby="coverage">
+      <h2 id="coverage">What This {c.name} Tests</h2>
+      <p>
+        {target} has {cov.total} success criteria. This checker runs {cov.ruleCount} automated rules, which test {cov.automated} of them.
+        The rest need a person to judge, and they are listed here so nothing is missed. Open a principle to see every criterion.
+      </p>
+      <div class="cov-stats">
+        <div><strong>{cov.ruleCount}</strong><span>automated rules</span></div>
+        <div><strong>{cov.automated}</strong><span>criteria tested automatically</span></div>
+        <div><strong>{cov.total - cov.automated}</strong><span>criteria that need manual review</span></div>
+      </div>
+      {cov.groups.map((g, i) => (
+        <details class="cov-group" open={i === 0}>
+          <summary>{g.principle} <span>{g.criteria.filter((x) => x.rules > 0).length} of {g.criteria.length} automated</span></summary>
+          <div class="table-scroll" role="region" aria-label={`${g.principle} criteria`} tabindex="0">
+            <table class="cov-list">
+              <caption class="visually-hidden">{g.principle} success criteria in {target}</caption>
+              <thead><tr><th scope="col">Success criterion</th><th scope="col">Level</th><th scope="col">How it is tested</th></tr></thead>
+              <tbody>
+                {g.criteria.map((x) => (
+                  <tr>
+                    <th scope="row"><span class="sc-no">{x.sc}</span> {x.name}{x.version !== '2.0' && c.version !== '2.0' && <span class="since">new in {x.version}</span>}</th>
+                    <td>{x.level}</td>
+                    <td>{x.rules > 0 ? <span class="cov-auto"><Icon name="check" /> Automated ({x.rules} {x.rules === 1 ? 'rule' : 'rules'})</span> : <span class="cov-manual"><Icon name="eye" /> Manual review</span>}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </details>
+      ))}
+    </section>
+
+    <section aria-labelledby="manual">
+      <h2 id="manual">What to Check by Hand</h2>
+      <p>Automated rules find the code-level failures. Add these checks to cover what they cannot judge.</p>
+      <ol class="manual-list">
+        {c.manual.map((m) => <li>{m}</li>)}
+      </ol>
+      <p>For a step-by-step routine, see <a href="/resources/help-center/fixing-issues/plan-manual-testing">Plan manual testing</a> in our Help Center.</p>
+    </section>
+
+    <section aria-labelledby="use">
+      <h2 id="use">How to Use Your Results</h2>
+      <ol class="steps-list">
+        <li><strong>Fix critical and serious issues first</strong>, especially on forms, navigation and checkout. Each issue shows the failing code and how to fix it.</li>
+        <li><strong>Filter by criterion</strong> to hand one type of issue to the right person, for example contrast to design and labels to development.</li>
+        <li><strong>Rescan after each fix</strong> to confirm it, then run the manual checks above.</li>
+        <li><strong>Monitor the whole site.</strong> A free scan checks one page. <a href="/pricing">AccessBell Lite</a> monitors up to 25 URLs per domain against {target} every day and alerts you to new issues.</li>
+      </ol>
+    </section>
+
+    <section aria-labelledby="faq-title">
+      <h2 id="faq-title">{c.name} Questions</h2>
+      <Faq items={c.faqs} />
+    </section>
+
+    <section aria-labelledby="sources" class="checker-sources">
+      <h2 id="sources">Sources</h2>
+      <ul>
+        {c.sources.map((s) => <li><a href={s.href} rel="noopener noreferrer" target="_blank">{s.label}<span class="visually-hidden"> (opens in a new tab)</span></a></li>)}
+      </ul>
+      <p class="muted">This page explains technical standards and is not legal advice. See our <a href="/disclaimer">disclaimer</a>.</p>
+    </section>
+  </article>
+
+  <section class="section section-surface" aria-labelledby="more-checkers">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="more-checkers">More Free Accessibility Checkers</h2>
+        <p>The same engine, preset for the standard you need to meet.</p>
+      </div>
+      <ul class="res-grid">
+        {others.map((o) => (
+          <li>
+            <a class="res-card" href={checkerPath(o)}>
+              <span class="res-card-text">
+                <small>WCAG {o.version} Level {o.level}</small>
+                <strong>{o.name}</strong>
+                <span>{o.lead.split('. ')[0]}.</span>
+              </span>
+              <Icon name="arrow" class="res-arrow" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>
+<script>
+  import '../../scripts/free-scan.js';
+</script>

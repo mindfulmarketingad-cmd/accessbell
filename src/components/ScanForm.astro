@@ -6,8 +6,10 @@ interface Props {
   /** Unique id prefix when more than one form is on a page. */
   id: string;
   buttonLabel?: string;
+  /** Standard selected by default, for checker pages. */
+  standard?: string;
 }
-const { id, buttonLabel = 'Check accessibility' } = Astro.props;
+const { id, buttonLabel = 'Check accessibility', standard } = Astro.props;
 ---
 <form class="scan-form" data-scan-form novalidate aria-describedby={`${id}-error`}>
   <div class="scan-field">
@@ -29,7 +31,7 @@ const { id, buttonLabel = 'Check accessibility' } = Astro.props;
   <div>
     <label class="visually-hidden" for={`${id}-standard`}>Accessibility standard</label>
     <select id={`${id}-standard`} name="standard">
-      {STANDARDS.map((s) => <option value={s.id}>{s.label}</option>)}
+      {STANDARDS.map((s) => <option value={s.id} selected={s.id === standard}>{s.label}</option>)}
     </select>
   </div>
   <button class="btn btn-accent" type="submit">

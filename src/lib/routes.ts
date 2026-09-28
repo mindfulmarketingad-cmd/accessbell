@@ -1,5 +1,6 @@
 import { getCollection } from 'astro:content';
 import { helpByCategory, articlePath, categoryPath } from './help';
+import { CHECKERS, checkerPath } from '../data/checkers';
 
 export type RouteEntry = { path: string; label: string; note?: string; lastmod: Date; group: 'main' | 'blog' | 'authors' | 'help' | 'company' };
 
@@ -44,6 +45,7 @@ export async function getRoutes(): Promise<RouteEntry[]> {
             ? helpUpdated(help.flatMap((g) => g.articles))
             : STATIC_LASTMOD,
     })),
+    ...CHECKERS.map((c) => ({ path: checkerPath(c), label: c.name, note: `Free WCAG ${c.version} Level ${c.level} scan`, lastmod: STATIC_LASTMOD, group: 'main' as const })),
     ...help.flatMap((g) => [
       { path: categoryPath(g.id), label: g.title, note: `${g.articles.length} articles`, lastmod: helpUpdated(g.articles), group: 'help' as const },
       ...g.articles.map((a) => ({ path: articlePath(a), label: a.data.title, lastmod: a.data.updatedDate, group: 'help' as const })),
