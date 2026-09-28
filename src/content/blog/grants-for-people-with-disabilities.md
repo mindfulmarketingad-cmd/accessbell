@@ -10,7 +10,7 @@ contributors:
 history:
   - date: 2026-09-28
     note: 'First published. 2026 SSI, SSDI and ABLE figures checked against Social Security Administration and ABLE program sources; VA grant limits are for fiscal year 2026.'
-related: ['ada-requirements-for-ramps', 'ada-requirements-for-bathrooms', 'ada-website-compliance-guide']
+related: ['famous-people-with-disabilities', 'ada-requirements-for-ramps', 'ada-requirements-for-bathrooms']
 faqs:
   - q: 'Are SSDI and SSI grants?'
     a: 'Not in the usual sense. They are monthly benefits paid by the Social Security Administration, not one-time awards you apply for each year. Like grants, they do not have to be repaid when you qualify.'
