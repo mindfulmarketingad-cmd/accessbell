@@ -4,6 +4,9 @@ seoTitle: 'ADA Website Compliance Guide for Businesses'
 description: 'How the ADA applies to websites, which WCAG level courts and regulators reference, the Title II rule for public entities, and practical steps to reduce risk.'
 pubDate: 2026-09-22
 category: 'Compliance'
+contributors:
+  - author: accessbell-editorial-team
+    role: Author
 related: ['wcag-2-2-checklist', 'what-is-a-website-accessibility-checker']
 ---
 
@@ -46,7 +49,7 @@ Most website accessibility claims begin with barriers that are easy to find with
 - Videos without captions
 - PDFs that are scanned images with no text layer
 
-Because these barriers are easy to detect, they are also easy for plaintiffs' firms to find at scale. Fixing them first is the highest-return activity for most businesses.
+Because these barriers are easy to detect, they are also easy for plaintiffs' firms to find at scale. Fixing them first is the highest-return activity for most businesses. If a claim does arrive, our guide to the [ADA lawsuit process](/blog/ada-lawsuit-process) explains each stage and its deadlines.
 
 ## Steps that reduce risk
 

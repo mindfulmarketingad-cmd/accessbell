@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { SITE } from '../../config/site';
@@ -7,6 +7,9 @@ import { formatDate, readingTime } from '../../lib/format';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const authorNames = new Map(
+  await Promise.all(posts.map(async (p) => [p.id, (await getEntry(p.data.contributors[0].author))?.data.name ?? ''] as const)),
 );
 
 const schema = [
@@ -35,7 +38,7 @@ const schema = [
     <div class="container">
       <span class="eyebrow">AccessBell Blog</span>
       <h1 id="blog-title">Web accessibility guides and compliance insights</h1>
-      <p class="lead">Clear, practical articles on WCAG, the ADA and testing your website for accessibility. Written for the people who have to make it work.</p>
+      <p class="lead">Clear, practical articles on WCAG, the ADA and testing your website for accessibility. Written for the people who have to make it work. <a href="/authors">Meet our authors</a>.</p>
     </div>
   </section>
 
@@ -49,6 +52,8 @@ const schema = [
               <h2><a href={`/blog/${post.id}`}>{post.data.title}</a></h2>
               <p>{post.data.description}</p>
               <div class="post-meta">
+                <span>{authorNames.get(post.id)}</span>
+                <span aria-hidden="true">&middot;</span>
                 <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
                 <span aria-hidden="true">&middot;</span>
                 <span>{readingTime(post.body ?? '')} min read</span>

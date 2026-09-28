@@ -1,0 +1,25 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  headings: MarkdownHeading[];
+  /** "inline" is the collapsible box at the top of the article; "aside" is the sticky sidebar. */
+  variant: 'inline' | 'aside';
+}
+const { headings, variant } = Astro.props;
+const id = `toc-${variant}`;
+---
+{headings.length > 0 &&
+  (variant === 'inline' ? (
+    <details class="toc-inline" open>
+      <summary id={id}>Table of contents</summary>
+      <nav aria-labelledby={id}>
+        <ol>{headings.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+      </nav>
+    </details>
+  ) : (
+    <nav class="aside-card toc toc-aside" aria-labelledby={id}>
+      <h2 id={id}>On this page</h2>
+      <ol>{headings.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+    </nav>
+  ))}

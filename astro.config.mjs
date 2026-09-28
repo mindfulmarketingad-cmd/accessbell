@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import accessibleTables from './src/integrations/accessible-tables.mjs';
 
 export default defineConfig({
   site: 'https://accessbell.co',
@@ -16,4 +17,5 @@ export default defineConfig({
   },
   compressHTML: true,
   devToolbar: { enabled: false },
+  integrations: [accessibleTables()],
 });

@@ -1,10 +1,15 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection, getEntries, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
 import CtaBand from '../../components/CtaBand.astro';
+import AuthorAvatar from '../../components/AuthorAvatar.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
 import { SITE } from '../../config/site';
 import { formatDate, readingTime } from '../../lib/format';
+import { authorPath, authorSchema } from '../../lib/authors';
+import { faqSchema } from '../../lib/schema';
+import { inlineMarkdown, stripMarkdown } from '../../lib/inline-markdown';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -13,9 +18,19 @@ export async function getStaticPaths() {
 
 const { post, all } = Astro.props;
 const { Content, headings } = await render(post);
-const toc = headings.filter((h) => h.depth === 2);
 const url = `${SITE.url}/blog/${post.id}`;
 const minutes = readingTime(post.body ?? '');
+const { faqs, history } = post.data;
+
+const people = await getEntries(post.data.contributors.map((c) => c.author));
+const contributors = post.data.contributors.map((c, i) => ({ role: c.role, author: people[i] }));
+
+// Table of contents: every H2 in the article, plus the FAQ and author sections.
+const toc = [
+  ...headings.filter((h) => h.depth === 2),
+  ...(faqs.length ? [{ depth: 2, slug: 'faq', text: 'Frequently asked questions' }] : []),
+  { depth: 2, slug: 'about-the-authors', text: contributors.length > 1 ? 'About the authors' : 'About the author' },
+];
 
 const related = post.data.related
   .map((slug) => all.find((p) => p.id === slug))
@@ -35,9 +50,14 @@ const schema = [
     articleSection: post.data.category,
     wordCount: (post.body ?? '').split(/\s+/).filter(Boolean).length,
     inLanguage: 'en-US',
-    author: { '@type': 'Organization', name: 'AccessBell Editorial Team', url: `${SITE.url}/about` },
+    author: contributors.filter((c) => c.role === 'Author').map((c) => ({ '@id': `${SITE.url}${authorPath(c.author)}#author` })),
+    ...(contributors.some((c) => c.role !== 'Author')
+      ? { contributor: contributors.filter((c) => c.role !== 'Author').map((c) => ({ '@id': `${SITE.url}${authorPath(c.author)}#author` })) }
+      : {}),
     publisher: { '@id': `${SITE.url}/#organization` },
   },
+  ...people.map(authorSchema),
+  ...(faqs.length ? [faqSchema(faqs.map((f) => ({ q: f.q, a: stripMarkdown(f.a) })))] : []),
 ];
 ---
 <BaseLayout
@@ -60,29 +80,83 @@ const schema = [
       <span class="eyebrow">{post.data.category}</span>
       <h1>{post.data.title}</h1>
       <p class="lead">{post.data.description}</p>
-      <div class="article-meta">
-        <span>By <a href="/about">AccessBell Editorial Team</a></span>
-        <span>Published <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time></span>
-        {post.data.updatedDate && (
-          <span>Updated <time datetime={post.data.updatedDate.toISOString()}>{formatDate(post.data.updatedDate)}</time></span>
-        )}
-        <span>{minutes} min read</span>
+      <div class="byline">
+        <div class="byline-people">
+          {contributors.map((c) => (
+            <a class="byline-person" href={authorPath(c.author)}>
+              <AuthorAvatar name={c.author.data.name} />
+              <span>
+                <strong>{c.author.data.name}</strong>
+                <small>{c.role}</small>
+              </span>
+            </a>
+          ))}
+        </div>
+        <div class="article-meta">
+          <span>Published <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time></span>
+          {post.data.updatedDate && (
+            <span>Updated <time datetime={post.data.updatedDate.toISOString()}>{formatDate(post.data.updatedDate)}</time></span>
+          )}
+          <span>{minutes} min read</span>
+        </div>
       </div>
     </header>
 
     <div class="container article-layout">
-      <div class="prose">
-        <Content />
-      </div>
-      <aside class="article-aside" aria-label="Article tools">
-        {toc.length > 1 && (
-          <nav class="aside-card toc" aria-labelledby="toc-title">
-            <h2 id="toc-title">On this page</h2>
+      <div class="article-main">
+        <TableOfContents headings={toc} variant="inline" />
+        <div class="prose">
+          <Content />
+
+          {faqs.length > 0 && (
+            <section class="article-faq" aria-labelledby="faq">
+              <h2 id="faq">Frequently asked questions</h2>
+              {faqs.map((f) => (
+                <>
+                  <h3>{f.q}</h3>
+                  <p set:html={inlineMarkdown(f.a)} />
+                </>
+              ))}
+            </section>
+          )}
+        </div>
+
+        <section class="author-box" aria-labelledby="about-the-authors">
+          <h2 id="about-the-authors">{contributors.length > 1 ? 'About the authors' : 'About the author'}</h2>
+          {contributors.map((c) => (
+            <div class="author-box-item">
+              <AuthorAvatar name={c.author.data.name} size="lg" />
+              <div>
+                <p class="author-box-name">
+                  <a href={authorPath(c.author)}>{c.author.data.name}</a>
+                  <span class="tag">{c.role}</span>
+                </p>
+                <p class="author-box-title">{c.author.data.jobTitle}</p>
+                <p>{c.author.data.shortBio}</p>
+              </div>
+            </div>
+          ))}
+          <p class="author-box-more"><a class="link-arrow" href="/authors">Meet all our authors <Icon name="arrow" /></a></p>
+        </section>
+
+        {history.length > 0 && (
+          <details class="review-history">
+            <summary>How we reviewed this article</summary>
             <ol>
-              {toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}
+              {history.map((h, i) => (
+                <li>
+                  <time datetime={h.date.toISOString()}>{formatDate(h.date)}</time>
+                  {i === 0 && <span class="tag tag-pass">Current version</span>}
+                  <p>{h.note}</p>
+                </li>
+              ))}
             </ol>
-          </nav>
+          </details>
         )}
+      </div>
+
+      <aside class="article-aside" aria-label="Article tools">
+        <TableOfContents headings={toc} variant="aside" />
         <div class="aside-card">
           <h2>Check your website</h2>
           <p>Run our free website accessibility checker and get a WCAG 2.2 report in seconds.</p>

@@ -1,0 +1,9 @@
+---
+import { initials } from '../lib/authors';
+interface Props {
+  name: string;
+  size?: 'sm' | 'lg';
+}
+const { name, size = 'sm' } = Astro.props;
+---
+<span class:list={['avatar', `avatar-${size}`]} aria-hidden="true">{initials(name)}</span>

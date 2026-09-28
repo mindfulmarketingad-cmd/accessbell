@@ -4,6 +4,9 @@ seoTitle: 'What Is a Website Accessibility Checker?'
 description: 'A plain-English guide to website accessibility checkers: what they test, how they map results to WCAG, what they miss, and how to choose one.'
 pubDate: 2026-09-14
 category: 'Guides'
+contributors:
+  - author: accessbell-editorial-team
+    role: Author
 related: ['automated-vs-manual-accessibility-testing', 'wcag-2-2-checklist']
 ---
 

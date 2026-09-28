@@ -1,0 +1,113 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AuthorAvatar from '../../components/AuthorAvatar.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { SITE } from '../../config/site';
+import { authorPath, authorSchema } from '../../lib/authors';
+import { formatDate, readingTime } from '../../lib/format';
+
+export async function getStaticPaths() {
+  const authors = await getCollection('authors');
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return authors.map((author) => ({
+    params: { slug: author.id },
+    props: {
+      author,
+      posts: posts
+        .filter((p) => p.data.contributors.some((c) => c.author.id === author.id))
+        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+    },
+  }));
+}
+
+const { author, posts } = Astro.props;
+const { Content } = await render(author);
+const url = `${SITE.url}${authorPath(author)}`;
+const roleIn = (p: (typeof posts)[number]) => p.data.contributors.find((c) => c.author.id === author.id)?.role ?? 'Author';
+
+const schema = [
+  {
+    '@type': 'ProfilePage',
+    '@id': `${url}#profile`,
+    url,
+    mainEntity: { '@id': `${url}#author` },
+  },
+  authorSchema(author),
+];
+---
+<BaseLayout
+  title={`${author.data.name} - ${author.data.jobTitle} | AccessBell`.slice(0, 70)}
+  description={author.data.shortBio.slice(0, 160)}
+  breadcrumbs={[
+    { label: 'Authors', href: '/authors' },
+    { label: author.data.name, href: authorPath(author) },
+  ]}
+  schema={schema}
+>
+  <section class="page-hero" aria-labelledby="author-title">
+    <div class="container container-narrow">
+      <div class="profile-head">
+        <AuthorAvatar name={author.data.name} size="lg" />
+        <div>
+          <h1 id="author-title">{author.data.name}</h1>
+          <p class="lead">{author.data.jobTitle}</p>
+        </div>
+      </div>
+      {author.data.expertise.length > 0 && (
+        <ul class="chip-list" aria-label="Areas of expertise">
+          {author.data.expertise.map((e) => <li class="tag">{e}</li>)}
+        </ul>
+      )}
+    </div>
+  </section>
+
+  <section class="section-tight pt-0" aria-label="Biography">
+    <div class="container container-narrow prose">
+      <Content />
+      {author.data.sameAs.length > 0 && (
+        <p>
+          Find {author.data.name} on{' '}
+          {author.data.sameAs.map((s, i) => (
+            <>
+              {i > 0 && ', '}
+              <a href={s} rel="me noopener noreferrer">{new URL(s).hostname.replace(/^www\./, '')}</a>
+            </>
+          ))}
+          .
+        </p>
+      )}
+    </div>
+  </section>
+
+  <section class="section section-surface" aria-labelledby="author-posts">
+    <div class="container">
+      <div class="section-head section-head-left">
+        <h2 id="author-posts">Articles by {author.data.name}</h2>
+      </div>
+      {posts.length ? (
+        <div class="post-grid post-grid-3">
+          {posts.map((p) => (
+            <article class="post-card">
+              <div class="post-card-body">
+                <span class="eyebrow">{roleIn(p)} &middot; {p.data.category}</span>
+                <h3><a href={`/blog/${p.id}`}>{p.data.title}</a></h3>
+                <p>{p.data.description}</p>
+                <div class="post-meta">
+                  <time datetime={p.data.pubDate.toISOString()}>{formatDate(p.data.pubDate)}</time>
+                  <span aria-hidden="true">&middot;</span>
+                  <span>{readingTime(p.body ?? '')} min read</span>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <p class="muted">No articles yet.</p>
+      )}
+      <p class="more-link"><a class="link-arrow" href="/authors">All authors</a></p>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>

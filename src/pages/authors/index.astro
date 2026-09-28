@@ -1,0 +1,55 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AuthorAvatar from '../../components/AuthorAvatar.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { SITE } from '../../config/site';
+import { authorPath, authorSchema } from '../../lib/authors';
+
+const authors = (await getCollection('authors')).sort((a, b) => a.data.name.localeCompare(b.data.name));
+const posts = await getCollection('blog', ({ data }) => !data.draft);
+const countFor = (id: string) => posts.filter((p) => p.data.contributors.some((c) => c.author.id === id)).length;
+
+const schema = [
+  {
+    '@type': 'CollectionPage',
+    '@id': `${SITE.url}/authors#collection`,
+    name: 'AccessBell authors',
+    url: `${SITE.url}/authors`,
+    hasPart: authors.map((a) => ({ '@id': `${SITE.url}${authorPath(a)}#author` })),
+  },
+  ...authors.map(authorSchema),
+];
+---
+<BaseLayout
+  title="Our Authors - Accessibility Experts | AccessBell"
+  description="Meet the people behind the AccessBell blog: the writers, researchers and reviewers who create our guides on WCAG, the ADA and website accessibility testing."
+  breadcrumbs={[{ label: 'Authors', href: '/authors' }]}
+  schema={schema}
+>
+  <section class="page-hero" aria-labelledby="authors-title">
+    <div class="container">
+      <span class="eyebrow">Authors</span>
+      <h1 id="authors-title">The people behind our accessibility guides</h1>
+      <p class="lead">Every article on the <a href="/blog">AccessBell blog</a> is written and reviewed by the contributors below and checked against the published standards.</p>
+    </div>
+  </section>
+
+  <section class="section-tight pt-0" aria-label="All authors">
+    <div class="container author-grid">
+      {authors.map((a) => (
+        <article class="card author-card">
+          <AuthorAvatar name={a.data.name} size="lg" />
+          <div>
+            <h2><a href={authorPath(a)}>{a.data.name}</a></h2>
+            <p class="author-title">{a.data.jobTitle}</p>
+            <p>{a.data.shortBio}</p>
+            <p class="muted mb-0">{countFor(a.id)} article{countFor(a.id) === 1 ? '' : 's'}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>

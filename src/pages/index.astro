@@ -124,14 +124,15 @@ const faqs: FaqItem[] = [
           Find out if your website is <span class="accent">accessible and compliant</span>
         </h1>
         <p class="lead">
-          Scan any page against WCAG 2.2 in seconds. See every barrier, the success criterion it fails and the exact code to fix.
+          Scan any page against WCAG 2.2 in seconds, free and with no account needed. See every barrier, the success criterion it fails and the exact code to fix.
         </p>
         <ScanForm id="hero" />
-        <ul class="scan-meta">
-          <li><Icon name="check" />Free, no account needed</li>
-          <li><Icon name="check" />WCAG 2.2 A and AA rules</li>
-          <li><Icon name="check" />Code-level fix guidance</li>
-        </ul>
+        <div class="compliance-row">
+          <span id="compliance-label">Checks for compliance with:</span>
+          <ul aria-labelledby="compliance-label">
+            {['WCAG', 'ADA', 'EAA', 'Section 508', 'AODA'].map((s) => <li><Icon name="check" />{s}</li>)}
+          </ul>
+        </div>
       </div>
     </div>
   </section>

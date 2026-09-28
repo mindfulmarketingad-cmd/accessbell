@@ -4,6 +4,9 @@ seoTitle: 'Automated vs Manual Accessibility Testing'
 description: 'What automated accessibility testing catches, what needs a human, and how to combine both into a repeatable process that keeps your website WCAG compliant.'
 pubDate: 2026-09-26
 category: 'Guides'
+contributors:
+  - author: accessbell-editorial-team
+    role: Author
 related: ['what-is-a-website-accessibility-checker', 'wcag-2-2-checklist']
 ---
 

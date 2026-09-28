@@ -1,6 +1,6 @@
 import { getCollection } from 'astro:content';
 
-export type RouteEntry = { path: string; label: string; note?: string; lastmod: Date; group: 'main' | 'blog' | 'company' };
+export type RouteEntry = { path: string; label: string; note?: string; lastmod: Date; group: 'main' | 'blog' | 'authors' | 'company' };
 
 /** Date the static pages were last meaningfully changed. Bump when editing them. */
 const STATIC_LASTMOD = new Date('2026-09-28');
@@ -10,6 +10,7 @@ const STATIC: Omit<RouteEntry, 'lastmod'>[] = [
   { path: '/pricing', label: 'Pricing', note: 'Lite plan and features', group: 'main' },
   { path: '/blog', label: 'Blog', note: 'Accessibility guides and compliance insights', group: 'main' },
   { path: '/reviews', label: 'Reviews', note: 'Verified customer reviews', group: 'main' },
+  { path: '/authors', label: 'Authors', note: 'The writers and reviewers behind our guides', group: 'authors' },
   { path: '/about', label: 'About', note: 'Our mission and approach', group: 'company' },
   { path: '/contact', label: 'Contact', note: 'Sales and support', group: 'company' },
   { path: '/disclaimer', label: 'Disclaimer', group: 'company' },
@@ -24,12 +25,13 @@ export async function getRoutes(): Promise<RouteEntry[]> {
     (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
   );
   const newestPost = posts[0]?.data.updatedDate ?? posts[0]?.data.pubDate ?? STATIC_LASTMOD;
+  const authors = await getCollection('authors');
 
   return [
     ...STATIC.map((r) => ({
       ...r,
       // Home and the blog hub list the latest posts, so they change when a post is published.
-      lastmod: r.path === '/' || r.path === '/blog' ? new Date(Math.max(+STATIC_LASTMOD, +newestPost)) : STATIC_LASTMOD,
+      lastmod: r.path === '/' || r.path === '/blog' || r.path === '/authors' ? new Date(Math.max(+STATIC_LASTMOD, +newestPost)) : STATIC_LASTMOD,
     })),
     ...posts.map((p) => ({
       path: `/blog/${p.id}`,
@@ -37,5 +39,10 @@ export async function getRoutes(): Promise<RouteEntry[]> {
       lastmod: p.data.updatedDate ?? p.data.pubDate,
       group: 'blog' as const,
     })),
+    ...authors.map((a) => {
+      const theirs = posts.filter((p) => p.data.contributors.some((c) => c.author.id === a.id));
+      const latest = theirs.reduce((d, p) => Math.max(d, +(p.data.updatedDate ?? p.data.pubDate)), +STATIC_LASTMOD);
+      return { path: `/authors/${a.id}`, label: a.data.name, note: a.data.jobTitle, lastmod: new Date(latest), group: 'authors' as const };
+    }),
   ];
 }

@@ -4,6 +4,9 @@ seoTitle: 'WCAG 2.2 Checklist: Changes and How to Test'
 description: 'A practical WCAG 2.2 AA checklist: the nine new success criteria, the one that was removed, and how to test your website against each requirement.'
 pubDate: 2026-09-18
 category: 'Standards'
+contributors:
+  - author: accessbell-editorial-team
+    role: Author
 related: ['what-is-a-website-accessibility-checker', 'ada-website-compliance-guide']
 ---
 
