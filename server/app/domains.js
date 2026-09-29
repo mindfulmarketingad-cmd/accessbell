@@ -1,7 +1,7 @@
 // Domains, monitored pages, discovery and the domain-wide overview.
 import { parse } from 'parse5';
 import { query, one, tx } from './db.js';
-import { LIMITS, ADMIN_DOMAIN_QUOTA } from './config.js';
+import { LIMITS, ADMIN_DOMAIN_QUOTA, SUBSCRIBER_MIN_DOMAINS } from './config.js';
 import { badRequest, notFound, AppError } from './errors.js';
 import { requireRole, requireSubscription, isAdminUser } from './accounts.js';
 import { assertSafeUrl } from '../net-guard.js';
@@ -186,7 +186,7 @@ export async function createDomain(ctx, input) {
     // Lock the account row so concurrent requests cannot exceed the quota.
     const [account] = await q('select domain_quota from app.accounts where id = $1 for update', [ctx.account.id]);
     const [{ n }] = await q('select count(*)::int as n from app.domains where account_id = $1', [ctx.account.id]);
-    const quota = isAdminUser(ctx.user) ? Math.max(account.domain_quota, ADMIN_DOMAIN_QUOTA) : account.domain_quota;
+    const quota = isAdminUser(ctx.user) ? Math.max(account.domain_quota, ADMIN_DOMAIN_QUOTA) : Math.max(account.domain_quota, ctx.subscriber ? SUBSCRIBER_MIN_DOMAINS : 0);
     if (n >= quota) {
       throw new AppError(402, `Your plan covers ${quota} domain${quota === 1 ? '' : 's'}. Add another domain in Billing to monitor more.`, 'domain_quota');
     }

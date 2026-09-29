@@ -121,8 +121,7 @@ export const can = (me, role) => RANK[me.role] >= RANK[role];
 /** Load the signed-in user and their domains, fill the sidebar and show the billing banner. */
 export async function boot() {
   initShell();
-  const [me, list] = await Promise.all([api('me'), api('domains')]);
-  me.domainList = list;
+  const me = await api('me');
   const set = (sel, text) => document.querySelectorAll(sel).forEach((n) => (n.textContent = text));
   set('[data-account-name]', me.account.name);
   set('[data-account-label]', me.account.name);
@@ -134,9 +133,63 @@ export async function boot() {
     await api('auth/logout', { method: 'POST', redirectOn401: false }).catch(() => {});
     location.assign('/app/login');
   });
+  if (!me.subscribed) {
+    renderPending(me);
+    return new Promise(() => {}); // the page stays on the activation screen
+  }
+  const list = await api('domains');
+  me.domainList = list;
   renderSideDomains(list.domains, me);
   renderBanner(me);
   return me;
+}
+
+/**
+ * Shown until the site owner marks the account as a Subscriber in Supabase.
+ * Checks every 30 seconds and opens the dashboard once access is switched on.
+ */
+function renderPending(me) {
+  const main = document.getElementById('main');
+  if (!main) return;
+  const paid = ['trialing', 'active'].includes(me.billing?.status);
+  const isOwner = me.role === 'owner';
+  const status = el('p', { class: 'status-line', role: 'status', 'aria-live': 'polite' });
+
+  let action = null;
+  if (paid) {
+    action = el('p', { class: 'pending-done', text: 'Payment received. Thank you!' });
+  } else if (isOwner) {
+    action = el('button', { class: 'btn btn-accent', type: 'button', text: 'Start 3-day free trial' });
+    action.addEventListener('click', busy(action, status, startCheckout));
+  } else {
+    action = el('p', { text: 'Ask the owner of this account to start the subscription.' });
+  }
+
+  main.replaceChildren(
+    el('div', { class: 'pending' }, [
+      el('h1', { text: 'Activate Your Dashboard' }),
+      el('p', { class: 'pending-lead', text: `You are signed in as ${me.user.email}. Two steps and your dashboard is ready:` }),
+      el('ol', { class: 'pending-steps' }, [
+        el('li', { class: paid ? 'is-done' : null }, [
+          el('h2', { text: 'Start your 3-day free trial' }),
+          el('p', { text: 'Add your card on our secure Stripe checkout. You are not charged until the trial ends, then it is $79/mo per domain. Cancel anytime.' }),
+          action,
+        ]),
+        el('li', {}, [
+          el('h2', { text: 'We switch on your dashboard' }),
+          el('p', { text: 'Once your payment is confirmed, we activate your account. This page checks every 30 seconds and opens your dashboard as soon as it is ready.' }),
+        ]),
+      ]),
+      status,
+      el('p', { class: 'pending-help' }, ['Questions? ', el('a', { href: '/contact', text: 'Contact us' }), '.']),
+    ]),
+  );
+
+  setInterval(async () => {
+    if (document.visibilityState !== 'visible') return;
+    const next = await api('me').catch(() => null);
+    if (next?.subscribed) location.reload();
+  }, 30_000);
 }
 
 /** Domains listed under "Domains" in the sidebar, plus an "Add domain" link. */
@@ -244,7 +297,8 @@ function renderBanner(me) {
   if (!slot) return;
   const b = me.billing;
   let banner = null;
-  if (b.status === 'none' || b.status === 'canceled' || b.status === 'incomplete_expired') {
+  // Accounts switched on by hand may have no Stripe subscription on record; do not nag them.
+  if ((b.status === 'none' && !me.subscribed) || b.status === 'canceled' || b.status === 'incomplete_expired') {
     const isOwner = me.role === 'owner';
     const button = isOwner ? el('button', { class: 'btn btn-accent', type: 'button', text: b.status === 'none' ? 'Start 3-day free trial' : 'Restart subscription' }) : null;
     if (button) button.addEventListener('click', busy(button, null, startCheckout));

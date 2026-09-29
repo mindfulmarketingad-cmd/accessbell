@@ -141,13 +141,16 @@ const publicRoutes = {
 
 // ---------- Signed-in routes ----------
 
+/** Signed-in routes open to people whose access has not been switched on yet. */
+const PENDING_ROUTES = new Set(['GET me', 'GET billing/checkout', 'POST billing/portal', 'POST auth/password', 'POST onboarding']);
+
 const routes = {
   async 'GET me'({ ctx }) {
     return {
       user: { id: ctx.user.id, email: ctx.user.email },
       account: { id: ctx.account.id, name: ctx.account.name, members: (await one('select count(*)::int as n from app.account_members where account_id = $1', [ctx.account.id])).n },
       role: ctx.role,
-      subscribed: isSubscribed(ctx.account, ctx.user),
+      subscribed: isSubscribed(ctx),
       billing: await billingSummary(ctx),
       onboarding: await getOnboarding(ctx.user.id),
     };
@@ -281,6 +284,11 @@ export async function handle(request) {
     if (!ctx) {
       await ensureUserSetup(session.user);
       ctx = await getContext(session.user);
+    }
+    // Until the site owner marks the account as a Subscriber in Supabase, only
+    // the routes needed to pay and to check status are open.
+    if (!isSubscribed(ctx) && !PENDING_ROUTES.has(key)) {
+      throw new AppError(403, 'Your account is waiting for activation. Start your free trial, and your dashboard unlocks once your payment is confirmed.', 'access_pending');
     }
     const out = await handler({ ctx, request, body, url, ip, accessToken: session.accessToken });
     return respond(200, out, cookies);

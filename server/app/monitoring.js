@@ -5,16 +5,36 @@ import { scanPage } from './scanning.js';
 
 const SEVERE = new Set(['critical', 'serious']);
 
-/** Monitored pages for every account with an active or trialing subscription. */
+// An account is monitored when its owner is marked "Subscriber" in Supabase
+// (app.profiles.status). Before migration 0003 runs, fall back to the Stripe status.
+const SUBSCRIBER = `exists (
+  select 1 from app.account_members m
+    join app.profiles pr on pr.user_id = m.user_id
+   where m.account_id = a.id and m.role = 'owner' and lower(trim(pr.status)) = 'subscriber')`;
+const STRIPE_ACTIVE = `a.subscription_status in ('trialing', 'active')`;
+const UNDEFINED_COLUMN = '42703';
+
+async function withAccessRule(run) {
+  try {
+    return await run(SUBSCRIBER);
+  } catch (err) {
+    if (err?.code === UNDEFINED_COLUMN) return run(STRIPE_ACTIVE);
+    throw err;
+  }
+}
+
+/** Monitored pages for every account that has dashboard access. */
 export async function pagesDueForMonitoring() {
-  return query(
-    `select p.id
-       from app.pages p
-       join app.domains d on d.id = p.domain_id
-       join app.accounts a on a.id = d.account_id
-      where p.monitored and a.subscription_status in ('trialing', 'active')
-      order by p.last_scanned_at asc nulls first
-      limit 5000`,
+  return withAccessRule((rule) =>
+    query(
+      `select p.id
+         from app.pages p
+         join app.domains d on d.id = p.domain_id
+         join app.accounts a on a.id = d.account_id
+        where p.monitored and ${rule}
+        order by p.last_scanned_at asc nulls first
+        limit 5000`,
+    ),
   );
 }
 
@@ -25,15 +45,17 @@ const severeRules = (issues) => new Set((issues || []).filter((i) => SEVERE.has(
  * the previous scan on the same device, so the caller can alert.
  */
 export async function monitorPage(pageId, { deps } = {}) {
-  const page = await one(
-    `select p.*, d.settings, d.hostname, d.account_id, a.subscription_status
-       from app.pages p
-       join app.domains d on d.id = p.domain_id
-       join app.accounts a on a.id = d.account_id
-      where p.id = $1`,
-    [pageId],
+  const page = await withAccessRule((rule) =>
+    one(
+      `select p.*, d.settings, d.hostname, d.account_id, ${rule} as has_access
+         from app.pages p
+         join app.domains d on d.id = p.domain_id
+         join app.accounts a on a.id = d.account_id
+        where p.id = $1`,
+      [pageId],
+    ),
   );
-  if (!page || !page.monitored || !['trialing', 'active'].includes(page.subscription_status)) return { skipped: true };
+  if (!page || !page.monitored || !page.has_access) return { skipped: true };
 
   const previous = await query(
     `select distinct on (device) device, issues from app.scans

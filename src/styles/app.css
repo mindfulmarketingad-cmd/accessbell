@@ -2237,3 +2237,71 @@ fieldset.field legend {
     display: none;
   }
 }
+
+/* Activation screen shown until the account is marked Subscriber */
+.pending {
+  max-width: 640px;
+  margin: 24px auto;
+  padding: clamp(20px, 4vw, 36px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: #fff;
+}
+.pending h1 {
+  font-size: clamp(1.5rem, 3vw, 1.875rem);
+  margin-bottom: 8px;
+}
+.pending-lead {
+  color: var(--ink-500);
+  margin-bottom: 20px;
+}
+.pending-steps {
+  display: grid;
+  gap: 16px;
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+.pending-steps li {
+  position: relative;
+  padding: 16px 16px 16px 60px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  counter-increment: step;
+}
+.pending-steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--sage-700);
+  color: #fff;
+  font-weight: 700;
+}
+.pending-steps li.is-done::before {
+  content: '✓';
+}
+.pending-steps h2 {
+  font-size: 1.0625rem;
+  margin-bottom: 4px;
+}
+.pending-steps p {
+  margin: 0 0 12px;
+}
+.pending-steps p:last-child {
+  margin-bottom: 0;
+}
+.pending-done {
+  font-weight: 600;
+  color: var(--sage-800);
+}
+.pending-help {
+  color: var(--ink-500);
+}

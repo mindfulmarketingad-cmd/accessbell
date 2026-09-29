@@ -5,7 +5,7 @@
 // /api/stripe-webhook, and we link the subscription to that account. The
 // number of domains the account may monitor equals the subscription quantity.
 import crypto from 'node:crypto';
-import { config, ACTIVE_STATUSES, ADMIN_DOMAIN_QUOTA } from './config.js';
+import { config, ACTIVE_STATUSES, ADMIN_DOMAIN_QUOTA, SUBSCRIBER_MIN_DOMAINS } from './config.js';
 import { one } from './db.js';
 import { AppError } from './errors.js';
 import { requireRole, isAdminUser } from './accounts.js';
@@ -197,7 +197,7 @@ export async function billingSummary(ctx) {
   const alreadyActive = ACTIVE_STATUSES.has(ctx.account.subscription_status);
   return {
     status: admin && !alreadyActive ? 'active' : ctx.account.subscription_status,
-    domainQuota: admin ? Math.max(ctx.account.domain_quota, ADMIN_DOMAIN_QUOTA) : ctx.account.domain_quota,
+    domainQuota: admin ? Math.max(ctx.account.domain_quota, ADMIN_DOMAIN_QUOTA) : Math.max(ctx.account.domain_quota, ctx.subscriber ? SUBSCRIBER_MIN_DOMAINS : 0),
     domainsUsed: row.used,
     trialEndsAt: ctx.account.trial_ends_at,
     currentPeriodEnd: ctx.account.current_period_end,

@@ -41,7 +41,30 @@ export async function getContext(user) {
   );
   if (!row) return null;
   const { role, ...account } = row;
-  return { user, account, role };
+  return { user, account, role, subscriber: await accountIsSubscriber(account) };
+}
+
+/**
+ * Dashboard access is granted by hand: the site owner sets an account owner's
+ * profile status to "Subscriber" in Supabase after they pay. Teammates get
+ * access through their account's owner.
+ */
+async function accountIsSubscriber(account) {
+  try {
+    const row = await one(
+      `select exists (
+         select 1 from app.account_members m
+           join app.profiles p on p.user_id = m.user_id
+          where m.account_id = $1 and m.role = 'owner' and lower(trim(p.status)) = 'subscriber'
+       ) as ok`,
+      [account.id],
+    );
+    return Boolean(row?.ok);
+  } catch (err) {
+    // Migration 0003 not run yet: fall back to the Stripe subscription so nobody is locked out.
+    if (err?.code === UNDEFINED_COLUMN) return ACTIVE_STATUSES.has(account.subscription_status);
+    throw err;
+  }
 }
 
 export function requireRole(ctx, minimum) {
@@ -54,10 +77,11 @@ export const isAdminUser = (user) => {
   return emails.length > 0 && emails.includes(String(user?.email || '').trim().toLowerCase());
 };
 
-export const isSubscribed = (account, user) => ACTIVE_STATUSES.has(account.subscription_status) || isAdminUser(user);
+/** Whether this user may use the dashboard: marked Subscriber in Supabase, or a site admin. */
+export const isSubscribed = (ctx) => Boolean(ctx.subscriber) || isAdminUser(ctx.user);
 
 export function requireSubscription(ctx) {
-  if (!isSubscribed(ctx.account, ctx.user)) {
+  if (!isSubscribed(ctx)) {
     throw paymentRequired(
       ctx.account.subscription_status === 'past_due'
         ? 'Your last payment failed. Update your payment method to continue.'

@@ -3,7 +3,7 @@ title: 'Start Your Free Trial'
 description: 'How the 3-day free trial of AccessBell Pro works, how to start it, how many domains to choose at checkout and how to cancel before you are charged.'
 order: 4
 quickStart: 1
-updatedDate: 2026-09-28
+updatedDate: 2026-09-29
 sources: ['stripe-security']
 ---
 
@@ -13,10 +13,10 @@ AccessBell Pro starts with a 3-day free trial. You add a card at checkout, and y
 
 Only the account **Owner** can start the subscription.
 
-1. Sign in to your [dashboard](/app).
-2. Select **Start 3-day free trial** in the banner at the top, or go to **Billing** and select it there.
+1. Sign in to your [dashboard](/app). New accounts see an **Activate Your Dashboard** screen.
+2. Select **Start 3-day free trial**.
 3. You are taken to a secure Stripe checkout page. Choose how many domains you want to monitor, enter your card details and confirm.
-4. When checkout finishes, you return to AccessBell and the banner shows your trial end date.
+4. Once your payment is confirmed, we activate your account. The activation screen checks every 30 seconds and opens your dashboard as soon as it is ready. If it takes longer than you expect, [contact us](/contact).
 
 Each domain in your plan costs $79 per month after the trial. The number of domains you choose at checkout is how many you can add to your dashboard. You can change it later, see [Add more domains to your plan](/resources/help-center/billing/add-more-domains-to-your-plan).
 

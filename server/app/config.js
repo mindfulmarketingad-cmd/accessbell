@@ -15,6 +15,8 @@ export const ACTIVE_STATUSES = new Set(['trialing', 'active']);
 
 /** Domains an admin account (see ADMIN_EMAILS) may monitor without paying. */
 export const ADMIN_DOMAIN_QUOTA = 25;
+/** Domains a manually activated Subscriber may add when Stripe has not set a quota. */
+export const SUBSCRIBER_MIN_DOMAINS = 1;
 
 export function config(env = process.env) {
   return {

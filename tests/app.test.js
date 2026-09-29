@@ -59,7 +59,16 @@ class Client {
   }
 }
 
-async function activate(accountId, quantity = 2) {
+/** What the site owner does by hand in Supabase after a customer pays. */
+async function markSubscriber(accountId, status = 'Subscriber') {
+  await db.query(
+    `update app.profiles set status = $2
+      where user_id in (select user_id from app.account_members where account_id = $1 and role = 'owner')`,
+    [accountId, status],
+  );
+}
+
+async function activate(accountId, quantity = 2, { subscriber = true } = {}) {
   const sub = {
     id: `sub_${crypto.randomUUID().slice(0, 8)}`,
     customer: `cus_${crypto.randomUUID().slice(0, 8)}`,
@@ -73,6 +82,7 @@ async function activate(accountId, quantity = 2) {
     data: { object: { mode: 'subscription', client_reference_id: accountId, customer: sub.customer, subscription: sub.id } },
   };
   const result = await billing.handleStripeEvent(event, { fetchSubscription: async () => sub });
+  if (subscriber) await markSubscriber(accountId);
   return { result, sub, event };
 }
 
@@ -103,6 +113,7 @@ before(async () => {
   await db.query(readFileSync(new URL('./fixtures/supabase-stub.sql', import.meta.url), 'utf8'));
   await db.query(readFileSync(new URL('../supabase/migrations/0001_app_schema.sql', import.meta.url), 'utf8'));
   await db.query(readFileSync(new URL('../supabase/migrations/0002_onboarding.sql', import.meta.url), 'utf8'));
+  await db.query(readFileSync(new URL('../supabase/migrations/0003_subscriber_access.sql', import.meta.url), 'utf8'));
 
   fake = await startFakeAuth(db);
   const { port } = fake.server.address();
@@ -218,7 +229,8 @@ test('paid features require a subscription; checkout link carries the account id
   const owner = new Client('10.0.1.1');
   await owner.post('auth/login', { email: 'owner@acme.test', password: 'correct horse' });
   const blocked = await owner.post('domains', { url: 'example.com' });
-  assert.equal(blocked.status, 402);
+  assert.equal(blocked.status, 403);
+  assert.equal(blocked.body.code, 'access_pending');
 
   const me = await owner.get('me');
   const checkout = await owner.get('billing/checkout');
@@ -253,6 +265,29 @@ test('a non-admin still needs to subscribe', { skip }, async () => {
   assert.equal(me.body.billing.domainQuota, 0);
 });
 
+test('a new account stays pending until marked Subscriber, then teammates share access', { skip }, async () => {
+  const c = new Client('10.0.1.11');
+  await c.post('auth/signup', { email: 'pending-owner@acme.test', password: 'correct horse' });
+  const me = await c.get('me');
+  assert.equal(me.status, 200);
+  assert.equal(me.body.subscribed, false);
+  assert.equal((await c.get('billing/checkout')).status, 200, 'the payment link stays available');
+  for (const route of ['domains', 'team']) {
+    const r = await c.get(route);
+    assert.equal(r.status, 403, route);
+    assert.equal(r.body.code, 'access_pending');
+  }
+
+  await markSubscriber(me.body.account.id, '  subscriber ');
+  const on = await c.get('me');
+  assert.equal(on.body.subscribed, true, 'case and spaces do not matter');
+  assert.equal(on.body.billing.domainQuota, 1, 'a manual Subscriber can add one domain without a Stripe quota');
+  assert.equal((await c.post('domains', { url: 'pending-owner-site.com' })).status, 200);
+
+  await markSubscriber(me.body.account.id, 'Pending');
+  assert.equal((await c.get('domains')).status, 403, 'setting it back removes access');
+});
+
 test('Stripe webhook signatures are verified', { skip }, () => {
   const secret = 'whsec_test';
   const body = '{"id":"evt_1"}';
@@ -269,9 +304,16 @@ test('checkout completion activates the account with a domain quota; duplicates 
   const owner = new Client('10.0.1.2');
   await owner.post('auth/login', { email: 'owner@acme.test', password: 'correct horse' });
   const me = await owner.get('me');
-  const { result, event } = await activate(me.body.account.id, 2);
+  const { result, event } = await activate(me.body.account.id, 2, { subscriber: false });
   assert.equal(result, 'linked');
   assert.equal(await billing.handleStripeEvent(event, { fetchSubscription: async () => ({}) }), 'duplicate');
+
+  // Paying alone does not open the dashboard: the site owner switches it on in Supabase.
+  const paid = await owner.get('me');
+  assert.equal(paid.body.subscribed, false);
+  assert.equal(paid.body.billing.status, 'trialing');
+  assert.equal((await owner.get('domains')).body.code, 'access_pending');
+  await markSubscriber(me.body.account.id);
 
   const after = await owner.get('me');
   assert.equal(after.body.subscribed, true);
@@ -370,8 +412,11 @@ test('roles: invite, permissions and removal', { skip }, async () => {
   assert.equal((await admin.post('team/role', { userId: viewerRow.user_id, role: 'member' })).status, 200);
   assert.equal((await admin.post('team/remove', { userId: ownerRow.user_id })).status, 403);
   assert.equal((await admin.post('team/remove', { userId: viewerRow.user_id })).status, 200);
-  assert.equal((await viewer.get('domains')).status, 200, 'removed user falls back to their own new account');
-  assert.notEqual((await viewer.get('me')).body.account.id, vme.body.account.id);
+  const fallback = await viewer.get('me');
+  assert.equal(fallback.status, 200, 'removed user falls back to their own new account');
+  assert.notEqual(fallback.body.account.id, vme.body.account.id);
+  assert.equal(fallback.body.subscribed, false, 'which is not activated');
+  assert.equal((await viewer.get('domains')).body.code, 'access_pending');
 });
 
 test('scans are stored per device, update the page, and feed the overview with component grouping', { skip }, async () => {
@@ -444,6 +489,7 @@ test('scans are stored per device, update the page, and feed the overview with c
 
   const outsider = new Client('10.0.3.2');
   await outsider.post('auth/signup', { email: 'mallory@evil.test', password: 'correct horse' });
+  await markSubscriber((await outsider.get('me')).body.account.id);
   assert.equal((await outsider.get(`scan?id=${history.body.scans[0].id}`)).status, 404, 'other accounts cannot read scans');
   assert.equal((await outsider.get(`domain?id=${domain.id}`)).status, 404);
 });
@@ -483,7 +529,7 @@ test('discovery reads sitemaps and home page links, and applies URL rules', { sk
     if (!(url in files)) throw new Error('404');
     return { html: files[url], text: files[url], finalUrl: url };
   };
-  const ctx = { user: { id: me.body.user.id }, account: (await db.query('select * from app.accounts where id = $1', [me.body.account.id])).rows[0], role: 'owner' };
+  const ctx = { user: { id: me.body.user.id }, account: (await db.query('select * from app.accounts where id = $1', [me.body.account.id])).rows[0], role: 'owner', subscriber: true };
   const result = await domainsModule.discoverPages(ctx, domain.id, { fetcher });
   const urls = (await db.query('select url, source, monitored from app.pages where domain_id = $1 order by url', [domain.id])).rows;
   const found = urls.map((u) => u.url);
