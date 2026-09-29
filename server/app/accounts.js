@@ -1,7 +1,7 @@
 // Accounts, membership and role checks.
 import { one, tx } from './db.js';
 import { ROLE_RANK, ACTIVE_STATUSES, config } from './config.js';
-import { forbidden, paymentRequired } from './errors.js';
+import { badRequest, forbidden, paymentRequired } from './errors.js';
 
 const defaultAccountName = (email) => {
   const domain = String(email || '').split('@')[1] || '';
@@ -63,6 +63,34 @@ export function requireSubscription(ctx) {
         ? 'Your last payment failed. Update your payment method to continue.'
         : 'Start your 3-day free trial to use this feature.',
     );
+  }
+}
+
+export const TOURS = ['dashboard', 'domain'];
+
+// Postgres "undefined_column": the code is deployed but migration 0002 has
+// not been run yet. The dashboard must keep working in that window.
+const UNDEFINED_COLUMN = '42703';
+
+/** Which product tours the user has finished, or null when that is not stored yet. */
+export async function getOnboarding(userId) {
+  try {
+    const row = await one('select onboarding from app.profiles where user_id = $1', [userId]);
+    const done = row?.onboarding || {};
+    return Object.fromEntries(TOURS.map((t) => [t, Boolean(done[t])]));
+  } catch (err) {
+    if (err.code === UNDEFINED_COLUMN) return null;
+    throw err;
+  }
+}
+
+/** Record that the user finished or dismissed a tour, so it is not shown again. */
+export async function completeTour(userId, tour) {
+  if (!TOURS.includes(tour)) throw badRequest('Unknown tour.');
+  try {
+    await one(`update app.profiles set onboarding = onboarding || jsonb_build_object($2::text, now()) where user_id = $1`, [userId, tour]);
+  } catch (err) {
+    if (err.code !== UNDEFINED_COLUMN) throw err;
   }
 }
 

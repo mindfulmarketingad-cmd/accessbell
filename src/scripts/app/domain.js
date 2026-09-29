@@ -6,6 +6,7 @@ import { initTabs } from './tabs.js';
 import { scoreRing, historyChart } from './charts.js';
 import { fixExample } from '../shared/fix-examples.js';
 import { criteriaFor, PRINCIPLES } from '../../../server/wcag-criteria.js';
+import { setupTour } from './onboarding.js';
 
 const me = await boot();
 const id = qs('id');
@@ -558,6 +559,7 @@ try {
   renderSettings();
   bindSettings();
   bindActions();
+  setupTour(me, 'domain', { selectTab });
 } catch (err) {
   $('[data-title]').textContent = 'Domain not available';
   $('[data-progress]').textContent = err.message;

@@ -1,6 +1,7 @@
 // "Your Domains": every monitored domain, and adding new ones.
 import { api, boot, el, icon, avatar, fmtDate, busy, can, setStatus, startCheckout } from './core.js';
 import { scoreRing } from './charts.js';
+import { setupTour } from './onboarding.js';
 
 const me = await boot();
 const $ = (s) => document.querySelector(s);
@@ -118,3 +119,4 @@ if (new URLSearchParams(location.search).get('add') === '1' && can(me, 'admin'))
   history.replaceState(null, '', location.pathname);
   openAdd();
 }
+setupTour(me, 'dashboard', { openAdd });

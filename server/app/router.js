@@ -3,7 +3,7 @@ import { checkOrigin, clientIp, readJson } from '../http.js';
 import { createRateLimiter } from '../rate-limit.js';
 import { auth } from './auth-client.js';
 import { readSession, sessionCookies, clearSessionCookies } from './session.js';
-import { ensureUserSetup, getContext, renameAccount, requireRole, isSubscribed } from './accounts.js';
+import { ensureUserSetup, getContext, renameAccount, requireRole, isSubscribed, getOnboarding, completeTour } from './accounts.js';
 import { checkoutUrl, portalUrl, billingSummary } from './billing.js';
 import {
   listDomains, createDomain, updateDomainSettings, deleteDomain, addPage, setMonitored, deletePage, discoverPages, domainOverview,
@@ -134,7 +134,12 @@ const routes = {
       role: ctx.role,
       subscribed: isSubscribed(ctx.account, ctx.user),
       billing: await billingSummary(ctx),
+      onboarding: await getOnboarding(ctx.user.id),
     };
+  },
+  async 'POST onboarding'({ ctx, body }) {
+    await completeTour(ctx.user.id, body?.tour);
+    return { status: 'completed' };
   },
   async 'POST auth/password'({ ctx, body, accessToken }) {
     const password = String(body?.password || '');

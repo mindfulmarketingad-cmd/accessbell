@@ -55,7 +55,7 @@ tests/               node:test suites
 
 ## Customer dashboard setup
 
-1. **Database:** Supabase -> SQL Editor -> paste `supabase/migrations/0001_app_schema.sql` -> Run. It creates a private `app` schema that Supabase's public API cannot reach.
+1. **Database:** Supabase -> SQL Editor -> paste `supabase/migrations/0001_app_schema.sql` -> Run. It creates a private `app` schema that Supabase's public API cannot reach. Then run each later migration in order (`0002_onboarding.sql`, ...). Only 0001 is destructive: never re-run it on a live database; the later ones are additive and safe to run again.
 2. **Auth URLs:** Supabase -> Authentication -> URL Configuration. Site URL `https://www.accessbell.co`; add Redirect URLs `https://www.accessbell.co/app/auth/callback` and your Vercel preview domain's `/app/auth/callback`.
 3. **Auth emails:** Supabase's built-in email is limited to a few messages per hour. For launch, set Authentication -> SMTP to Resend (`smtp.resend.com`, port 465, user `resend`, password = your Resend API key).
 4. **Stripe Payment Link:** in the link's settings, set "After payment" to redirect to `https://www.accessbell.co/app/billing`, and allow customers to adjust quantity (quantity = number of domains). Create a webhook to `https://www.accessbell.co/api/stripe-webhook` for `checkout.session.completed` and `customer.subscription.created/updated/deleted`. Activate the Customer Portal and allow quantity changes, card updates and cancellation.

@@ -102,6 +102,7 @@ before(async () => {
   db = new pg.Pool({ connectionString: dbUrl });
   await db.query(readFileSync(new URL('./fixtures/supabase-stub.sql', import.meta.url), 'utf8'));
   await db.query(readFileSync(new URL('../supabase/migrations/0001_app_schema.sql', import.meta.url), 'utf8'));
+  await db.query(readFileSync(new URL('../supabase/migrations/0002_onboarding.sql', import.meta.url), 'utf8'));
 
   fake = await startFakeAuth(db);
   const { port } = fake.server.address();
@@ -460,6 +461,46 @@ test('discovery reads sitemaps and home page links, and applies URL rules', { sk
   assert.ok(!found.some((u) => u.includes('evil.test') || u.endsWith('.pdf')));
   assert.ok(result.added >= 3);
   assert.equal(urls.filter((u) => u.monitored).length, 1, 'discovered pages are not monitored automatically');
+});
+
+test('product tours start unfinished for new users and are remembered per user', { skip }, async () => {
+  const newcomer = new Client('10.0.3.1');
+  await newcomer.post('auth/signup', { email: 'newcomer@tour.test', password: 'correct horse' });
+  let me = await newcomer.get('me');
+  assert.deepEqual(me.body.onboarding, { dashboard: false, domain: false });
+
+  const done = await newcomer.post('onboarding', { tour: 'dashboard' });
+  assert.equal(done.status, 200);
+  me = await newcomer.get('me');
+  assert.deepEqual(me.body.onboarding, { dashboard: true, domain: false });
+
+  const bad = await newcomer.post('onboarding', { tour: 'everything' });
+  assert.equal(bad.status, 400);
+
+  const other = new Client('10.0.3.2');
+  await other.post('auth/signup', { email: 'other-newcomer@tour.test', password: 'correct horse' });
+  assert.deepEqual((await other.get('me')).body.onboarding, { dashboard: false, domain: false });
+});
+
+test('the dashboard keeps working before the onboarding migration, which then marks existing users done', { skip }, async () => {
+  const early = new Client('10.0.3.3');
+  await early.post('auth/signup', { email: 'early-user@tour.test', password: 'correct horse' });
+  await db.query('alter table app.profiles drop column onboarding');
+  try {
+    const me = await early.get('me');
+    assert.equal(me.status, 200);
+    assert.equal(me.body.onboarding, null);
+    assert.equal((await early.post('onboarding', { tour: 'domain' })).status, 200);
+  } finally {
+    await db.query(readFileSync(new URL('../supabase/migrations/0002_onboarding.sql', import.meta.url), 'utf8'));
+  }
+  assert.deepEqual((await early.get('me')).body.onboarding, { dashboard: true, domain: true });
+
+  // Running the migration again changes nothing for people who joined since.
+  const later = new Client('10.0.3.4');
+  await later.post('auth/signup', { email: 'later-user@tour.test', password: 'correct horse' });
+  await db.query(readFileSync(new URL('../supabase/migrations/0002_onboarding.sql', import.meta.url), 'utf8'));
+  assert.deepEqual((await later.get('me')).body.onboarding, { dashboard: false, domain: false });
 });
 
 test('logout clears the session', { skip }, async () => {
