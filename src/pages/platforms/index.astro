@@ -10,6 +10,8 @@ import { INDUSTRIES, industryPath } from '../../data/industries';
 import { STATE_LAWS, stateLawPath } from '../../data/state-laws';
 
 const PATH = '/platforms';
+const builders = PLATFORMS.filter((p) => p.kind !== 'host');
+const hosts = PLATFORMS.filter((p) => p.kind === 'host');
 const url = `${SITE.url}${PATH}`;
 const schema = [
   {
@@ -23,8 +25,8 @@ const schema = [
 ];
 ---
 <BaseLayout
-  title="Platform Accessibility Checkers: WordPress, Shopify and More | AccessBell"
-  description="Free platform accessibility checkers for WordPress, Shopify, Webflow, Squarespace and Wix. Scan any page for WCAG issues and see the fixes for your platform."
+  title="Platform Accessibility Checkers: Builders and Hosts | AccessBell"
+  description="Free platform accessibility checkers for WordPress, Shopify, Wix and more, plus web hosts like GoDaddy, Bluehost and IONOS. Scan any page for WCAG issues."
   breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: 'Platforms', href: PATH }]}
   schema={schema}
 >
@@ -32,7 +34,7 @@ const schema = [
     <div class="container">
       <span class="eyebrow">Free Tools</span>
       <h1 id="platforms-title">Accessibility Checkers by Platform</h1>
-      <p class="lead">Free platform accessibility checkers for the site builders and e-commerce platforms most websites run on. Scan any public page below, or pick your platform to see the WCAG issues it causes most often and how to fix them in your theme, plugins or apps.</p>
+      <p class="lead">Free platform accessibility checkers for the site builders, e-commerce platforms and web hosts most websites run on. Scan any public page below, or pick your platform to see the WCAG issues it causes most often and how to fix them in your theme, plugins or apps.</p>
       <ScanForm id="platforms" buttonLabel="Check my site" />
       <p class="checker-meta">
         <Icon name="check" /> Real Chrome browser scan, powered by axe-core
@@ -48,15 +50,38 @@ const schema = [
   <section class="section-tight" aria-labelledby="platforms-list">
     <div class="container">
       <div class="section-head section-head-left">
-        <h2 id="platforms-list">Platform Accessibility Checkers</h2>
+        <h2 id="platforms-list">Platform Accessibility Checkers for Site Builders</h2>
         <p>Each checker runs the same free WCAG scan, with guidance written for that platform's themes, plugins, apps and editors.</p>
       </div>
       <ul class="res-grid">
-        {PLATFORMS.map((p) => (
+        {builders.map((p) => (
           <li>
             <a class="res-card" href={platformPath(p)}>
               <span class="res-card-text">
-                <small>Free platform checker</small>
+                <small>Site builder or CMS</small>
+                <strong>{p.name} Accessibility Checker</strong>
+                <span>{p.lead}</span>
+              </span>
+              <Icon name="arrow" class="res-arrow" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="platforms-hosts">
+    <div class="container">
+      <div class="section-head section-head-left">
+        <h2 id="platforms-hosts">Accessibility Checkers for Web Hosts</h2>
+        <p>Hosted with one of these providers? Scan your site and see the issues most common on the kinds of sites they host.</p>
+      </div>
+      <ul class="res-grid">
+        {hosts.map((p) => (
+          <li>
+            <a class="res-card" href={platformPath(p)}>
+              <span class="res-card-text">
+                <small>Web host</small>
                 <strong>{p.name} Accessibility Checker</strong>
                 <span>{p.lead}</span>
               </span>

@@ -5,6 +5,8 @@
 export type Platform = {
   slug: string;
   name: string;
+  /** Site builder or CMS (default), or a web host whose customers run many kinds of site. */
+  kind?: 'builder' | 'host';
   seoTitle: string;
   description: string;
   lead: string;
@@ -181,6 +183,244 @@ export const PLATFORMS: Platform[] = [
       { q: 'What should I check beyond the Wix wizard?', a: 'Any third-party app from the Wix App Market, custom color contrast, and any custom interactions or animations, since these are the areas the built-in wizard does not fully cover.' },
     ],
     related: ['what-is-a-website-accessibility-checker', 'free-tools-to-check-website-accessibility', 'automated-vs-manual-accessibility-testing'],
+  },
+  {
+    slug: 'ionos-accessibility-checker',
+    name: 'IONOS',
+    kind: 'host',
+    seoTitle: 'Free IONOS Accessibility Checker',
+    description: 'Free IONOS accessibility checker. Scan any site hosted on IONOS, whether built with its website builder or WordPress, for WCAG issues and fixes.',
+    lead: 'Scan any website hosted on IONOS for real WCAG failures, whether you built it with the IONOS website builder, WordPress or your own code.',
+    stat: {
+      text: 'WebAIM’s annual analysis of the top one million home pages finds detectable WCAG failures on the vast majority of them, year after year, with low-contrast text, missing alternative text and missing form labels among the most common.',
+      href: 'https://webaim.org/projects/million/',
+      label: 'WebAIM Million',
+    },
+    whatIs: [
+      'IONOS hosts a wide range of sites, from pages made with its own website builder to WordPress installs and fully custom code. The host does not decide how accessible your site is: the template, plugins, content and code you publish do.',
+      'Because many IONOS customers run businesses in Europe, accessibility is also a legal question there. The European Accessibility Act has applied since 28 June 2025 to many businesses that sell products and services to consumers in the EU, including online shops.',
+    ],
+    commonIssues: [
+      { title: 'Template color contrast', text: 'Builder templates and themes often use light gray text or pale buttons that fall below the 4.5:1 contrast WCAG requires for normal text.' },
+      { title: 'Images without alt text', text: 'Photos added through a builder or media library are easy to publish without alternative text, so screen reader users miss what they show.' },
+      { title: 'Contact and booking forms', text: 'Form widgets and plugins sometimes rely on placeholder text instead of visible labels, and do not announce errors to screen readers.' },
+      { title: 'Cookie consent banners', text: 'Consent banners, common on EU sites, can trap keyboard focus or hide the rest of the page from screen readers until dismissed.' },
+      { title: 'Headings used for styling', text: 'Text styled to look like a heading, or headings chosen for their size, leaves the page without a structure screen reader users can navigate.' },
+    ],
+    fixNotes: [
+      'Fix recurring problems in the template, theme or global styles first, such as colors and heading styles, so every page benefits at once.',
+      'Rescan after changing templates, installing plugins or adding new sections, since each change can introduce new issues.',
+    ],
+    faqs: [
+      { q: 'Is my IONOS website accessible?', a: 'That depends on the site, not the hosting. Templates, plugins and the content you add decide how accessible it is. A free scan shows the automated issues on any page in seconds.' },
+      { q: 'Do I need to install anything on IONOS to scan my site?', a: 'No. AccessBell scans the live public page in a browser, the same way a visitor sees it. You do not need a plugin, a code snippet or your hosting login.' },
+      { q: 'Does the European Accessibility Act apply to my IONOS site?', a: 'It may. Since 28 June 2025, the EAA applies to many businesses that sell certain products and services to consumers in the EU, including e-commerce, and it refers to the EN 301 549 standard. Micro-enterprises providing services are exempt. Check with a legal adviser for your situation.' },
+    ],
+    related: ['wcag-1-4-3-contrast-minimum', 'wcag-3-3-2-labels-or-instructions', 'automated-vs-manual-accessibility-testing'],
+  },
+  {
+    slug: 'siteground-accessibility-checker',
+    name: 'SiteGround',
+    kind: 'host',
+    seoTitle: 'Free SiteGround Accessibility Checker',
+    description: 'Free SiteGround accessibility checker. Scan WordPress and WooCommerce sites hosted on SiteGround for WCAG failures in themes, plugins and checkout.',
+    lead: 'Scan your SiteGround-hosted WordPress or WooCommerce site for real WCAG failures in the theme, page builder, plugins and checkout.',
+    stat: {
+      text: 'WebAIM’s annual analysis of the top one million home pages finds detectable WCAG failures on the vast majority of them, year after year, with low-contrast text, missing alternative text and missing form labels among the most common.',
+      href: 'https://webaim.org/projects/million/',
+      label: 'WebAIM Million',
+    },
+    whatIs: [
+      'SiteGround is best known for managed WordPress and WooCommerce hosting. On a WordPress site, accessibility comes down to the theme, the page builder and every plugin that adds markup to the page, not the server it runs on.',
+      'Hosting features can still affect what visitors get. Optimization settings that combine, delay or defer scripts can change how menus, sliders and pop-ups behave, so it is worth rescanning after you change them.',
+    ],
+    commonIssues: [
+      { title: 'Page builder markup', text: 'Page builders often produce deeply nested layouts and text styled to look like headings, which leaves screen reader users without a usable page structure.' },
+      { title: 'WooCommerce product and cart pages', text: 'Product galleries, quantity selectors and mini-carts are common sources of keyboard traps and unlabeled buttons.' },
+      { title: 'Plugin forms', text: 'Contact, newsletter and booking forms from plugins frequently miss field labels or fail to announce errors.' },
+      { title: 'Delayed or combined scripts', text: 'When scripts are delayed for speed, menus and dialogs can load late or lose their keyboard handling. Test them with a keyboard after changing optimization settings.' },
+      { title: 'Low-contrast theme colors', text: 'Many themes ship light gray body text and pale buttons that fail WCAG contrast.' },
+    ],
+    fixNotes: [
+      'Fix issues in the theme and reusable blocks first, then work through plugins one by one. Replace plugins that cannot be fixed.',
+      'Rescan after theme, plugin and optimization changes. A passing scan today does not mean the next update will not break something.',
+    ],
+    faqs: [
+      { q: 'Is SiteGround hosting accessible?', a: 'Hosting does not make a website accessible or inaccessible. On SiteGround, as anywhere, the theme, plugins and content decide the result.' },
+      { q: 'Can AccessBell scan a WordPress site on SiteGround?', a: 'Yes. It loads your live page in a real Chrome browser and tests what WordPress, your theme and your plugins actually render.' },
+      { q: 'Do caching and speed settings affect accessibility?', a: 'They can. Settings that delay or combine JavaScript can change how interactive parts of the page behave. Scan and test with a keyboard after changing them.' },
+    ],
+    related: ['wcag-1-4-3-contrast-minimum', 'wcag-2-2-2-pause-stop-hide', 'free-tools-to-check-website-accessibility'],
+  },
+  {
+    slug: 'bluehost-accessibility-checker',
+    name: 'Bluehost',
+    kind: 'host',
+    seoTitle: 'Free Bluehost Accessibility Checker',
+    description: 'Free Bluehost accessibility checker. Scan WordPress sites hosted on Bluehost for WCAG failures in themes, plugins, forms and content, with fixes.',
+    lead: 'Scan your Bluehost-hosted WordPress site for real WCAG failures in the theme, plugins, forms and content, and see how to fix each one.',
+    stat: {
+      text: 'WebAIM’s annual analysis of the top one million home pages finds detectable WCAG failures on the vast majority of them, year after year, with low-contrast text, missing alternative text and missing form labels among the most common.',
+      href: 'https://webaim.org/projects/million/',
+      label: 'WebAIM Million',
+    },
+    whatIs: [
+      'Bluehost is a popular host for WordPress sites. The accessibility of a WordPress site depends on the theme, the plugins and the content added to it, not on the hosting account.',
+      'New WordPress sites often start with a starter theme, demo content and a set of preinstalled plugins. Review what came with your install, remove what you do not use, and check the rest.',
+    ],
+    commonIssues: [
+      { title: 'Starter themes and demo content', text: 'Placeholder images without alt text, sample pages and demo sections can stay live long after launch.' },
+      { title: 'Low-contrast colors', text: 'Theme color settings often produce light text or buttons that fail WCAG contrast minimums.' },
+      { title: 'Unlabeled form fields', text: 'Contact and signup forms that use placeholder text instead of labels are hard to use with a screen reader.' },
+      { title: 'Empty links and buttons', text: 'Social icons, cart icons and search buttons without text alternatives are announced as just "link" or "button".' },
+      { title: 'Sliders and pop-ups', text: 'Auto-rotating sliders without a pause button and pop-ups that trap keyboard focus are common in WordPress themes.' },
+    ],
+    fixNotes: [
+      'Remove unused plugins, sample pages and demo content, then fix colors and headings in the theme settings so the changes apply site-wide.',
+      'Add alt text in the media library and give icon links and buttons a text label.',
+    ],
+    faqs: [
+      { q: 'Is my Bluehost WordPress site accessible?', a: 'Not automatically. The theme, plugins and content decide how accessible it is. A free scan shows the automated issues on any page.' },
+      { q: 'Do I need a plugin to check accessibility on Bluehost?', a: 'No. AccessBell scans the live page in a browser, so there is nothing to install on your hosting account or WordPress site.' },
+      { q: 'Will an accessibility plugin make my site compliant?', a: 'Not on its own. Overlay widgets do not change your site’s code. Plugins that fix markup can help with some site-wide issues, but content and plugin output still need fixing directly.' },
+    ],
+    related: ['wcag-1-1-1-non-text-content', 'wcag-3-3-2-labels-or-instructions', 'accessibe-alternative'],
+  },
+  {
+    slug: 'hosting-com-accessibility-checker',
+    name: 'Hosting.com',
+    kind: 'host',
+    seoTitle: 'Free Hosting.com Accessibility Checker',
+    description: 'Free Hosting.com accessibility checker. Scan any site hosted on Hosting.com, WordPress or custom, for WCAG failures and get a fix for each issue.',
+    lead: 'Scan any website hosted on Hosting.com, from WordPress to custom code, for real WCAG failures and a clear fix for each one.',
+    stat: {
+      text: 'WebAIM’s annual analysis of the top one million home pages finds detectable WCAG failures on the vast majority of them, year after year, with low-contrast text, missing alternative text and missing form labels among the most common.',
+      href: 'https://webaim.org/projects/million/',
+      label: 'WebAIM Million',
+    },
+    whatIs: [
+      'Hosting.com hosts everything from WordPress sites to custom applications. Whatever you run, accessibility is decided by the code, templates and content you publish, not the hosting plan underneath.',
+      'That makes a regular scan useful whatever your stack: it tests the finished page your visitors actually receive.',
+    ],
+    commonIssues: [
+      { title: 'Missing text alternatives', text: 'Images, icons and image links published without alt text or accessible names.' },
+      { title: 'Color contrast', text: 'Text and buttons with too little contrast against their background, often from theme or brand colors.' },
+      { title: 'Form accessibility', text: 'Fields without visible labels, and errors that are shown only in color or never announced.' },
+      { title: 'Keyboard access', text: 'Menus, dialogs and custom widgets that cannot be reached or closed with a keyboard.' },
+      { title: 'Page structure', text: 'Missing page language, skipped heading levels and missing landmarks that make pages hard to navigate with a screen reader.' },
+    ],
+    fixNotes: [
+      'Fix issues at the source: in the template, component or theme that produces them, so every page that uses it is fixed together.',
+      'Add scans to your release routine, so new issues are caught before they reach visitors.',
+    ],
+    faqs: [
+      { q: 'Is my Hosting.com website accessible?', a: 'That depends on the site you publish. The hosting plan does not change your HTML, so the templates, code and content decide how accessible it is.' },
+      { q: 'Can AccessBell scan custom-built sites on Hosting.com?', a: 'Yes. AccessBell scans any public page in a real browser, whatever framework, CMS or code produced it.' },
+      { q: 'Can I scan a staging site?', a: 'The free scan checks public pages. AccessBell Pro can scan staging and protected pages using custom HTTP headers.' },
+    ],
+    related: ['automated-vs-manual-accessibility-testing', 'keyboard-accessibility-testing', 'wcag-1-1-1-non-text-content'],
+  },
+  {
+    slug: 'godaddy-accessibility-checker',
+    name: 'GoDaddy',
+    kind: 'host',
+    seoTitle: 'Free GoDaddy Accessibility Checker',
+    description: 'Free GoDaddy accessibility checker. Scan sites built with GoDaddy Websites + Marketing or WordPress on GoDaddy for WCAG failures and how to fix them.',
+    lead: 'Scan your GoDaddy site, whether it is built with Websites + Marketing or WordPress, for real WCAG failures and how to fix each one.',
+    stat: {
+      text: 'WebAIM’s annual analysis of the top one million home pages finds detectable WCAG failures on the vast majority of them, year after year, with low-contrast text, missing alternative text and missing form labels among the most common.',
+      href: 'https://webaim.org/projects/million/',
+      label: 'WebAIM Million',
+    },
+    whatIs: [
+      'GoDaddy customers run sites built with its Websites + Marketing builder as well as WordPress and other software. In each case, the template, sections and content you choose decide how accessible the site is.',
+      'Site builders make it quick to add sections such as galleries, booking forms and online store pages. Each one is worth checking, because a single section with a problem appears on every page that uses it.',
+    ],
+    commonIssues: [
+      { title: 'Images without alt text', text: 'Images added to builder sections and galleries are easy to publish without describing them.' },
+      { title: 'Section color contrast', text: 'Text placed over images or colored section backgrounds often lacks enough contrast.' },
+      { title: 'Booking and contact forms', text: 'Forms need visible labels and clear error messages that screen readers announce.' },
+      { title: 'Online store pages', text: 'Product options, cart buttons and quantity controls need accessible names and keyboard support.' },
+      { title: 'Link text', text: 'Buttons and links such as "Learn more" repeated across sections do not say where they go.' },
+    ],
+    fixNotes: [
+      'Add alt text to every informative image, and check text over images and colored backgrounds for contrast.',
+      'Rename vague buttons, such as "Learn more", to say what they lead to, such as "Learn more about our services".',
+    ],
+    faqs: [
+      { q: 'Is the GoDaddy website builder accessible?', a: 'A builder provides templates and sections, but the result depends on your content and design choices, such as alt text, colors and link wording. Scan your published pages to check.' },
+      { q: 'Do I need to change anything in my GoDaddy account to scan my site?', a: 'No. AccessBell scans the live public page like a visitor. No plugin, code or account access is needed.' },
+      { q: 'Can I check my GoDaddy online store?', a: 'Yes. Scan your home page, a product page, the cart and any other public pages to find issues in the parts of the store customers use most.' },
+    ],
+    related: ['wcag-1-1-1-non-text-content', 'wcag-1-4-3-contrast-minimum', 'ada-website-compliance-guide'],
+  },
+  {
+    slug: 'hostgator-accessibility-checker',
+    name: 'HostGator',
+    kind: 'host',
+    seoTitle: 'Free HostGator Accessibility Checker',
+    description: 'Free HostGator accessibility checker. Scan WordPress and other sites hosted on HostGator for WCAG failures, from contrast to forms, with a fix for each.',
+    lead: 'Scan your HostGator-hosted site, WordPress or otherwise, for real WCAG failures, from low contrast to unlabeled forms, with a fix for each.',
+    stat: {
+      text: 'WebAIM’s annual analysis of the top one million home pages finds detectable WCAG failures on the vast majority of them, year after year, with low-contrast text, missing alternative text and missing form labels among the most common.',
+      href: 'https://webaim.org/projects/million/',
+      label: 'WebAIM Million',
+    },
+    whatIs: [
+      'HostGator hosts many small business and personal sites, often running WordPress. Accessibility comes from the theme, plugins and content on the site, not the hosting plan.',
+      'Small business sites tend to share the same trouble spots: a contact form, a gallery, a map and a few social icons. Checking those well covers a lot of ground.',
+    ],
+    commonIssues: [
+      { title: 'Contact forms', text: 'Missing labels and errors that are not announced make forms hard to complete with a screen reader.' },
+      { title: 'Social and icon links', text: 'Icon-only links without accessible names are read out as just "link".' },
+      { title: 'Embedded maps and videos', text: 'Embeds without titles, and videos without captions, leave out screen reader and deaf users.' },
+      { title: 'Image galleries', text: 'Gallery images without alt text, and lightboxes that trap keyboard focus.' },
+      { title: 'Low-contrast text', text: 'Light gray text and pale buttons from theme defaults.' },
+    ],
+    fixNotes: [
+      'Give every icon link and embedded frame a clear text name, and add captions to videos.',
+      'Fix theme-level colors and fonts first, then check each plugin that adds a form, gallery or embed.',
+    ],
+    faqs: [
+      { q: 'Is my HostGator website accessible?', a: 'Not automatically. The theme, plugins and content you use decide that. Run a free scan to see the automated issues on any page.' },
+      { q: 'Do I need to install anything on HostGator?', a: 'No. AccessBell scans the live page in a browser, so nothing needs to be installed on your hosting account or site.' },
+      { q: 'What should I check by hand after a scan?', a: 'Use the keyboard to move through menus, forms and pop-ups, and check that images, links and buttons make sense when read aloud. Our testing guides explain how.' },
+    ],
+    related: ['keyboard-accessibility-testing', 'wcag-1-1-1-non-text-content', 'free-tools-to-check-website-accessibility'],
+  },
+  {
+    slug: 'dreamhost-accessibility-checker',
+    name: 'DreamHost',
+    kind: 'host',
+    seoTitle: 'Free DreamHost Accessibility Checker',
+    description: 'Free DreamHost accessibility checker. Scan WordPress and other sites hosted on DreamHost for WCAG failures in themes, plugins and content, with fixes.',
+    lead: 'Scan your DreamHost-hosted WordPress or custom site for real WCAG failures in the theme, plugins and content, with a fix for each one.',
+    stat: {
+      text: 'WebAIM’s annual analysis of the top one million home pages finds detectable WCAG failures on the vast majority of them, year after year, with low-contrast text, missing alternative text and missing form labels among the most common.',
+      href: 'https://webaim.org/projects/million/',
+      label: 'WebAIM Million',
+    },
+    whatIs: [
+      'DreamHost hosts WordPress sites as well as custom and static sites. For every one of them, accessibility is decided by the code, theme, plugins and content, not by the host.',
+      'Blogs and content-heavy sites have their own common gaps: images without alt text, long posts with no heading structure and links that just say "read more".',
+    ],
+    commonIssues: [
+      { title: 'Blog images', text: 'Featured images and in-post images published without alt text.' },
+      { title: 'Heading structure', text: 'Long posts that skip heading levels or use bold text instead of headings.' },
+      { title: 'Vague link text', text: 'Repeated "read more" and "click here" links that do not say where they go.' },
+      { title: 'Theme contrast', text: 'Light gray meta text, captions and buttons that fail WCAG contrast.' },
+      { title: 'Comment and search forms', text: 'Fields without labels and buttons without accessible names.' },
+    ],
+    fixNotes: [
+      'Set up your editor workflow so every post gets alt text, real headings and descriptive link text before it is published.',
+      'Fix theme colors and form markup once, in the theme or a child theme, so every page benefits.',
+    ],
+    faqs: [
+      { q: 'Is my DreamHost site accessible?', a: 'That depends on the site, not the hosting. Your theme, plugins and content decide how accessible it is. A free scan shows the automated issues.' },
+      { q: 'Can AccessBell scan a static site hosted on DreamHost?', a: 'Yes. AccessBell scans any public page in a real browser, however it was built.' },
+      { q: 'How often should I scan a blog?', a: 'Scan after theme and plugin changes, and regularly as you publish. AccessBell Pro rescans up to 25 pages per domain every day and alerts you to new issues.' },
+    ],
+    related: ['wcag-1-1-1-non-text-content', 'wcag-1-3-2-meaningful-sequence', 'seo-audit'],
   },
 ];
 

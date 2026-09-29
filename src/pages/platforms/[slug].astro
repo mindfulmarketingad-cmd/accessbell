@@ -11,6 +11,7 @@ import { authorPath, authorSchema } from '../../lib/authors';
 import { faqSchema } from '../../lib/schema';
 import { formatDate } from '../../lib/format';
 import { PLATFORMS, platformPath, type Platform } from '../../data/platforms';
+import { coverageFor } from '../../lib/checker-coverage';
 
 export function getStaticPaths() {
   return PLATFORMS.map((p) => ({ params: { slug: p.slug }, props: { p } }));
@@ -20,7 +21,9 @@ const { p } = Astro.props as { p: Platform };
 const REVIEWED = new Date('2026-09-28');
 const url = `${SITE.url}${platformPath(p)}`;
 const author = await getEntry('authors', 'accessbell-editorial-team');
-const others = PLATFORMS.filter((o) => o.slug !== p.slug);
+const isHost = p.kind === 'host';
+const others = PLATFORMS.filter((o) => o.slug !== p.slug && (o.kind === 'host') === isHost);
+const cov = coverageFor('2.2');
 const related = (await Promise.all(p.related.map((id) => getEntry('blog', id)))).filter(Boolean);
 
 const schema = [
@@ -85,10 +88,34 @@ const schema = [
     </section>
 
     <section aria-labelledby="common-issues">
-      <h2 id="common-issues">Common {p.name} Accessibility Issues</h2>
+      <h2 id="common-issues">Common Accessibility Issues on {p.name} Sites</h2>
       <ul class="focus-grid">
         {p.commonIssues.map((i) => <li><h3>{i.title}</h3><p>{i.text}</p></li>)}
       </ul>
+    </section>
+
+    <section aria-labelledby="how-scans">
+      <h2 id="how-scans">How AccessBell Scans Your {p.name} Site</h2>
+      <ol class="steps-list">
+        <li><strong>Enter any public page.</strong> Paste the address of a page on your {p.name} site into the scanner above. There is nothing to install{isHost ? ' on your hosting account' : ''}: no plugin, no code snippet and no login.</li>
+        <li><strong>We load it in a real browser.</strong> AccessBell opens the page in headless Chrome and runs its scripts, so it tests what your visitors actually see, including content added by your {isHost ? 'theme, builder or plugins' : 'theme, apps or plugins'}.</li>
+        <li><strong>We run the WCAG rules.</strong> The open-source <a href="https://github.com/dequelabs/axe-core" rel="noopener noreferrer">axe-core</a> engine checks the page against the standard you choose, and every result is mapped to the WCAG success criteria it affects.</li>
+        <li><strong>You get a report in seconds.</strong> Each issue comes with the failing HTML and how to fix it. Our <a href="/methodology">methodology</a> explains exactly what runs and what still needs a person.</li>
+      </ol>
+    </section>
+
+    <section aria-labelledby="included">
+      <h2 id="included">What's Included in Every Scan</h2>
+      <ul class="check-list">
+        <li><Icon name="check" /><span>{cov.ruleCount} automated rules for WCAG 2.2 Level AA, or presets for WCAG 2.1 AA, the ADA, Section 508 and EN 301 549</span></li>
+        <li><Icon name="check" /><span>Every issue ranked by severity, from critical to minor</span></li>
+        <li><Icon name="check" /><span>The WCAG success criteria each issue fails, which you can look up in our <a href="/resources/wcag">WCAG library</a></span></li>
+        <li><Icon name="check" /><span>The failing HTML, so you can find the element in your {isHost ? 'site' : p.name} editor or code</span></li>
+        <li><Icon name="check" /><span>How to fix each issue, with a link to the rule's full documentation</span></li>
+        <li><Icon name="check" /><span>A list of checks that need a person to review, so nothing is missed</span></li>
+        <li><Icon name="check" /><span>Filters by WCAG version, level, principle, success criterion and severity</span></li>
+      </ul>
+      <p>The free scan checks one page at a time. <a href="/pricing">AccessBell Pro</a> scans up to 25 pages per domain every day and alerts you when something changes.</p>
     </section>
 
     <section aria-labelledby="fixing">
@@ -112,7 +139,7 @@ const schema = [
     </section>
 
     <section aria-labelledby="faq-title">
-      <h2 id="faq-title">{p.name} Accessibility Questions</h2>
+      <h2 id="faq-title">{p.name} Accessibility — Frequently Asked Questions</h2>
       <Faq items={p.faqs} />
     </section>
 
@@ -121,15 +148,15 @@ const schema = [
       <ul>
         <li><a href={p.stat.href} rel="noopener noreferrer" target="_blank">{p.stat.label}<span class="visually-hidden"> (opens in a new tab)</span></a></li>
       </ul>
-      <p class="muted">This page explains general accessibility patterns for {p.name} sites and is not legal advice. See our <a href="/disclaimer">disclaimer</a>.</p>
+      <p class="muted">This page explains general accessibility patterns for {p.name} sites and is not legal advice. AccessBell is not affiliated with {p.name}. See our <a href="/disclaimer">disclaimer</a>.</p>
     </section>
   </article>
 
   <section class="section section-surface" aria-labelledby="more-platforms">
     <div class="container">
       <div class="section-head">
-        <h2 id="more-platforms">Checkers for Other Platforms</h2>
-        <p>The same free scanner, framed for the platform you use.</p>
+        <h2 id="more-platforms">{isHost ? 'Checkers for Other Web Hosts' : 'Checkers for Other Platforms'}</h2>
+        <p>The same free scanner, framed for the {isHost ? 'host' : 'platform'} you use. See <a href="/platforms">all platform checkers</a>.</p>
       </div>
       <ul class="res-grid">
         {others.map((o) => (
