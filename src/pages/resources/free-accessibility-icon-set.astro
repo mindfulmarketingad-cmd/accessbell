@@ -1,0 +1,152 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import Faq from '../../components/Faq.astro';
+import { faqSchema, type FaqItem } from '../../lib/schema';
+import { SITE } from '../../config/site';
+import { understandingUrl } from '../../lib/wcag-pages';
+import { ACCESSIBILITY_ICONS, ICON_SET } from '../../data/accessibility-icons.js';
+
+const PATH = '/resources/free-accessibility-icon-set';
+const DEFAULT_COLOR = '#1f3a2d';
+const file = (fmt: 'svg' | 'png', slug: string) => `${ICON_SET.basePath}/${fmt}/${slug}.${fmt}`;
+const ATTRIBUTION = 'Accessibility icons by AccessBell (accessbell.co), CC BY 4.0';
+
+const faqs: FaqItem[] = [
+  {
+    q: 'Is this accessibility icon set really free?',
+    a: 'Yes. The whole set is free for personal and commercial projects under the Creative Commons Attribution 4.0 license. The only requirement is a credit, for example "Accessibility icons by AccessBell (accessbell.co)".',
+  },
+  {
+    q: 'What file formats are included?',
+    a: 'Every icon is available as an SVG, which you can edit in Figma, Illustrator, Inkscape or any code editor, and as a 512 by 512 pixel PNG with a transparent background. You can download icons one at a time or the full set as a ZIP file.',
+  },
+  {
+    q: 'Can I change the icon colors?',
+    a: 'Yes. Use the color picker on this page and every preview, SVG and PNG download on the page uses your color. Because the icons are SVG, you can also recolor or resize them in any design tool without losing quality.',
+  },
+  {
+    q: 'Do I need alt text for accessibility icons?',
+    a: 'It depends on how you use them. If an icon sits next to a visible text label, treat it as decorative with an empty alt attribute. If the icon stands alone, for example as a button, give it a text alternative that says what it does, such as "Turn on captions".',
+  },
+  {
+    q: 'Can I use these icons in my accessibility statement?',
+    a: 'Yes. The Universal Access icon works well next to a link to your accessibility statement. If you do not have one yet, you can create one with our free accessibility statement generator.',
+  },
+];
+
+const schema = [
+  {
+    '@type': 'CollectionPage',
+    name: 'Free Accessibility Icon Set',
+    url: `${SITE.url}${PATH}`,
+    license: ICON_SET.licenseUrl,
+    publisher: { '@id': `${SITE.url}/#organization` },
+    hasPart: ACCESSIBILITY_ICONS.map((i) => ({
+      '@type': 'ImageObject',
+      name: `${i.name} icon`,
+      description: i.description,
+      contentUrl: `${SITE.url}${file('png', i.slug)}`,
+      encodingFormat: 'image/png',
+      license: ICON_SET.licenseUrl,
+      acquireLicensePage: `${SITE.url}${PATH}#license`,
+      creditText: 'AccessBell',
+      creator: { '@id': `${SITE.url}/#organization` },
+    })),
+  },
+  faqSchema(faqs),
+];
+---
+<BaseLayout
+  title="Free Accessibility Icon Set: SVG and PNG Downloads | AccessBell"
+  description="Download our free accessibility icon set: 17 original SVG and PNG icons for wheelchair access, captions, sign language, braille and more. Free for commercial use."
+  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: 'Free Accessibility Icon Set', href: PATH }]}
+  schema={schema}
+>
+  <section class="gen-hero" aria-labelledby="ic-title">
+    <div class="container">
+      <span class="gen-hero-icon"><Icon name="layers" /></span>
+      <h1 id="ic-title">Free Accessibility <span class="accent">Icon Set</span></h1>
+      <p class="lead">Our free accessibility icon set gives you {ACCESSIBILITY_ICONS.length} original icons for inclusive design: wheelchair access, captions, audio description, sign language, braille and more. Download them as SVG or PNG, change the color to match your brand, and use them in commercial projects for free.</p>
+      <div class="ic-hero-actions">
+        <a class="btn btn-lg" href={`${ICON_SET.basePath}/${ICON_SET.svgZip}`} download><Icon name="download" /> Download All SVG Icons (ZIP)</a>
+        <a class="btn btn-lg btn-outline" href={`${ICON_SET.basePath}/${ICON_SET.pngZip}`} download><Icon name="download" /> Download All PNG Icons (ZIP)</a>
+      </div>
+      <p class="ic-hero-note">SVG and 512 px PNG &middot; <a href="#license">Free under CC BY 4.0</a> &middot; No signup</p>
+    </div>
+  </section>
+
+  <div class="container ic-body" data-icon-set data-default-color={DEFAULT_COLOR}>
+    <ul class="ic-strip" aria-label="Every icon in the set">
+      {ACCESSIBILITY_ICONS.map((i) => (
+        <li><svg viewBox="0 0 48 48" width="44" height="44" aria-hidden="true" focusable="false" set:html={i.body} /><span class="visually-hidden">{i.name}</span></li>
+      ))}
+    </ul>
+
+    <section class="ic-section" aria-labelledby="ic-browse">
+      <div class="ic-head">
+        <div>
+          <h2 id="ic-browse">Browse the Free Accessibility Icons</h2>
+          <p>Need one icon? Download it on its own, or copy the SVG code straight into your site.</p>
+        </div>
+        <div class="ic-color">
+          <label for="ic-color-input">Icon color</label>
+          <input id="ic-color-input" type="color" value={DEFAULT_COLOR} data-icon-color />
+          <button type="button" class="btn btn-outline btn-sm" data-icon-reset>Reset</button>
+        </div>
+      </div>
+      <p class="visually-hidden" role="status" aria-live="polite" data-icon-status></p>
+
+      <ul class="ic-grid">
+        {ACCESSIBILITY_ICONS.map((i) => (
+          <li class="ic-card">
+            <div class="ic-preview"><svg viewBox="0 0 48 48" width="96" height="96" aria-hidden="true" focusable="false" set:html={i.body} /></div>
+            <h3>{i.name} Icon</h3>
+            <p>{i.description}</p>
+            <div class="ic-actions">
+              <a class="btn btn-sm" href={file('svg', i.slug)} download={`${i.slug}.svg`} data-icon-download="svg" data-slug={i.slug}>SVG<span class="visually-hidden"> of the {i.name} icon</span></a>
+              <a class="btn btn-sm" href={file('png', i.slug)} download={`${i.slug}.png`} data-icon-download="png" data-slug={i.slug}>PNG<span class="visually-hidden"> of the {i.name} icon</span></a>
+              <button type="button" class="btn btn-outline btn-sm" data-icon-copy data-slug={i.slug}><Icon name="copy" /> <span>Copy SVG</span><span class="visually-hidden"> of the {i.name} icon</span></button>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </div>
+
+  <section class="section section-surface" aria-labelledby="ic-use">
+    <div class="container cc-prose">
+      <h2 id="ic-use">How to Use Accessibility Icons Accessibly</h2>
+      <p>An accessibility icon set only helps if the icons themselves are accessible. Four rules cover most situations:</p>
+      <ul>
+        <li><strong>Pair icons with text.</strong> Not everyone reads icons the same way. A visible label next to the icon, such as "Captions available", removes the guesswork.</li>
+        <li><strong>Get the alt text right.</strong> Next to a visible label, an icon is decorative, so use an empty <code>alt=""</code>. On its own, it needs a text alternative that describes its purpose. See the W3C's <a href={understandingUrl('1.1.1')} rel="noopener noreferrer">Understanding Non-text Content</a>.</li>
+        <li><strong>Keep enough contrast.</strong> Icons that carry meaning need at least a 3:1 contrast ratio against their background under <a href="/resources/wcag/1-4-11-non-text-contrast">WCAG 1.4.11</a>. Test your color with our free <a href="/resources/contrast-checker">WCAG color contrast checker</a>.</li>
+        <li><strong>Make icon buttons big enough.</strong> A clickable icon should be at least 24 by 24 CSS pixels, or have enough space around it, to meet <a href="/resources/wcag/2-5-8-target-size-minimum">WCAG 2.5.8 Target Size (Minimum)</a>.</li>
+      </ul>
+      <p>Adding the Universal Access icon to your footer? Link it to an accessibility statement, which you can write in a minute with our free <a href="/resources/statement-generator">accessibility statement generator</a>.</p>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="license">
+    <div class="container cc-prose">
+      <h2 id="license">Free Accessibility Icon Set License</h2>
+      <p>The {ICON_SET.name} is free for personal and commercial use under the <a href={ICON_SET.licenseUrl} rel="noopener noreferrer">Creative Commons Attribution 4.0 International license</a>. You can copy, change, recolor and redistribute the icons. Please credit AccessBell wherever you credit other resources:</p>
+      <p class="ic-credit"><code data-credit-text>{ATTRIBUTION}</code> <button type="button" class="btn btn-outline btn-sm" data-copy-credit><Icon name="copy" /> <span>Copy credit</span></button></p>
+      <p>Want to know whether the rest of your site is accessible? <a href="/#scan">Run a free WCAG scan</a> of any page.</p>
+    </div>
+  </section>
+
+  <section class="section section-surface" aria-labelledby="ic-faq">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">FAQ</span>
+        <h2 id="ic-faq">Free Accessibility Icon Set Questions</h2>
+      </div>
+      <Faq items={faqs} />
+    </div>
+  </section>
+</BaseLayout>
+<script>
+  import '../../scripts/icon-set.js';
+</script>
