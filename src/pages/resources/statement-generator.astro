@@ -1,4 +1,5 @@
 ---
+import CtaBand from '../../components/CtaBand.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
 import Faq from '../../components/Faq.astro';
@@ -150,6 +151,8 @@ const schema = [
       <Faq items={faqs} />
     </div>
   </section>
+
+  <CtaBand title="Back Your Statement With Real Testing" text="An accessibility statement is only as good as the testing behind it. Start a 3-day free trial to scan your pages, track fixes and keep your statement accurate." />
 </BaseLayout>
 <script>
   import '../../scripts/statement-generator.js';

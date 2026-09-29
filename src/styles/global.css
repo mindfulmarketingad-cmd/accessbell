@@ -4405,6 +4405,13 @@ a:hover {
 .cta-band .scan-error {
   color: #ffb4ab;
 }
+.cta-band .cta-note {
+  font-size: 0.875rem;
+  margin: 16px auto 0;
+}
+.cta-band .cta-note a {
+  color: #fff;
+}
 .cta-actions {
   display: flex;
   flex-wrap: wrap;

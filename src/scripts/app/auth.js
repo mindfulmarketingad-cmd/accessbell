@@ -53,7 +53,7 @@ if (form) {
       } else if (mode === 'signup') {
         const res = await api('auth/signup', { method: 'POST', body: { email, password }, redirectOn401: false });
         if (res.status === 'confirm_email') {
-          setStatus(status, 'success', `Almost done. We sent a confirmation link to ${email}. Open it to finish creating your account. Already have an account? Sign in instead.`);
+          setStatus(status, 'success', `Almost done. We sent a confirmation link to ${email}. Open it to finish creating your account. Not there in a few minutes? Check your spam folder, or use the button below to send it again. Already have an account? Sign in instead.`);
           resend.hidden = false;
           return;
         }

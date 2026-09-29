@@ -10,7 +10,7 @@ interface Props {
 }
 const {
   title = 'Find Out if Your Website Is Accessible',
-  text = 'Run a free WCAG check in seconds. No sign-up, no credit card. Get the failing HTML, the criterion it breaks and the fix.',
+  text = 'Start a 3-day free trial to monitor every page on your domain, or run a free one-page WCAG check right now with no sign-up.',
   withForm = false,
 } = Astro.props;
 ---
@@ -27,12 +27,16 @@ const {
             <li><Icon name="check" />Results in under 30 seconds</li>
             <li><Icon name="check" />Mapped to WCAG success criteria</li>
           </ul>
+          <p class="cta-note">Want every page monitored? <a href="/app/signup">Start a 3-day free trial</a>.</p>
         </>
       ) : (
-        <div class="cta-actions">
-          <a class="btn btn-accent btn-lg" href="/#scan">Run a free scan <Icon name="arrow" /></a>
-          <a class="btn btn-outline btn-lg" href="/pricing">See pricing</a>
-        </div>
+        <>
+          <div class="cta-actions">
+            <a class="btn btn-accent btn-lg" href="/app/signup">Start 3-day free trial <Icon name="arrow" /></a>
+            <a class="btn btn-outline btn-lg" href="/#scan">Run a free scan</a>
+          </div>
+          <p class="cta-note">Then $79/mo per domain. Cancel anytime.</p>
+        </>
       )}
     </div>
   </div>

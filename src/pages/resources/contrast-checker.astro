@@ -1,4 +1,5 @@
 ---
+import CtaBand from '../../components/CtaBand.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
 import Faq from '../../components/Faq.astro';
@@ -167,6 +168,8 @@ const schema = [
       <Faq items={faqs} />
     </div>
   </section>
+
+  <CtaBand title="Monitor Contrast on Every Page" text="Your colors change as your site grows. Start a 3-day free trial and AccessBell rechecks contrast and every other WCAG rule on up to 25 pages per domain, every day." />
 </BaseLayout>
 <script>
   import '../../scripts/contrast-checker.js';
