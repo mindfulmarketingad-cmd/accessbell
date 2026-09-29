@@ -2,26 +2,9 @@
 import { query, one } from './db.js';
 import { config } from './config.js';
 import { scanPage } from './scanning.js';
+import { withAccessRule } from './access.js';
 
 const SEVERE = new Set(['critical', 'serious']);
-
-// An account is monitored when its owner is marked "Subscriber" in Supabase
-// (app.profiles.status). Before migration 0003 runs, fall back to the Stripe status.
-const SUBSCRIBER = `exists (
-  select 1 from app.account_members m
-    join app.profiles pr on pr.user_id = m.user_id
-   where m.account_id = a.id and m.role = 'owner' and lower(trim(pr.status)) = 'subscriber')`;
-const STRIPE_ACTIVE = `a.subscription_status in ('trialing', 'active')`;
-const UNDEFINED_COLUMN = '42703';
-
-async function withAccessRule(run) {
-  try {
-    return await run(SUBSCRIBER);
-  } catch (err) {
-    if (err?.code === UNDEFINED_COLUMN) return run(STRIPE_ACTIVE);
-    throw err;
-  }
-}
 
 /** Monitored pages for every account that has dashboard access. */
 export async function pagesDueForMonitoring() {

@@ -114,6 +114,7 @@ before(async () => {
   await db.query(readFileSync(new URL('../supabase/migrations/0001_app_schema.sql', import.meta.url), 'utf8'));
   await db.query(readFileSync(new URL('../supabase/migrations/0002_onboarding.sql', import.meta.url), 'utf8'));
   await db.query(readFileSync(new URL('../supabase/migrations/0003_subscriber_access.sql', import.meta.url), 'utf8'));
+  await db.query(readFileSync(new URL('../supabase/migrations/0004_subscriber_emails.sql', import.meta.url), 'utf8'));
 
   fake = await startFakeAuth(db);
   const { port } = fake.server.address();
@@ -286,6 +287,47 @@ test('a new account stays pending until marked Subscriber, then teammates share 
 
   await markSubscriber(me.body.account.id, 'Pending');
   assert.equal((await c.get('domains')).status, 403, 'setting it back removes access');
+});
+
+test('an email in app.subscriber_emails has dashboard access without a Subscriber status', { skip }, async () => {
+  const c = new Client('10.0.1.12');
+  await c.post('auth/signup', { email: 'listed-owner@acme.test', password: 'correct horse' });
+  const me = await c.get('me');
+  assert.equal(me.body.subscribed, false);
+
+  await db.query(`insert into app.subscriber_emails (email, note) values (' Listed-Owner@Acme.test '::text, 'test') on conflict do nothing`).catch(() => {});
+  await db.query(`insert into app.subscriber_emails (email) values ('listed-owner@acme.test') on conflict do nothing`);
+  assert.equal((await c.get('me')).body.subscribed, true);
+  assert.equal((await c.get('domains')).status, 200);
+
+  await db.query(`delete from app.subscriber_emails where email = 'listed-owner@acme.test'`);
+  assert.equal((await c.get('me')).body.subscribed, false);
+});
+
+test('the site owner is in the seeded allowlist and the migration is repeatable', { skip }, async () => {
+  const { rows } = await db.query(`select email from app.subscriber_emails where email = 'mindfulmarketingad@gmail.com'`);
+  assert.equal(rows.length, 1);
+  await db.query(readFileSync(new URL('../supabase/migrations/0004_subscriber_emails.sql', import.meta.url), 'utf8'));
+  assert.equal((await db.query('select count(*)::int as n from app.subscriber_emails where email = $1', ['mindfulmarketingad@gmail.com'])).rows[0].n, 1);
+});
+
+test('access falls back cleanly while migrations 0003 and 0004 are not run yet', { skip }, async () => {
+  const c = new Client('10.0.1.13');
+  await c.post('auth/signup', { email: 'fallback-owner@acme.test', password: 'correct horse' });
+  const id = (await c.get('me')).body.account.id;
+  await markSubscriber(id);
+  await db.query('alter table app.subscriber_emails rename to subscriber_emails_off');
+  try {
+    assert.equal((await c.get('me')).body.subscribed, true, 'without 0004, the Subscriber status still works');
+    await db.query('alter table app.profiles rename column status to status_off');
+    try {
+      assert.equal((await c.get('me')).body.subscribed, false, 'without 0003, only an active Stripe subscription counts');
+    } finally {
+      await db.query('alter table app.profiles rename column status_off to status');
+    }
+  } finally {
+    await db.query('alter table app.subscriber_emails_off rename to subscriber_emails');
+  }
 });
 
 test('Stripe webhook signatures are verified', { skip }, () => {

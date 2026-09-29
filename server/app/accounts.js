@@ -1,7 +1,8 @@
 // Accounts, membership and role checks.
 import { one, tx } from './db.js';
-import { ROLE_RANK, ACTIVE_STATUSES, config } from './config.js';
+import { ROLE_RANK, config } from './config.js';
 import { badRequest, forbidden, paymentRequired } from './errors.js';
+import { withAccessRule } from './access.js';
 
 const defaultAccountName = (email) => {
   const domain = String(email || '').split('@')[1] || '';
@@ -46,25 +47,12 @@ export async function getContext(user) {
 
 /**
  * Dashboard access is granted by hand: the site owner sets an account owner's
- * profile status to "Subscriber" in Supabase after they pay. Teammates get
- * access through their account's owner.
+ * profile status to "Subscriber" in Supabase after they pay, or lists their
+ * email in app.subscriber_emails. Teammates get access through their account's owner.
  */
 async function accountIsSubscriber(account) {
-  try {
-    const row = await one(
-      `select exists (
-         select 1 from app.account_members m
-           join app.profiles p on p.user_id = m.user_id
-          where m.account_id = $1 and m.role = 'owner' and lower(trim(p.status)) = 'subscriber'
-       ) as ok`,
-      [account.id],
-    );
-    return Boolean(row?.ok);
-  } catch (err) {
-    // Migration 0003 not run yet: fall back to the Stripe subscription so nobody is locked out.
-    if (err?.code === UNDEFINED_COLUMN) return ACTIVE_STATUSES.has(account.subscription_status);
-    throw err;
-  }
+  const row = await withAccessRule((rule) => one(`select ${rule} as ok from app.accounts a where a.id = $1`, [account.id]));
+  return Boolean(row?.ok);
 }
 
 export function requireRole(ctx, minimum) {
