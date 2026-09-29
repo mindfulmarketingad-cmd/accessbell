@@ -7,7 +7,7 @@ category: 'Standards'
 contributors:
   - author: accessbell-editorial-team
     role: Author
-related: ['what-is-a-website-accessibility-checker', 'ada-website-compliance-guide']
+related: ['what-you-should-know-about-wcag-2-2', 'what-is-a-website-accessibility-checker', 'ada-website-compliance-guide']
 ---
 
 The Web Content Accessibility Guidelines (WCAG) 2.2 became a W3C Recommendation on October 5, 2023. It is backward compatible with WCAG 2.1: if your site meets 2.2, it also meets 2.1 and 2.0 at the same level. Most organizations target **Level AA**, which is the level referenced by the majority of laws and procurement policies.

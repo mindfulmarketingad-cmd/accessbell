@@ -10,7 +10,7 @@ contributors:
 history:
   - date: 2026-09-28
     note: 'First published. Criteria list checked against the W3C WCAG 2.2 Recommendation.'
-related: ['wcag-2-2-checklist', 'automated-vs-manual-accessibility-testing', 'free-tools-to-check-website-accessibility']
+related: ['what-you-should-know-about-wcag-2-2', 'wcag-2-2-checklist', 'automated-vs-manual-accessibility-testing']
 faqs:
   - q: 'What is a WCAG 2 AA checklist?'
     a: 'A list of every WCAG success criterion at Level A and AA, broken into specific checks you can test and mark as passed or failed. It turns the guidelines into a repeatable testing routine and a record of what you found.'
