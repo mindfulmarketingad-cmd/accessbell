@@ -5,7 +5,7 @@ description: 'A practical WCAG 2.2 AA checklist: the nine new success criteria, 
 pubDate: 2026-09-18
 category: 'Standards'
 contributors:
-  - author: accessbell-editorial-team
+  - author: anton-stewart
     role: Author
 related: ['what-you-should-know-about-wcag-2-2', 'what-is-a-website-accessibility-checker', 'ada-website-compliance-guide']
 ---

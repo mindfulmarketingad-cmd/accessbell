@@ -5,7 +5,7 @@ description: 'A free WCAG 2 AA checklist spreadsheet for testing and recording i
 pubDate: 2026-09-28
 category: 'Guides'
 contributors:
-  - author: accessbell-editorial-team
+  - author: joseph-edwards
     role: Author
 history:
   - date: 2026-09-28

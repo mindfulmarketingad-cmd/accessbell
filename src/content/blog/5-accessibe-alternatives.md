@@ -5,7 +5,7 @@ description: 'Comparing the top 5 accessiBe alternatives in 2026 by engine, pric
 pubDate: 2026-09-29
 category: 'Comparisons'
 contributors:
-  - author: accessbell-editorial-team
+  - author: joseph-edwards
     role: Author
 history:
   - date: 2026-09-29

@@ -5,7 +5,7 @@ description: 'How the ADA applies to websites, which WCAG level courts and regul
 pubDate: 2026-09-22
 category: 'Compliance'
 contributors:
-  - author: accessbell-editorial-team
+  - author: joseph-edwards
     role: Author
 related: ['wcag-2-2-checklist', 'what-is-a-website-accessibility-checker']
 ---

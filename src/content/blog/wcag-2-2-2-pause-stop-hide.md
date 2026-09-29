@@ -5,7 +5,7 @@ description: 'WCAG 2.2.2 Pause, Stop, Hide explained simply: what moving and aut
 pubDate: 2026-09-29
 category: 'WCAG Codes Explained'
 contributors:
-  - author: accessbell-editorial-team
+  - author: anton-stewart
     role: Author
 history:
   - date: 2026-09-29

@@ -5,7 +5,7 @@ description: 'WCAG 1.4.3 Contrast (Minimum) explained simply: the 4.5:1 and 3:1 
 pubDate: 2026-09-29
 category: 'WCAG Codes Explained'
 contributors:
-  - author: accessbell-editorial-team
+  - author: anton-stewart
     role: Author
 history:
   - date: 2026-09-29

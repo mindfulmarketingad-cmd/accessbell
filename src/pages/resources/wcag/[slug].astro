@@ -24,7 +24,7 @@ const content = WCAG_CONTENT[c.sc];
 const REVIEWED = new Date('2026-09-28');
 const path = criterionPath(c.sc);
 const url = `${SITE.url}${path}`;
-const author = await getEntry('authors', 'accessbell-editorial-team');
+const author = await getEntry('authors', 'anton-stewart');
 
 // A plain-English "WCAG Codes Explained" blog post for this criterion, if we have one (slug wcag-1-2-3-...).
 const guide = (await getCollection('blog', ({ id, data }) => !data.draft && id.startsWith(`wcag-${c.sc.replaceAll('.', '-')}-`)))[0];

@@ -5,7 +5,7 @@ description: 'WCAG 1.4.8 Visual Presentation explained simply: the five rules fo
 pubDate: 2026-09-29
 category: 'WCAG Codes Explained'
 contributors:
-  - author: accessbell-editorial-team
+  - author: anton-stewart
     role: Author
 history:
   - date: 2026-09-29

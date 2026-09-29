@@ -5,7 +5,7 @@ description: 'WCAG 4.1.3 Status Messages explained simply: what counts as a stat
 pubDate: 2026-09-29
 category: 'WCAG Codes Explained'
 contributors:
-  - author: accessbell-editorial-team
+  - author: anton-stewart
     role: Author
 history:
   - date: 2026-09-29

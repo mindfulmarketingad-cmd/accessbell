@@ -5,7 +5,7 @@ description: "We tested 10 accessibility checker tools on one website with 35 pl
 pubDate: 2026-09-29
 category: 'Comparisons'
 contributors:
-  - author: accessbell-editorial-team
+  - author: joseph-edwards
     role: Author
 history:
   - date: 2026-09-29

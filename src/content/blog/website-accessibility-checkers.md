@@ -5,7 +5,7 @@ description: 'We compared the best website accessibility checkers on the market 
 pubDate: 2026-09-29
 category: 'Comparisons'
 contributors:
-  - author: accessbell-editorial-team
+  - author: joseph-edwards
     role: Author
 history:
   - date: 2026-09-29

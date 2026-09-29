@@ -5,7 +5,7 @@ description: 'WCAG 2.5.8 Target Size (Minimum) explained simply: the 24 by 24 pi
 pubDate: 2026-09-29
 category: 'WCAG Codes Explained'
 contributors:
-  - author: accessbell-editorial-team
+  - author: anton-stewart
     role: Author
 history:
   - date: 2026-09-29

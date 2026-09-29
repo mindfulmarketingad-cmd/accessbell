@@ -5,7 +5,7 @@ description: 'WCAG 3.2.2 On Input explained simply: what counts as a change of c
 pubDate: 2026-09-29
 category: 'WCAG Codes Explained'
 contributors:
-  - author: accessbell-editorial-team
+  - author: anton-stewart
     role: Author
 history:
   - date: 2026-09-29

@@ -5,7 +5,7 @@ description: 'ADA requirements for ramps explained: 1:12 maximum slope, 36-inch 
 pubDate: 2026-09-28
 category: 'Compliance'
 contributors:
-  - author: accessbell-editorial-team
+  - author: joseph-edwards
     role: Author
 history:
   - date: 2026-09-28

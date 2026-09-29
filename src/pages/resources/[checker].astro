@@ -21,7 +21,7 @@ const { c } = Astro.props as { c: Checker };
 const REVIEWED = new Date('2026-09-28');
 const url = `${SITE.url}${checkerPath(c)}`;
 const cov = coverageFor(c.version);
-const author = await getEntry('authors', 'accessbell-editorial-team');
+const author = await getEntry('authors', 'anton-stewart');
 const others = CHECKERS.filter((o) => o.slug !== c.slug);
 const target = `WCAG ${c.version} Level ${c.level}`;
 const related = await getEntries(c.related.map((id) => ({ collection: 'blog' as const, id })));

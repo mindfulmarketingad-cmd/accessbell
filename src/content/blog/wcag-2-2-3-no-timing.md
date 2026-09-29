@@ -5,7 +5,7 @@ description: 'WCAG 2.2.3 No Timing explained simply: why time limits exclude peo
 pubDate: 2026-09-29
 category: 'WCAG Codes Explained'
 contributors:
-  - author: accessbell-editorial-team
+  - author: anton-stewart
     role: Author
 history:
   - date: 2026-09-29

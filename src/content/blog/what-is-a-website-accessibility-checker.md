@@ -5,7 +5,7 @@ description: 'A plain-English guide to website accessibility checkers: what they
 pubDate: 2026-09-14
 category: 'Guides'
 contributors:
-  - author: accessbell-editorial-team
+  - author: joseph-edwards
     role: Author
 related: ['automated-vs-manual-accessibility-testing', 'wcag-2-2-checklist']
 ---

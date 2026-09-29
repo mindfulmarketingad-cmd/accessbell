@@ -5,7 +5,7 @@ description: 'WCAG 1.2.9 Audio-only (Live) explained simply: what counts as live
 pubDate: 2026-09-29
 category: 'WCAG Codes Explained'
 contributors:
-  - author: accessbell-editorial-team
+  - author: anton-stewart
     role: Author
 history:
   - date: 2026-09-29

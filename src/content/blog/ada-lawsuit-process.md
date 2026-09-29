@@ -5,7 +5,7 @@ description: 'The ADA lawsuit process step by step: service, the 21-day answer d
 pubDate: 2026-09-28
 category: 'Compliance'
 contributors:
-  - author: accessbell-editorial-team
+  - author: joseph-edwards
     role: Author
 history:
   - date: 2026-09-28

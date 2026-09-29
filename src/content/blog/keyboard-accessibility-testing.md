@@ -5,7 +5,7 @@ description: 'A practical guide to keyboard accessibility testing: what to check
 pubDate: 2026-09-29
 category: 'Guides'
 contributors:
-  - author: accessbell-editorial-team
+  - author: anton-stewart
     role: Author
 history:
   - date: 2026-09-29

@@ -5,7 +5,7 @@ description: 'How to do an SEO audit step by step: crawling and indexing, techni
 pubDate: 2026-09-29
 category: 'Guides'
 contributors:
-  - author: accessbell-editorial-team
+  - author: joseph-edwards
     role: Author
 history:
   - date: 2026-09-29

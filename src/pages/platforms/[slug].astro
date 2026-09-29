@@ -20,7 +20,7 @@ export function getStaticPaths() {
 const { p } = Astro.props as { p: Platform };
 const REVIEWED = new Date('2026-09-28');
 const url = `${SITE.url}${platformPath(p)}`;
-const author = await getEntry('authors', 'accessbell-editorial-team');
+const author = await getEntry('authors', 'joseph-edwards');
 const isHost = p.kind === 'host';
 const others = PLATFORMS.filter((o) => o.slug !== p.slug && (o.kind === 'host') === isHost);
 const cov = coverageFor('2.2');

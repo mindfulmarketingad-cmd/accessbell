@@ -5,7 +5,7 @@ description: 'Considering a UserWay alternative? Compare its AI overlay widget a
 pubDate: 2026-09-28
 category: 'Comparisons'
 contributors:
-  - author: accessbell-editorial-team
+  - author: joseph-edwards
     role: Author
 history:
   - date: 2026-09-28

@@ -5,7 +5,7 @@ description: "Here's what you should know about WCAG 2.2: the nine new success c
 pubDate: 2026-09-29
 category: 'Standards'
 contributors:
-  - author: accessbell-editorial-team
+  - author: anton-stewart
     role: Author
 history:
   - date: 2026-09-29

@@ -33,6 +33,11 @@
       "permanent": true
     },
     {
+      "source": "/authors/accessbell-editorial-team",
+      "destination": "/authors",
+      "permanent": true
+    },
+    {
       "source": "/llm.txt",
       "destination": "/llms.txt",
       "permanent": true

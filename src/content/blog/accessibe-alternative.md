@@ -5,7 +5,7 @@ description: 'Looking for an accessiBe alternative? Compare the overlay widget m
 pubDate: 2026-09-28
 category: 'Comparisons'
 contributors:
-  - author: accessbell-editorial-team
+  - author: joseph-edwards
     role: Author
 history:
   - date: 2026-09-28

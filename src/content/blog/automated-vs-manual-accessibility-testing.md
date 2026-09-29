@@ -5,7 +5,7 @@ description: 'What automated accessibility testing catches, what needs a human, 
 pubDate: 2026-09-26
 category: 'Guides'
 contributors:
-  - author: accessbell-editorial-team
+  - author: anton-stewart
     role: Author
 related: ['what-is-a-website-accessibility-checker', 'wcag-2-2-checklist', 'seo-audit']
 ---

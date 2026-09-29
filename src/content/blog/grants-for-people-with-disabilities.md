@@ -5,7 +5,7 @@ description: 'Federal, private and state grants for people with disabilities in 
 pubDate: 2026-09-28
 category: 'Guides'
 contributors:
-  - author: accessbell-editorial-team
+  - author: joseph-edwards
     role: Author
 history:
   - date: 2026-09-28
