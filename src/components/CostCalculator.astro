@@ -1,0 +1,49 @@
+---
+import { compute, describe, PRICE_PER_DOMAIN_MONTH, MAX_PAGES_PER_DOMAIN } from '../scripts/cost-calculator.js';
+
+// Example values, not statistics. Visitors change them to match their own team.
+const defaults = { domains: 1, pages: 100, minutes: 30, checks: 12, rate: 60 };
+const start = describe(compute(defaults));
+const fields = [
+  { name: 'domains', label: 'How many websites do you manage?', help: 'Each website is one domain.', unit: 'sites', min: 1, max: 50 },
+  { name: 'pages', label: 'How many pages would you check on each?', help: `Pro monitors up to ${MAX_PAGES_PER_DOMAIN} pages per domain.`, unit: 'pages', min: 1, max: MAX_PAGES_PER_DOMAIN },
+  { name: 'minutes', label: 'How long does it take to test one page by hand?', help: 'Include keyboard, screen reader and contrast checks.', unit: 'mins', min: 1, max: 480 },
+  { name: 'checks', label: 'How many times a year do you re-test?', help: 'Content and code change, so accessibility needs re-checking. 12 is once a month.', unit: 'times', min: 1, max: 365 },
+  { name: 'rate', label: 'What does an hour of that person cost?', help: 'Salary plus overhead, or the rate of a contractor or agency.', unit: '$/hour', min: 1, max: 1000 },
+];
+---
+<div class="calc" data-calc>
+  <form class="calc-inputs" novalidate aria-labelledby="calc-title">
+    <p class="calc-intro" id="calc-intro">Change the numbers to match your team. The results update as you type.</p>
+    {fields.map((f) => (
+      <div class="calc-field">
+        <div class="calc-label">
+          <label for={`calc-${f.name}`}>{f.label}</label>
+          <span class="help" id={`calc-${f.name}-help`}>{f.help}</span>
+        </div>
+        <div class="calc-control">
+          <input id={`calc-${f.name}`} name={f.name} type="number" inputmode="decimal" min={f.min} max={f.max} step="1" value={defaults[f.name]} aria-describedby={`calc-${f.name}-help`} />
+          <span class="calc-unit" aria-hidden="true">{f.unit}</span>
+        </div>
+      </div>
+    ))}
+  </form>
+  <div class="calc-result">
+    <h3 class="calc-result-title">Your potential saving</h3>
+    <p class="calc-label-out" data-calc-label>{start.label}</p>
+    <p class="calc-headline" data-calc-headline>{start.headline}</p>
+    <dl class="calc-breakdown">
+      <div><dt>Testing by hand, per year</dt><dd data-calc-manual>{start.manual}</dd></div>
+      <div><dt>AccessBell Pro, per year (${PRICE_PER_DOMAIN_MONTH}/mo per domain)</dt><dd data-calc-tool>{start.tool}</dd></div>
+      <div><dt>Hours of manual testing</dt><dd data-calc-hours>{start.hours}</dd></div>
+    </dl>
+    <p class="visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-calc-summary></p>
+    <a class="btn btn-accent btn-block" href="/app/signup">Start your 3-day free trial</a>
+  </div>
+  <p class="calc-note">
+    These are estimates from the numbers you enter and our published price, and the starting values are examples, not averages. AccessBell finds and explains issues. Fixing them takes developer time either way, and some checks still need a person, as our guide to <a href="/blog/automated-vs-manual-accessibility-testing">automated vs manual accessibility testing</a> explains.
+  </p>
+</div>
+<script>
+  import '../scripts/cost-calculator.js';
+</script>

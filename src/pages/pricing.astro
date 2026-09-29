@@ -4,6 +4,7 @@ import Icon from '../components/Icon.astro';
 import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
 import ProcessTour from '../components/ProcessTour.astro';
+import CostCalculator from '../components/CostCalculator.astro';
 import { PLAN, FEATURE_GROUPS } from '../data/pricing';
 import { faqSchema, softwareSchema, type FaqItem } from '../lib/schema';
 
@@ -96,6 +97,17 @@ const faqs: FaqItem[] = [
           </div>
         </div>
       </article>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="calc-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Cost calculator</span>
+        <h2 id="calc-title">How Much Could <span class="accent">You Save?</span></h2>
+        <p>Testing every page by hand, every time your site changes, adds up fast. Enter a few details to compare it with a flat ${PLAN.price} per domain per month.</p>
+      </div>
+      <CostCalculator />
     </div>
   </section>
 

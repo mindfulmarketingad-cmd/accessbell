@@ -4,7 +4,7 @@ export const PLAN = {
   name: 'Pro',
   price: 29,
   currency: 'USD',
-  urlsPerDomain: 25,
+  urlsPerDomain: 500,
   blurb: 'Continuous WCAG monitoring and AI-assisted fixes for every domain you run.',
   highlights: ['Up to 500 URLs per domain', 'Unlimited rescans', 'AI-assisted fixes', 'Email support'],
   cta: 'Start 3-day free trial',

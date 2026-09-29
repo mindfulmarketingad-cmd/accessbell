@@ -5651,3 +5651,128 @@ h2[tabindex='-1']:focus {
   margin: 0;
   align-self: center;
 }
+
+/* ---------- Pricing cost calculator ---------- */
+.calc {
+  display: grid;
+  gap: 0;
+  max-width: 1040px;
+  margin: 0 auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  background: #fff;
+}
+@media (min-width: 900px) {
+  .calc {
+    grid-template-columns: 1.25fr 1fr;
+  }
+}
+.calc-inputs {
+  display: grid;
+  gap: 20px;
+  padding: clamp(20px, 3vw, 36px);
+}
+.calc-intro {
+  margin: 0;
+  font-weight: 600;
+  color: var(--ink-900);
+}
+.calc-field {
+  display: grid;
+  gap: 8px 16px;
+}
+@media (min-width: 560px) {
+  .calc-field {
+    grid-template-columns: 1fr 190px;
+    align-items: center;
+  }
+}
+.calc-label {
+  display: grid;
+  gap: 2px;
+}
+.calc-label label {
+  font-weight: 600;
+  color: var(--ink-900);
+}
+.calc-label .help {
+  font-size: 0.875rem;
+  color: var(--ink-500);
+}
+.calc-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.calc-control input {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  color: var(--ink-900);
+}
+.calc-unit {
+  min-width: 52px;
+  font-size: 0.875rem;
+  color: var(--ink-500);
+}
+.calc-result {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: clamp(20px, 3vw, 36px);
+  background: var(--ink-900);
+  color: #e6e9ee;
+}
+.calc-result-title {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #fff;
+}
+.calc-label-out {
+  margin: 8px 0 0;
+  font-weight: 600;
+  color: #c9ced7;
+}
+.calc-headline {
+  margin: 0;
+  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  color: var(--sage);
+  overflow-wrap: anywhere;
+}
+.calc-breakdown {
+  display: grid;
+  gap: 10px;
+  margin: 8px 0;
+  padding-top: 16px;
+  border-top: 1px solid rgb(255 255 255 / 0.16);
+}
+.calc-breakdown div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+.calc-breakdown dt {
+  color: #c9ced7;
+}
+.calc-breakdown dd {
+  margin: 0;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+}
+.calc-note {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 14px clamp(20px, 3vw, 36px);
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 0.875rem;
+  color: var(--ink-500);
+}
