@@ -56,6 +56,9 @@ export const GET: APIRoute = async () => {
       'Optional',
       [
         ...Object.values(CRITERIA).map((c) => link(`WCAG ${c.sc} ${c.name}`, criterionPath(c.sc), `Level ${c.level}, added in WCAG ${c.version}.`)),
+        link('Accessibility checkers by platform', '/platforms'),
+        link('Accessibility checkers by industry', '/industries'),
+        link('Website accessibility laws by state', '/state-accessibility-laws'),
         ...PLATFORMS.map((p) => link(`${p.name} Accessibility Checker`, platformPath(p))),
         ...INDUSTRIES.map((i) => link(`${i.name} Accessibility Checker`, industryPath(i))),
         ...STATE_LAWS.map((s) => link(`${s.name} Website Accessibility Checker`, stateLawPath(s))),

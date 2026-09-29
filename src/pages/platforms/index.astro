@@ -1,0 +1,162 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import ScanForm from '../../components/ScanForm.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { SITE } from '../../config/site';
+import { PLATFORMS, platformPath } from '../../data/platforms';
+import { CHECKERS, checkerPath } from '../../data/checkers';
+import { INDUSTRIES, industryPath } from '../../data/industries';
+import { STATE_LAWS, stateLawPath } from '../../data/state-laws';
+
+const PATH = '/platforms';
+const url = `${SITE.url}${PATH}`;
+const schema = [
+  {
+    '@type': 'CollectionPage',
+    '@id': `${url}#webpage`,
+    name: 'Accessibility Checkers by Platform',
+    url,
+    isPartOf: { '@id': `${SITE.url}/#website` },
+    hasPart: PLATFORMS.map((p) => ({ '@type': 'WebPage', name: `${p.name} Accessibility Checker`, url: `${SITE.url}${platformPath(p)}` })),
+  },
+];
+---
+<BaseLayout
+  title="Platform Accessibility Checkers: WordPress, Shopify and More | AccessBell"
+  description="Free platform accessibility checkers for WordPress, Shopify, Webflow, Squarespace and Wix. Scan any page for WCAG issues and see the fixes for your platform."
+  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: 'Platforms', href: PATH }]}
+  schema={schema}
+>
+  <section class="checker-hero" id="scan" aria-labelledby="platforms-title">
+    <div class="container">
+      <span class="eyebrow">Free Tools</span>
+      <h1 id="platforms-title">Accessibility Checkers by Platform</h1>
+      <p class="lead">Free platform accessibility checkers for the site builders and e-commerce platforms most websites run on. Scan any public page below, or pick your platform to see the WCAG issues it causes most often and how to fix them in your theme, plugins or apps.</p>
+      <ScanForm id="platforms" buttonLabel="Check my site" />
+      <p class="checker-meta">
+        <Icon name="check" /> Real Chrome browser scan, powered by axe-core
+        <span aria-hidden="true">&middot;</span> Free, no account needed
+      </p>
+    </div>
+  </section>
+
+  <section class="results" id="scan-results" aria-live="polite" aria-busy="false" hidden>
+    <div class="container" data-results></div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="platforms-list">
+    <div class="container">
+      <div class="section-head section-head-left">
+        <h2 id="platforms-list">Platform Accessibility Checkers</h2>
+        <p>Each checker runs the same free WCAG scan, with guidance written for that platform's themes, plugins, apps and editors.</p>
+      </div>
+      <ul class="res-grid">
+        {PLATFORMS.map((p) => (
+          <li>
+            <a class="res-card" href={platformPath(p)}>
+              <span class="res-card-text">
+                <small>Free platform checker</small>
+                <strong>{p.name} Accessibility Checker</strong>
+                <span>{p.lead}</span>
+              </span>
+              <Icon name="arrow" class="res-arrow" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="platforms-why">
+    <div class="container cc-prose">
+      <h2 id="platforms-why">Why Use a Platform Accessibility Checker?</h2>
+      <p>Most accessibility problems on a website do not come from the platform itself. They come from what is added on top: the theme, page-builder blocks, plugins, apps, embedded widgets and the content people publish. A platform accessibility checker points you at the parts you can actually change on your platform, such as a theme setting, a plugin or an app, rather than just the failing HTML.</p>
+      <p>Every checker tests your pages against the W3C's <a href="https://www.w3.org/TR/WCAG22/" rel="noopener noreferrer">Web Content Accessibility Guidelines (WCAG) 2.2</a>. Automated scans find many, but not all, accessibility problems, so each checker also lists what to test by hand. The W3C's <a href="https://www.w3.org/WAI/test-evaluate/" rel="noopener noreferrer">evaluating web accessibility overview</a> explains how automated and manual testing fit together, and our guide to <a href="/blog/automated-vs-manual-accessibility-testing">automated vs manual accessibility testing</a> covers the same ground in plain English.</p>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="platforms-standards">
+    <div class="container">
+      <div class="section-head section-head-left">
+        <h2 id="platforms-standards">Accessibility Checkers by Standard</h2>
+        <p>Need to meet a specific standard? These checkers preset the scan to the WCAG version and level each standard requires.</p>
+      </div>
+      <ul class="res-grid">
+        {CHECKERS.map((c) => (
+          <li>
+            <a class="res-card" href={checkerPath(c)}>
+              <span class="res-card-text">
+                <small>WCAG {c.version} Level {c.level}</small>
+                <strong>{c.name}</strong>
+                <span>{c.lead.split('. ')[0]}.</span>
+              </span>
+              <Icon name="arrow" class="res-arrow" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="platforms-more">
+    <div class="container">
+      <div class="section-head section-head-left">
+        <h2 id="platforms-more">More Accessibility Scanners</h2>
+        <p>Checkers framed for your industry and your state's accessibility laws, plus free color tools.</p>
+      </div>
+      <ul class="res-grid">
+        {INDUSTRIES.map((i) => (
+          <li>
+            <a class="res-card" href={industryPath(i)}>
+              <span class="res-card-text">
+                <small>Industry checker</small>
+                <strong>{i.name} Accessibility Checker</strong>
+                <span>{i.lead}</span>
+              </span>
+              <Icon name="arrow" class="res-arrow" />
+            </a>
+          </li>
+        ))}
+        {STATE_LAWS.map((s) => (
+          <li>
+            <a class="res-card" href={stateLawPath(s)}>
+              <span class="res-card-text">
+                <small>State law checker</small>
+                <strong>{s.name} Website Accessibility Checker</strong>
+                <span>{s.lead}</span>
+              </span>
+              <Icon name="arrow" class="res-arrow" />
+            </a>
+          </li>
+        ))}
+        <li>
+          <a class="res-card" href="/resources/contrast-checker">
+            <span class="res-card-text">
+              <small>Free tool</small>
+              <strong>WCAG Color Contrast Checker</strong>
+              <span>Check any text and background colors against WCAG AA and AAA.</span>
+            </span>
+            <Icon name="arrow" class="res-arrow" />
+          </a>
+        </li>
+        <li>
+          <a class="res-card" href="/resources/chart-color-checker">
+            <span class="res-card-text">
+              <small>Free tool</small>
+              <strong>Chart Color Checker</strong>
+              <span>Test chart colors for contrast and color blindness.</span>
+            </span>
+            <Icon name="arrow" class="res-arrow" />
+          </a>
+        </li>
+      </ul>
+      <p class="more-link"><a class="link-arrow" href="/resources">All free tools and resources <Icon name="arrow" /></a></p>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>
+<script>
+  import '../../scripts/free-scan.js';
+</script>

@@ -1,0 +1,80 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import ScanForm from '../../components/ScanForm.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { SITE } from '../../config/site';
+import { INDUSTRIES as ITEMS, industryPath as PATH_FN } from '../../data/industries';
+
+const PATH = '/industries';
+const url = `${SITE.url}${PATH}`;
+const schema = [
+  {
+    '@type': 'CollectionPage',
+    '@id': `${url}#webpage`,
+    name: 'Accessibility Checkers by Industry',
+    url,
+    isPartOf: { '@id': `${SITE.url}/#website` },
+    hasPart: ITEMS.map((x) => ({ '@type': 'WebPage', name: `${x.name} Accessibility Checker`, url: `${SITE.url}${PATH_FN(x)}` })),
+  },
+];
+---
+<BaseLayout
+  title="Industry Accessibility Checkers: Healthcare, E-Commerce and More | AccessBell"
+  description="Free industry accessibility checkers for e-commerce, healthcare, higher education, government and real estate websites. Scan any page for WCAG issues."
+  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: 'Industries', href: PATH }]}
+  schema={schema}
+>
+  <section class="checker-hero" id="scan" aria-labelledby="hub-title">
+    <div class="container">
+      <span class="eyebrow">Free Tools</span>
+      <h1 id="hub-title">Accessibility Checkers by Industry</h1>
+      <p class="lead">Free industry accessibility checkers for the sectors with the strictest accessibility rules and the most legal risk. Scan any public page below, or pick your industry to see the laws that apply and the WCAG failures most common in your sector.</p>
+      <ScanForm id="hub" buttonLabel="Check my site" />
+      <p class="checker-meta">
+        <Icon name="check" /> Real Chrome browser scan, powered by axe-core
+        <span aria-hidden="true">&middot;</span> Free, no account needed
+      </p>
+    </div>
+  </section>
+
+  <section class="results" id="scan-results" aria-live="polite" aria-busy="false" hidden>
+    <div class="container" data-results></div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="hub-list">
+    <div class="container">
+      <div class="section-head section-head-left">
+        <h2 id="hub-list">Industry Accessibility Checkers</h2>
+        <p>Each checker runs the same free WCAG scan, with the regulations and common failures for that industry.</p>
+      </div>
+      <ul class="res-grid">
+        {ITEMS.map((x) => (
+          <li>
+            <a class="res-card" href={PATH_FN(x)}>
+              <span class="res-card-text">
+                <small>Industry checker</small>
+                <strong>{x.name} Accessibility Checker</strong>
+                <span>{x.lead}</span>
+              </span>
+              <Icon name="arrow" class="res-arrow" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="hub-about">
+    <div class="container cc-prose">
+      <h2 id="hub-about">Why Use an Industry Accessibility Checker?</h2>
+      <p>Accessibility requirements are not the same everywhere. Public bodies, healthcare providers, universities and online stores each face different laws, deadlines and enforcement. An industry accessibility checker scans your pages against the W3C’s <a href="https://www.w3.org/TR/WCAG22/" rel="noopener noreferrer">WCAG 2.2</a> and explains which rules matter most in your sector, with sources for each requirement.</p>
+      <p>Looking for a different kind of checker? Browse <a href="/platforms">accessibility checkers by platform</a>, <a href="/state-accessibility-laws">website accessibility checkers by state</a>, or all <a href="/resources">free accessibility tools</a>.</p>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>
+<script>
+  import '../../scripts/free-scan.js';
+</script>

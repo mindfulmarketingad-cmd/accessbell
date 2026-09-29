@@ -1,0 +1,80 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import ScanForm from '../../components/ScanForm.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { SITE } from '../../config/site';
+import { STATE_LAWS as ITEMS, stateLawPath as PATH_FN } from '../../data/state-laws';
+
+const PATH = '/state-accessibility-laws';
+const url = `${SITE.url}${PATH}`;
+const schema = [
+  {
+    '@type': 'CollectionPage',
+    '@id': `${url}#webpage`,
+    name: 'Website Accessibility Laws by State',
+    url,
+    isPartOf: { '@id': `${SITE.url}/#website` },
+    hasPart: ITEMS.map((x) => ({ '@type': 'WebPage', name: `${x.name} Website Accessibility Checker`, url: `${SITE.url}${PATH_FN(x)}` })),
+  },
+];
+---
+<BaseLayout
+  title="Website Accessibility Laws by State: Free Checkers | AccessBell"
+  description="Website accessibility laws by state for California, New York and Florida, with a free WCAG checker for each. See the laws that apply and scan any page."
+  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: 'State Laws', href: PATH }]}
+  schema={schema}
+>
+  <section class="checker-hero" id="scan" aria-labelledby="hub-title">
+    <div class="container">
+      <span class="eyebrow">Free Tools</span>
+      <h1 id="hub-title">Website Accessibility Laws by State</h1>
+      <p class="lead">Website accessibility laws by state can add to the risk under the federal ADA. Scan any public page below, or pick your state to see the state laws that apply to websites and the issues most often cited in lawsuits.</p>
+      <ScanForm id="hub" buttonLabel="Check my site" />
+      <p class="checker-meta">
+        <Icon name="check" /> Real Chrome browser scan, powered by axe-core
+        <span aria-hidden="true">&middot;</span> Free, no account needed
+      </p>
+    </div>
+  </section>
+
+  <section class="results" id="scan-results" aria-live="polite" aria-busy="false" hidden>
+    <div class="container" data-results></div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="hub-list">
+    <div class="container">
+      <div class="section-head section-head-left">
+        <h2 id="hub-list">State Website Accessibility Checkers</h2>
+        <p>Each checker runs the same free WCAG scan, with the state laws and lawsuit trends that apply there.</p>
+      </div>
+      <ul class="res-grid">
+        {ITEMS.map((x) => (
+          <li>
+            <a class="res-card" href={PATH_FN(x)}>
+              <span class="res-card-text">
+                <small>State law checker</small>
+                <strong>{x.name} Website Accessibility Checker</strong>
+                <span>{x.lead}</span>
+              </span>
+              <Icon name="arrow" class="res-arrow" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="hub-about">
+    <div class="container cc-prose">
+      <h2 id="hub-about">How State Website Accessibility Laws Work</h2>
+      <p>The Americans with Disabilities Act applies across the United States, and the Department of Justice has published <a href="https://www.ada.gov/resources/web-guidance/" rel="noopener noreferrer">guidance on web accessibility and the ADA</a>. Some states add their own civil rights laws on top, which can change where lawsuits are filed and what damages are available. Each state page explains the laws that apply and links to the primary sources. This is general information, not legal advice.</p>
+      <p>Looking for a different kind of checker? Browse <a href="/platforms">accessibility checkers by platform</a>, <a href="/industries">accessibility checkers by industry</a>, or all <a href="/resources">free accessibility tools</a>.</p>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>
+<script>
+  import '../../scripts/free-scan.js';
+</script>
