@@ -54,6 +54,7 @@ Use this as a working list. The criteria numbers help you cross-reference the fu
 - **1.2.2 and 1.2.4** Prerecorded video has captions. Live video has captions.
 - **1.2.5** Prerecorded video has audio description where visual information is not conveyed in the audio.
 - **1.3.1** Headings, lists, tables and form labels are coded, not just styled.
+- **1.3.2** Content reads in a sensible order with CSS turned off. See our [1.3.2 Meaningful Sequence guide](/blog/wcag-1-3-2-meaningful-sequence).
 - **1.3.5** Personal-data form fields use the correct `autocomplete` values.
 - **1.4.3** Text contrast is at least 4.5:1, or 3:1 for large text.
 - **1.4.4 and 1.4.10** Content works at 200 percent text size and reflows at 320 CSS pixels wide without horizontal scrolling.

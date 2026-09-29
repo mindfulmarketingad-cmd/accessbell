@@ -92,7 +92,7 @@ These are the 55 success criteria the checklist covers, grouped by the four WCAG
 | 1.2.4 Captions (Live) | AA | WCAG 2.0 | Manual only |
 | 1.2.5 Audio Description (Prerecorded) | AA | WCAG 2.0 | Manual only |
 | 1.3.1 Info and Relationships | A | WCAG 2.0 | Partly automated |
-| 1.3.2 Meaningful Sequence | A | WCAG 2.0 | Manual only |
+| [1.3.2 Meaningful Sequence](/blog/wcag-1-3-2-meaningful-sequence) | A | WCAG 2.0 | Manual only |
 | 1.3.3 Sensory Characteristics | A | WCAG 2.0 | Manual only |
 | 1.3.4 Orientation | AA | WCAG 2.1 | Manual only |
 | 1.3.5 Identify Input Purpose | AA | WCAG 2.1 | Partly automated |
