@@ -23,18 +23,20 @@ On desktop, the button next to the logo collapses the sidebar to icons only. You
 
 ## Your Domains
 
-The home page of the dashboard. It shows a count of your domains, summary numbers across all of them, and a card for each domain with its score, open issues, monitored URLs and last scan date.
+The home page of the dashboard. It lists your domains in a table with each one's scan result and score, active issues, resolved issues, and last and next scan dates. A domain that has not been scanned yet shows **Select pages & Scan**.
+
+The ⋮ menu on each row has **Export fixing instructions**, **Export PDF summary**, **View scan details**, **Re-scan domain**, **Manage domain pages**, **Domain settings**, **Add subdomain** and **Remove domain**.
 
 ## Inside a Domain
 
-The header shows the domain name, when it was last scanned, **Scan now**, **Export** and a menu with **Find pages**, **Domain settings** and **Open website**. Below are five tabs:
+The header shows the domain name, when it was last scanned, **Scan now**, **Export** and the same ⋮ menu as on Your Domains. Below are five tabs:
 
 | Tab | What it shows |
 | --- | --- |
 | Overview | Last scan summary, score, scan history chart, WCAG coverage table and component grouping |
 | Issues | Every failing rule with where it happens and how to fix it |
-| Manual Review | Items automated testing could not decide |
+| Manually Required | Items automated testing could not decide |
 | Pages | Monitored URLs, discovered pages and adding URLs |
-| Settings | WCAG target, devices, URL rules, custom headers and removing the domain |
+| Settings | WCAG target, devices, sitemap, URL rules, custom headers, AccessBellFix, your accessibility statement and removing the domain |
 
 Read more in [Understanding the domain overview](/resources/help-center/scans-and-reports/understanding-the-domain-overview).

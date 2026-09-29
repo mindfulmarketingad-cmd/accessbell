@@ -24,6 +24,8 @@ export const SOURCES = {
   'stripe-privacy': { label: 'Stripe Privacy Policy', publisher: 'Stripe', url: 'https://stripe.com/privacy' },
   'ada-web': { label: 'Guidance on Web Accessibility and the ADA', publisher: 'U.S. Department of Justice', url: 'https://www.ada.gov/resources/web-guidance/' },
   'vpat': { label: 'VPAT (Voluntary Product Accessibility Template)', publisher: 'Information Technology Industry Council', url: 'https://www.itic.org/policy/accessibility/vpat' },
+  'mdn-script': { label: 'The <script> element', publisher: 'MDN Web Docs', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script' },
+  'mdn-aria-label': { label: 'aria-label', publisher: 'MDN Web Docs', url: 'https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-label' },
   'gmail-help': { label: 'Gmail Help', publisher: 'Google', url: 'https://support.google.com/mail' },
 } as const;
 

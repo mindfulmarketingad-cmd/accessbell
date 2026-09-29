@@ -115,6 +115,7 @@ before(async () => {
   await db.query(readFileSync(new URL('../supabase/migrations/0002_onboarding.sql', import.meta.url), 'utf8'));
   await db.query(readFileSync(new URL('../supabase/migrations/0003_subscriber_access.sql', import.meta.url), 'utf8'));
   await db.query(readFileSync(new URL('../supabase/migrations/0004_subscriber_emails.sql', import.meta.url), 'utf8'));
+  await db.query(readFileSync(new URL('../supabase/migrations/0005_domain_setup.sql', import.meta.url), 'utf8'));
 
   fake = await startFakeAuth(db);
   const { port } = fake.server.address();
@@ -521,6 +522,11 @@ test('scans are stored per device, update the page, and feed the overview with c
   };
   await rescan(pages[2].id, []);
   assert.equal((await owner.get(`domain?id=${domain.id}`)).body.resolved, 2);
+  const listed = (await owner.get('domains')).body.domains.find((d) => d.id === domain.id);
+  assert.equal(listed.resolved, 2, 'the domain list shows resolved issues');
+  assert.equal(listed.worstImpact, 'critical');
+  assert.equal(listed.failedPages, 0);
+  assert.ok(listed.pages >= listed.monitored);
   await rescan(pages[2].id, [issue]);
 
   const history = await owner.get(`page?id=${pages[0].id}`);
@@ -636,4 +642,144 @@ test('logout clears the session', { skip }, async () => {
   const res = await handle(new Request(`${ORIGIN}/api/app?route=auth/logout`, { method: 'POST', headers: { origin: ORIGIN, cookie, 'x-real-ip': c.ip } }));
   assert.equal(res.status, 200);
   assert.ok(res.headers.getSetCookie().every((x) => /Max-Age=0/.test(x)));
+});
+
+// ---------- Domain setup: sitemap, AccessBellFix and the hosted statement ----------
+
+test('a sitemap address is validated, stored in full and read first during discovery', { skip }, async () => {
+  const owner = new Client('10.0.6.1');
+  await owner.post('auth/login', { email: 'owner@acme.test', password: 'correct horse' });
+  const domain = (await owner.get('domains')).body.domains.find((d) => d.hostname === 'example.com');
+
+  const offsite = await owner.post('domain/settings', { id: domain.id, settings: { sitemapUrl: 'https://other.test/sitemap.xml' } });
+  assert.equal(offsite.status, 400);
+  const saved = await owner.post('domain/settings', { id: domain.id, settings: { sitemapUrl: '/custom-map.xml' } });
+  assert.equal(saved.status, 200);
+  assert.match(saved.body.settings.sitemapUrl, /^https:\/\/(www\.)?example\.com\/custom-map\.xml$/);
+
+  const asked = [];
+  const fetcher = async (url, opts = {}) => {
+    asked.push(url);
+    if (url.endsWith('/custom-map.xml')) return { text: '<urlset><url><loc>https://example.com/from-custom-map</loc></url></urlset>' };
+    if (opts.kind === 'text' || opts.kind === 'xml') throw new Error('not found');
+    return { html: '<html><body></body></html>', finalUrl: 'https://example.com/' };
+  };
+  const me = await owner.get('me');
+  const ctx = { user: { id: me.body.user.id }, account: (await db.query('select * from app.accounts where id = $1', [me.body.account.id])).rows[0], role: 'owner', subscriber: true };
+  const result = await domainsModule.discoverPages(ctx, domain.id, { fetcher });
+  assert.ok(asked.find((u) => u.endsWith('.xml')).endsWith('/custom-map.xml'), 'the given sitemap is read before the usual places');
+  assert.ok(result.fromSitemap >= 1);
+  await owner.post('domain/settings', { id: domain.id, settings: { sitemapUrl: '' } });
+});
+
+test('AccessBellFix: site key, approved fixes, public rules with CORS, and connection check', { skip }, async () => {
+  const owner = new Client('10.0.6.2');
+  await owner.post('auth/login', { email: 'owner@acme.test', password: 'correct horse' });
+  const domain = (await owner.get('domains')).body.domains.find((d) => d.hostname === 'example.com');
+
+  const setup = await owner.get(`domain/fix?id=${domain.id}`);
+  assert.equal(setup.status, 200);
+  assert.match(setup.body.siteKey, /^[A-Za-z0-9_-]{16,40}$/);
+  assert.equal((await owner.get(`domain/fix?id=${domain.id}`)).body.siteKey, setup.body.siteKey, 'the key is stable');
+
+  assert.equal((await owner.post('domain/fix/add', { id: domain.id, kind: 'alt', selector: '', value: 'x' })).status, 400);
+  assert.equal((await owner.post('domain/fix/add', { id: domain.id, kind: 'lang', value: 'not a language' })).status, 400);
+  const alt = await owner.post('domain/fix/add', { id: domain.id, kind: 'alt', selector: 'img.hero', value: 'Tent by a lake' });
+  assert.equal(alt.status, 200);
+  const lang = await owner.post('domain/fix/add', { id: domain.id, kind: 'lang', value: 'en-US' });
+  assert.equal(lang.body.fix.selector, 'html');
+  const off = await owner.post('domain/fix/add', { id: domain.id, kind: 'name', selector: '#search', value: 'Search' });
+  await owner.post('domain/fix/update', { id: domain.id, fixId: off.body.fix.id, enabled: false });
+
+  const res = await handle(new Request(`${ORIGIN}/api/app?route=fix&k=${setup.body.siteKey}`));
+  assert.equal(res.status, 200);
+  assert.equal(res.headers.get('access-control-allow-origin'), '*');
+  const rules = await res.json();
+  assert.deepEqual(rules.fixes.map((f) => f.kind).sort(), ['alt', 'lang'], 'disabled fixes are not served');
+  assert.equal((await handle(new Request(`${ORIGIN}/api/app?route=fix&k=unknown-key-0000000000`))).status, 404);
+
+  const me = await owner.get('me');
+  const ctx = { user: { id: me.body.user.id }, account: (await db.query('select * from app.accounts where id = $1', [me.body.account.id])).rows[0], role: 'owner', subscriber: true };
+  const siteModule = await import('../server/app/site-setup.js');
+  const installed = await siteModule.verifyFix(ctx, domain.id, { fetcher: async () => ({ html: `<script src="https://www.accessbell.co/fix.js" data-site="${setup.body.siteKey}" async></script>` }) });
+  assert.equal(installed.foundInPage, true);
+  assert.equal(installed.connected, true);
+  const missing = await siteModule.verifyFix(ctx, domain.id, { fetcher: async () => ({ html: '<html></html>' }) });
+  assert.equal(missing.foundInPage, false);
+  assert.ok(missing.seenAt, 'the script loading the rules above counts as a recent connection');
+
+  await owner.post('domain/fix/update', { id: domain.id, fixId: off.body.fix.id, remove: true });
+  assert.equal((await owner.get(`domain/fix?id=${domain.id}`)).body.fixes.length, 2);
+});
+
+test('the accessibility statement is validated, saved and published at a public link', { skip }, async () => {
+  const owner = new Client('10.0.6.3');
+  await owner.post('auth/login', { email: 'owner@acme.test', password: 'correct horse' });
+  const domain = (await owner.get('domains')).body.domains.find((d) => d.hostname === 'example.com');
+
+  assert.equal((await owner.post('domain/statement', { id: domain.id, statement: { org: 'Acme', email: 'nope' } })).status, 400);
+  assert.equal((await owner.post('domain/statement', { id: domain.id, statement: { org: 'Acme', email: 'a11y@acme.test', links: [{ label: 'Privacy', url: 'javascript:alert(1)' }] } })).status, 400);
+  const saved = await owner.post('domain/statement', {
+    id: domain.id,
+    statement: { orgType: 'nonprofit', org: 'Acme Trails', email: 'A11y@Acme.test', phone: '+1 555 0100', links: [{ label: 'Privacy policy', url: 'https://example.com/privacy' }], notes: 'PDF menus are being replaced.' },
+  });
+  assert.equal(saved.status, 200);
+  assert.equal(saved.body.statement.email, 'a11y@acme.test');
+  assert.equal(saved.body.statement.status, 'partial', 'partially conformant is the default');
+
+  const pub = await handle(new Request(`${ORIGIN}/api/app?route=statement&k=${saved.body.siteKey}`));
+  assert.equal(pub.status, 200);
+  const body = await pub.json();
+  assert.equal(body.hostname, 'example.com');
+  assert.equal(body.statement.org, 'Acme Trails');
+  assert.ok(body.lastCheckedAt, 'shows when the site was last scanned');
+
+  const viewer = new Client('10.0.6.4');
+  await viewer.post('auth/login', { email: 'viewer@acme.test', password: 'invited-password' });
+  const v = await viewer.post('domain/statement', { id: domain.id, statement: { org: 'X', email: 'x@acme.test' } });
+  assert.ok([403, 404].includes(v.status), 'viewers cannot change the statement');
+});
+
+test('found pages: add pages by hand, select up to 25 to scan, and failed scans mark a partial scan', { skip }, async () => {
+  const owner = new Client('10.0.7.1');
+  await owner.post('auth/login', { email: 'owner@acme.test', password: 'correct horse' });
+  const { body } = await owner.get('domains');
+  const domain = body.domains.find((d) => d.hostname === 'example.com');
+
+  const added = await owner.post('domain/pages/add', { id: domain.id, urls: ['/found-a', 'https://example.com/found-b', '/found-a'] });
+  assert.equal(added.status, 200);
+  assert.equal(added.body.pages.length, 2);
+  assert.ok(added.body.pages.every((p) => !p.monitored), 'pages added by hand wait to be selected');
+  assert.equal((await owner.post('domain/pages/add', { id: domain.id, urls: ['https://other.test/x'] })).status, 400);
+
+  let overview = (await owner.get(`domain?id=${domain.id}`)).body;
+  const ids = overview.pages.slice(0, 26).map((p) => p.id);
+  const tooMany = await owner.post('domain/pages/select', { id: domain.id, pageIds: ids });
+  assert.equal(tooMany.status, 400);
+  assert.equal((await owner.post('domain/pages/select', { id: domain.id, pageIds: [] })).status, 400);
+
+  const chosen = added.body.pages.map((p) => p.id);
+  const sel = await owner.post('domain/pages/select', { id: domain.id, pageIds: chosen });
+  assert.equal(sel.status, 200);
+  assert.equal(sel.body.pages.length, 2);
+  overview = (await owner.get(`domain?id=${domain.id}`)).body;
+  assert.equal(overview.monitoredCount, 2, 'only the selected pages are monitored');
+
+  // Pages from another account cannot be selected.
+  const outsider = new Client('10.0.7.2');
+  await outsider.post('auth/signup', { email: 'eve@evil.test', password: 'correct horse' });
+  await markSubscriber((await outsider.get('me')).body.account.id);
+  assert.equal((await outsider.post('domain/pages/select', { id: domain.id, pageIds: chosen })).status, 404);
+
+  // A failed scan of a selected page shows as a partial scan.
+  const fetcher = async () => {
+    throw new Error('offline');
+  };
+  const page = (await db.query('select p.*, d.settings from app.pages p join app.domains d on d.id = p.domain_id where p.id = $1', [chosen[0]])).rows[0];
+  await scanning.scanPage(page, { accountId: (await owner.get('me')).body.account.id, deps: { fetcher } });
+  overview = (await owner.get(`domain?id=${domain.id}`)).body;
+  assert.equal(overview.failedPages.length, 1);
+  const listed = (await owner.get('domains')).body.domains.find((d) => d.id === domain.id);
+  assert.equal(listed.failedPages, 1);
+  assert.equal(listed.scannedPages, 1);
 });

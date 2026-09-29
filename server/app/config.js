@@ -6,7 +6,7 @@ export const ROLE_RANK = { viewer: 1, member: 2, admin: 3, owner: 4 };
 /** Pro plan limits. */
 export const LIMITS = {
   monitoredPagesPerDomain: 25,
-  discoveredPagesPerDomain: 200,
+  discoveredPagesPerDomain: 2000,
   scansPerAccountPerHour: 600, // "unlimited rescans", fair use only
 };
 

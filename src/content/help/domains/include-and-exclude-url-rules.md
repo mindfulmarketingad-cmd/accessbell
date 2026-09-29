@@ -6,7 +6,7 @@ updatedDate: 2026-09-28
 sources: ['sitemaps']
 ---
 
-URL rules decide which pages **Find pages** keeps. Use them to focus on one section of a large site or to leave out pages you do not need, such as tag archives or search results.
+URL rules decide which pages AccessBell keeps when it finds pages. Use them to focus on one section of a large site or to leave out pages you do not need, such as tag archives or search results.
 
 Set them in the domain's **Settings** tab, one rule per line.
 

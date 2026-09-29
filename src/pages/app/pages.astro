@@ -1,0 +1,67 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+import Icon from '../../components/Icon.astro';
+---
+<AppLayout title="Found Pages" section="overview">
+  <header class="found-top">
+    <a class="icon-btn" href="/app" data-back><Icon name="back" /><span class="visually-hidden">Back to your domains</span></a>
+    <div>
+      <nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="/app">Domains</a></li><li data-crumb-host></li></ol></nav>
+      <h1>Found Pages <span class="count-badge" data-found-count>0</span></h1>
+    </div>
+  </header>
+
+  <div class="crawl-banner" data-crawl-banner></div>
+
+  <div class="found-tools">
+    <label class="search-field">
+      <Icon name="search" />
+      <span class="visually-hidden">Search pages</span>
+      <input type="search" placeholder="Search pages" data-page-search autocomplete="off" />
+    </label>
+    <div class="found-actions">
+      <button class="btn btn-outline" type="button" data-open-add-pages><Icon name="plus" /> Add Pages</button>
+      <a class="btn btn-outline" href="#" data-scan-settings><Icon name="gear" /> Scan settings</a>
+    </div>
+  </div>
+
+  <div class="found-bar">
+    <label class="check-inline found-all">
+      <input type="checkbox" data-select-shown />
+      <span data-selected-count>0 of 0 pages selected for scanning</span>
+    </label>
+    <button class="link-btn" type="button" data-clear-selection>Clear selection</button>
+    <span class="muted found-limit">Select up to 25 pages.</span>
+  </div>
+  <p class="status-line" data-found-status role="status" aria-live="polite"></p>
+
+  <ul class="found-list" data-found-list aria-label="Found pages"></ul>
+  <div class="found-more" data-found-more></div>
+
+  <div class="found-footer">
+    <p class="muted" data-footer-note></p>
+    <button class="btn btn-lg" type="button" data-start-scan disabled><Icon name="scan" /> Start Scan</button>
+  </div>
+
+  <dialog class="dialog" data-add-pages-dialog aria-labelledby="add-pages-title">
+    <form method="dialog" class="dialog-body" data-add-pages novalidate>
+      <div class="dialog-head">
+        <h2 id="add-pages-title">Add pages</h2>
+        <button class="icon-btn" type="button" data-close-add-pages><Icon name="x" /><span class="visually-hidden">Close</span></button>
+      </div>
+      <div class="field">
+        <label for="add-urls">Page addresses</label>
+        <textarea id="add-urls" name="urls" rows="6" placeholder="/pricing&#10;https://example.com/contact" aria-describedby="add-urls-help"></textarea>
+        <span class="help" id="add-urls-help">One per line, up to 50. They must be on this domain.</span>
+      </div>
+      <p class="status-line" data-add-pages-status role="status" aria-live="polite"></p>
+      <div class="dialog-actions">
+        <button class="btn btn-outline" type="button" data-close-add-pages>Cancel</button>
+        <button class="btn" type="submit">Add pages</button>
+      </div>
+    </form>
+  </dialog>
+</AppLayout>
+<script>
+  import '../../scripts/app/found-pages.js';
+</script>

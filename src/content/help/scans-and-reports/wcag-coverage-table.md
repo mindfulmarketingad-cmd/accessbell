@@ -2,7 +2,7 @@
 title: 'The WCAG Coverage Table'
 description: 'How to read the Test Coverage by WCAG Principle table: every success criterion in your target, with automated results and what needs manual testing.'
 order: 3
-updatedDate: 2026-09-28
+updatedDate: 2026-09-29
 sources: ['wcag22', 'understanding']
 ---
 
@@ -12,33 +12,34 @@ The **Test Coverage by WCAG Principle** table on a domain's Overview lists every
 
 Criteria are grouped under the four WCAG principles: **Perceivable**, **Operable**, **Understandable** and **Robust**. Select a principle's name to collapse or expand its group. Each group shows how many criteria have issues.
 
-Each row shows:
+Perceivable starts open. Each row shows:
 
+- **WCAG principle**, such as Perceivable
 - **Guideline**, the group the criterion belongs to, such as Text Alternatives or Navigable
 - **Success criterion**, its number and name, such as 1.1.1 Non-text Content
 - **Level**: A, AA or AAA
 
-## Automated Checks Column
+## Issues Column
 
 | Status | Meaning |
 | --- | --- |
-| Issues | Automated rules found failing elements for this criterion. The number is how many. |
+| Issues | Automated rules found failing elements for this criterion. The number is how many. Select it to open the Issues tab. |
 | Passed | Automated rules for this criterion ran and found nothing wrong. |
-| Not covered | No automated rule produced a result for this criterion. Either no rule exists for it, or the content it applies to, such as video, was not found. |
+| Not tested | No automated rule produced a result for this criterion. Either no rule exists for it, or the content it applies to, such as video, was not found. |
 
-## Manual Review Column
+## Manually Required Column
 
 | Status | Meaning |
 | --- | --- |
-| Review | Automated tests flagged items for a person to check. See the Manual Review tab. |
+| Needs review (number) | Automated tests flagged items for a person to check. Select it to open the Manually Required tab. |
+| Needs review | Automated tests could not check this criterion, so a person needs to test it. |
 | Spot check | Automated rules cover part of this criterion. A quick manual check confirms the rest. |
-| Manual test | Only a person can test this criterion. |
 
 ## Useful Tools
 
 - **Only criteria with issues** hides everything else, so you can see at a glance which requirements are failing.
 - **Domain Settings** opens the Settings tab, where you can change the WCAG version and level.
 
-## Why so Many Criteria Are Not Covered
+## Why so Many Criteria Need Review
 
 Many WCAG requirements depend on meaning and experience, for example whether captions are accurate or whether the focus order makes sense. No automated tool can judge those. The table makes the gap visible so you can plan manual testing. See [Plan manual testing](/resources/help-center/fixing-issues/plan-manual-testing).

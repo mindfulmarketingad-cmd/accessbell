@@ -18,7 +18,7 @@ Only the account **Owner** can start the subscription.
 3. You are taken to a secure Stripe checkout page. Choose how many domains you want to monitor, enter your card details and confirm.
 4. Once your payment is confirmed, we activate your account. The activation screen checks every 30 seconds and opens your dashboard as soon as it is ready. If it takes longer than you expect, [contact us](/contact).
 
-Each domain in your plan costs $79 per month after the trial. The number of domains you choose at checkout is how many you can add to your dashboard. You can change it later, see [Add more domains to your plan](/resources/help-center/billing/add-more-domains-to-your-plan).
+Each domain in your plan costs $29 per month after the trial. The number of domains you choose at checkout is how many you can add to your dashboard. You can change it later, see [Add more domains to your plan](/resources/help-center/billing/add-more-domains-to-your-plan).
 
 ## During the Trial
 

@@ -6,7 +6,7 @@ updatedDate: 2026-09-28
 sources: ['stripe-security']
 ---
 
-Each domain in your plan costs $79 per month. The number of domains decides how many you can add to your dashboard.
+Each domain in your plan costs $29 per month. The number of domains decides how many you can add to your dashboard.
 
 ## Increase the Number of Domains
 

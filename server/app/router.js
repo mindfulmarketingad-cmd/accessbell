@@ -6,12 +6,13 @@ import { readSession, sessionCookies, clearSessionCookies } from './session.js';
 import { ensureUserSetup, getContext, renameAccount, requireRole, isSubscribed, getOnboarding, completeTour } from './accounts.js';
 import { checkoutUrl, portalUrl, billingSummary } from './billing.js';
 import {
-  listDomains, createDomain, updateDomainSettings, deleteDomain, addPage, setMonitored, deletePage, discoverPages, domainOverview,
+  listDomains, createDomain, updateDomainSettings, deleteDomain, addPage, setMonitored, deletePage, discoverPages, domainOverview, selectPages, addPages,
 } from './domains.js';
 import { rescanPage, getScan, pageHistory } from './scanning.js';
 import { one } from './db.js';
 import { listMembers, inviteMember, changeRole, removeMember } from './team.js';
 import { config, missingConfig } from './config.js';
+import { getFixSetup, verifyFix, addFix, updateFix, publicFixRules, getStatement, saveStatement, publicStatement } from './site-setup.js';
 import { AppError, badRequest, unauthorized } from './errors.js';
 
 const limits = {
@@ -29,8 +30,9 @@ const SECURITY_HEADERS = {
   'Content-Security-Policy': "default-src 'none'; frame-ancestors 'none'",
 };
 
-function respond(status, body, cookies = []) {
+function respond(status, body, cookies = [], extraHeaders = {}) {
   const headers = new Headers(SECURITY_HEADERS);
+  for (const [k, v] of Object.entries(extraHeaders)) headers.set(k, v);
   for (const c of cookies) headers.append('Set-Cookie', c);
   return new Response(JSON.stringify(body), { status, headers });
 }
@@ -132,6 +134,17 @@ const publicRoutes = {
     return { body: { status: 'signed_in' }, cookies: sessionCookies(request, session) };
   },
 
+  /** AccessBellFix: the approved fixes for a site. Called by the script on the customer's website. */
+  async 'GET fix'({ url }) {
+    const out = await publicFixRules(url.searchParams.get('k'));
+    return { body: out, headers: { 'Access-Control-Allow-Origin': '*', 'Cache-Control': 'public, max-age=60' } };
+  },
+
+  /** The hosted accessibility statement for a site. */
+  async 'GET statement'({ url }) {
+    return { body: await publicStatement(url.searchParams.get('k')), headers: { 'Cache-Control': 'public, max-age=300' } };
+  },
+
   async 'POST auth/logout'({ request }) {
     const s = await readSession(request).catch(() => ({ user: null }));
     if (s.accessToken) await auth.signOut(s.accessToken);
@@ -198,6 +211,13 @@ const routes = {
     return discoverPages(ctx, body?.id);
   },
 
+  async 'POST domain/pages/select'({ ctx, body }) {
+    return { pages: await selectPages(ctx, body?.id, body?.pageIds) };
+  },
+  async 'POST domain/pages/add'({ ctx, body }) {
+    return { pages: await addPages(ctx, body?.id, body?.urls) };
+  },
+
   async 'POST pages'({ ctx, body }) {
     const p = await addPage(ctx, body?.domainId, body?.url);
     return { page: { id: p.id, url: p.url } };
@@ -221,6 +241,24 @@ const routes = {
     return { scan: await getScan(ctx, url.searchParams.get('id')) };
   },
 
+  async 'GET domain/fix'({ ctx, url }) {
+    return getFixSetup(ctx, url.searchParams.get('id'));
+  },
+  async 'POST domain/fix/verify'({ ctx, body }) {
+    return verifyFix(ctx, body?.id);
+  },
+  async 'POST domain/fix/add'({ ctx, body }) {
+    return addFix(ctx, body?.id, body);
+  },
+  async 'POST domain/fix/update'({ ctx, body }) {
+    return updateFix(ctx, body?.id, body?.fixId, { enabled: body?.enabled, remove: body?.remove === true });
+  },
+  async 'GET domain/statement'({ ctx, url }) {
+    return getStatement(ctx, url.searchParams.get('id'));
+  },
+  async 'POST domain/statement'({ ctx, body }) {
+    return saveStatement(ctx, body?.id, body?.statement);
+  },
   async 'GET team'({ ctx }) {
     return { members: await listMembers(ctx), role: ctx.role, userId: ctx.user.id };
   },
@@ -274,7 +312,7 @@ export async function handle(request) {
 
     if (publicHandler) {
       const out = await publicHandler({ request, body, ip, url });
-      return respond(200, out.body, out.cookies);
+      return respond(200, out.body, out.cookies, out.headers);
     }
 
     const session = await readSession(request);

@@ -178,7 +178,7 @@ const faqs: FaqItem[] = [
   },
   {
     q: 'Is the AccessBell accessibility checker free?',
-    a: 'Yes. You can scan any public page for free with no account. The Pro plan, $79 per domain per month, adds domain crawling, continuous monitoring, AI-assisted fixes, reports and team features.',
+    a: 'Yes. You can scan any public page for free with no account. The Pro plan, $29 per domain per month, adds domain crawling, continuous monitoring, AI-assisted fixes, reports and team features.',
   },
   {
     q: 'Which accessibility standards does AccessBell check?',
@@ -285,6 +285,10 @@ const faqs: FaqItem[] = [
           Where automation cannot decide, such as whether alt text is meaningful, AccessBell flags the item for manual review instead of guessing. That follows the W3C's guidance in <a href="https://www.w3.org/WAI/test-evaluate/" rel="noopener noreferrer">Evaluating Web Accessibility</a>: tools find many issues fast, and people confirm the rest. <a href="/methodology">See exactly how we test</a>.
         </p>
       </div>
+      <figure class="app-shot">
+        <img src="/images/dashboard/domain-report.webp" width="1600" height="825" loading="lazy" decoding="async" alt="The AccessBell domain report for example.com. It shows a score of 63 out of 100 and the status Not conformant against WCAG 2.2 Level AA, 132 active issues, 4 issues solved since the last scan, 12 of 12 pages scanned and 60 items for manual review, next to a scan history chart of score, open issues and pages scanned." />
+        <figcaption>The domain report in the AccessBell dashboard, shown with sample data.</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -552,18 +556,10 @@ const faqs: FaqItem[] = [
 
   <section class="section section-surface" aria-labelledby="scale-title">
     <div class="container grid-2">
-      <div class="mock" role="img" aria-label="Illustration of the AccessBell multi-domain dashboard showing an accessibility score trending upward to 94 over nine weeks">
-        <div class="mock-bar" aria-hidden="true"><i></i><i></i><i></i><span>Dashboard</span></div>
-        <div class="mock-body" aria-hidden="true">
-          <div class="mock-kpis">
-            <div><span>Score</span><strong>94</strong></div>
-            <div><span>Domains</span><strong>4</strong></div>
-            <div><span>Open issues</span><strong>37</strong></div>
-          </div>
-          <div class="bars"><i class="h-30"></i><i class="h-38"></i><i class="h-45"></i><i class="h-52"></i><i class="h-60"></i><i class="h-68"></i><i class="h-77"></i><i class="h-86"></i><i class="h-94"></i></div>
-          <div class="mock-row"><span><span class="dot"></span><strong>Weekly scan complete</strong></span><span class="tag tag-pass">+6 pts</span></div>
-        </div>
-      </div>
+      <figure class="app-shot app-shot-side">
+        <img src="/images/dashboard/your-domains.webp" width="1600" height="550" loading="lazy" decoding="async" alt="The Your Domains page of the AccessBell dashboard. example.com has a score of 63, Not conformant with critical issues to fix, 132 active issues, 4 resolved issues, its last scan 7 minutes ago and its next scan on Sep 30, 2026. example.org is pending a scan of 141 pages, with a Select pages and Scan button." />
+        <figcaption>Every domain in one list, shown with sample data.</figcaption>
+      </figure>
       <div class="feature-copy">
         <span class="eyebrow">Scales with you</span>
         <h2 id="scale-title">Monitoring for <span class="accent">Every Domain You Run</span></h2>
@@ -571,7 +567,7 @@ const faqs: FaqItem[] = [
           Start with a free scan of a single page. When you are ready, monitor every domain you manage from one dashboard, with continuous monitoring, alerts and team permissions.
         </p>
         <ul class="check-list">
-          <li><Icon name="check" />$79 per domain per month</li>
+          <li><Icon name="check" />$29 per domain per month</li>
           <li><Icon name="check" />Up to 25 URLs per domain, unlimited rescans</li>
           <li><Icon name="check" />Role-based permissions for your team</li>
         </ul>

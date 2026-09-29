@@ -35,7 +35,7 @@ Searching for the **best website accessibility checker** turns up dozens of opti
 
 | Tool | Type | Fixes real code | Starting price | Free option |
 | --- | --- | --- | --- | --- |
-| **AccessBell** | Real scanner (axe-core, real Chrome) | Yes, you fix the code shown | $79/domain/month flat | Free scan, 3-day trial |
+| **AccessBell** | Real scanner (axe-core, real Chrome) | Yes, you fix the code shown | $29/domain/month flat | Free scan, 3-day trial |
 | AccessibilityChecker.org | Real scanner + AI-assisted fixes | Yes, with human-reviewed suggestions | $69/month (25 URLs, annual) | Free scan, 7-day trial |
 | UserWay | Overlay | No, runtime patch only | Free tier; paid ~$490/year | Free tier |
 | EqualWeb | Overlay + manual service | Partially, via paid manual service | ~$29–$39/month | None advertised |
@@ -50,11 +50,11 @@ Searching for the **best website accessibility checker** turns up dozens of opti
 **Why teams pick AccessBell:**
 
 - **Test what you actually need to meet.** WCAG 2.2, 2.1 or 2.0 at Level AA, or a preset for the ADA, Section 508 or EN 301 549.
-- **One flat price.** $79 per domain per month, unlimited rescans, monitoring for up to 25 URLs per domain. No traffic-based pricing tiers to track.
+- **One flat price.** $29 per domain per month, unlimited rescans, monitoring for up to 25 URLs per domain. No traffic-based pricing tiers to track.
 - **Real fixes, every time.** Each issue shows the failing markup and a working example, not a generic tip.
 - **Built for the whole team**, not just one role: developers get failing components, QA gets repeatable criterion-level checks and CSV export, content teams get plain-language explanations.
 - **A full free toolkit**, no account required: a [free scanner](/#scan), the [WCAG success criteria library](/resources/wcag), an [accessibility statement generator](/resources/statement-generator), and checkers for your specific [platform](/resources) or [industry](/resources).
-- **3-day free trial**, then $79/domain/month, cancel anytime.
+- **3-day free trial**, then $29/domain/month, cancel anytime.
 
 If you want a checker that finds real problems and hands you a real fix, at a price you can predict before you sign up, this is what AccessBell is built for.
 

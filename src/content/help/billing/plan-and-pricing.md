@@ -6,7 +6,7 @@ updatedDate: 2026-09-28
 sources: ['stripe-security']
 ---
 
-AccessBell has one plan, **Pro**, at **$79 per domain per month**. Every feature is included on every domain.
+AccessBell has one plan, **Pro**, at **$29 per domain per month**. Every feature is included on every domain.
 
 ## What Is Included
 
@@ -33,6 +33,6 @@ Rescan as often as you like. To keep the service fast for everyone, very high au
 
 ## Price per Domain
 
-Your monthly price is $79 multiplied by the number of domains in your plan. The **Billing** page shows the current total. See [Add more domains to your plan](/resources/help-center/billing/add-more-domains-to-your-plan).
+Your monthly price is $29 multiplied by the number of domains in your plan. The **Billing** page shows the current total. See [Add more domains to your plan](/resources/help-center/billing/add-more-domains-to-your-plan).
 
 Need more than 25 URLs per domain? [Talk to us](/contact?topic=sales).

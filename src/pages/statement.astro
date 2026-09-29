@@ -1,0 +1,68 @@
+---
+// A customer's hosted accessibility statement: /statement?k=<site key>.
+// Rendered in the browser from the saved answers, so it is always current.
+import '../styles/global.css';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Accessibility Statement</title>
+    <meta name="robots" content="noindex, follow" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <style>
+      body { background: #fff; color: var(--ink-700); }
+      .st-main { max-width: 760px; margin: 0 auto; padding: clamp(32px, 6vw, 72px) 16px 48px; line-height: 1.65; }
+      .st-main h1 { font-size: clamp(1.75rem, 4vw, 2.25rem); line-height: 1.2; margin: 0 0 8px; color: var(--ink-900); }
+      .st-main h2 { font-size: 1.25rem; margin: 32px 0 8px; color: var(--ink-900); }
+      .st-site { margin: 0 0 24px; color: var(--ink-500); }
+      .st-main a { color: var(--sage-700); }
+      .gen-updated { color: var(--ink-500); font-size: 0.9375rem; margin-top: 32px; }
+      .st-foot { max-width: 760px; margin: 0 auto; padding: 16px; border-top: 1px solid var(--border); font-size: 0.875rem; color: var(--ink-500); }
+      .st-foot a { color: var(--ink-700); }
+    </style>
+  </head>
+  <body>
+    <main class="st-main" id="main">
+      <h1 data-st-title>Accessibility Statement</h1>
+      <p class="st-site" data-st-site></p>
+      <div data-st-body aria-live="polite"><p>Loading...</p></div>
+    </main>
+    <footer class="st-foot">
+      <p>Accessibility monitoring by <a href="/">AccessBell</a>.</p>
+    </footer>
+    <script>
+      import { buildStatement, renderInto } from '../scripts/shared/statement.js';
+
+      const body = document.querySelector('[data-st-body]') as HTMLElement;
+      const key = new URLSearchParams(location.search).get('k') || '';
+      const fmt = (v: string) => new Date(v).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+      try {
+        const res = await fetch(`/api/app/statement?k=${encodeURIComponent(key)}`, { credentials: 'omit' });
+        if (!res.ok) throw new Error('not found');
+        const data = await res.json();
+        const s = data.statement;
+        const st = buildStatement({
+          ...s,
+          site: data.hostname,
+          standardText: `WCAG ${data.standard.version} Level ${data.standard.level}`,
+          lastChecked: data.lastCheckedAt ? fmt(data.lastCheckedAt) : '',
+          updated: s.updatedAt ? fmt(s.updatedAt) : undefined,
+        });
+        document.title = `${st.title}`;
+        (document.querySelector('[data-st-title]') as HTMLElement).textContent = st.title;
+        (document.querySelector('[data-st-site]') as HTMLElement).textContent = `For ${data.hostname}`;
+        renderInto(body, st);
+        // Statement headings are sections of this page.
+        body.querySelectorAll('h4').forEach((h) => {
+          const h2 = document.createElement('h2');
+          h2.textContent = h.textContent;
+          h.replaceWith(h2);
+        });
+      } catch {
+        body.replaceChildren(Object.assign(document.createElement('p'), { textContent: 'This accessibility statement could not be found. Check the link, or contact the website owner.' }));
+      }
+    </script>
+  </body>
+</html>

@@ -1,10 +1,10 @@
 ---
 title: 'Add Your First Domain'
-description: 'Add a website or staging environment to your AccessBell dashboard so its pages are monitored, scanned on a schedule and tracked over time.'
+description: 'Add a website in four short steps: find its pages from your sitemap, choose your WCAG settings, then optionally set up AccessBellFix and your statement.'
 order: 5
 quickStart: 2
 updatedDate: 2026-09-29
-sources: ['sitemaps', 'wai-evaluate']
+sources: ['sitemaps', 'wai-evaluate', 'wai-statements']
 ---
 
 A domain is a website you want to monitor, such as `example.com` or `staging.example.com`. Adding one gives it its own overview, issues list, history and settings.
@@ -17,22 +17,26 @@ A domain is a website you want to monitor, such as `example.com` or `staging.exa
 
 ## Add the Domain
 
-1. Open [Your Domains](/app).
-2. Select **Add Domain** at the top right, or **Add domain** under Domains in the sidebar.
-3. Enter the website address, for example `example.com`. You can include a path if the site lives in a folder.
-4. Select **Add domain**.
+Open [Your Domains](/app) and select **Add Domain**. A short setup walks you through four steps.
 
-AccessBell opens the new domain and starts monitoring its home page.
+### 1. Indexing
 
-## Add More Pages
+Enter the website address, for example `example.com`. If you know it, also enter your **XML sitemap**, such as `https://example.com/sitemap.xml`. It is optional, but it helps AccessBell find every page on a large site. Not sure where it is? Try `/sitemap.xml` or `/sitemap_index.xml`, or look for a `Sitemap:` line in `/robots.txt`.
 
-Each domain can monitor up to 25 URLs. Open the **Pages** tab to:
+AccessBell starts finding your pages in the background while you finish the setup.
 
-- Select **Find pages** from the menu to crawl the site and read its sitemap, then choose which discovered pages to monitor.
-- Add a specific URL with **Add and monitor**.
+### 2. Configure Settings
 
-See [Find and monitor pages](/resources/help-center/domains/find-and-monitor-pages).
+Choose the **WCAG version** and **level** to test against. WCAG 2.2 Level AA is the current recommendation. Choose the devices to test (desktop, mobile or both) and whether to include subdomains. You can change these later in [Scan settings](/resources/help-center/domains/scan-settings).
 
-## Run the First Scan
+### 3. AccessBellFix (Optional)
 
-Select **Scan now** at the top of the domain to scan every monitored page now. See [Run your first scan](/resources/help-center/getting-started/run-your-first-scan).
+Copy one line of code into your site so you can apply fixes you approve, such as missing alt text, without editing your site. Select **Validate connection** to check it is installed, or **Set up later** to skip. See [Install AccessBellFix](/resources/help-center/getting-started/install-accessbellfix).
+
+### 4. Accessibility Statement (Optional)
+
+Answer a few questions and AccessBell writes your accessibility statement: organization type, company name, contact details, related policies and any notes. You get a hosted link and the HTML to publish on your own site. See [Create your accessibility statement](/resources/help-center/getting-started/create-your-accessibility-statement).
+
+## Select Pages and Scan
+
+Back on Your Domains, the new domain shows **Pending scan** and a **Select pages & Scan** button. Select it to open **Found Pages**, choose up to 25 pages and select **Start Scan**. See [Find and monitor pages](/resources/help-center/domains/find-and-monitor-pages) and [Run your first scan](/resources/help-center/getting-started/run-your-first-scan).

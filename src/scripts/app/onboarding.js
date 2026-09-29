@@ -54,25 +54,23 @@ function dashboardSteps(me) {
       placement: 'bottom',
       title: 'Add a domain',
       body: [
-        'Add a live website or a staging environment. AccessBell scans its home page first, then helps you find and add more pages, up to 25 monitored URLs per domain.',
+        'Add a live website or a staging environment. A short setup finds your pages from your sitemap, sets your WCAG standard, and optionally installs AccessBellFix and creates your accessibility statement. Then you choose up to 25 pages to scan and monitor.',
         me.subscribed ? 'Your plan sets how many domains you can add.' : 'To add your first domain, start your 3-day free trial of AccessBell Pro.',
       ],
     },
-    hasDomains && {
-      target: '[data-kpis]',
-      title: 'Your summary',
-      body: 'Your average accessibility score, open issues, monitored URLs and how much of your plan is in use, across every domain.',
-    },
     hasDomains
       ? {
-          target: '.domain-grid',
-          title: 'Domain cards',
-          body: 'Each card shows a domain’s score out of 100, its open issues, how many URLs are monitored and when it was last scanned. Open a card for the full report.',
+          target: '.domain-table',
+          title: 'Your domains at a glance',
+          body: [
+            'Each row shows a domain’s score out of 100, its active and resolved issues, and when it was last and will next be scanned. Click the domain name for the full report.',
+            'A new domain shows Select pages & Scan until you choose its pages. The ⋮ menu has exports, re-scan, page management, settings and more.',
+          ],
         }
       : {
           target: '.empty-state',
           title: 'Your domains will appear here',
-          body: 'Once you add a domain, its score, open issues and last scan date show up here as a card you can open for the full report.',
+          body: 'Once you add a domain, its score, open issues and last scan date show up here in a row you can open for the full report.',
         },
     hasBanner && {
       target: '[data-banner] .banner',
@@ -144,22 +142,22 @@ function domainSteps(me, { selectTab }) {
       body: 'Download every issue as a CSV file for Excel, Jira or your tracker, or print the full report with its fixes and save it as a PDF for audits and stakeholders.',
     },
     {
-      target: '[data-more]',
+      target: '[data-domain-menu]',
       before: overview,
       title: 'More actions',
-      body: 'Find pages crawls your sitemap and home page links to discover more URLs, Domain settings changes how scans run, and Open website opens the live site.',
+      body: 'The ⋮ menu has exports, re-scan, Manage domain pages (choose which pages to scan), Domain settings, Add subdomain and Remove domain.',
     },
     {
       target: '[role="tablist"]',
       before: overview,
       title: 'Five views of your domain',
-      body: 'Overview, Issues, Manual Review, Pages and Settings. Next, we’ll step through each one.',
+      body: 'Overview, Issues, Manually Required, Pages and Settings. Next, we’ll step through each one.',
     },
     {
       target: 'section[aria-labelledby="lso-title"]',
       before: overview,
       title: 'Last scan overview',
-      body: 'Your score out of 100, whether automated tests found WCAG failures, active and resolved issues, pages scanned and when the next scheduled scan runs. Select Automated tests or Manual review to jump to them.',
+      body: 'Your score out of 100, whether automated tests found WCAG failures, active and resolved issues, pages scanned and when the next scheduled scan runs. Select Automated tests or Manually required to jump to them.',
     },
     {
       target: 'section[aria-labelledby="hist-title"]',
@@ -191,7 +189,7 @@ function domainSteps(me, { selectTab }) {
     {
       target: '#tab-review',
       before: onTab('review'),
-      title: 'Manual review',
+      title: 'Manually required',
       body: 'Some checks need human judgment, such as whether alt text actually describes the image. Automated testing flags them here for a person to review. They are not counted as failures.',
     },
     {

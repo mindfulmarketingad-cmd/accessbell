@@ -28,7 +28,7 @@ The **score ring** shows the average score of your monitored pages, out of 100. 
 | Last automated scan | When the most recent scan finished |
 | Next scheduled scan | When daily monitoring runs next |
 
-**Manual review** shows how many items automated tests flagged for a person to check. Select the headings to jump to the Issues or Manual Review tab.
+**Manual review** shows how many items automated tests flagged for a person to check. Select the headings to jump to the Issues or Manually Required tab.
 
 ## Scan History
 

@@ -2,7 +2,7 @@
 export const PLAN = {
   id: 'lite',
   name: 'Pro',
-  price: 79,
+  price: 29,
   currency: 'USD',
   urlsPerDomain: 25,
   blurb: 'Continuous WCAG monitoring and AI-assisted fixes for every domain you run.',

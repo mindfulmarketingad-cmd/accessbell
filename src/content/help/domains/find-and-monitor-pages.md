@@ -1,29 +1,31 @@
 ---
 title: 'Find and Monitor Pages'
-description: 'Discover the pages on your domain from its sitemap and links, choose up to 25 URLs to monitor, add URLs by hand and stop monitoring pages.'
+description: 'Use Found Pages to see every page AccessBell found on your domain, open each one, choose up to 25 to scan and monitor, and add missing pages by hand.'
 order: 1
 updatedDate: 2026-09-29
 sources: ['sitemaps']
 ---
 
-Each domain monitors up to 25 URLs. Monitored pages are scanned when you select Scan now and automatically every day. AccessBell helps you find the pages that matter most.
+Each domain scans and monitors up to 25 pages. Monitored pages are scanned when you start a scan and automatically every day. The **Found Pages** screen is where you choose them.
 
-## Find Pages Automatically
+## Open Found Pages
 
-1. Open the domain.
-2. Open the menu (the three dots at the top right) and select **Find pages**.
-3. AccessBell reads your XML sitemap and follows the links on your home page. It looks for sitemaps listed in `robots.txt` and at `/sitemap.xml`, including sitemap index files.
-4. When it finishes, it tells you how many pages it found and how many are new.
+- On a new domain, select **Select pages & Scan** on [Your Domains](/app).
+- For any domain, open the ⋮ menu on its row, or at the top right of the domain, and select **Manage domain pages**.
 
-Discovered pages appear in the **Pages** tab under **Discovered pages**, with where each one was found: Sitemap or Crawl. Up to 200 discovered pages are kept per domain. Links to files such as PDFs, images and documents are skipped.
+The first time it opens, AccessBell crawls the site: it reads your XML sitemap (the one you entered, those listed in `robots.txt` and `/sitemap.xml`, including sitemap index files) and follows the links on your home page. Up to 2,000 pages are kept per domain. Links to files such as PDFs and images are skipped, and only pages on the same domain are included, or its subdomains if you turned that on.
 
-Only pages on the same domain are included. To include subdomains such as `blog.example.com`, turn on **Include subdomains** in [Settings](/resources/help-center/domains/scan-settings). To leave out sections such as tag archives, use [URL rules](/resources/help-center/domains/include-and-exclude-url-rules).
+## Choose Pages to Scan
 
-## Choose Which Pages to Monitor
+1. Tick the pages you want to scan, up to 25. Select **Open** on any row to view the page in a new tab first.
+2. Use **Search pages** to find a page quickly. The checkbox at the top selects the pages shown, up to 25; **Clear selection** starts again.
+3. Select **Start Scan**.
 
-In **Discovered pages**, select **Monitor** next to a page. It moves to **Monitored URLs**.
+A **Scanning in progress** window shows how many pages are done. Keep the tab open until it finishes. When it does, Your Domains shows the domain's score, active and resolved issues and scan dates.
 
-Good pages to monitor first:
+The pages you select become the domain's monitored pages. Pages you unselect stop being monitored, but their scan history is kept.
+
+Good pages to choose first:
 
 - The home page and main landing pages
 - Pages with forms: sign-up, contact, checkout and account pages
@@ -32,18 +34,13 @@ Good pages to monitor first:
 
 Because most sites reuse templates, fixing an issue on one product page usually fixes it on all of them. [Component grouping](/resources/help-center/fixing-issues/component-grouping) shows you where this applies.
 
-## Add a URL by Hand
+## If Pages Are Missing
 
-1. Go to the **Pages** tab.
-2. Under **Monitored URLs**, enter the page in **Add a URL**. You can type a full address or just the path, such as `/pricing`.
-3. Select **Add and monitor**. The page is scanned straight away.
-
-The page must be on the same domain, or a subdomain when subdomains are included.
-
-## Stop Monitoring a Page
-
-Select **Stop monitoring** next to the page. It moves back to Discovered pages and frees up one of your 25 slots. Its scan history is kept.
+- **Add pages by hand:** select **Add Pages**, enter one address per line (a full address or a path such as `/pricing`) and select **Add pages**.
+- **Add your sitemap:** enter it under **XML sitemap** in [Scan settings](/resources/help-center/domains/scan-settings).
+- **Password-protected pages:** add a login header in Settings. See [Scan staging and protected sites](/resources/help-center/domains/scan-staging-and-protected-sites).
+- To leave out sections such as tag archives, use [URL rules](/resources/help-center/domains/include-and-exclude-url-rules).
 
 ## Who Can Do This
 
-Members, Admins and the Owner can find, add and monitor pages. Viewers can see them but not change them.
+Members, Admins and the Owner can choose pages and start scans. Viewers can see the list but not change it.

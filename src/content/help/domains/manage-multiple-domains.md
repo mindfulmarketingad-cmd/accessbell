@@ -11,7 +11,7 @@ One AccessBell account can monitor as many domains as your plan includes. Each d
 
 ## How Domain Slots Work
 
-Your plan has a number of domains, which you choose at checkout. Each one is $79 per month. The **Billing** page shows how many are in your plan and how many are in use, and **Add Domain** tells you when every slot is used.
+Your plan has a number of domains, which you choose at checkout. Each one is $29 per month. The **Billing** page shows how many are in your plan and how many are in use, and **Add Domain** tells you when every slot is used.
 
 Different subdomains are different domains. `example.com` and `shop.example.com` use two slots, unless you monitor the shop pages under `example.com` with **Include subdomains** turned on. A staging site added separately also uses a slot.
 

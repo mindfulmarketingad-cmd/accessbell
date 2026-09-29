@@ -10,7 +10,7 @@ const kpi = (label, value, note) => el('div', { class: 'kpi' }, [el('span', { te
 $('[data-billing-kpis]').replaceChildren(
   kpi('Status', STATUS[b.status] || b.status, b.status === 'trialing' && b.trialEndsAt ? `Ends ${fmtDate(b.trialEndsAt)}` : ''),
   kpi('Domains in plan', String(b.domainQuota), `${b.domainsUsed} in use`),
-  kpi('Monthly price', `$${79 * Math.max(b.domainQuota, 1)}`, `$79 x ${Math.max(b.domainQuota, 1)} domain${b.domainQuota === 1 ? '' : 's'}`),
+  kpi('Monthly price', `$${29 * Math.max(b.domainQuota, 1)}`, `$29 x ${Math.max(b.domainQuota, 1)} domain${b.domainQuota === 1 ? '' : 's'}`),
   kpi(b.status === 'trialing' ? 'First charge' : 'Renews', fmtDate(b.status === 'trialing' ? b.trialEndsAt : b.currentPeriodEnd)),
 );
 

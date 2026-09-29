@@ -18,6 +18,7 @@ export const DEFAULT_SETTINGS = {
   headers: [],
   include: [],
   exclude: [],
+  sitemapUrl: '',
 };
 
 const MASK = '********';
@@ -77,8 +78,24 @@ const patternList = (v) =>
     .slice(0, 20)
     .map((s) => s.slice(0, 200));
 
+/** A sitemap address on the domain: a full URL, or a path such as /sitemap.xml. */
+function validateSitemapUrl(value, domain) {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+  if (!domain) throw badRequest('Save the domain before adding a sitemap.');
+  let url;
+  try {
+    url = assertSafeUrl(raw.startsWith('/') ? domain.base_url.replace(/(https?:\/\/[^/]+).*/, '$1') + raw : /^https?:\/\//i.test(raw) ? raw : 'https://' + raw);
+  } catch {
+    throw badRequest('Enter the full address of your sitemap, such as https://example.com/sitemap.xml.');
+  }
+  if (!hostMatches(url.hostname, domain.hostname, true)) throw badRequest(`The sitemap must be on ${domain.hostname}.`);
+  url.hash = '';
+  return url.toString();
+}
+
 /** Validate settings from the dashboard. Masked header values keep their stored value. */
-export function validateSettings(input, existing = DEFAULT_SETTINGS) {
+export function validateSettings(input, existing = DEFAULT_SETTINGS, domain = null) {
   const s = { ...DEFAULT_SETTINGS, ...existing };
   const out = { ...s };
   if (input.wcagVersion !== undefined) {
@@ -101,6 +118,7 @@ export function validateSettings(input, existing = DEFAULT_SETTINGS) {
     if (!Number.isFinite(n) || n < 0 || n > 10_000) throw badRequest('Page load delay must be between 0 and 10,000 milliseconds.');
     out.delayMs = Math.round(n);
   }
+  if (input.sitemapUrl !== undefined) out.sitemapUrl = validateSitemapUrl(input.sitemapUrl, domain);
   if (input.include !== undefined) out.include = patternList(input.include);
   if (input.exclude !== undefined) out.exclude = patternList(input.exclude);
   if (input.headers !== undefined) {
@@ -161,14 +179,18 @@ export async function getPage(ctx, pageId) {
   return p;
 }
 
-/** Multi-domain view. */
+/**
+ * Multi-domain view: each domain's score, open and resolved issues, the worst
+ * severity found, and how many monitored pages failed their latest scan.
+ */
 export async function listDomains(ctx) {
-  return query(
-    `select d.id, d.hostname, d.base_url, d.created_at,
+  const domains = await query(
+    `select d.id, d.hostname, d.base_url, d.created_at, d.settings->>'discoveredAt' as discovered_at,
+            count(p.*)::int as pages,
             count(p.*) filter (where p.monitored)::int as monitored,
             round(avg(p.last_score) filter (where p.monitored and p.last_score is not null))::int as score,
             coalesce(sum(p.last_issues) filter (where p.monitored), 0)::int as issues,
-            max(p.last_scanned_at) as last_scanned_at
+            max(p.last_scanned_at) filter (where p.monitored) as last_scanned_at
        from app.domains d
        left join app.pages p on p.domain_id = d.id
       where d.account_id = $1
@@ -176,6 +198,52 @@ export async function listDomains(ctx) {
       order by d.created_at asc`,
     [ctx.account.id],
   );
+  if (!domains.length) return [];
+  // Latest scan of each monitored page and device (any status), and the last two completed ones.
+  const scans = await query(
+    `select * from (
+       select s.domain_id, s.page_id, s.device, s.status,
+              (select coalesce(jsonb_agg(jsonb_build_object('id', e->>'id', 'impact', e->>'impact', 'count', e->'count')), '[]'::jsonb)
+                 from jsonb_array_elements(coalesce(s.issues, '[]'::jsonb)) e) as issues,
+              row_number() over (partition by s.page_id, s.device order by s.created_at desc) as rn_all,
+              row_number() over (partition by s.page_id, s.device, s.status order by s.created_at desc) as rn_status
+         from app.scans s
+         join app.pages p on p.id = s.page_id and p.monitored
+         join app.domains d on d.id = s.domain_id and d.account_id = $1
+     ) t where rn_all = 1 or (status = 'done' and rn_status <= 2)`,
+    [ctx.account.id],
+  );
+  const stats = new Map(domains.map((d) => [d.id, { resolved: 0, failedPages: new Set(), scannedPages: new Set(), worst: null }]));
+  const rank = { critical: 4, serious: 3, moderate: 2, minor: 1 };
+  const done = new Map();
+  for (const s of scans) {
+    const st = stats.get(s.domain_id);
+    if (Number(s.rn_all) === 1) {
+      st.scannedPages.add(s.page_id);
+      if (s.status === 'failed') st.failedPages.add(s.page_id);
+    }
+    if (s.status === 'done') {
+      const key = `${s.page_id}|${s.device}`;
+      done.set(key, { ...(done.get(key) || {}), [Number(s.rn_status)]: s, domainId: s.domain_id });
+    }
+  }
+  for (const { 1: latest, 2: prev, domainId } of done.values()) {
+    const st = stats.get(domainId);
+    if (!latest) continue;
+    for (const i of latest.issues || []) if ((rank[i.impact] || 0) > (rank[st.worst] || 0)) st.worst = i.impact;
+    const current = new Set((latest.issues || []).map((i) => i.id));
+    for (const i of prev?.issues || []) if (!current.has(i.id)) st.resolved += Number(i.count) || 1;
+  }
+  return domains.map((d) => {
+    const st = stats.get(d.id);
+    return {
+      ...d,
+      resolved: st.resolved,
+      worstImpact: st.worst,
+      scannedPages: st.scannedPages.size,
+      failedPages: st.failedPages.size,
+    };
+  });
 }
 
 export async function createDomain(ctx, input) {
@@ -205,7 +273,7 @@ export async function createDomain(ctx, input) {
 export async function updateDomainSettings(ctx, domainId, input) {
   requireRole(ctx, 'admin');
   const domain = await getDomain(ctx, domainId);
-  const settings = validateSettings(input || {}, domain.settings);
+  const settings = validateSettings(input || {}, domain.settings, domain);
   await query('update app.domains set settings = $2 where id = $1', [domain.id, settings]);
   return publicSettings(settings);
 }
@@ -257,6 +325,47 @@ export async function deletePage(ctx, pageId) {
   await query('delete from app.pages where id = $1', [page.id]);
 }
 
+/**
+ * "Select pages & Scan": the chosen pages become the domain's monitored pages
+ * (up to 25) and every other page stops being monitored.
+ */
+export async function selectPages(ctx, domainId, pageIds) {
+  requireRole(ctx, 'member');
+  requireSubscription(ctx);
+  const domain = await getDomain(ctx, domainId);
+  const ids = [...new Set((Array.isArray(pageIds) ? pageIds : []).map(String))];
+  if (!ids.length) throw badRequest('Select at least one page to scan.');
+  if (ids.length > LIMITS.monitoredPagesPerDomain) throw badRequest(`Select up to ${LIMITS.monitoredPagesPerDomain} pages.`);
+  if (ids.some((x) => !/^[0-9a-f-]{36}$/i.test(x))) throw badRequest('One of the selected pages was not found.');
+  return tx(async (q) => {
+    const found = await q('select id from app.pages where domain_id = $1 and id = any($2::uuid[])', [domain.id, ids]);
+    if (found.length !== ids.length) throw badRequest('One of the selected pages was not found. Reload and try again.');
+    await q('update app.pages set monitored = false where domain_id = $1 and monitored and not (id = any($2::uuid[]))', [domain.id, ids]);
+    await q('update app.pages set monitored = true where domain_id = $1 and id = any($2::uuid[]) and not monitored', [domain.id, ids]);
+    return q('select id, url from app.pages where domain_id = $1 and monitored order by url', [domain.id]);
+  });
+}
+
+/** Add pages by hand to the found pages list. They are not monitored until selected. */
+export async function addPages(ctx, domainId, urls) {
+  requireRole(ctx, 'member');
+  requireSubscription(ctx);
+  const domain = await getDomain(ctx, domainId);
+  const list = (Array.isArray(urls) ? urls : String(urls || '').split(/\s+/)).map((u) => String(u).trim()).filter(Boolean);
+  if (!list.length) throw badRequest('Enter at least one page URL.');
+  if (list.length > 50) throw badRequest('Add up to 50 pages at a time.');
+  const clean = [...new Set(list.map((u) => normalizePageUrl(u, domain)))];
+  const [{ n }] = await query('select count(*)::int as n from app.pages where domain_id = $1', [domain.id]);
+  if (n + clean.length > LIMITS.discoveredPagesPerDomain + 100) throw badRequest('This domain has reached the maximum number of pages.');
+  await query(
+    `insert into app.pages (domain_id, url, monitored, source)
+     select $1, u, false, 'manual' from unnest($2::text[]) as u
+     on conflict (domain_id, url) do nothing`,
+    [domain.id, clean],
+  );
+  return query('select id, url, monitored, source from app.pages where domain_id = $1 and url = any($2::text[])', [domain.id, clean]);
+}
+
 // ---------- Discovery (automatic crawl + sitemap scanning) ----------
 
 const SKIP_EXT = /\.(pdf|jpe?g|png|gif|webp|svg|ico|zip|gz|mp4|mp3|webm|css|js|json|xml|txt|docx?|xlsx?|pptx?)$/i;
@@ -288,8 +397,9 @@ function linksFromHtml(html, base) {
 const locsFromXml = (xml) => [...xml.matchAll(/<loc>\s*([^<\s]+)\s*<\/loc>/gi)].map((m) => m[1].replace(/&amp;/g, '&'));
 
 /** Read sitemap URLs from robots.txt and /sitemap.xml, following one level of sitemap indexes. */
-export async function readSitemaps(origin, fetcher = fetchPage) {
-  const candidates = new Set([`${origin}/sitemap.xml`]);
+export async function readSitemaps(origin, fetcher = fetchPage, extra = []) {
+  // A sitemap the customer gave us comes first, then the usual places.
+  const candidates = new Set([...extra.filter(Boolean), `${origin}/sitemap.xml`]);
   try {
     const robots = await fetcher(`${origin}/robots.txt`, { kind: 'text' });
     for (const m of robots.text.matchAll(/^\s*sitemap:\s*(\S+)/gim)) candidates.add(m[1]);
@@ -297,7 +407,7 @@ export async function readSitemaps(origin, fetcher = fetchPage) {
   const pages = new Set();
   const queue = [...candidates].slice(0, 5);
   let fetched = 0;
-  while (queue.length && fetched < 6 && pages.size < 1000) {
+  while (queue.length && fetched < 10 && pages.size < LIMITS.discoveredPagesPerDomain) {
     const sm = queue.shift();
     fetched++;
     let xml;
@@ -307,7 +417,7 @@ export async function readSitemaps(origin, fetcher = fetchPage) {
       continue;
     }
     const locs = locsFromXml(xml);
-    if (/<sitemapindex/i.test(xml)) queue.push(...locs.slice(0, 5));
+    if (/<sitemapindex/i.test(xml)) queue.push(...locs.slice(0, 8));
     else locs.forEach((l) => pages.add(l));
   }
   return [...pages];
@@ -324,7 +434,7 @@ export async function discoverPages(ctx, domainId, { fetcher = fetchPage } = {})
   const settings = { ...DEFAULT_SETTINGS, ...domain.settings };
   const origin = domain.base_url.replace(/(https?:\/\/[^/]+).*/, '$1');
 
-  const fromSitemap = await readSitemaps(origin, fetcher);
+  const fromSitemap = await readSitemaps(origin, fetcher, [settings.sitemapUrl]);
   let fromLinks = [];
   try {
     const home = await fetcher(domain.base_url + '/');
@@ -354,15 +464,17 @@ export async function discoverPages(ctx, domainId, { fetcher = fetchPage } = {})
   const allowed = new Set(applyUrlRules(found.map((f) => f.url), settings));
   const toSave = found.filter((f) => allowed.has(f.url)).slice(0, LIMITS.discoveredPagesPerDomain);
 
-  let added = 0;
-  for (const f of toSave) {
-    const rows = await query(
-      `insert into app.pages (domain_id, url, monitored, source) values ($1, $2, false, $3)
-       on conflict (domain_id, url) do nothing returning id`,
-      [domain.id, f.url, f.source],
-    );
-    added += rows.length;
-  }
+  // One insert for every page, so large sitemaps save quickly.
+  const rows = toSave.length
+    ? await query(
+        `insert into app.pages (domain_id, url, monitored, source)
+         select $1, u, false, src from unnest($2::text[], $3::text[]) as t(u, src)
+         on conflict (domain_id, url) do nothing returning id`,
+        [domain.id, toSave.map((f) => f.url), toSave.map((f) => f.source)],
+      )
+    : [];
+  const added = rows.length;
+  await query(`update app.domains set settings = settings || jsonb_build_object('discoveredAt', now()) where id = $1`, [domain.id]);
   return { found: toSave.length, added, fromSitemap: fromSitemap.length, fromLinks: fromLinks.length };
 }
 
@@ -470,6 +582,15 @@ export async function domainOverview(ctx, domainId) {
   const monitored = pages.filter((p) => p.monitored);
   const scored = monitored.filter((p) => p.last_score !== null);
   const lastScanAt = latest.reduce((m, s) => (!m || s.created_at > m ? s.created_at : m), null);
+  // Monitored pages whose most recent scan failed (a partial scan).
+  const failed = await query(
+    `select distinct on (s.page_id, s.device) s.page_id, s.status, s.error
+       from app.scans s join app.pages p on p.id = s.page_id and p.monitored
+      where s.domain_id = $1
+      order by s.page_id, s.device, s.created_at desc`,
+    [domain.id],
+  );
+  const failedPages = new Set(failed.filter((f) => f.status === 'failed').map((f) => f.page_id));
 
   return {
     domain: {
@@ -483,6 +604,8 @@ export async function domainOverview(ctx, domainId) {
     resolved,
     lastScanAt,
     scannedPages: new Set(latest.map((s) => s.page_id)).size,
+    failedPages: [...failedPages].map((pid) => urlOf.get(pid)),
+    discoveredAt: domain.settings?.discoveredAt || null,
     monitoredCount: monitored.length,
     monitoredLimit: LIMITS.monitoredPagesPerDomain,
     pages,

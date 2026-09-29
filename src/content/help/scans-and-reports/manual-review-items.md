@@ -1,16 +1,16 @@
 ---
-title: 'Manual Review Items'
-description: 'What the Manual Review tab in AccessBell contains, why automated testing cannot decide these items, and how to check and act on them.'
+title: 'Manually Required Items'
+description: 'What the Manually Required tab in AccessBell contains, why automated testing cannot decide these items, and how to check and act on them.'
 order: 6
-updatedDate: 2026-09-28
+updatedDate: 2026-09-29
 sources: ['understanding', 'wai-evaluate']
 ---
 
-Some checks need human judgment. When automated testing finds something it cannot decide, it does not guess. It lists the item under **Manual Review** so a person can check it.
+Some checks need human judgment. When automated testing finds something it cannot decide, it does not guess. It lists the item under **Manually Required** so a person can check it.
 
 ## Where to Find Them
 
-- The **Manual Review** tab on a domain lists every item across your monitored pages, with the WCAG criteria it relates to and how many elements and pages are involved.
+- The **Manually Required** tab on a domain lists every item across your monitored pages, with the WCAG criteria it relates to and how many elements and pages are involved.
 - Each page report has a **Needs manual review** section.
 - The Overview's **Manual review** line shows the total.
 

@@ -16,18 +16,11 @@ import Icon from '../../components/Icon.astro';
       <div class="menu-wrap">
         <button class="btn btn-outline" type="button" data-export aria-expanded="false" aria-controls="export-menu"><Icon name="download" /> Export <Icon name="chevron" /></button>
         <div class="menu menu-down" id="export-menu" hidden>
-          <button type="button" data-export-csv><Icon name="doc" /> Issues as CSV (Excel)</button>
-          <button type="button" data-export-print><Icon name="print" /> Print or save as PDF</button>
+          <button type="button" data-export-csv><Icon name="doc" /> Fixing instructions (CSV for Excel)</button>
+          <button type="button" data-export-print><Icon name="print" /> PDF summary (print or save as PDF)</button>
         </div>
       </div>
-      <div class="menu-wrap">
-        <button class="icon-btn" type="button" data-more aria-expanded="false" aria-controls="more-menu"><Icon name="more" /><span class="visually-hidden">More actions</span></button>
-        <div class="menu menu-down" id="more-menu" hidden>
-          <button type="button" data-discover hidden><Icon name="search" /> Find pages</button>
-          <button type="button" data-goto="settings"><Icon name="gear" /> Domain settings</button>
-          <a data-live-link href="/" target="_blank" rel="noopener noreferrer"><Icon name="external" /> Open website</a>
-        </div>
-      </div>
+      <div data-domain-menu></div>
     </div>
   </header>
   <p class="progress-note" data-progress role="status" aria-live="polite"></p>
@@ -36,15 +29,23 @@ import Icon from '../../components/Icon.astro';
     <div class="tablist" role="tablist" aria-label="Domain views">
       <button type="button" role="tab" id="tab-overview" aria-controls="panel-overview" aria-selected="true" tabindex="0"><Icon name="chart" /> Overview</button>
       <button type="button" role="tab" id="tab-issues" aria-controls="panel-issues" aria-selected="false" tabindex="-1"><Icon name="alert" /> Issues <span class="tab-count" data-count-issues></span></button>
-      <button type="button" role="tab" id="tab-review" aria-controls="panel-review" aria-selected="false" tabindex="-1"><Icon name="eye" /> Manual Review <span class="tab-count" data-count-review></span></button>
+      <button type="button" role="tab" id="tab-review" aria-controls="panel-review" aria-selected="false" tabindex="-1"><Icon name="eye" /> Manually Required <span class="tab-count" data-count-review></span></button>
       <button type="button" role="tab" id="tab-pages" aria-controls="panel-pages" aria-selected="false" tabindex="-1"><Icon name="list" /> Pages</button>
       <button type="button" role="tab" id="tab-settings" aria-controls="panel-settings" aria-selected="false" tabindex="-1"><Icon name="gear" /> Settings</button>
     </div>
 
     <div role="tabpanel" id="panel-overview" aria-labelledby="tab-overview" tabindex="0">
+      <div class="fix-promo" data-fix-promo hidden>
+        <span class="fix-promo-icon" aria-hidden="true"><Icon name="sparkle" /></span>
+        <div>
+          <h2>Fix issues without touching your code</h2>
+          <p>Install the AccessBellFix snippet, then apply fixes such as missing alt text and button names from here. You review and approve every fix before it goes live.</p>
+        </div>
+        <button class="btn" type="button" data-goto-fix>Set up AccessBellFix</button>
+      </div>
       <div class="ov-grid">
         <section class="box" aria-labelledby="lso-title">
-          <h2 id="lso-title" class="box-title">Last scan overview</h2>
+          <h2 id="lso-title" class="box-title">Last scan results</h2>
           <div class="lso" data-lso></div>
         </section>
         <section class="box" aria-labelledby="hist-title">
@@ -103,8 +104,8 @@ import Icon from '../../components/Icon.astro';
     </div>
 
     <div role="tabpanel" id="panel-review" aria-labelledby="tab-review" tabindex="0" hidden>
-      <h2 class="visually-hidden">Manual review</h2>
-      <p class="muted">Automated testing flagged these for a person to check. They are not counted as failures.</p>
+      <h2 class="visually-hidden">Manually required</h2>
+      <p class="muted">Automated testing flagged these for a person to check. They are not counted as failures. Every success criterion also needs a manual check to confirm conformance; see the coverage table on the Overview tab.</p>
       <div data-review></div>
     </div>
 
@@ -161,7 +162,11 @@ import Icon from '../../components/Icon.astro';
             <input id="s-delay" name="delayMs" type="number" min="0" max="10000" step="100" />
             <span class="help">Wait for animations or late content before testing. 0 to 10,000.</span>
           </div>
-          <div></div>
+          <div class="field">
+            <label for="s-sitemap">XML sitemap <span class="hint">(optional)</span></label>
+            <input id="s-sitemap" name="sitemapUrl" type="text" inputmode="url" maxlength="2048" placeholder="https://example.com/sitemap.xml" />
+            <span class="help">Read first when finding pages. Use Manage domain pages to find pages again.</span>
+          </div>
           <div class="field">
             <label for="s-include">Only include URLs matching <span class="hint">(optional)</span></label>
             <textarea id="s-include" name="include" rows="3" placeholder="/docs/*"></textarea>
@@ -182,6 +187,18 @@ import Icon from '../../components/Icon.astro';
         <p class="status-line" data-settings-status role="status" aria-live="polite"></p>
         <button class="btn" type="submit">Save settings</button>
       </form>
+      <section class="panel" id="accessbellfix" aria-labelledby="fix-title" tabindex="-1">
+        <h2 id="fix-title">AccessBellFix</h2>
+        <p class="panel-sub">Apply the fixes you approve, such as image alt text, button names and the page language, without editing your site's code. Optional.</p>
+        <div data-fix-install><p class="muted">Loading...</p></div>
+        <h3 class="panel-h3">Your fixes</h3>
+        <div data-fix-list></div>
+      </section>
+      <section class="panel" id="statement" aria-labelledby="statement-title" tabindex="-1">
+        <h2 id="statement-title">Accessibility statement</h2>
+        <p class="panel-sub">Your public accessibility statement: your commitment, the standard you follow and how people can report a barrier.</p>
+        <div data-statement><p class="muted">Loading...</p></div>
+      </section>
       <section class="panel" aria-labelledby="danger-title" data-danger>
         <h2 id="danger-title">Remove domain</h2>
         <p class="panel-sub">Deletes the domain, its pages and all scan history. This cannot be undone.</p>

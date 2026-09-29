@@ -8,31 +8,15 @@ import Icon from '../../components/Icon.astro';
     <button class="btn" type="button" data-open-add hidden><Icon name="plus" /> Add Domain</button>
   </header>
 
-  <section class="kpis" aria-label="Summary" data-kpis hidden></section>
+  <div class="list-tools" data-list-tools hidden>
+    <label class="search-field">
+      <Icon name="search" />
+      <span class="visually-hidden">Search domains</span>
+      <input type="search" placeholder="Search domains" data-domain-search autocomplete="off" />
+    </label>
+  </div>
+  <p class="status-line" data-list-status role="status" aria-live="polite"></p>
   <div data-domains><p class="muted">Loading...</p></div>
-
-  <dialog class="dialog" data-add-dialog aria-labelledby="add-title">
-    <form method="dialog" class="dialog-body" data-add-domain novalidate>
-      <div class="dialog-head">
-        <h2 id="add-title">Add a domain</h2>
-        <button class="icon-btn" type="button" data-close-add><Icon name="x" /><span class="visually-hidden">Close</span></button>
-      </div>
-      <div data-add-ready>
-        <p class="muted">Enter a website or staging environment. We start by monitoring its home page, then you can find and add more pages.</p>
-        <div class="field">
-          <label for="domain-url">Website address</label>
-          <input id="domain-url" name="url" type="text" inputmode="url" placeholder="example.com or staging.example.com" maxlength="2048" autocomplete="url" />
-        </div>
-        <p class="muted mb-0" data-add-quota></p>
-      </div>
-      <div data-add-blocked hidden></div>
-      <p class="status-line" data-add-status role="status" aria-live="polite"></p>
-      <div class="dialog-actions">
-        <button class="btn btn-outline" type="button" data-close-add>Cancel</button>
-        <button class="btn" type="submit" data-add-submit>Add domain</button>
-      </div>
-    </form>
-  </dialog>
 </AppLayout>
 <script>
   import '../../scripts/app/overview.js';

@@ -1,12 +1,14 @@
 // Domain view: last scan overview, scan history, WCAG coverage, issues with
 // fixes, manual review items, monitored pages and scan settings.
-import { api, boot, el, icon, avatar, qs, fmtDate, scorePill, busy, can, setStatus, pool, disclosure } from './core.js';
+import { api, boot, el, icon, avatar, qs, fmtDate, scorePill, busy, can, setStatus, disclosure } from './core.js';
 import { wcagLabel } from './report.js';
 import { initTabs } from './tabs.js';
 import { scoreRing, historyChart } from './charts.js';
 import { fixExample } from '../shared/fix-examples.js';
 import { criteriaFor, PRINCIPLES } from '../../../server/wcag-criteria.js';
 import { setupTour } from './onboarding.js';
+import { domainMenu, scanWithDialog, relative, nextScheduledScan } from './domain-actions.js';
+import { mountFixInstall, mountFixList, mountStatementFlow, statementUrl } from './site-tools.js';
 
 const me = await boot();
 const id = qs('id');
@@ -16,23 +18,6 @@ const selectTab = initTabs($('[data-tabs]'));
 const IMPACT_LABEL = { critical: 'Critical', serious: 'Serious', moderate: 'Moderate', minor: 'Minor' };
 const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
 let data;
-
-/** "6 days ago", "in 14 hours". */
-function relative(value) {
-  const diff = (new Date(value).getTime() - Date.now()) / 1000;
-  const units = [['year', 31536000], ['month', 2592000], ['day', 86400], ['hour', 3600], ['minute', 60]];
-  const rtf = new Intl.RelativeTimeFormat(undefined, { numeric: 'auto' });
-  for (const [unit, secs] of units) if (Math.abs(diff) >= secs) return rtf.format(Math.round(diff / secs), unit);
-  return rtf.format(Math.round(diff), 'second');
-}
-
-/** Scheduled monitoring runs daily at 06:00 UTC. */
-function nextScheduledScan() {
-  const now = new Date();
-  const next = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 6));
-  if (next <= now) next.setUTCDate(next.getUTCDate() + 1);
-  return next;
-}
 
 const chip = (kind, iconName, text) => el('span', { class: `chip chip-${kind}` }, [iconName ? icon(iconName) : null, text]);
 const target = () => ({ version: data.domain.settings.wcagVersion || '2.2', level: data.domain.settings.wcagLevel || 'AA' });
@@ -44,9 +29,14 @@ function renderLso() {
   const issues = Object.values(data.impacts).reduce((a, b) => a + b, 0);
   const wcagFailures = data.criteria.some((c) => c.level && c.level !== '-');
   const reviewCount = data.review.reduce((n, r) => n + r.elements, 0);
+  const failedCount = data.failedPages.length;
+  const failedPct = data.monitoredCount ? Math.round((failedCount / data.monitoredCount) * 100) : 0;
   let state;
   let note;
-  if (data.score === null) {
+  if (data.score === null && failedCount) {
+    state = ['bad', 'Scan failed'];
+    note = 'We could not load your monitored pages. Check the site is online, or add login headers in Settings for password-protected pages.';
+  } else if (data.score === null) {
     state = ['none', 'Not scanned yet'];
     note = 'Run a scan to see how this domain measures up.';
   } else if (wcagFailures) {
@@ -63,9 +53,17 @@ function renderLso() {
     b.addEventListener('click', () => selectTab(name));
     return b;
   };
+  const partial = failedCount && data.score !== null
+    ? el('details', { class: 'lso-partial' }, [
+        el('summary', {}, [icon('alert'), `Partial scan: ${failedPct}% of pages failed`]),
+        el('p', { class: 'muted', text: 'These pages could not be loaded, so their results are missing. Check they are online, or add login headers in Settings if they need a password:' }),
+        el('ul', {}, data.failedPages.slice(0, 10).map((u) => el('li', { text: u }))),
+      ])
+    : null;
   $('[data-lso]').replaceChildren(
     el('div', { class: 'lso-left' }, [
       el('p', { class: `lso-state lso-${state[0]}`, text: state[1] }),
+      partial,
       el('p', { class: 'lso-note', text: note }),
       scoreRing(data.score),
       el('p', { class: 'lso-foot' }, [
@@ -82,7 +80,7 @@ function renderLso() {
         row('Last automated scan', document.createTextNode(data.lastScanAt ? relative(data.lastScanAt) : 'Never')),
         row('Next scheduled scan', document.createTextNode(monitoring ? relative(nextScheduledScan()) : 'Not scheduled')),
       ]),
-      el('h3', { class: 'lso-h' }, [gotoTab('review', 'Manual review')]),
+      el('h3', { class: 'lso-h' }, [gotoTab('review', 'Manually required')]),
       el('dl', { class: 'dot-list' }, [row('Items to check', chip(reviewCount ? 'warn' : 'ok', reviewCount ? 'eye' : 'check', reviewCount ? plural(reviewCount, 'item') : 'None flagged'))]),
     ]),
   );
@@ -106,12 +104,22 @@ function renderHistory() {
 
 function coverageStatus(c) {
   const cov = data.coverage[c.sc] || { issues: 0, passed: false, review: 0 };
+  const toTab = (name, kind, iconName, text) => {
+    const b = el('button', { type: 'button', class: `chip chip-${kind} chip-link` }, [icon(iconName), text]);
+    b.addEventListener('click', () => selectTab(name));
+    return b;
+  };
   const auto = cov.issues
-    ? chip('bad', 'alert', plural(cov.issues, 'issue'))
+    ? toTab('issues', 'bad', 'alert', plural(cov.issues, 'issue'))
     : cov.passed
       ? chip('ok', 'check', 'Passed')
-      : chip('muted', null, 'Not covered');
-  const manual = cov.review ? chip('warn', 'eye', `Review ${cov.review}`) : cov.issues || cov.passed ? chip('muted', null, 'Spot check') : chip('outline', null, 'Manual test');
+      : chip('muted', 'minus', 'Not tested');
+  // Every criterion needs a person to confirm it; flagged items and untested criteria come first.
+  const manual = cov.review
+    ? toTab('review', 'warn', 'eye', `Needs review (${cov.review})`)
+    : cov.issues || cov.passed
+      ? chip('outline', 'eye', 'Spot check')
+      : chip('warn-outline', 'eye', 'Needs review');
   return { cov, auto, manual };
 }
 
@@ -119,19 +127,22 @@ function renderCoverage() {
   const { version, level } = target();
   const onlyIssues = $('[data-cov-issues-only]').checked;
   const all = criteriaFor(version, level);
-  const tbodies = Object.values(PRINCIPLES).map((principle) => {
+  const tbodies = Object.values(PRINCIPLES).map((principle, index) => {
     const rows = all
       .filter((c) => c.principle === principle)
       .map((c) => ({ c, ...coverageStatus(c) }))
       .filter((r) => !onlyIssues || r.cov.issues);
     const failing = rows.filter((r) => r.cov.issues).length;
-    const toggle = el('button', { type: 'button', class: 'group-toggle', 'aria-expanded': 'true' }, [
-      icon('chevron'),
+    // Perceivable starts open, like the rest of the report's first section.
+    const open = index === 0 || onlyIssues;
+    const toggle = el('button', { type: 'button', class: 'group-toggle', 'aria-expanded': String(open) }, [
+      icon(open ? 'minus' : 'plus'),
       el('span', { text: principle }),
       el('small', { text: failing ? `${plural(failing, 'criterion')} with issues`.replace('criterions', 'criteria') : `${rows.length} criteria` }),
     ]);
     const trs = rows.map((r) =>
-      el('tr', {}, [
+      el('tr', { hidden: !open }, [
+        el('td', { class: 'cov-principle', text: principle }),
         el('td', { text: r.c.guideline }),
         el('th', { scope: 'row' }, [el('span', { class: 'sc-num', text: r.c.sc }), ` ${r.c.name}`]),
         el('td', {}, [el('span', { class: 'level-badge', text: r.c.level })]),
@@ -140,21 +151,22 @@ function renderCoverage() {
       ]),
     );
     toggle.addEventListener('click', () => {
-      const open = toggle.getAttribute('aria-expanded') !== 'true';
-      toggle.setAttribute('aria-expanded', String(open));
-      trs.forEach((tr) => (tr.hidden = !open));
+      const now = toggle.getAttribute('aria-expanded') !== 'true';
+      toggle.setAttribute('aria-expanded', String(now));
+      toggle.firstChild.replaceWith(icon(now ? 'minus' : 'plus'));
+      trs.forEach((tr) => (tr.hidden = !now));
     });
     if (!rows.length) return null;
-    return el('tbody', {}, [el('tr', { class: 'group-row' }, [el('th', { colspan: '5', scope: 'colgroup' }, [toggle])]), ...trs]);
+    return el('tbody', {}, [el('tr', { class: 'group-row' }, [el('th', { colspan: '6', scope: 'colgroup' }, [toggle])]), ...trs]);
   });
-  $('[data-cov-sub]').textContent = `All ${all.length} success criteria in WCAG ${version} Level ${level}, grouped by principle. Automated tests cover some criteria; the rest need a person to check.`;
+  $('[data-cov-sub]').textContent = `All ${all.length} success criteria in WCAG ${version} Level ${level}, grouped by principle. For each one you can see what automated testing found and whether it needs a person to check it.`;
   const bodies = tbodies.filter(Boolean);
   $('[data-coverage]').replaceChildren(
     bodies.length
       ? el('div', { class: 'table-wrap cov-wrap', role: 'region', 'aria-label': 'WCAG coverage table', tabindex: '0' }, [
           el('table', { class: 'data-table cov-table' }, [
             el('caption', { class: 'visually-hidden', text: `Test coverage for WCAG ${version} Level ${level}` }),
-            el('thead', {}, [el('tr', {}, ['Guideline', 'Success criterion', 'Level', 'Automated checks', 'Manual review'].map((h) => el('th', { scope: 'col', text: h })))]),
+            el('thead', {}, [el('tr', {}, ['WCAG principle', 'Guideline', 'Success criterion', 'Level', 'Issues', 'Manually required'].map((h) => el('th', { scope: 'col', text: h })))]),
             ...bodies,
           ]),
         ])
@@ -396,7 +408,7 @@ function renderPages() {
             ),
           ]),
         ])
-      : el('p', { class: 'muted', text: 'Use "Find pages" to crawl the domain and read its sitemap.' }),
+      : el('p', { class: 'muted' }, ['No other pages found yet. ', el('a', { href: `/app/pages?id=${encodeURIComponent(id)}`, text: 'Manage domain pages' }), ' to crawl the site and choose pages.']),
   );
 }
 
@@ -420,6 +432,7 @@ function renderSettings() {
   f.elements.includeSubdomains.checked = s.includeSubdomains;
   f.elements.scroll.checked = s.scroll;
   f.elements.delayMs.value = s.delayMs;
+  f.elements.sitemapUrl.value = s.sitemapUrl || '';
   f.elements.include.value = (s.include || []).join('\n');
   f.elements.exclude.value = (s.exclude || []).join('\n');
   $('[data-header-rows]').replaceChildren(...(s.headers || []).map(headerRow));
@@ -442,6 +455,7 @@ function bindSettings() {
         includeSubdomains: f.elements.includeSubdomains.checked,
         scroll: f.elements.scroll.checked,
         delayMs: Number(f.elements.delayMs.value || 0),
+        sitemapUrl: f.elements.sitemapUrl.value.trim(),
         include: f.elements.include.value,
         exclude: f.elements.exclude.value,
         headers: [...$('[data-header-rows]').children].map((r) => {
@@ -470,9 +484,7 @@ function bindSettings() {
 
 function bindActions() {
   const progress = $('[data-progress]');
-  const discover = $('[data-discover]');
   const setExport = disclosure($('[data-export]'), $('#export-menu'));
-  const setMore = disclosure($('[data-more]'), $('#more-menu'));
   $('[data-export-csv]').addEventListener('click', () => {
     setExport(false);
     exportCsv();
@@ -481,12 +493,12 @@ function bindActions() {
     setExport(false);
     window.print();
   });
-  document.querySelectorAll('[data-goto]').forEach((b) =>
-    b.addEventListener('click', () => {
-      setMore(false);
-      selectTab(b.dataset.goto);
-    }),
-  );
+  document.querySelectorAll('[data-goto]').forEach((b) => b.addEventListener('click', () => selectTab(b.dataset.goto)));
+  $('[data-goto-fix]').addEventListener('click', () => {
+    selectTab('settings');
+    $('#accessbellfix').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    $('#accessbellfix').focus({ preventScroll: true });
+  });
   $('[data-range]').addEventListener('change', renderHistory);
   $('[data-cov-issues-only]').addEventListener('change', renderCoverage);
   $('[data-issue-filter]').addEventListener('change', renderRules);
@@ -494,28 +506,13 @@ function bindActions() {
   const addForm = $('[data-add-page]');
   const pageStatus = $('[data-page-status]');
 
-  discover.addEventListener(
-    'click',
-    busy(discover, progress, async () => {
-      setMore(false);
-      progress.textContent = 'Crawling the domain and reading its sitemap...';
-      const r = await api('domain/discover', { method: 'POST', body: { id } });
-      progress.textContent = `Found ${r.found} pages (${r.fromSitemap} in the sitemap). ${r.added} new pages are ready to monitor in the Pages tab.`;
-      await load();
-    }),
-  );
-
   rescanAll.addEventListener(
     'click',
     busy(rescanAll, progress, async () => {
       const pages = data.pages.filter((p) => p.monitored);
-      progress.textContent = `Scanning 0 of ${pages.length} pages...`;
-      const results = await pool(pages, 2, (p) => api('scan', { method: 'POST', body: { pageId: p.id } }), (done, total) => {
-        progress.textContent = `Scanning ${done} of ${total} pages...`;
-      });
-      const failed = results.filter((r) => r instanceof Error).length;
-      progress.textContent = failed ? `Finished with ${failed} page${failed === 1 ? '' : 's'} that could not be scanned.` : `All ${pages.length} pages scanned.`;
+      const { total, failed } = await scanWithDialog(pages);
       await load();
+      progress.textContent = failed ? `Scan complete. ${failed} of ${total} pages could not be scanned.` : `Scan complete. All ${total} pages scanned.`;
     }),
   );
 
@@ -539,11 +536,16 @@ async function load() {
   document.title = `${data.domain.hostname} | AccessBell`;
   $('[data-title]').textContent = data.domain.hostname;
   $('[data-domain-avatar]').replaceChildren(avatar(data.domain.hostname, 'avatar-lg'));
-  $('[data-live-link]').setAttribute('href', data.domain.baseUrl);
+  $('[data-domain-menu]').replaceChildren(
+    domainMenu(me, { id, hostname: data.domain.hostname, scanned: data.score !== null, monitored: data.monitoredCount }, {
+      onRescan: () => $('[data-rescan-all]').click(),
+      onAddSubdomain: () => location.assign(`/app?add=1&sub=${encodeURIComponent(data.domain.hostname)}`),
+      onRemoved: () => location.assign('/app'),
+    }),
+  );
   const last = $('[data-last-scan]');
   last.hidden = !data.lastScanAt;
   if (data.lastScanAt) last.lastElementChild.textContent = `Last scan: ${relative(data.lastScanAt)}`;
-  $('[data-discover]').hidden = !canEditPages();
   $('[data-rescan-all]').hidden = !canEditPages() || !data.monitoredCount;
   renderLso();
   renderHistory();
@@ -554,12 +556,71 @@ async function load() {
   renderPages();
 }
 
+// ---------- AccessBellFix and statement (Settings tab) ----------
+
+async function renderSiteTools() {
+  const installBox = $('[data-fix-install]');
+  const listBox = $('[data-fix-list]');
+  const stBox = $('[data-statement]');
+  let setup;
+  try {
+    setup = await mountFixList(listBox, { domainId: id, canEdit: can(me, 'member') });
+  } catch (err) {
+    installBox.replaceChildren(el('p', { class: 'muted', text: err.message }));
+    listBox.replaceChildren();
+    stBox.replaceChildren(el('p', { class: 'muted', text: err.message }));
+    return;
+  }
+  const seenRecently = setup.seenAt && Date.now() - new Date(setup.seenAt).getTime() < 7 * 86400000;
+  $('[data-fix-promo]').hidden = Boolean(seenRecently) || !can(me, 'member');
+  mountFixInstall(installBox, { domainId: id, hostname: data.domain.hostname, siteKey: setup.siteKey, headingLevel: 'h3' });
+
+  const showStatement = async () => {
+    const r = await api(`domain/statement?id=${encodeURIComponent(id)}`);
+    const edit = el('button', { class: 'btn', type: 'button', text: r.statement ? 'Edit statement' : 'Create statement' });
+    edit.hidden = !can(me, 'admin');
+    edit.addEventListener('click', () => {
+      const flow = el('div', { class: 'statement-flow' });
+      stBox.replaceChildren(flow);
+      mountStatementFlow(flow, {
+        domain: { id, hostname: data.domain.hostname, settings: data.domain.settings },
+        siteKey: r.siteKey,
+        existing: r.statement,
+        me,
+        finishLabel: 'Done',
+        onFinish: showStatement,
+        onExit: showStatement,
+      });
+    });
+    const link = statementUrl(r.siteKey);
+    stBox.replaceChildren(
+      r.statement
+        ? el('p', {}, [
+            `Last updated ${fmtDate(r.statement.updatedAt)}. Your hosted statement: `,
+            el('a', { href: link, target: '_blank', rel: 'noopener', text: 'open it (new tab)' }),
+            '. Link to it from your site footer.',
+          ])
+        : el('p', { class: 'muted', text: 'You have not created a statement for this domain yet. It takes about two minutes.' }),
+      edit,
+    );
+  };
+  await showStatement().catch((err) => stBox.replaceChildren(el('p', { class: 'muted', text: err.message })));
+}
+
 try {
   await load();
   renderSettings();
   bindSettings();
   bindActions();
-  setupTour(me, 'domain', { selectTab });
+  const params = new URLSearchParams(location.search);
+  const tab = params.get('tab');
+  if (['overview', 'issues', 'review', 'pages', 'settings'].includes(tab)) selectTab(tab);
+  const exp = params.get('export');
+  if (exp) history.replaceState(null, '', `${location.pathname}?id=${encodeURIComponent(id)}`);
+  if (exp === 'csv') exportCsv();
+  if (exp === 'pdf') setTimeout(() => window.print(), 300);
+  renderSiteTools();
+  if (!tab && !exp) setupTour(me, 'domain', { selectTab });
 } catch (err) {
   $('[data-title]').textContent = 'Domain not available';
   $('[data-progress]').textContent = err.message;

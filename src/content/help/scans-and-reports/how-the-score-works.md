@@ -21,7 +21,7 @@ Each page starts at 100. Every failing rule takes points away, based on how badl
 
 More failing elements for the same rule take away more points, but the penalty for one rule is capped at double. That way, one repeated issue cannot sink the whole score, and fixing the most severe rules raises it fastest. The score never goes below 0.
 
-Items in Manual Review do not affect the score.
+Items in Manually Required do not affect the score.
 
 ## How a Domain Is Scored
 

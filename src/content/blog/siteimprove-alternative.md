@@ -41,7 +41,7 @@ If you specifically need **accessibility scanning and monitoring** — a real au
 | Feature | **Siteimprove** | **AccessBell** |
 | --- | --- | --- |
 | Scope | Full digital governance suite: accessibility, SEO, content quality, analytics, policy | Focused accessibility scanning and monitoring |
-| Pricing | Not published; enterprise quotes, commonly $8,000–$80,000+/year | Flat $79 per domain per month, published on the pricing page |
+| Pricing | Not published; enterprise quotes, commonly $8,000–$80,000+/year | Flat $29 per domain per month, published on the pricing page |
 | Getting started | Request a quote, sales process | Free scan with no account; 3-day free trial to start monitoring |
 | Engine | Proprietary crawler and rules engine | axe-core running in a real Chrome browser, the same engine behind Chrome DevTools |
 | Best fit | Large organizations needing a bundled governance platform | Teams and agencies that want a focused, self-serve accessibility tool |

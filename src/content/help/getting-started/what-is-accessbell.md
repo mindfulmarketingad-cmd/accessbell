@@ -2,7 +2,7 @@
 title: 'What Is AccessBell?'
 description: 'A plain-English introduction to AccessBell: what it checks, how scans work, what the free scan and the Pro plan include, and what it cannot do.'
 order: 1
-updatedDate: 2026-09-28
+updatedDate: 2026-09-29
 sources: ['wai-intro', 'wcag22', 'axe-core']
 ---
 
@@ -12,7 +12,7 @@ AccessBell is a website accessibility checker. It loads your pages in a real bro
 
 **The free scan** checks one public page at a time from the [homepage](/#scan). There is nothing to install and no account needed. It is the quickest way to see where a page stands.
 
-**AccessBell Pro** is the paid plan for ongoing work. For $79 per domain per month you get:
+**AccessBell Pro** is the paid plan for ongoing work. For $29 per domain per month you get:
 
 - Up to 25 monitored URLs per domain, with unlimited rescans
 - A dashboard for every domain you manage, with scores, history and a WCAG coverage table
@@ -36,7 +36,7 @@ The result is a list of issues with the failing code, a list of checks that pass
 
 No automated tool can confirm that a website is fully accessible. Automated rules reliably find code-level problems such as missing alternative text, unlabeled form fields and low contrast. Other requirements, such as whether alt text is meaningful or whether keyboard focus moves in a sensible order, need a person to judge.
 
-AccessBell makes this clear in every report: items it cannot decide appear under **Manual Review**, and the coverage table shows which WCAG criteria automated tests cover. AccessBell does not add an overlay or widget to your site, and it does not change your code.
+AccessBell makes this clear in every report: items it cannot decide appear under **Manually Required**, and the coverage table shows which WCAG criteria automated tests cover. AccessBell does not add an overlay or toolbar widget to your site. The optional [AccessBellFix](/resources/help-center/getting-started/install-accessbellfix) script only applies fixes you add and approve yourself.
 
 ## Next Steps
 

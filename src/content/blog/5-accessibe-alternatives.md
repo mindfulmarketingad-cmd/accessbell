@@ -19,7 +19,7 @@ faqs:
   - q: 'Are all of these tools overlays like accessiBe?'
     a: 'No. AccessBell and AccessibilityChecker.org scan your site and show you the code to fix; nothing runs in your visitors'' browsers. UserWay and EqualWeb are overlays, like accessiBe. AudioEye is a hybrid: automated overlay-style fixes backed by a human remediation and audit service.'
   - q: 'Is AccessBell really cheaper than accessiBe?'
-    a: 'For most sites, yes. AccessBell is a flat $79 per domain per month with unlimited rescans, monitoring for up to 25 URLs and a 3-day free trial. accessiBe’s pricing scales with your monthly traffic, so the cost rises as your site grows, independent of how many pages you actually need monitored.'
+    a: 'For most sites, yes. AccessBell is a flat $29 per domain per month with unlimited rescans, monitoring for up to 25 URLs and a 3-day free trial. accessiBe’s pricing scales with your monthly traffic, so the cost rises as your site grows, independent of how many pages you actually need monitored.'
 ---
 
 If you are comparing **accessiBe alternatives**, you are probably here for one of two reasons: the price scales with your traffic and keeps climbing, or you found out that [an overlay doesn't actually fix your code](/blog/accessibe-alternative) the way the marketing implies. Either way, here are the five tools worth actually comparing in 2026, starting with the one built specifically to do what an overlay cannot.
@@ -35,7 +35,7 @@ If you are comparing **accessiBe alternatives**, you are probably here for one o
 
 | Tool | Type | Fixes real code | Starting price | Free option |
 | --- | --- | --- | --- | --- |
-| **AccessBell** | Real scanner (axe-core, real Chrome) | Yes, you fix the code shown | $79/domain/month flat | Free scan, 3-day trial |
+| **AccessBell** | Real scanner (axe-core, real Chrome) | Yes, you fix the code shown | $29/domain/month flat | Free scan, 3-day trial |
 | AccessibilityChecker.org | Real scanner + AI-assisted fixes | Yes, with human-reviewed suggestions | $69/month (25 URLs, annual) | Free scan, 7-day trial |
 | UserWay | Overlay | No, runtime patch only | Free tier; paid ~$490/year | Free tier |
 | EqualWeb | Overlay + manual service | Partially, via paid manual service | ~$29–$39/month | None advertised |
@@ -48,11 +48,11 @@ If you are comparing **accessiBe alternatives**, you are probably here for one o
 **What makes AccessBell the right fit for most teams:**
 
 - **Test the standard you actually need.** WCAG 2.2, 2.1 or 2.0 at Level AA, or a preset mapped to the ADA, Section 508 or EN 301 549, all from the same free scanner.
-- **Simple, flat pricing.** $79 per domain per month for AccessBell Pro, with unlimited rescans and monitoring for up to 25 URLs per domain. No traffic tiers, no per-visitor math: you know your cost before you sign up.
+- **Simple, flat pricing.** $29 per domain per month for AccessBell Pro, with unlimited rescans and monitoring for up to 25 URLs per domain. No traffic tiers, no per-visitor math: you know your cost before you sign up.
 - **Real fixes, not a widget.** Every issue includes the failing markup and a working code example, drawn from how the issue is actually fixed, so a developer can act on it directly.
 - **Built for the whole team.** Developers get failing markup and component grouping, QA gets repeatable criterion-level results across viewports and CSV export, content teams get plain-language explanations of what to fix and why.
 - **Free tools with no account needed.** A [free scanner](/#scan), a [WCAG 2.2, 2.1 and 2.0 success criteria library](/resources/wcag), an [accessibility statement generator](/resources/statement-generator), and checkers preset for your [platform](/resources) or [industry](/resources).
-- **A 3-day free trial**, then $79/domain/month. Cancel anytime.
+- **A 3-day free trial**, then $29/domain/month. Cancel anytime.
 
 If your goal is to actually fix your site and have a documented, code-level record of doing it, AccessBell is built for exactly that, at a price that does not change based on how much traffic you get.
 
@@ -60,7 +60,7 @@ If your goal is to actually fix your site and have a documented, code-level reco
 
 AccessibilityChecker.org is the closest comparison to AccessBell on this list: it is a real scanner, not an overlay. It adds SmartFix, an AI-assisted remediation feature that suggests fixes for supported issue types with human review before anything ships, LiveStatement for generating an accessibility statement from your scan data, and a Compliance Vault for exportable audit records.
 
-Pricing starts at $69/month (billed annually) for its Lite plan, covering up to 25 URLs, with higher tiers for larger sites. A 7-day free trial and a free scan are both available. If you specifically want AI-suggested fix copy or exportable compliance documentation bundled in, it is worth a look; if you want the simplest flat price per domain, compare it against AccessBell's $79/domain/month.
+Pricing starts at $69/month (billed annually) for its Lite plan, covering up to 25 URLs, with higher tiers for larger sites. A 7-day free trial and a free scan are both available. If you specifically want AI-suggested fix copy or exportable compliance documentation bundled in, it is worth a look; if you want the simplest flat price per domain, compare it against AccessBell's $29/domain/month.
 
 ## 3. UserWay
 

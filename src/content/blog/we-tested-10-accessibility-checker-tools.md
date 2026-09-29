@@ -149,7 +149,7 @@ What it did well:
 - **A fix for every issue:** what is wrong, the failing HTML on each page, step-by-step instructions and a code example you can copy.
 - **A manual review list** of items automation cannot decide, kept separate from failures.
 - **WCAG 2.0, 2.1 or 2.2** at Level A, AA or AAA, and presets for the ADA, Section 508 and EN 301 549.
-- **Exports** to CSV and PDF, team roles, and [simple pricing](/pricing): $79 per domain per month after a 3-day free trial, with a [free single-page scan](/#scan) and no account needed.
+- **Exports** to CSV and PDF, team roles, and [simple pricing](/pricing): $29 per domain per month after a 3-day free trial, with a [free single-page scan](/#scan) and no account needed.
 
 Everything we test for, and how, is on our [methodology page](/methodology).
 
