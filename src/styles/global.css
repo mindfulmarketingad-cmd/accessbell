@@ -4795,6 +4795,10 @@ h2[tabindex='-1']:focus {
 .plan-single-main .plan-price strong {
   font-size: 3.25rem;
 }
+.plan-single-main .plan-price-trial strong {
+  font-size: clamp(2rem, 6vw, 2.75rem);
+  letter-spacing: -0.02em;
+}
 .plan-single-main .check-list {
   margin: 4px 0 28px;
 }

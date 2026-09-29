@@ -21,7 +21,7 @@ function openAdd() {
   let reason = null;
   if (!me.subscribed) {
     reason = el('div', {}, [
-      el('p', { text: 'Start your 3-day free trial of AccessBell Lite to add domains. $79 per domain per month after the trial.' }),
+      el('p', { text: 'Start your 3-day free trial of AccessBell Pro to add domains. $79 per domain per month after the trial.' }),
       me.role === 'owner' ? null : el('p', { class: 'muted', text: 'Ask the account owner to start the subscription.' }),
     ]);
     submit.textContent = 'Start free trial';

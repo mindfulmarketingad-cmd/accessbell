@@ -14,7 +14,7 @@ const STATIC_LASTMOD = new Date('2026-09-28');
 
 const STATIC: Omit<RouteEntry, 'lastmod'>[] = [
   { path: '/', label: 'Home', note: 'Free website accessibility checker', group: 'main' },
-  { path: '/pricing', label: 'Pricing', note: 'Lite plan and features', group: 'main' },
+  { path: '/pricing', label: 'Pricing', note: 'Pro plan and features', group: 'main' },
   { path: '/blog', label: 'Blog', note: 'Accessibility guides and compliance insights', group: 'main' },
   { path: '/reviews', label: 'Reviews', note: 'Verified customer reviews', group: 'main' },
   { path: '/resources', label: 'Resources', note: 'Free tools and guides', group: 'main' },

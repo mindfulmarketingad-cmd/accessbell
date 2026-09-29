@@ -17,11 +17,11 @@ const steps = [
 const faqs: FaqItem[] = [
   {
     q: 'Is the price per domain?',
-    a: `Yes. Lite is $${PLAN.price} per domain per month. Add as many domains as you need, and each one gets ${PLAN.urlsPerDomain} URLs, unlimited rescans and every feature.`,
+    a: `Yes. Pro is $${PLAN.price} per domain per month. Add as many domains as you need, and each one gets ${PLAN.urlsPerDomain} URLs, unlimited rescans and every feature.`,
   },
   {
     q: 'What counts as a URL?',
-    a: `Each unique page address you monitor counts as one URL. Lite includes up to ${PLAN.urlsPerDomain} URLs per domain. The automatic crawl suggests pages and you choose which ones to monitor.`,
+    a: `Each unique page address you monitor counts as one URL. Pro includes up to ${PLAN.urlsPerDomain} URLs per domain. The automatic crawl suggests pages and you choose which ones to monitor.`,
   },
   {
     q: 'Are rescans really unlimited?',
@@ -33,11 +33,11 @@ const faqs: FaqItem[] = [
   },
   {
     q: 'Is there a free trial?',
-    a: 'Yes. Lite starts with a 3-day free trial. Cancel before it ends and you will not be charged. See <a href="/resources/help-center/getting-started/start-your-free-trial">how the free trial works</a>.',
+    a: 'Yes. Pro starts with a 3-day free trial. Cancel before it ends and you will not be charged. See <a href="/resources/help-center/getting-started/start-your-free-trial">how the free trial works</a>.',
   },
   {
     q: 'Can I cancel at any time?',
-    a: 'Yes. Lite is billed monthly and you can cancel whenever you like. Your access continues until the end of the current billing period.',
+    a: 'Yes. Pro is billed monthly and you can cancel whenever you like. Your access continues until the end of the current billing period.',
   },
   {
     q: 'Do you offer an overlay or widget?',
@@ -51,7 +51,7 @@ const faqs: FaqItem[] = [
 ---
 <BaseLayout
   title="Pricing - Website Accessibility Checker | AccessBell"
-  description={`AccessBell Lite: $${PLAN.price} per domain per month for continuous WCAG monitoring of up to ${PLAN.urlsPerDomain} URLs, unlimited rescans and AI-assisted fixes.`}
+  description={`Start a 3-day free trial of AccessBell Pro: continuous WCAG monitoring of up to ${PLAN.urlsPerDomain} URLs per domain, unlimited rescans and AI-assisted fixes.`}
   breadcrumbs={[{ label: 'Pricing', href: '/pricing' }]}
   schema={[softwareSchema(), faqSchema(faqs)]}
 >
@@ -71,11 +71,10 @@ const faqs: FaqItem[] = [
         <div class="plan-single-main">
           <span class="plan-flag-inline">One plan, every feature</span>
           <h2 id="plan-title">{PLAN.name}</h2>
-          <p class="plan-price">
-            <strong>${PLAN.price}</strong>
-            <span>/ domain / month</span>
+          <p class="plan-price plan-price-trial">
+            <strong>3-Day Free Trial</strong>
           </p>
-          <p class="plan-billed">3-day free trial, then billed monthly. Cancel anytime.</p>
+          <p class="plan-billed">Then ${PLAN.price}/mo per domain after your trial. Cancel anytime.</p>
           <p class="plan-blurb">{PLAN.blurb}</p>
           <ul class="check-list">
             {PLAN.highlights.map((h) => <li><Icon name="check" />{h}</li>)}
@@ -194,5 +193,5 @@ const faqs: FaqItem[] = [
     </div>
   </section>
 
-  <CtaBand title="See Where Your Site Stands Today" text="Run a free WCAG 2.2 scan on any page, then monitor your whole domain with Lite." />
+  <CtaBand title="See Where Your Site Stands Today" text="Run a free WCAG 2.2 scan on any page, then monitor your whole domain with Pro." />
 </BaseLayout>

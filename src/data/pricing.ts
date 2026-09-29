@@ -1,7 +1,7 @@
 /** The single AccessBell offer. Price is per domain, per month. */
 export const PLAN = {
   id: 'lite',
-  name: 'Lite',
+  name: 'Pro',
   price: 79,
   currency: 'USD',
   urlsPerDomain: 25,
@@ -13,7 +13,7 @@ export const PLAN = {
 
 export type FeatureGroup = { title: string; features: string[] };
 
-/** Everything included in Lite, grouped for the pricing page. */
+/** Everything included in Pro, grouped for the pricing page. */
 export const FEATURE_GROUPS: FeatureGroup[] = [
   {
     title: 'Compliance',

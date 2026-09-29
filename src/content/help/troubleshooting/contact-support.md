@@ -14,7 +14,7 @@ Use the [contact form](/contact?topic=support), or select **Support** at the bot
 
 - **Product support** for scans, results and the dashboard
 - **Billing** for payments, invoices and plan changes
-- **Getting started with Lite** for questions before you subscribe
+- **Getting started with Pro** for questions before you subscribe
 
 ## What to Include
 

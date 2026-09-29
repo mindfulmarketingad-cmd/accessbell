@@ -48,7 +48,7 @@ If you are comparing **accessiBe alternatives**, you are probably here for one o
 **What makes AccessBell the right fit for most teams:**
 
 - **Test the standard you actually need.** WCAG 2.2, 2.1 or 2.0 at Level AA, or a preset mapped to the ADA, Section 508 or EN 301 549, all from the same free scanner.
-- **Simple, flat pricing.** $79 per domain per month for AccessBell Lite, with unlimited rescans and monitoring for up to 25 URLs per domain. No traffic tiers, no per-visitor math: you know your cost before you sign up.
+- **Simple, flat pricing.** $79 per domain per month for AccessBell Pro, with unlimited rescans and monitoring for up to 25 URLs per domain. No traffic tiers, no per-visitor math: you know your cost before you sign up.
 - **Real fixes, not a widget.** Every issue includes the failing markup and a working code example, drawn from how the issue is actually fixed, so a developer can act on it directly.
 - **Built for the whole team.** Developers get failing markup and component grouping, QA gets repeatable criterion-level results across viewports and CSV export, content teams get plain-language explanations of what to fix and why.
 - **Free tools with no account needed.** A [free scanner](/#scan), a [WCAG 2.2, 2.1 and 2.0 success criteria library](/resources/wcag), an [accessibility statement generator](/resources/statement-generator), and checkers preset for your [platform](/resources) or [industry](/resources).

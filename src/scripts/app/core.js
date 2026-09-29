@@ -250,7 +250,7 @@ function renderBanner(me) {
     if (button) button.addEventListener('click', busy(button, null, startCheckout));
     banner = el('div', { class: 'banner', role: 'region', 'aria-label': 'Subscription' }, [
       el('div', {}, [
-        el('strong', { text: b.status === 'none' ? 'Start monitoring with AccessBell Lite' : 'Your subscription has ended' }),
+        el('strong', { text: b.status === 'none' ? 'Start monitoring with AccessBell Pro' : 'Your subscription has ended' }),
         el('p', {
           text: isOwner
             ? '$79 per domain per month after a 3-day free trial. Up to 25 URLs per domain, unlimited rescans and AI-assisted fixes.'

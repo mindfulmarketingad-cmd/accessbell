@@ -55,7 +55,7 @@ function dashboardSteps(me) {
       title: 'Add a domain',
       body: [
         'Add a live website or a staging environment. AccessBell scans its home page first, then helps you find and add more pages, up to 25 monitored URLs per domain.',
-        me.subscribed ? 'Your plan sets how many domains you can add.' : 'To add your first domain, start your 3-day free trial of AccessBell Lite.',
+        me.subscribed ? 'Your plan sets how many domains you can add.' : 'To add your first domain, start your 3-day free trial of AccessBell Pro.',
       ],
     },
     hasDomains && {

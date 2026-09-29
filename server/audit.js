@@ -620,7 +620,7 @@ export function audit(html, { standard = 'wcag22' } = {}) {
   }
 
   const notes = [
-    'Color contrast (1.4.3), keyboard operation (2.1.1), focus visibility (2.4.7) and reflow (1.4.10) require a rendered page and are covered by full-site monitoring on the Lite plan.',
+    'Color contrast (1.4.3), keyboard operation (2.1.1), focus visibility (2.4.7) and reflow (1.4.10) require a rendered page and are covered by full-site monitoring on the Pro plan.',
   ];
   if (standard === 'section508') {
     notes.push('Section 508 incorporates WCAG 2.0 Level AA. Every check in this report applies to WCAG 2.0.');

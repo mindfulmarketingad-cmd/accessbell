@@ -218,7 +218,7 @@ export async function deleteDomain(ctx, domainId) {
 
 const limitError = (err) => {
   if (err && err.message && err.message.includes('monitored_page_limit')) {
-    return new AppError(400, `Lite monitors up to ${LIMITS.monitoredPagesPerDomain} URLs per domain. Stop monitoring another page first.`, 'page_limit');
+    return new AppError(400, `Pro monitors up to ${LIMITS.monitoredPagesPerDomain} URLs per domain. Stop monitoring another page first.`, 'page_limit');
   }
   return err;
 };

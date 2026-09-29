@@ -17,13 +17,13 @@ faqs:
   - q: 'Can a free accessibility checker make my website ADA compliant?'
     a: 'No tool can make a site compliant on its own. Automated checkers reliably find code-level failures such as missing alt text, unlabeled form fields and low contrast, but some WCAG requirements need a person to judge them. Use automated tools to find and fix the objective issues, then test with a keyboard and a screen reader.'
   - q: 'Do these tools work on pages behind a login?'
-    a: 'Browser extensions and bookmarklets (WAVE, axe DevTools, Accessibility Insights, Lighthouse and ANDI) test whatever page is open in your browser, including pages you are signed in to. Web-based checkers like the free AccessBell scan test public pages. AccessBell Lite can scan staging and protected pages using custom HTTP headers.'
+    a: 'Browser extensions and bookmarklets (WAVE, axe DevTools, Accessibility Insights, Lighthouse and ANDI) test whatever page is open in your browser, including pages you are signed in to. Web-based checkers like the free AccessBell scan test public pages. AccessBell Pro can scan staging and protected pages using custom HTTP headers.'
   - q: 'Why do different accessibility tools give different results?'
     a: 'Each tool uses its own rule set, runs at a different moment in the page load and reports issues differently. Several tools, including AccessBell, axe DevTools, Lighthouse and Accessibility Insights, share the open-source axe-core engine, so their automated results overlap. WAVE and ANDI use their own checks, so they surface some issues the others do not.'
   - q: 'Does a Lighthouse accessibility score of 100 mean my site is accessible?'
     a: 'No. Lighthouse runs a subset of automated checks and weights them into a score. A perfect score means none of those checks failed, not that the page meets WCAG. Many barriers, like confusing focus order or unhelpful alt text, can only be found with manual testing.'
   - q: 'Can I test against WCAG 2.1 AA only?'
-    a: 'Yes. In the free AccessBell scanner, choose "WCAG 2.1 AA" from the standard menu and the scan runs only the WCAG 2.0 and 2.1 Level A and AA rules. After the scan, the report filters let you narrow results by version, level, principle, success criterion or severity. Lite plan customers can set WCAG 2.0, 2.1 or 2.2 and Level A, AA or AAA for each domain.'
+    a: 'Yes. In the free AccessBell scanner, choose "WCAG 2.1 AA" from the standard menu and the scan runs only the WCAG 2.0 and 2.1 Level A and AA rules. After the scan, the report filters let you narrow results by version, level, principle, success criterion or severity. Pro plan customers can set WCAG 2.0, 2.1 or 2.2 and Level A, AA or AAA for each domain.'
 ---
 
 The best **free tools to check website accessibility** are AccessBell, WAVE, axe DevTools, Accessibility Insights, Google Lighthouse and ANDI. Each one finds barriers that stop people with disabilities from using a website, such as missing [alt text](/blog/wcag-1-1-1-non-text-content), unlabeled form fields, low [color contrast](/resources/contrast-checker) and buttons with no name. They differ in who they are built for, how you run them and how they present results.
@@ -63,11 +63,11 @@ The practical takeaway: use one or two automated tools to find and fix the objec
 - **Plain-language fixes.** Each issue explains what is wrong, why it matters, which WCAG criterion it fails and how to fix it, with the exact failing code and a link to detailed guidance.
 - **Ranked by impact.** Critical and serious issues come first, so you know what to fix today.
 - **Honest about limits.** Items a machine cannot decide appear in a separate "needs manual review" list instead of being hidden or reported as failures.
-- **Grows with you.** When you are ready, the Lite plan adds monitoring of up to 25 URLs per domain with unlimited rescans. It also adds scheduled scans, a scan history you can use as audit evidence, component grouping and team roles.
+- **Grows with you.** When you are ready, the Pro plan adds monitoring of up to 25 URLs per domain with unlimited rescans. It also adds scheduled scans, a scan history you can use as audit evidence, component grouping and team roles.
 
 ### Limitations
 
-- The free scan checks **one public page at a time**. For pages behind a login, use a browser extension below or AccessBell Lite with custom headers.
+- The free scan checks **one public page at a time**. For pages behind a login, use a browser extension below or AccessBell Pro with custom headers.
 - It reports what automated rules can detect. Pair it with the manual checks described later in this guide.
 
 [Run a free AccessBell scan](/#scan) to see how your page scores, or open it preset for [WCAG 2.2 AA](/resources/wcag-2-2-aa-checker), [WCAG 2.1 AA](/resources/wcag-2-1-aa-checker), [ADA compliance](/resources/ada-compliance-checker), [Section 508](/resources/section-508-checker) or [EN 301 549](/resources/en-301-549-checker).
@@ -164,7 +164,7 @@ Most teams do not need all six tools. Pick based on who is testing:
 | A designer or content editor | WAVE | AccessBell for shareable reports |
 | A front-end developer | axe DevTools or Accessibility Insights | AccessBell to track progress over time |
 | A federal agency or vendor | ANDI | Accessibility Insights for guided manual tests |
-| Tracking many pages or domains | AccessBell Lite (paid) | Any extension for spot checks |
+| Tracking many pages or domains | AccessBell Pro (paid) | Any extension for spot checks |
 
 Whatever you choose, make testing a habit rather than a one-time event. Websites change constantly, and new content is the most common source of new barriers. For a deeper look at what these tools test, read [what a website accessibility checker is and how it works](/blog/what-is-a-website-accessibility-checker).
 

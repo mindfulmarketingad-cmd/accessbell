@@ -7,7 +7,7 @@ updatedDate: 2026-09-28
 sources: ['axe-core', 'understanding']
 ---
 
-Once a domain is added, you can scan all of its monitored pages at once or one page at a time. Rescans are unlimited on the Lite plan.
+Once a domain is added, you can scan all of its monitored pages at once or one page at a time. Rescans are unlimited on the Pro plan.
 
 ## Scan Every Monitored Page
 

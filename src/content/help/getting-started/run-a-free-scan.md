@@ -45,6 +45,6 @@ The summary line tells you how many issues match and, when it applies, how many 
 
 ## Limits of the Free Scan
 
-- One public page per scan. Pages behind a login need the Lite plan and [custom HTTP headers](/resources/help-center/domains/scan-staging-and-protected-sites).
+- One public page per scan. Pages behind a login need the Pro plan and [custom HTTP headers](/resources/help-center/domains/scan-staging-and-protected-sites).
 - To keep the service fast for everyone, each network can run 5 free scans per minute and 30 per hour.
 - The free scan does not save history. To track progress over time, [add the domain](/resources/help-center/getting-started/add-your-first-domain) to your dashboard.

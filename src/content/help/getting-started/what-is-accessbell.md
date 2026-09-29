@@ -1,6 +1,6 @@
 ---
 title: 'What Is AccessBell?'
-description: 'A plain-English introduction to AccessBell: what it checks, how scans work, what the free scan and the Lite plan include, and what it cannot do.'
+description: 'A plain-English introduction to AccessBell: what it checks, how scans work, what the free scan and the Pro plan include, and what it cannot do.'
 order: 1
 updatedDate: 2026-09-28
 sources: ['wai-intro', 'wcag22', 'axe-core']
@@ -12,7 +12,7 @@ AccessBell is a website accessibility checker. It loads your pages in a real bro
 
 **The free scan** checks one public page at a time from the [homepage](/#scan). There is nothing to install and no account needed. It is the quickest way to see where a page stands.
 
-**AccessBell Lite** is the paid plan for ongoing work. For $79 per domain per month you get:
+**AccessBell Pro** is the paid plan for ongoing work. For $79 per domain per month you get:
 
 - Up to 25 monitored URLs per domain, with unlimited rescans
 - A dashboard for every domain you manage, with scores, history and a WCAG coverage table

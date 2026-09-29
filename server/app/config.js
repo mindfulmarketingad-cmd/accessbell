@@ -3,7 +3,7 @@
 export const ROLES = ['viewer', 'member', 'admin', 'owner'];
 export const ROLE_RANK = { viewer: 1, member: 2, admin: 3, owner: 4 };
 
-/** Lite plan limits. */
+/** Pro plan limits. */
 export const LIMITS = {
   monitoredPagesPerDomain: 25,
   discoveredPagesPerDomain: 200,

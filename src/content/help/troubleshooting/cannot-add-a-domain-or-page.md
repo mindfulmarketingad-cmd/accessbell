@@ -22,7 +22,7 @@ Every domain slot in your plan is taken. The number in the message is how many y
 
 Pages must be on the domain's own address. To monitor `blog.example.com` under `example.com`, turn on **Include subdomains** in the domain's Settings. Otherwise, add it as a separate domain.
 
-## "Lite monitors up to 25 URLs per domain"
+## "Pro monitors up to 25 URLs per domain"
 
 The domain already monitors 25 URLs. Stop monitoring a page you need less, or [talk to us](/contact?topic=sales) about a larger limit.
 
