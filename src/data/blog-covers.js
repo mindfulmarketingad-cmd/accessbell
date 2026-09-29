@@ -66,6 +66,7 @@ export const COVER_TOPICS = {
   'ada-lawsuit-process': { ui: 'scale', label: 'ADA', caption: 'The lawsuit process' },
   'ada-requirements-for-bathrooms': { a11y: 'universal-access', label: 'ADA', caption: 'Accessible bathrooms' },
   'ada-requirements-for-ramps': { a11y: 'wheelchair', label: 'ADA', caption: 'Ramp requirements' },
+  'ada-title-iii-law-for-businesses': { ui: 'scale', label: 'Title III', caption: 'ADA law for businesses' },
   'ada-website-compliance-guide': { ui: 'check-circle', label: 'ADA', caption: 'Website compliance' },
   'automated-vs-manual-accessibility-testing': { ui: 'code', label: 'Testing', caption: 'Automated vs manual' },
   'famous-people-with-disabilities': { ui: 'star', label: 'People', caption: 'Famous people with disabilities' },

@@ -10,7 +10,7 @@ contributors:
 history:
   - date: 2026-09-28
     note: 'First published. Deadlines checked against the Federal Rules of Civil Procedure and the Federal Rules of Appellate Procedure.'
-related: ['ada-website-compliance-guide', 'automated-vs-manual-accessibility-testing']
+related: ['ada-title-iii-law-for-businesses', 'ada-website-compliance-guide', 'automated-vs-manual-accessibility-testing']
 faqs:
   - q: 'How long does an ADA lawsuit take?'
     a: 'Most ADA Title III cases settle within about 6 to 18 months of the complaint being filed. Cases that go through full discovery and motions take longer, and the rare case that goes to trial can last several years.'
@@ -28,7 +28,7 @@ faqs:
 
 The **ADA lawsuit process** usually follows a predictable path. A business is served with a complaint, has **21 days** to respond, often goes through mediation or settlement talks, and in most cases signs a settlement within **6 to 18 months**. Very few cases reach trial.
 
-This guide walks through each stage of an ADA Title III lawsuit, how long each one takes and what happens next. It also covers what to do in the first days after you are served. Most examples involve website accessibility cases, but the same federal court process applies to cases about physical barriers.
+This guide walks through each stage of an [ADA Title III](/blog/ada-title-iii-law-for-businesses) lawsuit, how long each one takes and what happens next. It also covers what to do in the first days after you are served. Most examples involve website accessibility cases, but the same federal court process applies to cases about physical barriers.
 
 *This article is general information, not legal advice. Court rules and deadlines vary. If you have been served with a lawsuit or [demand letter](/blog/ada-demand-letter), speak with a lawyer experienced in ADA defense right away.*
 

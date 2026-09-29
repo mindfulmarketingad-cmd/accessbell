@@ -10,7 +10,7 @@ contributors:
 history:
   - date: 2026-09-28
     note: 'First published. Lawsuit filing counts checked against Seyfarth Shaw''s ADA Title III tracker; settlement figures checked against multiple independent sources and given as ranges.'
-related: ['ada-lawsuit-process', 'ada-website-compliance-guide', 'accessibe-alternative']
+related: ['ada-lawsuit-process', 'ada-title-iii-law-for-businesses', 'accessibe-alternative']
 faqs:
   - q: 'What is an ADA demand letter?'
     a: 'A letter, usually from an attorney representing someone with a disability, stating that they tried to use your website and could not because of specific accessibility barriers, and demanding that you fix them and often pay a settlement, before a lawsuit is filed.'
@@ -24,7 +24,7 @@ faqs:
     a: 'For many common issues, yes, especially with a report that shows the exact failing code. For anything involving legal strategy, the response to the sender, or a settlement agreement, that is a job for an attorney, not a developer.'
 ---
 
-If you just opened an email or letter claiming your website has accessibility barriers and demanding you fix them, you are not alone: website accessibility lawsuits hit 3,117 in federal court in 2025 alone, a 27% jump from 2024, and most of those cases started with a demand letter like yours ([Seyfarth Shaw's ADA Title III tracker](https://www.adatitleiii.com/2026/02/ada-title-iii-federal-lawsuit-filings-fall-slightly-to-8667-in-2025/)). Here is what to actually do about it, in order.
+If you just opened an email or letter claiming your website has accessibility barriers and demanding you fix them, you are not alone (see what [ADA Title III law for businesses](/blog/ada-title-iii-law-for-businesses) requires): website accessibility lawsuits hit 3,117 in federal court in 2025 alone, a 27% jump from 2024, and most of those cases started with a demand letter like yours ([Seyfarth Shaw's ADA Title III tracker](https://www.adatitleiii.com/2026/02/ada-title-iii-federal-lawsuit-filings-fall-slightly-to-8667-in-2025/)). Here is what to actually do about it, in order.
 
 ## What a Demand Letter Is
 

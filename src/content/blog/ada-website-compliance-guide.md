@@ -7,7 +7,7 @@ category: 'Compliance'
 contributors:
   - author: joseph-edwards
     role: Author
-related: ['wcag-2-2-checklist', 'what-is-a-website-accessibility-checker']
+related: ['ada-title-iii-law-for-businesses', 'wcag-2-2-checklist', 'what-is-a-website-accessibility-checker']
 ---
 
 The Americans with Disabilities Act (ADA) was signed in 1990, before most businesses had websites. It does not mention the internet. Yet thousands of website accessibility lawsuits are filed in U.S. courts every year, and federal regulators now set explicit technical standards for some organizations.
@@ -18,7 +18,7 @@ This guide explains how the ADA applies to websites, what "compliance" means in 
 
 ## Which Parts of the ADA Apply to Websites
 
-**Title III** covers "places of public accommodation," such as retailers, restaurants, hotels, banks and healthcare providers. The Department of Justice (DOJ) has stated for decades that Title III applies to the goods and services these businesses offer online. In March 2022, the DOJ published [guidance](https://www.ada.gov/resources/web-guidance/) confirming that businesses open to the public must make their websites accessible, and it pointed to WCAG as a helpful reference.
+**Title III** covers "places of public accommodation," such as retailers, restaurants, hotels, banks and healthcare providers. The Department of Justice (DOJ) has stated for decades that Title III applies to the goods and services these businesses offer online. In March 2022, the DOJ published [guidance](https://www.ada.gov/resources/web-guidance/) confirming that businesses open to the public must make their websites accessible, and it pointed to WCAG as a helpful reference. Our guide to [ADA Title III law for businesses](/blog/ada-title-iii-law-for-businesses) covers who is included and what to do about it.
 
 **Title II** covers state and local governments, including public schools, universities, transit agencies and courts. In April 2024, the DOJ published a final rule that, for the first time, sets a specific technical standard for their websites and mobile apps: **WCAG 2.1 Level AA**.
 

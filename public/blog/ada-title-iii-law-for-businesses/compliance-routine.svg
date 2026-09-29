@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+<rect width="800" height="380" fill="#fff"/>
+<text x="400" y="40" font-size="20" font-weight="700" fill="#1f2430" text-anchor="middle">A practical Title III compliance routine</text>
+<rect x="24" y="80" width="138" height="200" rx="16" fill="#f4f8f3" stroke="#cfe1ce" stroke-width="2"/><circle cx="93" cy="126" r="24" fill="#44723f"/><text x="93" y="134" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">1</text>
+<text x="93" y="186" font-size="18" font-weight="700" fill="#1f2430" text-anchor="middle">Audit</text>
+<text x="93" y="216" font-size="13" font-weight="400" fill="#5b6270" text-anchor="middle">Scan pages and</text>
+<text x="93" y="236" font-size="13" font-weight="400" fill="#5b6270" text-anchor="middle">test by hand</text>
+<path d="M166 180h8" stroke="#8b93a1" stroke-width="2.5"/><path d="M170 175l5 5-5 5" fill="none" stroke="#8b93a1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="178" y="80" width="138" height="200" rx="16" fill="#f4f8f3" stroke="#cfe1ce" stroke-width="2"/><circle cx="247" cy="126" r="24" fill="#44723f"/><text x="247" y="134" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">2</text>
+<text x="247" y="186" font-size="18" font-weight="700" fill="#1f2430" text-anchor="middle">Fix</text>
+<text x="247" y="216" font-size="13" font-weight="400" fill="#5b6270" text-anchor="middle">Start with forms,</text>
+<text x="247" y="236" font-size="13" font-weight="400" fill="#5b6270" text-anchor="middle">checkout, menus</text>
+<path d="M320 180h8" stroke="#8b93a1" stroke-width="2.5"/><path d="M324 175l5 5-5 5" fill="none" stroke="#8b93a1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="332" y="80" width="138" height="200" rx="16" fill="#f4f8f3" stroke="#cfe1ce" stroke-width="2"/><circle cx="401" cy="126" r="24" fill="#44723f"/><text x="401" y="134" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">3</text>
+<text x="401" y="186" font-size="18" font-weight="700" fill="#1f2430" text-anchor="middle">Verify</text>
+<text x="401" y="216" font-size="13" font-weight="400" fill="#5b6270" text-anchor="middle">Keyboard and</text>
+<text x="401" y="236" font-size="13" font-weight="400" fill="#5b6270" text-anchor="middle">screen reader</text>
+<path d="M474 180h8" stroke="#8b93a1" stroke-width="2.5"/><path d="M478 175l5 5-5 5" fill="none" stroke="#8b93a1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="486" y="80" width="138" height="200" rx="16" fill="#f4f8f3" stroke="#cfe1ce" stroke-width="2"/><circle cx="555" cy="126" r="24" fill="#44723f"/><text x="555" y="134" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">4</text>
+<text x="555" y="186" font-size="18" font-weight="700" fill="#1f2430" text-anchor="middle">Publish</text>
+<text x="555" y="216" font-size="13" font-weight="400" fill="#5b6270" text-anchor="middle">Accessibility</text>
+<text x="555" y="236" font-size="13" font-weight="400" fill="#5b6270" text-anchor="middle">statement</text>
+<path d="M628 180h8" stroke="#8b93a1" stroke-width="2.5"/><path d="M632 175l5 5-5 5" fill="none" stroke="#8b93a1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="640" y="80" width="138" height="200" rx="16" fill="#f4f8f3" stroke="#cfe1ce" stroke-width="2"/><circle cx="709" cy="126" r="24" fill="#44723f"/><text x="709" y="134" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">5</text>
+<text x="709" y="186" font-size="18" font-weight="700" fill="#1f2430" text-anchor="middle">Monitor</text>
+<text x="709" y="216" font-size="13" font-weight="400" fill="#5b6270" text-anchor="middle">Rescan as the</text>
+<text x="709" y="236" font-size="13" font-weight="400" fill="#5b6270" text-anchor="middle">site changes</text>
+<path d="M725 284v24H93v-24" fill="none" stroke="#8b93a1" stroke-width="2.5" stroke-dasharray="6 5"/><path d="M87 290l6-6 6 6" fill="none" stroke="#8b93a1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><text x="400" y="344" font-size="15" font-weight="400" fill="#5b6270" text-anchor="middle">Then repeat: accessibility is ongoing work, not a one-time project.</text>
+</svg>
