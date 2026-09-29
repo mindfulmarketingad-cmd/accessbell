@@ -10,6 +10,7 @@ import { formatDate, readingTime } from '../../lib/format';
 import { authorPath, authorSchema } from '../../lib/authors';
 import { faqSchema } from '../../lib/schema';
 import { inlineMarkdown, stripMarkdown } from '../../lib/inline-markdown';
+import { getWcagGuides, WCAG_GUIDES_CATEGORY } from '../../lib/wcag-guides';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -31,6 +32,9 @@ const toc = [
   ...(faqs.length ? [{ depth: 2, slug: 'faq', text: 'Frequently Asked Questions' }] : []),
   { depth: 2, slug: 'about-the-authors', text: contributors.length > 1 ? 'About the Authors' : 'About the Author' },
 ];
+
+// Posts in the WCAG Codes Explained series link to every other guide in the series.
+const moreGuides = post.data.category === WCAG_GUIDES_CATEGORY ? (await getWcagGuides()).filter((g) => g.id !== post.id) : [];
 
 const related = post.data.related
   .map((slug) => all.find((p) => p.id === slug))
@@ -120,6 +124,17 @@ const schema = [
             </section>
           )}
         </div>
+
+        {moreGuides.length > 0 && (
+          <nav class="guide-series" aria-labelledby="more-guides">
+            <h2 id="more-guides">More WCAG Codes Explained</h2>
+            <p>Plain-English guides to other WCAG success criteria, with examples and fixes.</p>
+            <ul>
+              {moreGuides.map((g) => <li><a href={g.href}>{g.name}</a></li>)}
+            </ul>
+            <p><a class="link-arrow" href="/resources/wcag">Browse every success criterion in the WCAG library <Icon name="arrow" /></a></p>
+          </nav>
+        )}
 
         <section class="author-box" aria-labelledby="about-the-authors">
           <h2 id="about-the-authors">{contributors.length > 1 ? 'About the Authors' : 'About the Author'}</h2>

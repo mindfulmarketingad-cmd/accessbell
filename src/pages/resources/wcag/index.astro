@@ -6,6 +6,9 @@ import { SITE } from '../../../config/site';
 import { CRITERIA, PRINCIPLES } from '../../../../server/wcag-criteria.js';
 import { criterionPath, rulesForCriterion } from '../../../lib/wcag-pages';
 import { CHECKERS, checkerPath } from '../../../data/checkers';
+import { getWcagGuides } from '../../../lib/wcag-guides';
+
+const guides = await getWcagGuides();
 
 const scRank = (sc: string) => sc.split('.').map(Number);
 const cmp = (a: string, b: string) => {
@@ -54,6 +57,16 @@ const schema = [
       <p>The <a href="https://www.w3.org/TR/WCAG22/" rel="noopener noreferrer">W3C's WCAG 2.2</a> groups its 87 success criteria under four principles &mdash; Perceivable, Operable, Understandable and Robust &mdash; and three conformance levels, A, AA and AAA. Most legal standards, including the ADA, Section 508 and the European Accessibility Act, point to Level AA. {automated} of the 87 criteria have at least one <a href="https://github.com/dequelabs/axe-core" rel="noopener noreferrer">axe-core</a> rule that can catch a failure automatically; the rest need a person to judge, and every page here says which is which.</p>
       <p>Looking for a scan instead of a reference page? Run the free checker built for the standard you need: {CHECKERS.map((c, i) => <>{i > 0 && ', '}<a href={checkerPath(c)}>{c.name}</a></>)}.</p>
     </section>
+
+    {guides.length > 0 && (
+      <section class="guide-series" aria-labelledby="wcag-guides">
+        <h2 id="wcag-guides">WCAG Codes Explained: Plain-English Guides</h2>
+        <p>Longer guides to individual success criteria, with illustrations, code examples and step-by-step tests.</p>
+        <ul>
+          {guides.map((g) => <li><a href={g.href}>{g.name}</a></li>)}
+        </ul>
+      </section>
+    )}
 
     <section aria-labelledby="wcag-groups">
       <h2 id="wcag-groups" class="visually-hidden">Success criteria by principle</h2>
