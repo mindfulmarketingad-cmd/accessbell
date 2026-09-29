@@ -45,7 +45,7 @@ If you specifically need **accessibility scanning and monitoring** — a real au
 | Getting started | Request a quote, sales process | Free scan with no account; 3-day free trial to start monitoring |
 | Engine | Proprietary crawler and rules engine | axe-core running in a real Chrome browser, the same engine behind Chrome DevTools |
 | Best fit | Large organizations needing a bundled governance platform | Teams and agencies that want a focused, self-serve accessibility tool |
-| Monitoring | Full-site crawling across large page counts | Up to 25 monitored URLs per domain, with alerts on regressions |
+| Monitoring | Full-site crawling across large page counts | Up to 500 monitored URLs per domain, with alerts on regressions |
 
 Neither tool is "wrong" — they are built for different buyers. If your team wants to start scanning today, see real WCAG-mapped results, and pay a flat, transparent rate instead of negotiating an enterprise contract, [run a free scan](/#scan) and see what AccessBell finds.
 

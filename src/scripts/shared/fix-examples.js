@@ -15,6 +15,14 @@ const img = {
 
 <!-- Decorative image: empty alt so it is skipped -->
 <img src="/divider.svg" alt="">`,
+  bad: `<!-- Incorrect: no alt attribute, so screen readers read the file name -->
+<img src="/team.jpg">
+
+<!-- Incorrect: alt repeats the file name and says nothing useful -->
+<img src="/icon-tag.svg" alt="icon-tag.svg">
+
+<!-- Incorrect: decorative image described, adding noise -->
+<img src="/divider.svg" alt="decorative divider line image">`
 };
 
 const label = {
@@ -36,6 +44,12 @@ const label = {
 <!-- Acceptable when no visible label fits -->
 <input type="search" aria-label="Search the site">
 <button type="submit">Search</button>`,
+  bad: `<!-- Incorrect: placeholder only, no label -->
+<input type="email" placeholder="Email address">
+
+<!-- Incorrect: text next to the field is not connected to it -->
+<span>Company name</span>
+<input type="text">`
 };
 
 const buttonName = {
@@ -57,6 +71,13 @@ const buttonName = {
 <button type="button" aria-label="Close dialog">
   <svg aria-hidden="true" focusable="false">...</svg>
 </button>`,
+  bad: `<!-- Incorrect: icon button with no accessible name -->
+<button type="button" class="menu-toggle">
+  <svg>...</svg>
+</button>
+
+<!-- Incorrect: empty button -->
+<button type="submit"></button>`
 };
 
 const linkName = {
@@ -78,6 +99,13 @@ const linkName = {
 <a href="/blog/wcag-2-2">
   Read more<span class="visually-hidden"> about WCAG 2.2</span>
 </a>`,
+  bad: `<!-- Incorrect: icon link with no name -->
+<a href="https://www.linkedin.com/company/example">
+  <svg>...</svg>
+</a>
+
+<!-- Incorrect: vague text that makes no sense out of context -->
+<a href="/blog/wcag-2-2">Click here</a>`
 };
 
 const contrast = {
@@ -98,6 +126,11 @@ const contrast = {
   color: #fff;
   background: rgb(0 0 0 / 0.7);
 }`,
+  bad: `/* Incorrect: light grey on white is 2.6:1 */
+.card-meta { color: #9aa0a6; }
+
+/* Incorrect: white text straight on a busy photo */
+.hero-caption { color: #fff; background: none; }`
 };
 
 const lang = {
@@ -112,6 +145,12 @@ const lang = {
     <p>Our motto is <span lang="fr">savoir-faire</span>.</p>
   </body>
 </html>`,
+  bad: `<!-- Incorrect: no lang attribute -->
+<!doctype html>
+<html>
+  <head>...</head>
+  <body>...</body>
+</html>`
 };
 
 const title = {
@@ -122,6 +161,10 @@ const title = {
   code: `<head>
   <title>Pricing - AccessBell</title>
 </head>`,
+  bad: `<!-- Incorrect: missing or meaningless title -->
+<head>
+  <title>Untitled</title>
+</head>`
 };
 
 const frameTitle = {
@@ -134,6 +177,8 @@ const frameTitle = {
         title="Video: How to run your first accessibility scan"></iframe>
 
 <iframe src="/map.html" title="Map of our Denver office"></iframe>`,
+  bad: `<!-- Incorrect: no title, so screen readers say only "frame" -->
+<iframe src="https://www.youtube.com/embed/abc123"></iframe>`
 };
 
 const headings = {
@@ -150,6 +195,12 @@ const headings = {
 
 /* Want an h2 to look smaller? Use a class, not an h4 */
 .section-title-sm { font-size: 1.125rem; }`,
+  bad: `<!-- Incorrect: levels skipped to get smaller text -->
+<h1>Accessibility services</h1>
+  <h4>Audits</h4>
+
+<!-- Incorrect: bold text used instead of a heading -->
+<p><strong>Monitoring</strong></p>`
 };
 
 const viewport = {
@@ -158,6 +209,8 @@ const viewport = {
   ],
   code: `<!-- Correct -->
 <meta name="viewport" content="width=device-width, initial-scale=1">`,
+  bad: `<!-- Incorrect: blocks pinch zoom -->
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">`
 };
 
 const ariaHiddenFocus = {
@@ -174,6 +227,10 @@ const ariaHiddenFocus = {
 <div class="offscreen-menu" hidden>
   <a href="/">Home</a>
 </div>`,
+  bad: `<!-- Incorrect: hidden from screen readers but still reachable with Tab -->
+<div aria-hidden="true">
+  <a href="/">Home</a>
+</div>`
 };
 
 const landmarks = {
@@ -192,6 +249,13 @@ const landmarks = {
   </main>
   <footer>...</footer>
 </body>`,
+  bad: `<!-- Incorrect: everything in generic divs, no main landmark -->
+<body>
+  <div class="header">...</div>
+  <div class="content">
+    <h1>Page title</h1>
+  </div>
+</body>`
 };
 
 const lists = {
@@ -203,6 +267,11 @@ const lists = {
   <li><a href="/about">About</a></li>
   <li><a href="/contact">Contact</a></li>
 </ul>`,
+  bad: `<!-- Incorrect: li outside a list -->
+<div>
+  <li><a href="/about">About</a></li>
+  <li><a href="/contact">Contact</a></li>
+</div>`
 };
 
 const selectName = {
@@ -212,6 +281,10 @@ const selectName = {
   <option>United States</option>
   <option>Canada</option>
 </select>`,
+  bad: `<!-- Incorrect: no label for the select -->
+<select>
+  <option>Choose a country</option>
+</select>`
 };
 
 const duplicateId = {
@@ -225,6 +298,12 @@ const duplicateId = {
 
 <label for="qty-2">Quantity for item 2</label>
 <input id="qty-2" type="number">`,
+  bad: `<!-- Incorrect: two fields share one id, so both labels point to the first -->
+<label for="qty">Quantity for item 1</label>
+<input id="qty" type="number">
+
+<label for="qty">Quantity for item 2</label>
+<input id="qty" type="number">`
 };
 
 const tabindex = {
@@ -237,6 +316,9 @@ const tabindex = {
 
 <!-- Correct: remove from tab order when needed -->
 <a href="#top" tabindex="-1">Back to top</a>`,
+  bad: `<!-- Incorrect: positive tabindex changes the natural focus order -->
+<a href="/pricing" tabindex="3">Pricing</a>
+<button tabindex="1">Sign up</button>`
 };
 
 const targetSize = {
@@ -253,6 +335,9 @@ const targetSize = {
 
 /* Correct: spacing between small inline links */
 .tag-list a { margin-inline: 6px; }`,
+  bad: `/* Incorrect: 12px targets packed together */
+.icon-button { width: 12px; height: 12px; padding: 0; }
+.tag-list a { margin: 0; }`
 };
 
 const autocomplete = {
@@ -263,6 +348,9 @@ const autocomplete = {
 <input id="email" type="email" autocomplete="email">
 <input id="tel" type="tel" autocomplete="tel">
 <input id="zip" type="text" autocomplete="postal-code">`,
+  bad: `<!-- Incorrect: invalid tokens, so browsers cannot autofill -->
+<input type="email" autocomplete="mail">
+<input type="tel" autocomplete="phone-number">`
 };
 
 const tables = {
@@ -279,6 +367,11 @@ const tables = {
     <tr><th scope="row">Monday</th><td>9am to 5pm</td></tr>
   </tbody>
 </table>`,
+  bad: `<!-- Incorrect: header cells made with td and bold text -->
+<table>
+  <tr><td><b>Day</b></td><td><b>Hours</b></td></tr>
+  <tr><td>Monday</td><td>9am to 5pm</td></tr>
+</table>`
 };
 
 const ariaAttr = {
@@ -294,6 +387,8 @@ const ariaAttr = {
 <div role="checkbox" aria-checked="false" tabindex="0"
      aria-labelledby="terms-label"></div>
 <span id="terms-label">I agree to the terms</span>`,
+  bad: `<!-- Incorrect: role without its required state, and not focusable -->
+<div role="checkbox">I agree to the terms</div>`
 };
 
 const nested = {
@@ -306,6 +401,28 @@ const nested = {
   <h3><a href="/product/1">Standing desk</a></h3>
   <button type="button">Add to cart</button>
 </article>`,
+  bad: `<!-- Incorrect: a button inside a link -->
+<a href="/product/1" class="card">
+  <h3>Standing desk</h3>
+  <button type="button">Add to cart</button>
+</a>`
+};
+
+const linkInText = {
+  steps: [
+    ['Underline links in text', 'Keep the default underline for links inside paragraphs, or add another visual cue such as bold text or an icon.'],
+    ['Or make the color difference clear', 'If you remove the underline, the link color needs a 3:1 contrast ratio with the surrounding text, plus a cue such as an underline on hover and focus.'],
+    ['Style focus as well as hover', 'Keyboard users need the same cue when the link has focus.'],
+  ],
+  code: `<!-- Correct: links in text keep their underline -->
+<p>Read our <a href="/returns">returns policy</a> before you order.</p>
+
+/* Correct: underline kept, and a stronger cue on hover and focus */
+p a { text-decoration: underline; }
+p a:hover,
+p a:focus-visible { text-decoration-thickness: 3px; }`,
+  bad: `<!-- Incorrect: the link differs from the text by color alone -->
+<p>Read our <a href="/returns" style="color: #2b6cb0; text-decoration: none;">returns policy</a> before you order.</p>`,
 };
 
 const EXAMPLES = {
@@ -325,7 +442,7 @@ const EXAMPLES = {
   'link-purpose': linkName,
   'color-contrast': contrast,
   'color-contrast-enhanced': contrast,
-  'link-in-text-block': contrast,
+  'link-in-text-block': linkInText,
   'html-has-lang': lang,
   'html-lang-valid': lang,
   'html-lang': lang,
@@ -361,5 +478,5 @@ const EXAMPLES = {
   'nested-interactive': nested,
 };
 
-/** { steps: [[title, text]], code } for a rule id, or null. */
+/** { steps: [[title, text]], code, bad } for a rule id, or null. */
 export const fixExample = (ruleId) => EXAMPLES[ruleId] || null;

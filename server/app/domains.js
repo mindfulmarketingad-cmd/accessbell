@@ -327,7 +327,7 @@ export async function deletePage(ctx, pageId) {
 
 /**
  * "Select pages & Scan": the chosen pages become the domain's monitored pages
- * (up to 25) and every other page stops being monitored.
+ * (up to 500) and every other page stops being monitored.
  */
 export async function selectPages(ctx, domainId, pageIds) {
   requireRole(ctx, 'member');
@@ -534,8 +534,11 @@ export async function domainOverview(ctx, domainId) {
   const byCriterion = new Map();
   const byComponent = new Map();
   const byReview = new Map();
-  const coverage = {}; // sc -> { issues, passed, review }
-  const cov = (sc) => (coverage[sc] ||= { issues: 0, passed: false, review: 0 });
+  const coverage = {}; // sc -> { issues, passed, review, rules, reviewRules }
+  const cov = (sc) => (coverage[sc] ||= { issues: 0, passed: false, review: 0, rules: [], reviewRules: [] });
+  const addRule = (list, id, title) => {
+    if (!list.some((r) => r.id === id)) list.push({ id, title });
+  };
   const impacts = { critical: 0, serious: 0, moderate: 0, minor: 0 };
   let resolved = 0;
 
@@ -560,7 +563,10 @@ export async function domainOverview(ctx, domainId) {
         c.elements += issue.count;
         c.rules.add(issue.id);
         byCriterion.set(w.sc, c);
-        if (w.level && w.level !== '-') cov(w.sc).issues += issue.count;
+        if (w.level && w.level !== '-') {
+          cov(w.sc).issues += issue.count;
+          addRule(cov(w.sc).rules, issue.id, issue.title);
+        }
       }
       for (const sample of issue.samples || []) {
         const key = `${issue.id}|${componentKey(sample)}`;
@@ -575,7 +581,12 @@ export async function domainOverview(ctx, domainId) {
       r.elements += item.count || 1;
       r.pages.add(scan.page_id);
       byReview.set(item.id, r);
-      for (const w of item.wcag || []) if (w.level && w.level !== '-') cov(w.sc).review += item.count || 1;
+      for (const w of item.wcag || []) {
+        if (w.level && w.level !== '-') {
+          cov(w.sc).review += item.count || 1;
+          addRule(cov(w.sc).reviewRules, item.id, item.title);
+        }
+      }
     }
   }
   const order = { critical: 0, serious: 1, moderate: 2, minor: 3 };

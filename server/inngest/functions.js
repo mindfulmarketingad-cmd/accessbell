@@ -31,4 +31,16 @@ export const monitorPageFn = inngest.createFunction(
   },
 );
 
-export const functions = [scheduleMonitoring, monitorPageFn];
+/** A scan someone started from the dashboard ("Start Scan" or "Re-scan domain") for many pages. */
+export const scanPageFn = inngest.createFunction(
+  { id: 'scan-page', triggers: [{ event: 'app/page.scan' }], concurrency: { limit: 3 }, retries: 1 },
+  async ({ event, step }) => {
+    const result = await step.run('scan', () => monitorPage(event.data.pageId, { trigger: 'manual', userId: event.data.userId || null }));
+    if (!result.skipped && result.regressions.length) {
+      await step.run('alert', () => sendRegressionAlert(result));
+    }
+    return { skipped: result.skipped };
+  },
+);
+
+export const functions = [scheduleMonitoring, monitorPageFn, scanPageFn];

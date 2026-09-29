@@ -78,7 +78,7 @@ export function setupAddDomain(me, { getBilling }) {
       ]),
     ]);
     return [
-      ...heading('Index your website', 'We find your pages from your sitemap and the links on your home page. Next, you choose up to 25 of them to scan and monitor.'),
+      ...heading('Index your website', 'We find your pages from your sitemap and the links on your home page. Next, you choose up to 500 of them to scan and monitor.'),
       field('wiz-url', 'Website address', url),
       field('wiz-sitemap', ['XML sitemap ', el('span', { class: 'hint', text: '(optional)' })], sitemap, 'Recommended for large sites, so we find all of your pages.'),
       help,

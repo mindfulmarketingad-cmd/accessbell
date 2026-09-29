@@ -418,7 +418,7 @@ export const PLATFORMS: Platform[] = [
     faqs: [
       { q: 'Is my DreamHost site accessible?', a: 'That depends on the site, not the hosting. Your theme, plugins and content decide how accessible it is. A free scan shows the automated issues.' },
       { q: 'Can AccessBell scan a static site hosted on DreamHost?', a: 'Yes. AccessBell scans any public page in a real browser, however it was built.' },
-      { q: 'How often should I scan a blog?', a: 'Scan after theme and plugin changes, and regularly as you publish. AccessBell Pro rescans up to 25 pages per domain every day and alerts you to new issues.' },
+      { q: 'How often should I scan a blog?', a: 'Scan after theme and plugin changes, and regularly as you publish. AccessBell Pro rescans up to 500 pages per domain every day and alerts you to new issues.' },
     ],
     related: ['wcag-1-1-1-non-text-content', 'wcag-1-3-2-meaningful-sequence', 'seo-audit'],
   },

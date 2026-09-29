@@ -6,7 +6,7 @@ export const PLAN = {
   currency: 'USD',
   urlsPerDomain: 25,
   blurb: 'Continuous WCAG monitoring and AI-assisted fixes for every domain you run.',
-  highlights: ['Up to 25 URLs per domain', 'Unlimited rescans', 'AI-assisted fixes', 'Email support'],
+  highlights: ['Up to 500 URLs per domain', 'Unlimited rescans', 'AI-assisted fixes', 'Email support'],
   cta: 'Start 3-day free trial',
   ctaHref: '/app/signup',
 } as const;

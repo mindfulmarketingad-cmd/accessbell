@@ -22,7 +22,7 @@ Each domain in your plan costs $29 per month after the trial. The number of doma
 
 ## During the Trial
 
-Everything in the Pro plan is available: monitoring up to 25 URLs per domain, unlimited rescans, scheduled scans, exports and team members.
+Everything in the Pro plan is available: monitoring up to 500 URLs per domain, unlimited rescans, scheduled scans, exports and team members.
 
 ## Cancel Before You Are Charged
 

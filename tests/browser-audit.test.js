@@ -22,7 +22,7 @@ const fixture = {
       description: 'Ensure the contrast between foreground and background colors meets WCAG 2 AA thresholds',
       helpUrl: 'https://dequeuniversity.com/rules/axe/4.13/color-contrast',
       nodes: [
-        { html: '<p class="muted">Low contrast</p>', failureSummary: 'Fix any of the following:\n  Element has insufficient color contrast of 2.1 (expected 4.5:1)' },
+        { html: '<p class="muted">Low contrast</p>', target: ['main > p.muted'], failureSummary: 'Fix any of the following:\n  Element has insufficient color contrast of 2.1 (expected 4.5:1)' },
         { html: '<span>' + 'x'.repeat(400) + '</span>', failureSummary: '' },
         { html: '<a>3</a>' },
         { html: '<a>4</a>' },
@@ -58,6 +58,11 @@ test('axe results map to the report shape used by the website', () => {
   assert.equal(r.summary.critical, 1);
   assert.equal(r.passes.length, 1);
   assert.equal(r.review[0].count, 2);
+  // Every failing element (up to 25) is kept with its selector for the issue details page.
+  assert.equal(r.issues[1].elements.length, 4);
+  assert.deepEqual(r.issues[1].elements[0], { html: '<p class="muted">Low contrast</p>', target: 'main > p.muted', fix: 'Element has insufficient color contrast of 2.1 (expected 4.5:1).' });
+  assert.ok(r.issues[1].elements[1].html.length <= 300);
+  assert.equal(r.review[0].elements.length, 2);
   assert.ok(r.score < 100);
 });
 

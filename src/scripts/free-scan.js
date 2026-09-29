@@ -166,7 +166,7 @@ function render(r) {
   ]);
   const reportBox = el('div', { class: 'results-filtered' });
   const foot = el('div', { class: 'results-foot' }, [
-    el('p', { text: 'This free check tests one page with automated rules. Automated testing finds many, but not all, WCAG failures. Pro monitors up to 25 URLs per domain with daily rescans and alerts. Try it free for 3 days, then $29/mo per domain.' }),
+    el('p', { text: 'This free check tests one page with automated rules. Automated testing finds many, but not all, WCAG failures. Pro monitors up to 500 URLs per domain with daily rescans and alerts. Try it free for 3 days, then $29/mo per domain.' }),
     el('a', { class: 'btn btn-accent', href: '/app/signup', text: 'Start 3-day free trial' }),
   ]);
   mount.replaceChildren(el('div', { class: 'results-card' }, [head, reportBox, foot]));

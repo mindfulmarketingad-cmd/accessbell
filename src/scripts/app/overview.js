@@ -3,7 +3,7 @@ import { api, boot, el, icon, avatar, fmtDate, can, setStatus } from './core.js'
 import { scoreRing } from './charts.js';
 import { setupTour } from './onboarding.js';
 import { setupAddDomain } from './add-domain.js';
-import { domainMenu, rescanDomain, relative, nextScheduledScan } from './domain-actions.js';
+import { domainMenu, rescanDomain, scanMessage, relative, nextScheduledScan } from './domain-actions.js';
 
 const me = await boot();
 const $ = (s) => document.querySelector(s);
@@ -41,8 +41,7 @@ async function reload(message) {
 }
 
 async function rescan(d) {
-  const { total, failed } = await rescanDomain(d.id);
-  await reload(failed ? `Scanned ${total - failed} of ${total} pages of ${d.hostname}. ${failed} could not be scanned.` : `Scanned ${plural(total, 'page')} of ${d.hostname}.`);
+  await reload(scanMessage(await rescanDomain(d.id), d.hostname));
 }
 
 function row(d) {
@@ -144,13 +143,7 @@ if (params.get('add') === '1' && can(me, 'admin')) {
 }
 setupTour(me, 'dashboard', { openAdd: () => openAdd() });
 // Back from Found Pages after a scan.
-if (params.get('done')) {
-  const scanned = Number(params.get('scanned') || 0);
-  const failed = Number(params.get('failed') || 0);
-  setStatus(
-    listStatus,
-    failed && !scanned ? 'error' : 'success',
-    `Scan complete for ${params.get('done')}: ${plural(scanned, 'page')} scanned${failed ? `, ${failed} could not be scanned` : ''}.`,
-  );
+if (params.get('scanmsg')) {
+  setStatus(listStatus, params.get('tone') === 'error' ? 'error' : 'success', params.get('scanmsg').slice(0, 300));
   history.replaceState(null, '', location.pathname);
 }

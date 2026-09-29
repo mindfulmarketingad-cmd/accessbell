@@ -54,7 +54,7 @@ function dashboardSteps(me) {
       placement: 'bottom',
       title: 'Add a domain',
       body: [
-        'Add a live website or a staging environment. A short setup finds your pages from your sitemap, sets your WCAG standard, and optionally installs AccessBellFix and creates your accessibility statement. Then you choose up to 25 pages to scan and monitor.',
+        'Add a live website or a staging environment. A short setup finds your pages from your sitemap, sets your WCAG standard, and optionally installs AccessBellFix and creates your accessibility statement. Then you choose up to 500 pages to scan and monitor.',
         me.subscribed ? 'Your plan sets how many domains you can add.' : 'To add your first domain, start your 3-day free trial of AccessBell Pro.',
       ],
     },
@@ -196,7 +196,7 @@ function domainSteps(me, { selectTab }) {
       target: '#tab-pages',
       before: onTab('pages'),
       title: 'Pages',
-      body: 'Add any URL on this domain to monitor, up to 25. Pages found by the automatic crawl and sitemap scan are listed below, so you can choose which ones to monitor.',
+      body: 'Add any URL on this domain to monitor, up to 500. Pages found by the automatic crawl and sitemap scan are listed below, so you can choose which ones to monitor.',
     },
     {
       target: '#tab-settings',

@@ -10,7 +10,7 @@ AccessBell has one plan, **Pro**, at **$29 per domain per month**. Every feature
 
 ## What Is Included
 
-- Up to **25 monitored URLs per domain**
+- Up to **500 monitored URLs per domain**
 - **Unlimited rescans** and daily scheduled monitoring
 - WCAG 2.0, 2.1 or 2.2 at Level A, AA or AAA
 - Desktop and mobile testing, subdomains, staging sites with custom headers, page load delay and scrolling
@@ -35,4 +35,4 @@ Rescan as often as you like. To keep the service fast for everyone, very high au
 
 Your monthly price is $29 multiplied by the number of domains in your plan. The **Billing** page shows the current total. See [Add more domains to your plan](/resources/help-center/billing/add-more-domains-to-your-plan).
 
-Need more than 25 URLs per domain? [Talk to us](/contact?topic=sales).
+Need more than 500 URLs per domain? [Talk to us](/contact?topic=sales).

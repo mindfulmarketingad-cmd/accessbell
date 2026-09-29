@@ -15,7 +15,18 @@ const LIMITS = {
   navigationMs: 20_000,
   settleMs: 5_000,
   maxSamples: 3,
+  maxElements: 25,
 };
+
+/** A failing element for the issue details page: its HTML, CSS selector and what to fix. */
+const elementOf = (n) => ({
+  html: clip(n.html, 300),
+  target: (Array.isArray(n.target) ? n.target.flat(Infinity) : [])
+    .map(String)
+    .join(' ')
+    .slice(0, 300),
+  fix: fixText(n),
+});
 
 // Which axe tags to run for each standard the visitor can pick.
 const TAGS = {
@@ -82,6 +93,7 @@ export function mapAxeResults(results, standard = 'wcag22') {
       wcag: wcagRefs(v.tags),
       count: v.nodes.length,
       samples: v.nodes.slice(0, LIMITS.maxSamples).map((n) => clip(n.html, 220)),
+      elements: v.nodes.slice(0, LIMITS.maxElements).map(elementOf),
       helpUrl: safeHelpUrl(v.helpUrl),
     }))
     .sort((a, b) => IMPACT_ORDER[a.impact] - IMPACT_ORDER[b.impact] || b.count - a.count);
@@ -93,7 +105,9 @@ export function mapAxeResults(results, standard = 'wcag22') {
     id: r.id,
     title: r.help,
     wcag: wcagRefs(r.tags),
+    description: r.description,
     count: r.nodes.length,
+    elements: r.nodes.slice(0, LIMITS.maxElements).map(elementOf),
     helpUrl: safeHelpUrl(r.helpUrl),
   }));
 

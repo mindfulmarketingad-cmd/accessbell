@@ -51,7 +51,7 @@ The pattern across overlay lawsuits, UserWay's included, is the same: a widget p
 | Compliance claims | Markets ADA, WCAG 2.1/2.2, Section 508, AODA and EN 301 549 alignment through the widget | Scans against the specific standard you pick — WCAG 2.2, 2.1, 2.0 AA, ADA, Section 508 or EN 301 549 |
 | Legal support | A pledged support program with terms worth reading closely | No legal advice claimed; a documented scan history and fix log you control |
 | Pricing | Free tier; paid plans scale by monthly page views | Flat $29 per domain per month, unlimited rescans |
-| Monitoring | Widget runs continuously but does not report new defects back to your team | Scheduled scans of up to 25 URLs per domain with regression alerts |
+| Monitoring | Widget runs continuously but does not report new defects back to your team | Scheduled scans of up to 500 URLs per domain with regression alerts |
 
 ## Making the Switch
 

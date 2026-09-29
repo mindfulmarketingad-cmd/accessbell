@@ -1,0 +1,57 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+import Icon from '../../components/Icon.astro';
+---
+<AppLayout title="Issue details" section="overview">
+  <header class="domain-top">
+    <a class="icon-btn" href="/app" data-back><Icon name="back" /><span class="visually-hidden">Back to the domain</span></a>
+    <div class="domain-title">
+      <nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="/app">Domains</a></li><li data-crumb-host></li></ol></nav>
+      <h1 data-title>Loading...</h1>
+    </div>
+  </header>
+  <p class="progress-note" data-progress role="status" aria-live="polite"></p>
+
+  <div class="app-tabs" data-tabs hidden>
+    <div class="tablist" role="tablist" aria-label="Issue views">
+      <button type="button" role="tab" id="tab-overview" aria-controls="panel-overview" aria-selected="true" tabindex="0"><Icon name="chart" /> Issue Overview</button>
+      <button type="button" role="tab" id="tab-failed" aria-controls="panel-failed" aria-selected="false" tabindex="-1"><Icon name="alert" /> <span data-failed-label>Failed Elements</span></button>
+      <button type="button" role="tab" id="tab-fixed" aria-controls="panel-fixed" aria-selected="false" tabindex="-1"><Icon name="check-circle" /> <span data-fixed-label>Fixed Elements</span></button>
+    </div>
+
+    <div role="tabpanel" id="panel-overview" aria-labelledby="tab-overview" tabindex="0">
+      <div class="fix-promo" data-fix-promo hidden>
+        <span class="fix-promo-icon" aria-hidden="true"><Icon name="sparkle" /></span>
+        <div>
+          <h2>Fix this issue with AccessBellFix</h2>
+          <p>Add the right text for each failed element in the Failed Elements tab, and AccessBellFix applies it on your site. You approve every fix.</p>
+        </div>
+        <button class="btn" type="button" data-goto-failed>Fix failed elements</button>
+      </div>
+      <section aria-labelledby="stats-title">
+        <h2 id="stats-title" class="visually-hidden">Issue summary</h2>
+        <div class="issue-stats" data-stats></div>
+      </section>
+      <section class="issue-desc" aria-labelledby="desc-title">
+        <h2 id="desc-title">Issue Description</h2>
+        <div class="issue-desc-body" data-desc></div>
+      </section>
+    </div>
+
+    <div role="tabpanel" id="panel-failed" aria-labelledby="tab-failed" tabindex="0" hidden>
+      <h2 class="visually-hidden">Failed elements</h2>
+      <p class="muted" data-failed-sub></p>
+      <p class="status-line" data-fix-status role="status" aria-live="polite"></p>
+      <div data-failed></div>
+    </div>
+
+    <div role="tabpanel" id="panel-fixed" aria-labelledby="tab-fixed" tabindex="0" hidden>
+      <h2 class="visually-hidden">Fixed elements</h2>
+      <p class="muted">Elements that failed in the previous scan of a page and pass in its latest scan.</p>
+      <div data-fixed></div>
+    </div>
+  </div>
+</AppLayout>
+<script>
+  import '../../scripts/app/issue.js';
+</script>

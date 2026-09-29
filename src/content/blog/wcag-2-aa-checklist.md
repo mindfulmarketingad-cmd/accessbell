@@ -166,7 +166,7 @@ A practical split:
 
 - **Automated**: run a free scan against the standard you need, such as the [WCAG 2.1 AA checker](/resources/wcag-2-1-aa-checker), the [ADA compliance checker](/resources/ada-compliance-checker), the [Section 508 checker](/resources/section-508-checker) or the [EN 301 549 checker](/resources/en-301-549-checker).
 - **Manual**: use the checklist on your key templates and journeys.
-- **Ongoing**: monitor your important pages so new issues are caught as content changes. [AccessBell Pro](/pricing) rescans up to 25 URLs per domain every day.
+- **Ongoing**: monitor your important pages so new issues are caught as content changes. [AccessBell Pro](/pricing) rescans up to 500 URLs per domain every day.
 
 Read more in [automated vs manual accessibility testing](/blog/automated-vs-manual-accessibility-testing).
 

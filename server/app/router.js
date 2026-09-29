@@ -8,7 +8,8 @@ import { checkoutUrl, portalUrl, billingSummary } from './billing.js';
 import {
   listDomains, createDomain, updateDomainSettings, deleteDomain, addPage, setMonitored, deletePage, discoverPages, domainOverview, selectPages, addPages,
 } from './domains.js';
-import { rescanPage, getScan, pageHistory } from './scanning.js';
+import { rescanPage, getScan, pageHistory, startDomainScan, scanStatus } from './scanning.js';
+import { domainIssue } from './issues.js';
 import { one } from './db.js';
 import { listMembers, inviteMember, changeRole, removeMember } from './team.js';
 import { config, missingConfig } from './config.js';
@@ -200,6 +201,9 @@ const routes = {
   async 'GET domain'({ ctx, url }) {
     return domainOverview(ctx, url.searchParams.get('id'));
   },
+  async 'GET domain/issue'({ ctx, url }) {
+    return domainIssue(ctx, url.searchParams.get('id'), url.searchParams.get('rule'));
+  },
   async 'POST domain/settings'({ ctx, body }) {
     return { settings: await updateDomainSettings(ctx, body?.id, body?.settings) };
   },
@@ -236,6 +240,12 @@ const routes = {
 
   async 'POST scan'({ ctx, body }) {
     return { scans: await rescanPage(ctx, body?.pageId) };
+  },
+  async 'POST domain/scan'({ ctx, body }) {
+    return startDomainScan(ctx, body?.id);
+  },
+  async 'GET domain/scan-status'({ ctx, url }) {
+    return scanStatus(ctx, url.searchParams.get('id'), url.searchParams.get('since'));
   },
   async 'GET scan'({ ctx, url }) {
     return { scan: await getScan(ctx, url.searchParams.get('id')) };

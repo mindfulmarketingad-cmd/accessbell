@@ -63,7 +63,7 @@ The practical takeaway: use one or two automated tools to find and fix the objec
 - **Plain-language fixes.** Each issue explains what is wrong, why it matters, which WCAG criterion it fails and how to fix it, with the exact failing code and a link to detailed guidance.
 - **Ranked by impact.** Critical and serious issues come first, so you know what to fix today.
 - **Honest about limits.** Items a machine cannot decide appear in a separate "needs manual review" list instead of being hidden or reported as failures.
-- **Grows with you.** When you are ready, the Pro plan adds monitoring of up to 25 URLs per domain with unlimited rescans. It also adds scheduled scans, a scan history you can use as audit evidence, component grouping and team roles.
+- **Grows with you.** When you are ready, the Pro plan adds monitoring of up to 500 URLs per domain with unlimited rescans. It also adds scheduled scans, a scan history you can use as audit evidence, component grouping and team roles.
 
 ### Limitations
 

@@ -23,7 +23,7 @@ Perceivable starts open. Each row shows:
 
 | Status | Meaning |
 | --- | --- |
-| Issues | Automated rules found failing elements for this criterion. The number is how many. Select it to open the Issues tab. |
+| Issues | Automated rules found failing elements for this criterion. The number is how many. Select it to see the failing rules, then select a rule to open [its details](/resources/help-center/fixing-issues/read-an-issue). |
 | Passed | Automated rules for this criterion ran and found nothing wrong. |
 | Not tested | No automated rule produced a result for this criterion. Either no rule exists for it, or the content it applies to, such as video, was not found. |
 
@@ -31,7 +31,7 @@ Perceivable starts open. Each row shows:
 
 | Status | Meaning |
 | --- | --- |
-| Needs review (number) | Automated tests flagged items for a person to check. Select it to open the Manually Required tab. |
+| Needs review (number) | Automated tests flagged items for a person to check. Select it to see the rules involved and open the elements to check. |
 | Needs review | Automated tests could not check this criterion, so a person needs to test it. |
 | Spot check | Automated rules cover part of this criterion. A quick manual check confirms the rest. |
 

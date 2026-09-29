@@ -1,9 +1,9 @@
 // Running and storing scans for monitored pages.
 import { query, one } from './db.js';
 import { LIMITS } from './config.js';
-import { AppError, notFound } from './errors.js';
+import { AppError, badRequest, notFound } from './errors.js';
 import { requireRole, requireSubscription } from './accounts.js';
-import { getPage, DEFAULT_SETTINGS } from './domains.js';
+import { getPage, getDomain, DEFAULT_SETTINGS } from './domains.js';
 import { browserAudit, sanitizeHeaders } from '../browser-audit.js';
 import { audit } from '../audit.js';
 import { fetchPage } from '../fetch-page.js';
@@ -95,6 +95,59 @@ export async function rescanPage(ctx, pageId) {
     throw new AppError(429, 'You have run a very large number of scans in the last hour. Please wait a little and try again.', 'fair_use');
   }
   return scanPage(page, { accountId: ctx.account.id, trigger: 'manual', userId: ctx.user.id });
+}
+
+/** Above this many pages, a dashboard scan runs on the server instead of from the browser tab. */
+export const BACKGROUND_SCAN_FROM = 26;
+
+async function sendScanEvents(events) {
+  const { inngest } = await import('../inngest/functions.js');
+  for (let i = 0; i < events.length; i += 500) await inngest.send(events.slice(i, i + 500));
+}
+
+/**
+ * "Start Scan" / "Re-scan domain". Small selections are scanned by the
+ * browser tab page by page (mode "client"); large ones are queued as
+ * background jobs (mode "background") and the tab polls scanStatus.
+ */
+export async function startDomainScan(ctx, domainId, { send = sendScanEvents, background = Boolean(process.env.INNGEST_EVENT_KEY) } = {}) {
+  requireRole(ctx, 'member');
+  requireSubscription(ctx);
+  const domain = await getDomain(ctx, domainId);
+  const pages = await query('select id, url from app.pages where domain_id = $1 and monitored order by url', [domain.id]);
+  if (!pages.length) throw new AppError(400, 'Select pages to scan first.', 'no_pages');
+  const since = new Date().toISOString();
+  if (!background || pages.length < BACKGROUND_SCAN_FROM) return { mode: 'client', since, pages };
+  const recent = await one(
+    `select count(*)::int as n from app.scans where account_id = $1 and created_at > now() - interval '1 hour'`,
+    [ctx.account.id],
+  );
+  if (recent.n + pages.length > LIMITS.scansPerAccountPerHour) {
+    throw new AppError(429, 'You have run a very large number of scans in the last hour. Please wait a little and try again.', 'fair_use');
+  }
+  await send(pages.map((p) => ({ name: 'app/page.scan', data: { pageId: p.id, userId: ctx.user.id } })));
+  return { mode: 'background', since, total: pages.length };
+}
+
+/** Progress of a background scan: monitored pages with a scan since `since`. */
+export async function scanStatus(ctx, domainId, since) {
+  const domain = await getDomain(ctx, domainId);
+  const from = new Date(since);
+  if (Number.isNaN(from.getTime())) throw badRequest('Invalid start time.');
+  const row = await one(
+    `select count(*)::int as total,
+            count(*) filter (where s.done)::int as done,
+            count(*) filter (where s.done and not s.ok)::int as failed
+       from app.pages p
+       left join lateral (
+         select true as done, bool_or(status = 'done') as ok
+           from app.scans where page_id = p.id and created_at >= $2
+          having count(*) > 0
+       ) s on true
+      where p.domain_id = $1 and p.monitored`,
+    [domain.id, from.toISOString()],
+  );
+  return { total: row.total, done: row.done, failed: row.failed };
 }
 
 /** Full report for one stored scan. */

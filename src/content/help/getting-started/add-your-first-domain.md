@@ -39,4 +39,4 @@ Answer a few questions and AccessBell writes your accessibility statement: organ
 
 ## Select Pages and Scan
 
-Back on Your Domains, the new domain shows **Pending scan** and a **Select pages & Scan** button. Select it to open **Found Pages**, choose up to 25 pages and select **Start Scan**. See [Find and monitor pages](/resources/help-center/domains/find-and-monitor-pages) and [Run your first scan](/resources/help-center/getting-started/run-your-first-scan).
+Back on Your Domains, the new domain shows **Pending scan** and a **Select pages & Scan** button. Select it to open **Found Pages**, choose up to 500 pages and select **Start Scan**. See [Find and monitor pages](/resources/help-center/domains/find-and-monitor-pages) and [Run your first scan](/resources/help-center/getting-started/run-your-first-scan).

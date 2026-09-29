@@ -1,12 +1,12 @@
 ---
 title: 'Find and Monitor Pages'
-description: 'Use Found Pages to see every page AccessBell found on your domain, open each one, choose up to 25 to scan and monitor, and add missing pages by hand.'
+description: 'Use Found Pages to see every page AccessBell found on your domain, open each one, choose up to 500 to scan and monitor, and add missing pages by hand.'
 order: 1
 updatedDate: 2026-09-29
 sources: ['sitemaps']
 ---
 
-Each domain scans and monitors up to 25 pages. Monitored pages are scanned when you start a scan and automatically every day. The **Found Pages** screen is where you choose them.
+Each domain scans and monitors up to 500 pages. Monitored pages are scanned when you start a scan and automatically every day. The **Found Pages** screen is where you choose them.
 
 ## Open Found Pages
 
@@ -17,8 +17,8 @@ The first time it opens, AccessBell crawls the site: it reads your XML sitemap (
 
 ## Choose Pages to Scan
 
-1. Tick the pages you want to scan, up to 25. Select **Open** on any row to view the page in a new tab first.
-2. Use **Search pages** to find a page quickly. The checkbox at the top selects the pages shown, up to 25; **Clear selection** starts again.
+1. Tick the pages you want to scan, up to 500. Select **Open** on any row to view the page in a new tab first.
+2. Use **Search pages** to find a page quickly. The checkbox at the top selects the pages shown, up to 500; **Clear selection** starts again.
 3. Select **Start Scan**.
 
 A **Scanning in progress** window shows how many pages are done. Keep the tab open until it finishes. When it does, Your Domains shows the domain's score, active and resolved issues and scan dates.

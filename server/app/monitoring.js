@@ -16,7 +16,7 @@ export async function pagesDueForMonitoring() {
          join app.accounts a on a.id = d.account_id
         where p.monitored and ${rule}
         order by p.last_scanned_at asc nulls first
-        limit 5000`,
+        limit 50000`,
     ),
   );
 }
@@ -27,7 +27,7 @@ const severeRules = (issues) => new Set((issues || []).filter((i) => SEVERE.has(
  * Rescan one page (scheduled). Returns the new severe rule ids compared with
  * the previous scan on the same device, so the caller can alert.
  */
-export async function monitorPage(pageId, { deps } = {}) {
+export async function monitorPage(pageId, { deps, trigger = 'scheduled', userId = null } = {}) {
   const page = await withAccessRule((rule) =>
     one(
       `select p.*, d.settings, d.hostname, d.account_id, ${rule} as has_access
@@ -45,7 +45,7 @@ export async function monitorPage(pageId, { deps } = {}) {
       where page_id = $1 and status = 'done' order by device, created_at desc`,
     [page.id],
   );
-  const stored = await scanPage(page, { accountId: page.account_id, trigger: 'scheduled', deps });
+  const stored = await scanPage(page, { accountId: page.account_id, trigger, userId, deps });
 
   const regressions = [];
   for (const scan of stored.filter((s) => s.status === 'done')) {

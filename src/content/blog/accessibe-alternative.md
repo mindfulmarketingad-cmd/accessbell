@@ -53,7 +53,7 @@ That is also why so many accessibility lawsuit settlements specifically require 
 | Standards | Markets WCAG 2.1 AA compliance via the widget | Tests against WCAG 2.2, 2.1 or 2.0 AA, ADA, Section 508 or EN 301 549, your choice |
 | Pricing model | Scales with monthly site traffic | Flat $29 per domain per month, unlimited rescans |
 | Free trial | Free scan available; paid plans required for the widget | Free scan, then a 3-day free trial of continuous monitoring |
-| Ongoing monitoring | Widget runs continuously but does not report new code-level defects to you | Scheduled scans of up to 25 URLs per domain, with alerts when something regresses |
+| Ongoing monitoring | Widget runs continuously but does not report new code-level defects to you | Scheduled scans of up to 500 URLs per domain, with alerts when something regresses |
 
 If your goal is a website that is actually easier to use for people with disabilities, and a defensible record that you tested and fixed it, a scanner that shows you real code beats a widget that patches the browser. [Run a free scan](/#scan) and see exactly what AccessBell finds on your site, mapped to the WCAG criteria that matter, with no overlay involved.
 

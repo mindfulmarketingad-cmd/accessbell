@@ -5012,25 +5012,42 @@ h2[tabindex='-1']:focus {
     radial-gradient(30% 50% at 78% 80%, rgb(239 217 160 / 0.45), transparent 70%),
     radial-gradient(35% 60% at 98% 70%, rgb(53 58 71 / 0.35), transparent 70%);
 }
+/* Hero content is centered; a soft white glow behind it keeps text readable over the ribbon. */
+.hero-flow {
+  text-align: center;
+}
 .hero-copy {
-  max-width: 660px;
+  position: relative;
+  max-width: 720px;
+  margin-inline: auto;
+}
+.hero-copy::before {
+  content: '';
+  position: absolute;
+  inset: -48px -96px;
+  z-index: -1;
+  background: radial-gradient(closest-side, rgb(255 255 255 / 0.94), rgb(255 255 255 / 0.8) 60%, transparent);
+  pointer-events: none;
 }
 .hero-flow h1 {
-  margin-inline: 0;
-  max-width: 640px;
+  margin-inline: auto;
+  max-width: 680px;
 }
 .hero-flow .lead {
-  margin: 0 0 32px;
+  margin: 0 auto 32px;
+  max-width: 640px;
 }
 .hero-flow .scan-form {
-  margin-inline: 0;
+  margin-inline: auto;
   max-width: 660px;
 }
-.hero-flow .scan-meta {
-  justify-content: flex-start;
+.hero-flow .scan-meta,
+.hero-flow .compliance-row,
+.hero-flow .compliance-row ul {
+  justify-content: center;
 }
 .hero-flow .scan-error {
-  margin-inline: 0;
+  margin-inline: auto;
 }
 @media (max-width: 899px) {
   /* On small screens the ribbon sits behind a soft white veil so text stays readable. */

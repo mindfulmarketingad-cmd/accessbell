@@ -5,9 +5,12 @@ export const ROLE_RANK = { viewer: 1, member: 2, admin: 3, owner: 4 };
 
 /** Pro plan limits. */
 export const LIMITS = {
-  monitoredPagesPerDomain: 25,
+  // Also enforced by the database (supabase/migrations/0006_page_limit_500.sql).
+  monitoredPagesPerDomain: 500,
   discoveredPagesPerDomain: 2000,
-  scansPerAccountPerHour: 600, // "unlimited rescans", fair use only
+  // Fair use for "unlimited rescans": enough for a full scan of 500 pages on
+  // desktop and mobile across a few domains in one hour.
+  scansPerAccountPerHour: 5000,
 };
 
 /** Subscription states that unlock the paid features. */

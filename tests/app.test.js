@@ -59,6 +59,13 @@ class Client {
   }
 }
 
+/** A server-side request context for a signed-in client, for calling modules directly. */
+async function ctxFor(client) {
+  const me = await client.get('me');
+  const account = (await db.query('select * from app.accounts where id = $1', [me.body.account.id])).rows[0];
+  return { user: { id: me.body.user.id }, account, role: me.body.role || 'owner', subscriber: true };
+}
+
 /** What the site owner does by hand in Supabase after a customer pays. */
 async function markSubscriber(accountId, status = 'Subscriber') {
   await db.query(
@@ -116,6 +123,7 @@ before(async () => {
   await db.query(readFileSync(new URL('../supabase/migrations/0003_subscriber_access.sql', import.meta.url), 'utf8'));
   await db.query(readFileSync(new URL('../supabase/migrations/0004_subscriber_emails.sql', import.meta.url), 'utf8'));
   await db.query(readFileSync(new URL('../supabase/migrations/0005_domain_setup.sql', import.meta.url), 'utf8'));
+  await db.query(readFileSync(new URL('../supabase/migrations/0006_page_limit_500.sql', import.meta.url), 'utf8'));
 
   fake = await startFakeAuth(db);
   const { port } = fake.server.address();
@@ -383,26 +391,51 @@ test('domains respect the quota and monitor the home page', { skip }, async () =
   assert.equal(list.body.domains[0].monitored, 1);
 });
 
-test('a domain monitors at most 25 URLs, and pages must be on the domain', { skip }, async () => {
+test('a domain monitors at most 500 URLs, and pages must be on the domain', { skip }, async () => {
   const owner = new Client('10.0.1.4');
   await owner.post('auth/login', { email: 'owner@acme.test', password: 'correct horse' });
   const { body } = await owner.get('domains');
   const domain = body.domains.find((d) => d.hostname === 'example.com');
-  for (let i = 1; i <= 24; i++) {
+  // The home page is already monitored; add 497 more directly (the trigger still runs), then 2 through the API.
+  await db.query(
+    `insert into app.pages (domain_id, url, monitored, source) select $1, 'https://example.com/bulk-' || g, true, 'manual' from generate_series(1, 497) g`,
+    [domain.id],
+  );
+  for (let i = 1; i <= 2; i++) {
     const r = await owner.post('pages', { domainId: domain.id, url: `/page-${i}` });
     assert.equal(r.status, 200, `page ${i}`);
   }
-  const over = await owner.post('pages', { domainId: domain.id, url: '/page-25' });
+  const over = await owner.post('pages', { domainId: domain.id, url: '/page-3' });
   assert.equal(over.status, 400);
   assert.equal(over.body.code, 'page_limit');
+  assert.match(over.body.error, /500/);
   const offsite = await owner.post('pages', { domainId: domain.id, url: 'https://other.test/' });
   assert.equal(offsite.status, 400);
 
   const overview = await owner.get(`domain?id=${domain.id}`);
-  assert.equal(overview.body.monitoredCount, 25);
+  assert.equal(overview.body.monitoredCount, 500);
+  assert.equal(overview.body.monitoredLimit, 500);
   const first = overview.body.pages.find((p) => p.url.endsWith('/page-1'));
   assert.equal((await owner.post('pages/monitor', { id: first.id, monitored: false })).status, 200);
-  assert.equal((await owner.post('pages', { domainId: domain.id, url: '/page-25' })).status, 200);
+  assert.equal((await owner.post('pages', { domainId: domain.id, url: '/page-3' })).status, 200);
+
+  // Large scans are queued as background jobs; small ones run from the browser tab.
+  const sent = [];
+  const ctx = await ctxFor(owner);
+  const big = await scanning.startDomainScan(ctx, domain.id, { background: true, send: async (events) => sent.push(...events) });
+  assert.equal(big.mode, 'background');
+  assert.equal(big.total, 500);
+  assert.equal(sent.length, 500);
+  assert.equal(sent[0].name, 'app/page.scan');
+  const status = await owner.get(`domain/scan-status?id=${domain.id}&since=${encodeURIComponent(big.since)}`);
+  assert.deepEqual(status.body, { total: 500, done: 0, failed: 0 });
+  assert.equal((await owner.get(`domain/scan-status?id=${domain.id}&since=nope`)).status, 400);
+  const local = await owner.post('domain/scan', { id: domain.id });
+  assert.equal(local.body.mode, 'client', 'without Inngest configured, the tab runs the scan');
+
+  // Back to a small set for the tests that follow.
+  await db.query(`update app.pages set monitored = false where domain_id = $1 and url like 'https://example.com/bulk-%'`, [domain.id]);
+  await db.query(`delete from app.pages where domain_id = $1 and url like 'https://example.com/bulk-%'`, [domain.id]);
 });
 
 test('settings are validated and header values are never returned', { skip }, async () => {
@@ -497,7 +530,20 @@ test('scans are stored per device, update the page, and feed the overview with c
   assert.equal(after.body.components[0].pages, 3);
   assert.equal(after.body.criteria[0].sc, '4.1.2');
   // Coverage by success criterion, review items, history and rule details for the dashboard.
-  assert.deepEqual(after.body.coverage['4.1.2'], { issues: 6, passed: false, review: 0 });
+  assert.deepEqual(after.body.coverage['4.1.2'], { issues: 6, passed: false, review: 0, rules: [{ id: 'button-name', title: issue.title }], reviewRules: [] });
+  assert.deepEqual(after.body.coverage['1.4.3'].reviewRules.map((r) => r.id), ['color-contrast']);
+
+  // Issue details: where it fails, its share of all issues, and review items.
+  const detail = await owner.get(`domain/issue?id=${domain.id}&rule=button-name`);
+  assert.equal(detail.status, 200);
+  assert.equal(detail.body.issue.kind, 'failed');
+  assert.equal(detail.body.pages, 3);
+  assert.equal(detail.body.elements, 6);
+  assert.equal(detail.body.share, 1);
+  assert.equal(detail.body.failed[0].elements[0].html, navButton, 'falls back to samples for older scans');
+  assert.equal((await owner.get(`domain/issue?id=${domain.id}&rule=color-contrast`)).body.issue.kind, 'review');
+  assert.equal((await owner.get(`domain/issue?id=${domain.id}&rule=no-such-rule`)).status, 404);
+  assert.equal((await owner.get(`domain/issue?id=${domain.id}&rule=${encodeURIComponent('<script>')}`)).status, 400);
   assert.equal(after.body.coverage['1.1.1'].passed, true);
   assert.equal(after.body.coverage['1.4.3'].review, 12);
   assert.equal(after.body.review[0].id, 'color-contrast');
@@ -522,6 +568,10 @@ test('scans are stored per device, update the page, and feed the overview with c
   };
   await rescan(pages[2].id, []);
   assert.equal((await owner.get(`domain?id=${domain.id}`)).body.resolved, 2);
+  const fixedDetail = (await owner.get(`domain/issue?id=${domain.id}&rule=button-name`)).body;
+  assert.equal(fixedDetail.fixed.length, 2, 'fixed on desktop and mobile of one page');
+  assert.equal(fixedDetail.fixedElements, 2);
+  assert.equal(fixedDetail.pages, 2);
   const listed = (await owner.get('domains')).body.domains.find((d) => d.id === domain.id);
   assert.equal(listed.resolved, 2, 'the domain list shows resolved issues');
   assert.equal(listed.worstImpact, 'critical');
@@ -553,7 +603,7 @@ test('monitoring flags only new serious issues', { skip }, async () => {
     assert.equal(result.skipped, false);
     assert.deepEqual([...new Set(result.regressions.map((r) => r.rule))], ['image-alt']);
     const due = await monitoring.pagesDueForMonitoring();
-    assert.ok(due.length >= 25);
+    assert.ok(due.some((d) => d.id === page.id), 'monitored pages of paying accounts are due');
   } finally {
     delete process.env.BROWSER_WS_ENDPOINT;
   }
@@ -740,7 +790,7 @@ test('the accessibility statement is validated, saved and published at a public 
   assert.ok([403, 404].includes(v.status), 'viewers cannot change the statement');
 });
 
-test('found pages: add pages by hand, select up to 25 to scan, and failed scans mark a partial scan', { skip }, async () => {
+test('found pages: add pages by hand, select up to 500 to scan, and failed scans mark a partial scan', { skip }, async () => {
   const owner = new Client('10.0.7.1');
   await owner.post('auth/login', { email: 'owner@acme.test', password: 'correct horse' });
   const { body } = await owner.get('domains');
@@ -753,7 +803,7 @@ test('found pages: add pages by hand, select up to 25 to scan, and failed scans 
   assert.equal((await owner.post('domain/pages/add', { id: domain.id, urls: ['https://other.test/x'] })).status, 400);
 
   let overview = (await owner.get(`domain?id=${domain.id}`)).body;
-  const ids = overview.pages.slice(0, 26).map((p) => p.id);
+  const ids = Array.from({ length: 501 }, () => crypto.randomUUID());
   const tooMany = await owner.post('domain/pages/select', { id: domain.id, pageIds: ids });
   assert.equal(tooMany.status, 400);
   assert.equal((await owner.post('domain/pages/select', { id: domain.id, pageIds: [] })).status, 400);

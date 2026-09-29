@@ -28,7 +28,17 @@ Use the **Severity** menu at the top of the tab to show one severity at a time.
 
 **3. How to solve it** gives step-by-step instructions. For the most common issues, you also get **Correct markup solutions**: working code examples with line numbers and a **Copy** button. Below them, **For your page** gives the specific fix for what was found on your site.
 
-A link at the bottom opens detailed guidance for the rule.
+A link at the bottom opens detailed guidance for the rule, and **View every failed element and fixes** opens the issue's own page.
+
+## The Issue Details Page
+
+Open it from an issue, from a **Manually Required** item, or from the coverage table on the Overview: select a criterion's **issues** or **Needs review** status to see the rules behind it, then select a rule.
+
+It has three tabs:
+
+- **Issue Overview**: summary cards for pages affected, failed elements, the issue's share of all issues, severity, who is most affected (for example, blind and screen reader users or people with low vision) and the WCAG success criteria, with links to our guide for each criterion. Below them, **What does this mean?** and **How to solve it**, with **Correct markup solutions** and **Incorrect markup solutions** you can copy.
+- **Failed Elements**: every failing element from the latest scan of each page (up to 25 per rule per page), grouped by page and device, with its HTML, its CSS selector and what to fix. For missing alt text, button and link names and the page language, you can type the fix under an element and apply it with [AccessBellFix](/resources/help-center/getting-started/install-accessbellfix).
+- **Fixed Elements**: pages where this issue failed in the previous scan and passes in the latest one.
 
 ## What to Fix First
 

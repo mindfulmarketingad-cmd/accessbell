@@ -7,7 +7,8 @@ import { scoreRing, historyChart } from './charts.js';
 import { fixExample } from '../shared/fix-examples.js';
 import { criteriaFor, PRINCIPLES } from '../../../server/wcag-criteria.js';
 import { setupTour } from './onboarding.js';
-import { domainMenu, scanWithDialog, relative, nextScheduledScan } from './domain-actions.js';
+import { codeBlock } from './code-block.js';
+import { domainMenu, scanDomainWithDialog, scanMessage, relative, nextScheduledScan } from './domain-actions.js';
 import { mountFixInstall, mountFixList, mountStatementFlow, statementUrl } from './site-tools.js';
 
 const me = await boot();
@@ -102,24 +103,86 @@ function renderHistory() {
 
 // ---------- Overview: coverage by principle ----------
 
+// A small non-modal popup next to a coverage chip, like a tooltip you can click into.
+let openPop = null;
+function closePop(returnFocus = true) {
+  if (!openPop) return;
+  const { node, trigger } = openPop;
+  openPop = null;
+  node.remove();
+  trigger.setAttribute('aria-expanded', 'false');
+  if (returnFocus) trigger.focus();
+}
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && openPop) closePop();
+});
+document.addEventListener('click', (e) => {
+  if (openPop && !openPop.node.contains(e.target) && !openPop.trigger.contains(e.target)) closePop(false);
+});
+
+const issueHref = (ruleId) => `/app/issue?id=${encodeURIComponent(id)}&rule=${encodeURIComponent(ruleId)}`;
+const kebab = (s) => s.toLowerCase().replace(/[()]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const criterionPath = (c) => `/resources/wcag/${c.sc.replace(/\./g, '-')}-${kebab(c.name)}`;
+
+function popover(trigger, { tone, iconName, title, body }) {
+  const was = openPop?.trigger === trigger;
+  closePop(false);
+  if (was) return;
+  const titleId = `pop-${Math.random().toString(36).slice(2, 8)}`;
+  const close = el('button', { type: 'button', class: 'icon-btn pop-close' }, [icon('x'), el('span', { class: 'visually-hidden', text: 'Close' })]);
+  const node = el('div', { class: `cov-pop cov-pop-${tone}`, role: 'dialog', 'aria-labelledby': titleId }, [
+    el('div', { class: 'cov-pop-head' }, [icon(iconName), el('h3', { id: titleId, tabindex: '-1', text: title }), close]),
+    ...body,
+  ]);
+  close.addEventListener('click', () => closePop());
+  document.body.append(node);
+  const r = trigger.getBoundingClientRect();
+  const w = node.offsetWidth;
+  const left = Math.min(Math.max(8, r.right + window.scrollX - w), document.documentElement.clientWidth - w - 8);
+  node.style.left = `${left}px`;
+  node.style.top = `${r.bottom + window.scrollY + 8}px`;
+  trigger.setAttribute('aria-expanded', 'true');
+  openPop = { node, trigger };
+  node.querySelector('h3').focus();
+}
+
+const ruleLinks = (rules, tone) =>
+  el(
+    'ul',
+    { class: 'pop-rules' },
+    rules.map((r) => el('li', {}, [el('a', { class: `rule-pill rule-${tone}`, href: issueHref(r.id) }, [icon(tone === 'bad' ? 'alert' : 'eye'), el('span', { text: r.id })]), el('small', { text: r.title })])),
+  );
+
 function coverageStatus(c) {
-  const cov = data.coverage[c.sc] || { issues: 0, passed: false, review: 0 };
-  const toTab = (name, kind, iconName, text) => {
-    const b = el('button', { type: 'button', class: `chip chip-${kind} chip-link` }, [icon(iconName), text]);
-    b.addEventListener('click', () => selectTab(name));
+  const cov = data.coverage[c.sc] || { issues: 0, passed: false, review: 0, rules: [], reviewRules: [] };
+  const trigger = (kind, iconName, text, open) => {
+    const b = el('button', { type: 'button', class: `chip chip-${kind} chip-link`, 'aria-haspopup': 'dialog', 'aria-expanded': 'false' }, [icon(iconName), text]);
+    b.addEventListener('click', (e) => {
+      e.stopPropagation();
+      open(b);
+    });
     return b;
   };
+  const guide = el('a', { href: criterionPath(c), text: `How to test ${c.sc} ${c.name}` });
   const auto = cov.issues
-    ? toTab('issues', 'bad', 'alert', plural(cov.issues, 'issue'))
+    ? trigger('bad', 'alert', plural(cov.issues, 'issue'), (b) =>
+        popover(b, { tone: 'bad', iconName: 'alert', title: 'Automated tests: Failed', body: [el('p', { class: 'pop-label', text: 'Issues failed' }), ruleLinks(cov.rules || [], 'bad')] }),
+      )
     : cov.passed
       ? chip('ok', 'check', 'Passed')
       : chip('muted', 'minus', 'Not tested');
   // Every criterion needs a person to confirm it; flagged items and untested criteria come first.
   const manual = cov.review
-    ? toTab('review', 'warn', 'eye', `Needs review (${cov.review})`)
+    ? trigger('warn', 'eye', `Needs review (${cov.review})`, (b) =>
+        popover(b, { tone: 'warn', iconName: 'eye', title: 'Manual review: Needs review', body: [el('p', { class: 'pop-label', text: 'Items to check' }), ruleLinks(cov.reviewRules || [], 'warn')] }),
+      )
     : cov.issues || cov.passed
-      ? chip('outline', 'eye', 'Spot check')
-      : chip('warn-outline', 'eye', 'Needs review');
+      ? trigger('outline', 'eye', 'Spot check', (b) =>
+          popover(b, { tone: 'muted', iconName: 'eye', title: 'Spot check', body: [el('p', { text: 'Automated rules cover part of this criterion. A quick manual check confirms the rest.' }), el('p', {}, [guide])] }),
+        )
+      : trigger('warn-outline', 'eye', 'Needs review', (b) =>
+          popover(b, { tone: 'bad', iconName: 'eye', title: 'Manual test needed', body: [el('p', { text: 'No automated test covers this criterion on your pages, so a person needs to check it.' }), el('p', {}, [guide])] }),
+        );
   return { cov, auto, manual };
 }
 
@@ -196,28 +259,6 @@ function renderComponents() {
 
 // ---------- Issues ----------
 
-/** Code block with line numbers and a Copy button. */
-function codeBlock(code, heading) {
-  const status = el('span', { class: 'visually-hidden', role: 'status', 'aria-live': 'polite' });
-  const copy = el('button', { type: 'button', class: 'copy-btn' }, [icon('copy'), el('span', { text: 'Copy' })]);
-  copy.addEventListener('click', async () => {
-    try {
-      await navigator.clipboard.writeText(code);
-      copy.lastChild.textContent = 'Copied';
-      status.textContent = 'Code copied to the clipboard.';
-      setTimeout(() => (copy.lastChild.textContent = 'Copy'), 2000);
-    } catch {
-      status.textContent = 'Copy is not available. Select the code and copy it manually.';
-    }
-  });
-  const lines = code.split('\n').map((line, i) => el('span', { class: 'code-line' }, [el('span', { class: 'ln', 'aria-hidden': 'true', text: String(i + 1) }), el('span', { class: line.trim().startsWith('<!--') || line.trim().startsWith('/*') ? 'cm' : '', text: line || ' ' })]));
-  return el('div', { class: 'code-block' }, [
-    el('div', { class: 'code-banner' }, [icon('check'), el('span', { text: heading })]),
-    el('div', { class: 'code-head' }, [el('span', { text: 'Code example' }), copy, status]),
-    el('pre', { tabindex: '0' }, [el('code', {}, lines)]),
-  ]);
-}
-
 function issueDetails(r) {
   const ex = fixExample(r.id);
   const where = r.samples.length
@@ -238,6 +279,7 @@ function issueDetails(r) {
     ex ? codeBlock(ex.code, 'Correct markup solutions') : null,
     r.fix && ex ? el('p', { class: 'muted' }, [el('strong', { text: 'For your page: ' }), r.fix]) : null,
     guidance ? el('p', {}, [guidance]) : null,
+    el('p', { class: 'no-print' }, [el('a', { class: 'btn btn-outline btn-sm', href: issueHref(r.id) }, ['View every failed element and fixes ', icon('arrow')])]),
   ]);
 }
 
@@ -303,8 +345,11 @@ function renderReview() {
       { class: 'review-list' },
       data.review.map((r) =>
         el('li', {}, [
-          el('div', {}, [el('strong', { text: r.title }), el('p', { class: 'muted', text: `${plural(r.elements, 'element')} on ${plural(r.pages, 'page')} - ${wcagLabel(r.wcag)}` })]),
-          r.helpUrl && r.helpUrl.startsWith('https://') ? el('a', { href: r.helpUrl, target: '_blank', rel: 'noopener noreferrer', text: 'How to review (opens in a new tab)' }) : null,
+          el('div', {}, [
+            el('a', { class: 'review-title', href: issueHref(r.id) }, [el('strong', { text: r.title })]),
+            el('p', { class: 'muted', text: `${plural(r.elements, 'element')} on ${plural(r.pages, 'page')} - ${wcagLabel(r.wcag)}` }),
+          ]),
+          el('a', { class: 'btn btn-outline btn-sm', href: issueHref(r.id), text: 'View elements to check' }),
         ]),
       ),
     ),
@@ -509,10 +554,9 @@ function bindActions() {
   rescanAll.addEventListener(
     'click',
     busy(rescanAll, progress, async () => {
-      const pages = data.pages.filter((p) => p.monitored);
-      const { total, failed } = await scanWithDialog(pages);
+      const result = await scanDomainWithDialog(id);
       await load();
-      progress.textContent = failed ? `Scan complete. ${failed} of ${total} pages could not be scanned.` : `Scan complete. All ${total} pages scanned.`;
+      progress.textContent = scanMessage(result, data.domain.hostname);
     }),
   );
 

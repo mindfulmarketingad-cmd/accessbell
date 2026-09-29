@@ -7,7 +7,7 @@ updatedDate: 2026-09-28
 sources: ['wai-evaluate']
 ---
 
-One AccessBell account can monitor as many domains as your plan includes. Each domain has its own 25 monitored URLs, settings, history and issues.
+One AccessBell account can monitor as many domains as your plan includes. Each domain has its own 500 monitored URLs, settings, history and issues.
 
 ## How Domain Slots Work
 

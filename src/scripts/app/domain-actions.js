@@ -27,7 +27,8 @@ function dialogParts() {
   const title = el('h2', { id: 'scan-dialog-title', text: 'Scanning in progress' });
   const text = el('p', { class: 'scan-dialog-text', role: 'status', 'aria-live': 'polite' });
   const bar = el('progress', { max: '1', value: '0', 'aria-labelledby': 'scan-dialog-title' });
-  const note = el('p', { class: 'muted scan-dialog-note', text: 'Each page is loaded in a real browser and tested against your WCAG settings. Keep this tab open until it finishes.' });
+  const note = el('p', { class: 'muted scan-dialog-note' });
+  const leave = el('button', { class: 'btn btn-outline', type: 'button', text: 'Keep scanning in the background' });
   const node = el('dialog', { class: 'dialog scan-dialog', 'aria-labelledby': 'scan-dialog-title' }, [
     el('div', { class: 'dialog-body' }, [
       el('div', { class: 'scan-anim', 'aria-hidden': 'true' }, [el('span'), el('span'), el('span'), icon('scan')]),
@@ -35,46 +36,74 @@ function dialogParts() {
       text,
       bar,
       note,
+      leave,
     ]),
   ]);
   // A scan cannot be cancelled half way, so Escape does not close the dialog.
   node.addEventListener('cancel', (e) => e.preventDefault());
   document.body.append(node);
-  scanDialog = { node, text, bar };
+  scanDialog = { node, text, bar, note, leave };
   return scanDialog;
 }
 
+const pagesText = (n) => `${n.toLocaleString()} page${n === 1 ? '' : 's'}`;
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
 /**
- * Scan pages two at a time while the dialog shows progress.
- * Resolves with { total, failed }.
+ * Scan a domain's monitored pages while the dialog shows progress. Small
+ * selections are scanned from this tab; large ones run on our servers and
+ * this polls their progress. Resolves with { total, failed, background, left }.
  */
-export async function scanWithDialog(pages) {
-  const { node, text, bar } = dialogParts();
-  const total = pages.length;
+export async function scanDomainWithDialog(domainId) {
+  const start = await api('domain/scan', { method: 'POST', body: { id: domainId } });
+  const { node, text, bar, note, leave } = dialogParts();
+  const total = start.mode === 'client' ? start.pages.length : start.total;
   bar.max = String(total);
   bar.value = 0;
-  text.textContent = `Scanning 0 of ${total} page${total === 1 ? '' : 's'}...`;
+  text.textContent = `Scanning 0 of ${pagesText(total)}...`;
   node.showModal();
   try {
-    const results = await pool(pages, 2, (p) => api('scan', { method: 'POST', body: { pageId: p.id } }), (done) => {
-      bar.value = done;
-      text.textContent = `Scanning ${done} of ${total} page${total === 1 ? '' : 's'}...`;
-    });
-    // A page fails when the request errors or every device scan of it failed.
-    const failed = results.filter((r) => r instanceof Error || !r?.scans?.some((x) => x.status === 'done')).length;
-    text.textContent = 'Scan complete. Loading your results...';
-    return { total, failed };
+    if (start.mode === 'client') {
+      note.textContent = 'Each page is loaded in a real browser and tested against your WCAG settings. Keep this tab open until it finishes.';
+      leave.hidden = true;
+      const results = await pool(start.pages, 2, (p) => api('scan', { method: 'POST', body: { pageId: p.id } }), (done) => {
+        bar.value = done;
+        text.textContent = `Scanning ${done} of ${pagesText(total)}...`;
+      });
+      // A page fails when the request errors or every device scan of it failed.
+      const failed = results.filter((r) => r instanceof Error || !r?.scans?.some((x) => x.status === 'done')).length;
+      text.textContent = 'Scan complete. Loading your results...';
+      return { total, failed, background: false };
+    }
+    note.textContent = 'This scan runs on our servers, so you can close this tab or keep working. Results appear as each page finishes.';
+    leave.hidden = false;
+    let left = false;
+    const onLeave = () => (left = true);
+    leave.addEventListener('click', onLeave, { once: true });
+    let status = { done: 0, failed: 0 };
+    while (!left && status.done < total) {
+      await sleep(4000);
+      status = await api(`domain/scan-status?id=${encodeURIComponent(domainId)}&since=${encodeURIComponent(start.since)}`).catch(() => status);
+      bar.value = status.done;
+      text.textContent = `Scanning ${status.done.toLocaleString()} of ${pagesText(total)}...`;
+    }
+    leave.removeEventListener('click', onLeave);
+    return { total, failed: status.failed, background: true, left, done: status.done };
   } finally {
     node.close();
   }
 }
 
 /** Re-scan every monitored page of a domain. */
-export async function rescanDomain(domainId) {
-  const data = await api(`domain?id=${encodeURIComponent(domainId)}`);
-  const pages = data.pages.filter((p) => p.monitored);
-  if (!pages.length) throw new Error('Select pages to scan first.');
-  return scanWithDialog(pages);
+export const rescanDomain = scanDomainWithDialog;
+
+/** A one-line result for the status line after a scan. */
+export function scanMessage(r, hostname) {
+  if (r.left) return `Scanning ${pagesText(r.total)} of ${hostname} in the background. ${r.done.toLocaleString()} done so far; results update as pages finish.`;
+  const ok = r.total - r.failed;
+  return r.failed
+    ? `Scan complete for ${hostname}: ${pagesText(ok)} scanned, ${r.failed.toLocaleString()} could not be scanned.`
+    : `Scan complete for ${hostname}: ${pagesText(r.total)} scanned.`;
 }
 
 // ---------- Domain actions menu ----------

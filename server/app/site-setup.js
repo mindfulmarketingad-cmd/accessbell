@@ -172,7 +172,8 @@ export async function getStatement(ctx, domainId) {
   return needsMigration(async () => {
     const domain = await getDomain(ctx, domainId);
     const siteKey = await siteKeyFor(domain);
-    return { statement: domain.statement, siteKey, hostname: domain.hostname, settings: domain.settings };
+    // No settings here: they can hold secret header values.
+    return { statement: domain.statement, siteKey, hostname: domain.hostname };
   });
 }
 

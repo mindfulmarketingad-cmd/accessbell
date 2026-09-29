@@ -307,7 +307,7 @@ function renderBanner(me) {
         el('strong', { text: b.status === 'none' ? 'Start monitoring with AccessBell Pro' : 'Your subscription has ended' }),
         el('p', {
           text: isOwner
-            ? '$29 per domain per month after a 3-day free trial. Up to 25 URLs per domain, unlimited rescans and AI-assisted fixes.'
+            ? '$29 per domain per month after a 3-day free trial. Up to 500 URLs per domain, unlimited rescans and AI-assisted fixes.'
             : 'Ask the account owner to start the subscription to unlock monitoring.',
         }),
       ]),

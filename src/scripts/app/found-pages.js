@@ -1,12 +1,13 @@
-// Found Pages: every page found on the domain. Choose up to 25 to scan and
-// monitor, then Start Scan.
+// Found Pages: every page found on the domain. Choose which to scan and
+// monitor (up to the plan's limit per domain), then Start Scan.
 import { api, boot, el, icon, qs, busy, can, setStatus } from './core.js';
-import { scanWithDialog } from './domain-actions.js';
+import { scanDomainWithDialog, scanMessage } from './domain-actions.js';
 
 const me = await boot();
 const id = qs('id');
 const $ = (s) => document.querySelector(s);
-const MAX = 25;
+let MAX = 500; // replaced by the plan's limit when the domain loads
+const FIRST_SELECTION = 25; // a quick first scan; more can be selected up to MAX
 const PAGE_SIZE = 100;
 const status = $('[data-found-status]');
 const search = $('[data-page-search]');
@@ -110,8 +111,10 @@ async function load() {
   $('[data-found-count]').textContent = pages.length.toLocaleString();
   const monitored = pages.filter((p) => p.monitored);
   const neverScanned = !data.lastScanAt && monitored.length <= 1;
-  // First visit: preselect the first 25 pages. Later: the pages already monitored.
-  selected = new Set((neverScanned ? pages.slice(0, MAX) : monitored).map((p) => p.id));
+  MAX = data.monitoredLimit || MAX;
+  $('.found-limit').textContent = `Select up to ${MAX.toLocaleString()} pages.`;
+  // First visit: preselect the first 25 pages for a quick first scan. Later: the pages already monitored.
+  selected = new Set((neverScanned ? pages.slice(0, FIRST_SELECTION) : monitored).map((p) => p.id));
   renderList();
 }
 
@@ -180,10 +183,10 @@ search.addEventListener('input', () => {
 startBtn.addEventListener(
   'click',
   busy(startBtn, status, async () => {
-    const { pages: chosen } = await api('domain/pages/select', { method: 'POST', body: { id, pageIds: [...selected] } });
-    const { total, failed } = await scanWithDialog(chosen);
-    const note = failed ? `&scanned=${total - failed}&failed=${failed}` : `&scanned=${total}`;
-    location.assign(`/app?done=${encodeURIComponent(data.domain.hostname)}${note}`);
+    await api('domain/pages/select', { method: 'POST', body: { id, pageIds: [...selected] } });
+    const r = await scanDomainWithDialog(id);
+    const tone = !r.left && r.failed === r.total ? 'error' : 'success';
+    location.assign(`/app?scanmsg=${encodeURIComponent(scanMessage(r, data.domain.hostname))}&tone=${tone}`);
   }),
 );
 

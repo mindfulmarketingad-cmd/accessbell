@@ -14,7 +14,7 @@ AccessBell is a website accessibility checker. It loads your pages in a real bro
 
 **AccessBell Pro** is the paid plan for ongoing work. For $29 per domain per month you get:
 
-- Up to 25 monitored URLs per domain, with unlimited rescans
+- Up to 500 monitored URLs per domain, with unlimited rescans
 - A dashboard for every domain you manage, with scores, history and a WCAG coverage table
 - Scheduled daily scans and email alerts when new serious issues appear
 - Scan settings for WCAG version and level, desktop and mobile, staging sites and more

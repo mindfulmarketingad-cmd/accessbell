@@ -145,7 +145,7 @@ What it did well:
 
 **Why it is still our recommendation.** The other nine are testing engines: you run them on one page, read the output, and run them again next time. AccessBell is the only tool here built to keep a whole site accessible over time. That includes:
 
-- **Scheduled monitoring** of up to 25 URLs per domain, rescanned daily, with scan history and a count of issues resolved since the last scan.
+- **Scheduled monitoring** of up to 500 URLs per domain, rescanned daily, with scan history and a count of issues resolved since the last scan.
 - **A fix for every issue:** what is wrong, the failing HTML on each page, step-by-step instructions and a code example you can copy.
 - **A manual review list** of items automation cannot decide, kept separate from failures.
 - **WCAG 2.0, 2.1 or 2.2** at Level A, AA or AAA, and presets for the ADA, Section 508 and EN 301 549.
