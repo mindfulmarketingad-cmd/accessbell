@@ -11,6 +11,7 @@ import { authorPath, authorSchema } from '../../lib/authors';
 import { faqSchema } from '../../lib/schema';
 import { inlineMarkdown, stripMarkdown } from '../../lib/inline-markdown';
 import { getWcagGuides, WCAG_GUIDES_CATEGORY } from '../../lib/wcag-guides';
+import { coverFor } from '../../lib/covers';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -36,6 +37,8 @@ const toc = [
 // Posts in the WCAG Codes Explained series link to every other guide in the series.
 const moreGuides = post.data.category === WCAG_GUIDES_CATEGORY ? (await getWcagGuides()).filter((g) => g.id !== post.id) : [];
 
+const cover = coverFor(post.id);
+
 const related = post.data.related
   .map((slug) => all.find((p) => p.id === slug))
   .filter((p): p is NonNullable<typeof p> => Boolean(p));
@@ -50,7 +53,7 @@ const schema = [
     dateModified: (post.data.updatedDate ?? post.data.pubDate).toISOString(),
     mainEntityOfPage: { '@id': `${url}#webpage` },
     url,
-    image: `${SITE.url}${SITE.ogImage}`,
+    image: `${SITE.url}${cover?.og ?? SITE.ogImage}`,
     articleSection: post.data.category,
     wordCount: (post.body ?? '').split(/\s+/).filter(Boolean).length,
     inLanguage: 'en-US',
@@ -78,6 +81,8 @@ const schema = [
     { label: post.data.title, href: `/blog/${post.id}` },
   ]}
   schema={schema}
+  image={cover?.og ?? undefined}
+  imageAlt={cover?.og ? post.data.title : undefined}
 >
   <article>
     <header class="container article-head">
@@ -105,6 +110,12 @@ const schema = [
         </div>
       </div>
     </header>
+
+    {cover && (
+      <figure class="container article-cover">
+        <img src={cover.src} width={cover.width} height={cover.height} alt={cover.alt} fetchpriority="high" decoding="async" />
+      </figure>
+    )}
 
     <div class="container article-layout">
       <div class="article-main">
@@ -190,6 +201,7 @@ const schema = [
         <div class="post-grid">
           {related.map((p) => (
             <article class="post-card">
+              {coverFor(p.id) && <img class="post-card-img" src={coverFor(p.id)!.src} width="1200" height="630" alt="" loading="lazy" decoding="async" />}
               <div class="post-card-body">
                 <span class="eyebrow">{p.data.category}</span>
                 <h3><a href={`/blog/${p.id}`}>{p.data.title}</a></h3>

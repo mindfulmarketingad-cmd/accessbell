@@ -12,3 +12,7 @@ Apply these to every new blog post, resource page or landing page. Pick one prim
 - **Body:** the keyword recurs naturally through the content. No stuffing.
 - **Internal links:** link out to related pages, and add links *to* the new page from existing related pages, so nothing is orphaned. Run `npm run build && npm run audit:links`; it must report 0 orphan pages, 0 pages without internal links and 0 pages without outbound links.
 - **Outbound links:** cite authoritative primary sources (W3C, ADA.gov, vendor pricing pages). Never invent sources, reviews, statistics or test results.
+
+## Featured images for blog posts
+
+Every blog post needs a featured image. Add an entry for the new post's slug to `COVER_TOPICS` in `src/data/blog-covers.js` (an icon, a short label and a caption), then run `npm run covers`. It writes `public/blog/covers/<slug>.webp` (shown on the post and blog cards) and `public/blog/og/<slug>.png` (the social share image). The script fails if a post has no entry.

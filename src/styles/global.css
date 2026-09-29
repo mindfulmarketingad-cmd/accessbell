@@ -1479,6 +1479,24 @@ a:hover {
   box-shadow: var(--shadow-lg);
   border-color: var(--border-strong);
 }
+.post-card-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1200 / 630;
+  object-fit: cover;
+  border-bottom: 1px solid var(--border);
+}
+.article-cover {
+  margin: 8px auto 32px;
+}
+.article-cover img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+}
 .post-cover {
   aspect-ratio: 16 / 8;
   background:
@@ -1530,7 +1548,11 @@ a:hover {
   font-size: 0.8125rem;
   color: var(--ink-500);
   display: flex;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+}
+.post-meta > * {
+  white-space: nowrap;
 }
 
 /* ---------- Article ---------- */

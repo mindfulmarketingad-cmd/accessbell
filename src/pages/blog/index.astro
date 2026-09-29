@@ -2,6 +2,7 @@
 import { getCollection, getEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CtaBand from '../../components/CtaBand.astro';
+import { coverFor } from '../../lib/covers';
 import { SITE } from '../../config/site';
 import { formatDate, readingTime } from '../../lib/format';
 
@@ -47,7 +48,9 @@ const schema = [
       <div class="post-grid post-grid-3">
         {posts.map((post) => (
           <article class="post-card">
-            <div class="post-cover" aria-hidden="true"><span>{post.data.category}</span></div>
+            {coverFor(post.id)
+              ? <img class="post-card-img" src={coverFor(post.id)!.src} width="1200" height="630" alt="" loading="lazy" decoding="async" />
+              : <div class="post-cover" aria-hidden="true"><span>{post.data.category}</span></div>}
             <div class="post-card-body">
               <h2><a href={`/blog/${post.id}`}>{post.data.title}</a></h2>
               <p>{post.data.description}</p>

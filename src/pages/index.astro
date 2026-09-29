@@ -1,4 +1,5 @@
 ---
+import { coverFor } from '../lib/covers';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ScanForm from '../components/ScanForm.astro';
@@ -471,7 +472,9 @@ const faqs: FaqItem[] = [
       <div class="post-grid post-grid-3">
         {posts.map((post) => (
           <article class="post-card">
-            <div class="post-cover" aria-hidden="true"><span>{post.data.category}</span></div>
+            {coverFor(post.id)
+              ? <img class="post-card-img" src={coverFor(post.id)!.src} width="1200" height="630" alt="" loading="lazy" decoding="async" />
+              : <div class="post-cover" aria-hidden="true"><span>{post.data.category}</span></div>}
             <div class="post-card-body">
               <h3><a href={`/blog/${post.id}`}>{post.data.title}</a></h3>
               <p>{post.data.description}</p>
