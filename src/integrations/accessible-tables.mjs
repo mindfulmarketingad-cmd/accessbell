@@ -1,6 +1,7 @@
 // After the build, wrap every table in blog and help articles in a labelled,
 // keyboard-focusable scroll region, so wide tables scroll on small screens
-// and keyboard users can scroll them too (WCAG 2.1.1).
+// and keyboard users can scroll them too (WCAG 2.1.1). Code blocks get the
+// same treatment: they scroll sideways on phones.
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -24,6 +25,9 @@ export function wrapTables(html) {
   });
 }
 
+/** Markdown code blocks can overflow on phones, so make them focusable for keyboard scrolling. */
+export const focusableCode = (html) => html.replace(/<pre>/g, '<pre tabindex="0">');
+
 export default function accessibleTables() {
   return {
     name: 'accessible-tables',
@@ -40,7 +44,7 @@ export default function accessibleTables() {
           for (const f of files) {
             const path = join(root, f);
             const html = await readFile(path, 'utf8');
-            const out = wrapTables(html);
+            const out = focusableCode(wrapTables(html));
             if (out !== html) await writeFile(path, out);
           }
         }

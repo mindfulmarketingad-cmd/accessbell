@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <rect width="800" height="300" fill="#ffffff"/>
+  <rect x="40" y="30" width="720" height="240" rx="18" fill="#f4f8f3" stroke="#cfd4ce" stroke-width="2"/>
+  <text x="80" y="86" font-size="18" font-weight="600" fill="#22262f">Choose your country or region</text>
+  <rect x="80" y="104" width="360" height="48" rx="8" fill="#ffffff" stroke="#cfd4ce" stroke-width="2"/>
+  <text x="96" y="135" font-size="17" fill="#22262f">United States</text><path d="M410 124l8 8 8-8" fill="none" stroke="#22262f" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="96" cy="190" r="12" fill="#44723f"/><text x="96" y="196" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">i</text>
+  <text x="118" y="195" font-size="16" fill="#353a47">Choosing a country opens that country's store in this tab.</text>
+  <path d="M470 128h60" stroke="#44723f" stroke-width="3" stroke-dasharray="6 6"/>
+  <rect x="540" y="98" width="190" height="60" rx="10" fill="#ffffff" stroke="#44723f" stroke-width="2"/>
+  <text x="635" y="125" font-size="15" font-weight="700" fill="#365c32" text-anchor="middle">Told in advance</text>
+  <text x="635" y="146" font-size="14" fill="#353a47" text-anchor="middle">so no surprise</text>
+  <text x="80" y="238" font-size="14.5" fill="#5b6170">The instruction is shown with the control and connected to it with aria-describedby.</text>
+</svg>

@@ -1,5 +1,5 @@
 ---
-import { getEntry } from 'astro:content';
+import { getEntry, getCollection } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Icon from '../../../components/Icon.astro';
 import CtaBand from '../../../components/CtaBand.astro';
@@ -25,6 +25,9 @@ const REVIEWED = new Date('2026-09-28');
 const path = criterionPath(c.sc);
 const url = `${SITE.url}${path}`;
 const author = await getEntry('authors', 'accessbell-editorial-team');
+
+// A plain-English "WCAG Codes Explained" blog post for this criterion, if we have one (slug wcag-1-2-3-...).
+const guide = (await getCollection('blog', ({ id, data }) => !data.draft && id.startsWith(`wcag-${c.sc.replaceAll('.', '-')}-`)))[0];
 
 const rules = rulesForCriterion(c.sc);
 const checkers = checkersForCriterion(c.sc);
@@ -94,6 +97,7 @@ const schema = [
     <section aria-labelledby="requires">
       <h2 id="requires">What WCAG {c.sc} Requires</h2>
       <p>{content.summary}</p>
+      {guide && <p>New to this criterion? Read our plain-English guide, <a href={`/blog/${guide.id}`}>{guide.data.title}</a>, with examples and code.</p>}
       {c.sc === '4.1.1' && <p>Because it is obsolete, WCAG {c.sc} is not counted in our WCAG 2.2 checkers, but it still applies to WCAG 2.0 and 2.1 targets and is worth keeping in mind.</p>}
     </section>
 

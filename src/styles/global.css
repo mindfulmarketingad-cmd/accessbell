@@ -5405,3 +5405,41 @@ h2[tabindex='-1']:focus {
 .ic-credit code {
   overflow-wrap: anywhere;
 }
+
+/* ---------- Figures and code blocks in articles ---------- */
+.prose figure {
+  margin: 28px 0;
+}
+.prose figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: #fff;
+}
+.prose figcaption {
+  margin-top: 10px;
+  font-size: 0.875rem;
+  color: var(--ink-500);
+}
+.prose pre {
+  margin: 20px 0;
+  padding: 16px 18px;
+  overflow-x: auto;
+  border-radius: var(--radius);
+  background: var(--ink-900);
+  color: #f1f4f2;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+.prose pre code {
+  padding: 0;
+  background: none;
+  color: inherit;
+  font-size: inherit;
+}
+.prose pre:focus-visible {
+  outline: 3px solid var(--sage-700);
+  outline-offset: 2px;
+}

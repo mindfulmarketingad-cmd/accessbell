@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 460" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <defs><marker id="ah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#22262f"/></marker></defs>
+  <rect width="800" height="460" fill="#ffffff"/>
+  <rect x="40" y="40" width="440" height="380" rx="18" fill="#f4f8f3" stroke="#cfd4ce" stroke-width="2"/>
+  <text x="70" y="88" font-size="24" font-weight="700" fill="#22262f">Checkout</text>
+  <text x="70" y="132" font-size="16" fill="#353a47">Phone number</text>
+  <rect x="70" y="142" width="370" height="48" rx="8" fill="#ffffff" stroke="#cfd4ce" stroke-width="2"/>
+  <text x="86" y="173" font-size="18" fill="#22262f">(555) 014-2398</text>
+  <text x="70" y="232" font-size="16" fill="#353a47">ZIP code</text>
+  <rect x="70" y="242" width="370" height="48" rx="8" fill="#ffffff" stroke="#44723f" stroke-width="3"/>
+  <path d="M90 254v24" stroke="#22262f" stroke-width="2"/>
+  <path d="M446 168c46 6 46 84 2 94" fill="none" stroke="#22262f" stroke-width="3" stroke-linecap="round" marker-end="url(#ah)"/>
+  <rect x="70" y="316" width="370" height="72" rx="12" fill="#fdf0ef" stroke="#b42318" stroke-width="2"/>
+  <text x="90" y="346" font-size="16" font-weight="700" fill="#b42318">Focus jumped to the next field</text>
+  <text x="90" y="370" font-size="15" fill="#353a47">before the typo in the phone number was fixed.</text>
+  <rect x="560" y="140" width="180" height="96" rx="14" fill="#ffffff" stroke="#22262f" stroke-width="3"/>
+  <rect x="560" y="218" width="180" height="18" rx="0" fill="#e8f1e7"/>
+  <path d="M606 184h92M606 184l18-14M606 184l18 14" fill="none" stroke="#22262f" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="742" cy="140" r="20" fill="#b42318"/>
+  <path d="M734 132l16 16M750 132l-16 16" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round"/>
+  <text x="650" y="276" font-size="22" font-weight="700" fill="#22262f" text-anchor="middle">Backspace</text>
+  <text x="650" y="312" font-size="15" fill="#353a47" text-anchor="middle">Now deletes in the ZIP code field,</text>
+  <text x="650" y="334" font-size="15" fill="#353a47" text-anchor="middle">which is still empty.</text>
+</svg>
