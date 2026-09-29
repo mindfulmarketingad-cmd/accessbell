@@ -19,6 +19,7 @@ const STATIC: Omit<RouteEntry, 'lastmod'>[] = [
   { path: '/reviews', label: 'Reviews', note: 'Verified customer reviews', group: 'main' },
   { path: '/resources', label: 'Resources', note: 'Free tools and guides', group: 'main' },
   { path: '/resources/statement-generator', label: 'Accessibility Statement Generator', note: 'Free custom accessibility statement', group: 'main' },
+  { path: '/resources/contrast-checker', label: 'WCAG Contrast Checker', note: 'Free color contrast ratio checker', group: 'main' },
   { path: '/resources/wcag', label: 'WCAG Success Criteria Library', note: 'Every WCAG criterion explained', group: 'main' },
   { path: '/resources/help-center', label: 'Help Center', note: 'Guides for every AccessBell feature', group: 'help' },
   { path: '/authors', label: 'Authors', note: 'The writers and reviewers behind our guides', group: 'authors' },

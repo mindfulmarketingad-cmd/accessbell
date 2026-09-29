@@ -1,0 +1,172 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import Faq from '../../components/Faq.astro';
+import { faqSchema, type FaqItem } from '../../lib/schema';
+import { SITE } from '../../config/site';
+
+const PATH = '/resources/contrast-checker';
+
+const faqs: FaqItem[] = [
+  {
+    q: 'What contrast ratio does WCAG require?',
+    a: 'At Level AA, normal text needs a contrast ratio of at least 4.5:1 against its background, and large text needs at least 3:1. Level AAA raises those to 7:1 and 4.5:1. User interface components and meaningful graphics, such as icon outlines, form field borders and focus indicators, need at least 3:1 at Level AA under WCAG 1.4.11.',
+  },
+  {
+    q: 'What counts as "large text" under WCAG?',
+    a: 'Text that is at least 18 point (roughly 24 CSS pixels), or at least 14 point (roughly 18.66 CSS pixels) and bold. Everything smaller counts as normal text and needs the higher contrast ratio.',
+  },
+  {
+    q: 'Does this tool check my whole website, or just two colors?',
+    a: 'This tool checks any single pair of colors you enter. To scan every page on your site for contrast failures automatically, alongside every other WCAG issue, use the free full-site scanner below.',
+  },
+  {
+    q: 'Do you store the colors I enter?',
+    a: 'No. The contrast ratio is calculated entirely in your browser using the WCAG relative luminance formula. Nothing you enter is sent to AccessBell or anyone else. The web address updates so you can share a link to a specific result, and that link contains only the two hex codes.',
+  },
+  {
+    q: 'My colors fail. What should I do?',
+    a: 'Try darkening the text color, lightening the background, or the reverse, until the ratio reaches your target. This tool suggests a passing shade automatically when Normal Text AA fails. Small changes in lightness usually fix contrast without needing a completely different color.',
+  },
+];
+
+const schema = [
+  {
+    '@type': 'WebApplication',
+    name: 'WCAG Contrast Checker',
+    url: `${SITE.url}${PATH}`,
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'Any',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    publisher: { '@id': `${SITE.url}/#organization` },
+  },
+  faqSchema(faqs),
+];
+---
+<BaseLayout
+  title="Free WCAG Contrast Checker | AccessBell"
+  description="Check any two colors against WCAG 2.2 contrast requirements for normal text, large text and UI components. Free, instant and runs in your browser."
+  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: 'Contrast Checker', href: PATH }]}
+  schema={schema}
+>
+  <section class="gen-hero" aria-labelledby="cc-title">
+    <div class="container">
+      <span class="gen-hero-icon"><Icon name="eye" /></span>
+      <h1 id="cc-title">WCAG <span class="accent">Contrast Checker</span></h1>
+      <p class="lead">Enter a text color and a background color to check their contrast ratio against WCAG 2.2 Level AA and AAA. It updates as you type, and nothing you enter leaves your browser.</p>
+    </div>
+  </section>
+
+  <div class="container gen-body" data-contrast>
+    <section class="gen-main" aria-labelledby="cc-tool-title">
+      <h2 id="cc-tool-title" class="visually-hidden">Check contrast</h2>
+
+      <div class="cc-grid">
+        <div class="gen-card cc-color-card" aria-labelledby="cc-fg-title">
+          <div class="gen-card-head"><h3 id="cc-fg-title">Text Color</h3></div>
+          <div class="gen-card-body">
+            <div class="field">
+              <label for="cc-fg-hex">Hex value</label>
+              <div class="cc-hex-row">
+                <span class="cc-hex-prefix" aria-hidden="true">#</span>
+                <input id="cc-fg-hex" type="text" maxlength="6" autocomplete="off" spellcheck="false" value="0000FF" data-fg-hex />
+                <input type="color" value="#0000ff" aria-label="Pick text color" data-fg-picker />
+              </div>
+            </div>
+            <div class="cc-swatch" data-fg-swatch aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <div class="cc-swap-wrap">
+          <button type="button" class="btn btn-outline btn-sm cc-swap" data-swap>
+            <Icon name="refresh" /> <span class="visually-hidden">Swap text and background colors</span>
+          </button>
+        </div>
+
+        <div class="gen-card cc-color-card" aria-labelledby="cc-bg-title">
+          <div class="gen-card-head"><h3 id="cc-bg-title">Background Color</h3></div>
+          <div class="gen-card-body">
+            <div class="field">
+              <label for="cc-bg-hex">Hex value</label>
+              <div class="cc-hex-row">
+                <span class="cc-hex-prefix" aria-hidden="true">#</span>
+                <input id="cc-bg-hex" type="text" maxlength="6" autocomplete="off" spellcheck="false" value="FFFFFF" data-bg-hex />
+                <input type="color" value="#ffffff" aria-label="Pick background color" data-bg-picker />
+              </div>
+            </div>
+            <div class="cc-swatch" data-bg-swatch aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
+
+      <p class="visually-hidden" role="status" aria-live="polite" data-cc-status></p>
+
+      <div class="cc-result">
+        <div class="cc-ratio-box">
+          <span class="cc-ratio-value" data-ratio>21.00:1</span>
+          <span class="cc-ratio-label">contrast ratio</span>
+        </div>
+
+        <div class="cc-checks">
+          <div class="cc-check-group">
+            <h3>Normal Text <span class="hint">under 18pt, or under 14pt bold</span></h3>
+            <ul>
+              <li><span>Level AA — 4.5:1</span><span class="tag tag-pass" data-check="normal-aa">Pass</span></li>
+              <li><span>Level AAA — 7:1</span><span class="tag tag-pass" data-check="normal-aaa">Pass</span></li>
+            </ul>
+          </div>
+          <div class="cc-check-group">
+            <h3>Large Text <span class="hint">18pt+, or 14pt+ bold</span></h3>
+            <ul>
+              <li><span>Level AA — 3:1</span><span class="tag tag-pass" data-check="large-aa">Pass</span></li>
+              <li><span>Level AAA — 4.5:1</span><span class="tag tag-pass" data-check="large-aaa">Pass</span></li>
+            </ul>
+          </div>
+          <div class="cc-check-group">
+            <h3>UI Components &amp; Graphics <span class="hint">icons, borders, focus outlines</span></h3>
+            <ul>
+              <li><span>Level AA — 3:1</span><span class="tag tag-pass" data-check="ui-aa">Pass</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="cc-suggest" data-suggest hidden>
+        <p data-suggest-text></p>
+        <button type="button" class="btn btn-outline btn-sm" data-suggest-apply>Use this shade</button>
+      </div>
+
+      <div class="cc-preview" data-preview>
+        <p class="cc-preview-normal" data-preview-normal>The quick brown fox jumps over the lazy dog.</p>
+        <p class="cc-preview-large" data-preview-large>The quick brown fox jumps.</p>
+      </div>
+
+      <div class="cc-actions">
+        <button type="button" class="btn btn-outline btn-sm" data-copy-link><Icon name="copy" /> <span>Copy link to this result</span></button>
+      </div>
+    </section>
+  </div>
+
+  <section class="cc-explain-section" aria-labelledby="cc-explain-title">
+    <div class="container cc-prose">
+      <h2 id="cc-explain-title">How WCAG Contrast Requirements Work</h2>
+      <p>WCAG measures contrast as a ratio between 1:1 (identical colors) and 21:1 (pure black on pure white), based on the relative luminance of each color, not simply how different they look. Two colors that look quite different to the eye can still fail if they are similarly light or similarly dark.</p>
+      <p>Text has a lower bar than you might expect at Level AA: <strong>4.5:1</strong> for normal text and <strong>3:1</strong> for large text, defined under <a href="/resources/wcag/1-4-3-contrast-minimum">WCAG 1.4.3 Contrast (Minimum)</a>. Meaningful non-text elements, such as icon outlines, input borders and the focus indicator itself, need at least <strong>3:1</strong> under <a href="/resources/wcag/1-4-11-non-text-contrast">WCAG 1.4.11 Non-text Contrast</a>. Decorative elements and disabled controls are exempt from both.</p>
+      <p>Contrast is one of the most common failures found on real websites, and one of the easiest to fix once you know which pairs are failing. For a full picture of your site rather than one color pair at a time, run the free scanner below.</p>
+    </div>
+  </section>
+
+  <section class="section section-surface" aria-labelledby="cc-faq-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">FAQ</span>
+        <h2 id="cc-faq-title">Contrast Checker Questions</h2>
+        <p>Want every page checked automatically? <a href="/#scan">Run a free WCAG scan</a>.</p>
+      </div>
+      <Faq items={faqs} />
+    </div>
+  </section>
+</BaseLayout>
+<script>
+  import '../../scripts/contrast-checker.js';
+</script>

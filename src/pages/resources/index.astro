@@ -17,6 +17,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort((a, 
 const tools = [
   { href: '/#scan', icon: 'scan', title: 'Free Website Accessibility Checker', text: 'Scan any public page against WCAG 2.2, 2.1, ADA, Section 508 or EN 301 549 and get a report with fixes in seconds.', tag: 'Free tool' },
   { href: '/resources/statement-generator', icon: 'doc', title: 'Accessibility Statement Generator', text: 'Create a custom accessibility statement for your website, then copy it or download it as an HTML page.', tag: 'Free tool' },
+  { href: '/resources/contrast-checker', icon: 'eye', title: 'WCAG Contrast Checker', text: 'Check any two colors against WCAG 2.2 contrast requirements for normal text, large text and UI components.', tag: 'Free tool' },
   { href: '/resources/wcag', icon: 'list', title: 'WCAG Success Criteria Library', text: 'All 87 WCAG success criteria explained: what each one requires, how to test it, common failures and whether AccessBell automates it.', tag: 'Reference' },
   { href: '/resources/help-center', icon: 'chat', title: 'Help Center', text: 'Step-by-step guides for everything in AccessBell, from your first scan to monitoring every domain you run.', tag: `${helpCount} articles` },
   { href: '/blog/wcag-2-2-checklist', icon: 'check-circle', title: 'WCAG 2.2 Checklist', text: 'Every WCAG 2.2 Level A and AA requirement in plain language, with what changed and how to test each one.', tag: 'Guide' },
