@@ -5236,3 +5236,42 @@ h2[tabindex='-1']:focus {
   color: var(--ink-700);
   max-width: 760px;
 }
+
+/* ---------- Sources and further reading ---------- */
+.source-list {
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+.source-list h2 {
+  margin: 0 0 12px;
+  font-size: 1.125rem;
+}
+.source-list ul {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.source-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 10px;
+}
+.source-list a {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.source-pub {
+  font-size: 0.8125rem;
+  color: var(--ink-500);
+}
+.eval-head {
+  max-width: 820px;
+  margin-bottom: 0;
+}
+.eval-head p + p {
+  margin-top: 14px;
+}

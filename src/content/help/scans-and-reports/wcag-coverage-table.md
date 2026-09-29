@@ -3,6 +3,7 @@ title: 'The WCAG Coverage Table'
 description: 'How to read the Test Coverage by WCAG Principle table: every success criterion in your target, with automated results and what needs manual testing.'
 order: 3
 updatedDate: 2026-09-28
+sources: ['wcag22', 'understanding']
 ---
 
 The **Test Coverage by WCAG Principle** table on a domain's Overview lists every success criterion in the WCAG version and level you chose in Settings. For WCAG 2.2 Level AA, that is 55 criteria.

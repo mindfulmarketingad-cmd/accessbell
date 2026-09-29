@@ -1,0 +1,23 @@
+---
+/** "Sources and further reading": authoritative external references for a page. */
+import { sourcesFor, type SourceId } from '../data/sources';
+
+interface Props {
+  ids: readonly SourceId[];
+  title?: string;
+  headingId?: string;
+}
+const { ids, title = 'Sources and Further Reading', headingId = 'sources-title' } = Astro.props;
+const sources = sourcesFor(ids);
+---
+<section class="source-list" aria-labelledby={headingId}>
+  <h2 id={headingId}>{title}</h2>
+  <ul>
+    {sources.map((s) => (
+      <li>
+        <a href={s.url} rel="noopener noreferrer">{s.label}</a>
+        <span class="source-pub">{s.publisher}</span>
+      </li>
+    ))}
+  </ul>
+</section>

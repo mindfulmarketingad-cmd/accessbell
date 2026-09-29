@@ -3,6 +3,7 @@ title: 'Run a Free Accessibility Scan'
 description: 'How to check any public web page for free with the AccessBell scanner, choose a WCAG standard, and read and filter the report.'
 order: 2
 updatedDate: 2026-09-28
+sources: ['axe-core', 'wai-evaluate']
 ---
 
 The free scan checks a single public page against WCAG and gives you a full report in under a minute. You do not need an account.

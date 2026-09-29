@@ -3,6 +3,7 @@ title: 'Security and Your Data'
 description: 'How AccessBell protects your account and scan data: secure sessions, what we store, how custom headers are handled, and signing out.'
 order: 3
 updatedDate: 2026-09-28
+sources: ['stripe-security']
 ---
 
 ## Your Sign-in

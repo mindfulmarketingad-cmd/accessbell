@@ -3,6 +3,7 @@ title: 'Invite Teammates and Set Roles'
 description: 'Add people to your AccessBell team, choose between the Owner, Admin, Member and Viewer roles, change roles and remove people or leave a team.'
 order: 1
 updatedDate: 2026-09-28
+sources: ['wai-arrm']
 ---
 
 Everyone on your team sees the same domains and results. Roles decide what each person can change.

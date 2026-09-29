@@ -3,6 +3,7 @@ title: 'Track Progress With Scan History'
 description: 'Use the scan history chart and each page history in AccessBell to track scores and issues over time and keep evidence of your accessibility work.'
 order: 4
 updatedDate: 2026-09-28
+sources: ['webaim-million', 'wai-evaluate']
 ---
 
 Every scan is saved, so you can show progress to your team, leadership or an auditor.

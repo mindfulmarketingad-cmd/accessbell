@@ -14,7 +14,7 @@ The AccessBell editorial team researches and writes the guides on this blog. Our
 
 ## How we write
 
-Every article is checked against the primary source, such as the W3C's Web Content Accessibility Guidelines, the 2010 ADA Standards for Accessible Design or guidance from the U.S. Department of Justice. Where a requirement has a section number, we cite it so you can verify it yourself.
+Every article is checked against the primary source, such as the W3C's [Web Content Accessibility Guidelines](https://www.w3.org/TR/WCAG22/), the 2010 ADA Standards for Accessible Design or [guidance from the U.S. Department of Justice](https://www.ada.gov/resources/web-guidance/). Where a requirement has a section number, we cite it so you can verify it yourself.
 
 We update articles when standards, deadlines or guidance change, and each article shows a review history so you can see what changed and when.
 

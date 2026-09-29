@@ -4,6 +4,7 @@ description: 'How the 3-day free trial of AccessBell Lite works, how to start it
 order: 4
 quickStart: 1
 updatedDate: 2026-09-28
+sources: ['stripe-security']
 ---
 
 AccessBell Lite starts with a 3-day free trial. You add a card at checkout, and you are not charged until the trial ends.

@@ -30,7 +30,7 @@ faqs:
 
 **ADA requirements for ramps** come down to a few key numbers: a maximum running slope of **1:12**, a clear width of at least **36 inches**, a maximum rise of **30 inches** per run, and a level landing at least **60 inches** long at the top and bottom of every run. Ramps that rise more than 6 inches also need handrails on both sides.
 
-This guide explains each requirement in the **2010 ADA Standards for Accessible Design**, mostly found in section 405 (ramps) and section 505 (handrails). It also covers curb ramps, wet conditions and the rules for existing buildings.
+This guide explains each requirement in the **2010 ADA Standards for Accessible Design**, mostly found in section 405 (ramps) and section 505 (handrails), which you can read in the [U.S. Access Board's guide to the ADA Standards](https://www.access-board.gov/ada/). It also covers curb ramps, wet conditions and the rules for existing buildings.
 
 *This is general information, not legal or design advice. Local building codes can be stricter, so confirm details with your code official.*
 

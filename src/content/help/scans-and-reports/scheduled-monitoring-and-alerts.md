@@ -3,6 +3,7 @@ title: 'Scheduled Monitoring and Email Alerts'
 description: 'How AccessBell rescans monitored pages every day, who receives email alerts about new serious issues, and what pauses monitoring.'
 order: 7
 updatedDate: 2026-09-28
+sources: ['webaim-million', 'wai-evaluate']
 ---
 
 Websites change all the time, and every change can introduce a new barrier. AccessBell rescans your monitored pages automatically so you hear about problems quickly.

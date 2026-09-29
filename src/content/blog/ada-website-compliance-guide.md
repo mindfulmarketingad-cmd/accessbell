@@ -18,13 +18,13 @@ This guide explains how the ADA applies to websites, what "compliance" means in 
 
 ## Which Parts of the ADA Apply to Websites
 
-**Title III** covers "places of public accommodation," such as retailers, restaurants, hotels, banks and healthcare providers. The Department of Justice (DOJ) has stated for decades that Title III applies to the goods and services these businesses offer online. In March 2022, the DOJ published guidance confirming that businesses open to the public must make their websites accessible, and it pointed to WCAG as a helpful reference.
+**Title III** covers "places of public accommodation," such as retailers, restaurants, hotels, banks and healthcare providers. The Department of Justice (DOJ) has stated for decades that Title III applies to the goods and services these businesses offer online. In March 2022, the DOJ published [guidance](https://www.ada.gov/resources/web-guidance/) confirming that businesses open to the public must make their websites accessible, and it pointed to WCAG as a helpful reference.
 
 **Title II** covers state and local governments, including public schools, universities, transit agencies and courts. In April 2024, the DOJ published a final rule that, for the first time, sets a specific technical standard for their websites and mobile apps: **WCAG 2.1 Level AA**.
 
 ## The Title II Rule and Its Deadlines
 
-As published, the Title II rule gives public entities two compliance dates based on population:
+As published, the [Title II rule](https://www.ada.gov/resources/2024-03-08-web-rule/) gives public entities two compliance dates based on population:
 
 - **April 24, 2026** for entities serving a total population of 50,000 or more
 - **April 26, 2027** for entities serving fewer than 50,000 people, and for special district governments

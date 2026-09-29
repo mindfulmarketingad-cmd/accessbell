@@ -28,7 +28,7 @@ faqs:
 
 **ADA requirements for bathrooms** set exact measurements for every part of a public restroom. The short version: an accessible toilet seat sits **17 to 19 inches** above the floor, grab bars are mounted **33 to 36 inches** high, the lavatory rim is no higher than **34 inches** with at least **27 inches** of knee clearance, each fixture has a **30 by 48 inch** clear floor space, and the room includes a **60-inch turning space**.
 
-This guide walks through each requirement in the **2010 ADA Standards for Accessible Design**, the rules enforced by the U.S. Department of Justice (DOJ). Section numbers are included so you or your architect can check the source.
+This guide walks through each requirement in the **2010 ADA Standards for Accessible Design**, the rules enforced by the U.S. Department of Justice (DOJ). Section numbers are included so you or your architect can check the source in the [U.S. Access Board's guide to the ADA Standards](https://www.access-board.gov/ada/).
 
 *This is general information, not legal or design advice. Local building codes can be stricter, so confirm details with your code official.*
 

@@ -4,6 +4,7 @@ description: 'Practical fixes for the errors AccessBell finds most often: missin
 order: 2
 quickStart: 5
 updatedDate: 2026-09-28
+sources: ['webaim-million', 'understanding']
 ---
 
 A small number of issues account for most of what automated tests find on the web. Fix these and your score will rise quickly. Each issue in your dashboard also includes copyable code examples.

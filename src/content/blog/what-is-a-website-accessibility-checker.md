@@ -79,7 +79,7 @@ Continuous monitoring rescans your domain on a schedule and alerts you when some
 Use these questions when you compare tools. For a side-by-side look at the most popular options, see our roundup of [free tools to check website accessibility](/blog/free-tools-to-check-website-accessibility).
 
 1. **Does it map results to specific WCAG success criteria?** Vague categories make it hard to prove progress to auditors.
-2. **Does it support the version you are held to?** WCAG 2.2 is the current W3C recommendation, but many laws still reference 2.1 or 2.0.
+2. **Does it support the version you are held to?** WCAG 2.2 is the current [W3C recommendation](https://www.w3.org/TR/WCAG22/), but many laws still reference 2.1 or 2.0.
 3. **Can it crawl your whole site?** Checking a homepage is a start. Barriers often live on forms, account pages and PDFs.
 4. **Does it show code-level evidence and fix guidance?** Developers need to find and fix issues quickly.
 5. **Is it honest about limits?** A tool that admits what it cannot test is more trustworthy than one that promises everything.

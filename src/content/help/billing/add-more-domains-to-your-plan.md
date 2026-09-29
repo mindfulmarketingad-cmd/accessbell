@@ -3,6 +3,7 @@ title: 'Add More Domains to Your Plan'
 description: 'Increase or reduce the number of domains in your AccessBell subscription from the Stripe portal, and how the change affects your bill and dashboard.'
 order: 3
 updatedDate: 2026-09-28
+sources: ['stripe-security']
 ---
 
 Each domain in your plan costs $79 per month. The number of domains decides how many you can add to your dashboard.

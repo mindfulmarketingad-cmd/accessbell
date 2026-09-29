@@ -4,6 +4,7 @@ import Icon from '../../components/Icon.astro';
 import Faq from '../../components/Faq.astro';
 import { faqSchema, type FaqItem } from '../../lib/schema';
 import { SITE } from '../../config/site';
+import { understandingUrl } from '../../lib/wcag-pages';
 
 const PATH = '/resources/contrast-checker';
 
@@ -33,7 +34,7 @@ const faqs: FaqItem[] = [
 const schema = [
   {
     '@type': 'WebApplication',
-    name: 'WCAG Contrast Checker',
+    name: 'WCAG Color Contrast Checker',
     url: `${SITE.url}${PATH}`,
     applicationCategory: 'UtilitiesApplication',
     operatingSystem: 'Any',
@@ -44,15 +45,15 @@ const schema = [
 ];
 ---
 <BaseLayout
-  title="Free WCAG Contrast Checker | AccessBell"
-  description="Check any two colors against WCAG 2.2 contrast requirements for normal text, large text and UI components. Free, instant and runs in your browser."
-  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: 'Contrast Checker', href: PATH }]}
+  title="Free WCAG Color Contrast Checker | AccessBell"
+  description="Free WCAG color contrast checker. Test any two colors against WCAG 2.2 for normal text, large text and UI components, instantly in your browser."
+  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: 'Color Contrast Checker', href: PATH }]}
   schema={schema}
 >
   <section class="gen-hero" aria-labelledby="cc-title">
     <div class="container">
       <span class="gen-hero-icon"><Icon name="eye" /></span>
-      <h1 id="cc-title">WCAG <span class="accent">Contrast Checker</span></h1>
+      <h1 id="cc-title">WCAG Color <span class="accent">Contrast Checker</span></h1>
       <p class="lead">Enter a text color and a background color to check their contrast ratio against WCAG 2.2 Level AA and AAA. It updates as you type, and nothing you enter leaves your browser.</p>
     </div>
   </section>
@@ -151,7 +152,7 @@ const schema = [
     <div class="container cc-prose">
       <h2 id="cc-explain-title">How WCAG Contrast Requirements Work</h2>
       <p>WCAG measures contrast as a ratio between 1:1 (identical colors) and 21:1 (pure black on pure white), based on the relative luminance of each color, not simply how different they look. Two colors that look quite different to the eye can still fail if they are similarly light or similarly dark.</p>
-      <p>Text has a lower bar than you might expect at Level AA: <strong>4.5:1</strong> for normal text and <strong>3:1</strong> for large text, defined under <a href="/resources/wcag/1-4-3-contrast-minimum">WCAG 1.4.3 Contrast (Minimum)</a>. Meaningful non-text elements, such as icon outlines, input borders and the focus indicator itself, need at least <strong>3:1</strong> under <a href="/resources/wcag/1-4-11-non-text-contrast">WCAG 1.4.11 Non-text Contrast</a>. Decorative elements and disabled controls are exempt from both.</p>
+      <p>Text has a lower bar than you might expect at Level AA: <strong>4.5:1</strong> for normal text and <strong>3:1</strong> for large text, defined under <a href="/resources/wcag/1-4-3-contrast-minimum">WCAG 1.4.3 Contrast (Minimum)</a>. Meaningful non-text elements, such as icon outlines, input borders and the focus indicator itself, need at least <strong>3:1</strong> under <a href="/resources/wcag/1-4-11-non-text-contrast">WCAG 1.4.11 Non-text Contrast</a>. Decorative elements and disabled controls are exempt from both. The W3C explains both in detail in <a href={understandingUrl('1.4.3')} rel="noopener noreferrer">Understanding Contrast (Minimum)</a> and <a href={understandingUrl('1.4.11')} rel="noopener noreferrer">Understanding Non-text Contrast</a>.</p>
       <p>Contrast is one of the most common failures found on real websites, and one of the easiest to fix once you know which pairs are failing. For a full picture of your site rather than one color pair at a time, run the free scanner below.</p>
     </div>
   </section>

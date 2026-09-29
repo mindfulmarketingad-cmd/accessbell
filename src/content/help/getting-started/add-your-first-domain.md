@@ -4,6 +4,7 @@ description: 'Add a website or staging environment to your AccessBell dashboard 
 order: 5
 quickStart: 2
 updatedDate: 2026-09-28
+sources: ['sitemaps', 'wai-evaluate']
 ---
 
 A domain is a website you want to monitor, such as `example.com` or `staging.example.com`. Adding one gives it its own overview, issues list, history and settings.

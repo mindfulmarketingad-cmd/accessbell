@@ -3,6 +3,7 @@ title: 'Why Results Differ From Other Tools'
 description: 'Why AccessBell, WAVE, Lighthouse and other accessibility checkers report different issues and scores for the same page, and which results to trust.'
 order: 3
 updatedDate: 2026-09-28
+sources: ['axe-rules', 'wave']
 ---
 
 It is normal for accessibility tools to disagree. That does not mean one of them is wrong.

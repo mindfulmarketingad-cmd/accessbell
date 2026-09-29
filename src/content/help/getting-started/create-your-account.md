@@ -3,6 +3,7 @@ title: 'Create Your AccessBell Account'
 description: 'Sign up for AccessBell, confirm your email address and sign in to your dashboard for the first time. Includes what to do if the email does not arrive.'
 order: 3
 updatedDate: 2026-09-28
+sources: ['wai-intro']
 ---
 
 You need an account to monitor domains, save scan history and invite your team.

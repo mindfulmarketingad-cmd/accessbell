@@ -76,7 +76,7 @@ The practical takeaway: use one or two automated tools to find and fix the objec
 
 **Best for:** designers, content editors and anyone who learns visually.
 
-WAVE, from the nonprofit WebAIM, is available as a browser extension for Chrome, Firefox and Edge, and as a website at wave.webaim.org. Its signature feature is a **visual overlay**. It places icons directly on the page to mark errors, contrast problems, alerts, ARIA usage and structural elements like headings and landmarks.
+WAVE, from the nonprofit WebAIM, is available as a browser extension for Chrome, Firefox and Edge, and as a website at [wave.webaim.org](https://wave.webaim.org/). Its signature feature is a **visual overlay**. It places icons directly on the page to mark errors, contrast problems, alerts, ARIA usage and structural elements like headings and landmarks.
 
 **Strengths:**
 
@@ -91,7 +91,7 @@ WAVE, from the nonprofit WebAIM, is available as a browser extension for Chrome,
 
 **Best for:** developers who want precise, code-level results.
 
-axe DevTools is a browser extension built on **axe-core**, Deque's open-source accessibility engine. axe-core is widely used because it aims for no false positives, so a reported failure is almost always a real one. It is the same engine behind several other tools on this list, including AccessBell.
+axe DevTools is a browser extension built on **[axe-core](https://github.com/dequelabs/axe-core)**, Deque's open-source accessibility engine. axe-core is widely used because it aims for no false positives, so a reported failure is almost always a real one. It is the same engine behind several other tools on this list, including AccessBell.
 
 **Strengths:**
 
@@ -105,7 +105,7 @@ axe DevTools is a browser extension built on **axe-core**, Deque's open-source a
 
 **Best for:** teams that want automated checks plus a structured way to learn manual testing.
 
-Accessibility Insights for Web is a free, open-source extension for Chrome and Edge. Microsoft also offers versions for Windows and Android apps.
+[Accessibility Insights for Web](https://accessibilityinsights.io/) is a free, open-source extension for Chrome and Edge. Microsoft also offers versions for Windows and Android apps.
 
 **Strengths:**
 
@@ -119,7 +119,7 @@ Accessibility Insights for Web is a free, open-source extension for Chrome and E
 
 **Best for:** a quick accessibility score alongside performance and SEO checks.
 
-Lighthouse is built into Chrome DevTools. It also runs through PageSpeed Insights and from the command line. Its accessibility audit uses a **subset of axe-core** checks and produces a score from 0 to 100, next to performance, best practices and SEO.
+[Lighthouse](https://developer.chrome.com/docs/lighthouse/overview) is built into Chrome DevTools. It also runs through PageSpeed Insights and from the command line. Its accessibility audit uses a **subset of axe-core** checks and produces a score from 0 to 100, next to performance, best practices and SEO.
 
 **Strengths:**
 

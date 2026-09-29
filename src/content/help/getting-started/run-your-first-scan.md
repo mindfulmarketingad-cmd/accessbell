@@ -4,6 +4,7 @@ description: 'Scan every monitored page on a domain, or a single page, from the 
 order: 6
 quickStart: 3
 updatedDate: 2026-09-28
+sources: ['axe-core', 'understanding']
 ---
 
 Once a domain is added, you can scan all of its monitored pages at once or one page at a time. Rescans are unlimited on the Lite plan.

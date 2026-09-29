@@ -119,6 +119,9 @@ const schema = [
     <section aria-labelledby="how-to-test">
       <h2 id="how-to-test">How to Test It by Hand</h2>
       <p>{content.howToTest}</p>
+      {['1.4.3', '1.4.6', '1.4.11'].includes(c.sc) && (
+        <p>Check any text and background pair in seconds with our free <a href="/resources/contrast-checker">WCAG color contrast checker</a>.</p>
+      )}
     </section>
 
     <section aria-labelledby="failures">

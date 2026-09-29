@@ -3,6 +3,7 @@ title: 'Scan Staging and Password-Protected Sites'
 description: 'Use custom HTTP headers to scan staging environments and pages behind basic authentication or a login, and how AccessBell keeps those values safe.'
 order: 4
 updatedDate: 2026-09-28
+sources: ['mdn-auth']
 ---
 
 Testing on staging lets you catch accessibility issues before they go live. AccessBell can send custom HTTP headers with every request to your domain, which is how most staging and preview environments grant access.

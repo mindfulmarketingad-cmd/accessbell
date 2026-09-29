@@ -3,6 +3,7 @@ title: 'Change Your Team Name or Password'
 description: 'Rename your AccessBell team, change your password while signed in, and reset a forgotten password from the sign-in page.'
 order: 2
 updatedDate: 2026-09-28
+sources: ['accessible-auth']
 ---
 
 ## Rename Your Team

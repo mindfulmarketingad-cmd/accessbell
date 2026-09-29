@@ -3,6 +3,7 @@ title: 'Read an Issue and Decide What to Fix First'
 description: 'What each part of an AccessBell issue means, from severity and WCAG criteria to failing elements and correct markup, and how to prioritize your fixes.'
 order: 1
 updatedDate: 2026-09-28
+sources: ['understanding', 'axe-rules']
 ---
 
 The **Issues** tab on a domain lists every rule that failed across your monitored pages, most severe first. Select an issue to open it.

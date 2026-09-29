@@ -3,6 +3,7 @@ title: 'A Page Could Not Be Scanned'
 description: 'Common reasons an AccessBell scan fails, from bot protection and slow pages to private addresses and redirects, with the error messages and how to fix each one.'
 order: 2
 updatedDate: 2026-09-28
+sources: ['mdn-status', 'mdn-auth']
 ---
 
 When a scan fails, the error message explains why. Failed scans appear in a page's history marked **Failed**. Here is what each message means.

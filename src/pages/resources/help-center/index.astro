@@ -2,8 +2,9 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Icon from '../../../components/Icon.astro';
 import HelpSearch from '../../../components/HelpSearch.astro';
+import SourceList from '../../../components/SourceList.astro';
 import { SITE } from '../../../config/site';
-import { HELP_BASE, QUICK_START_ICONS } from '../../../data/help';
+import { HELP_BASE, HELP_HOME_SOURCES, QUICK_START_ICONS } from '../../../data/help';
 import { helpByCategory, articlePath, categoryPath } from '../../../lib/help';
 
 const groups = await helpByCategory();
@@ -70,6 +71,8 @@ const schema = [
         ))}
       </ul>
     </section>
+
+    <SourceList ids={HELP_HOME_SOURCES} title="Learn the Standards" />
 
     <section class="help-contact" aria-labelledby="help-contact-title">
       <div>

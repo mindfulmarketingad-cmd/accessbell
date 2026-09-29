@@ -3,6 +3,7 @@ title: 'Remove a Domain'
 description: 'Delete a domain from AccessBell with its pages and scan history, free up the slot, and what to do if you also want to lower your bill.'
 order: 6
 updatedDate: 2026-09-28
+sources: ['stripe-security']
 ---
 
 Removing a domain deletes it, its pages and all of its scan history. This cannot be undone. Only Admins and the Owner can remove domains.

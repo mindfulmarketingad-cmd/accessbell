@@ -4,6 +4,7 @@ description: 'A tour of the AccessBell dashboard: the sidebar, Your Domains, the
 order: 7
 quickStart: 4
 updatedDate: 2026-09-28
+sources: ['understanding', 'wcag22']
 ---
 
 The dashboard has a sidebar on the left and your work on the right. On phones and small tablets, open the sidebar with the menu button at the top left.

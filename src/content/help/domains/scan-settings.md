@@ -3,6 +3,7 @@ title: 'Choose WCAG Version, Level and Devices'
 description: 'Set the WCAG version and conformance level each domain is tested against, scan on desktop and mobile, and use page load delay and scrolling.'
 order: 2
 updatedDate: 2026-09-28
+sources: ['new-in-22', 'understanding']
 ---
 
 Every domain has its own scan settings. They apply to every scan of that domain, including scheduled monitoring. Open the domain and go to the **Settings** tab. Only Admins and the Owner can change settings.

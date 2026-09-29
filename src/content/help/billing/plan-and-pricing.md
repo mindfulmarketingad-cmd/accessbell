@@ -3,6 +3,7 @@ title: 'Your Plan and Pricing'
 description: 'What AccessBell Lite includes, how per-domain pricing works, what counts as a URL, and what fair use means for unlimited rescans.'
 order: 1
 updatedDate: 2026-09-28
+sources: ['stripe-security']
 ---
 
 AccessBell has one plan, **Lite**, at **$79 per domain per month**. Every feature is included on every domain.

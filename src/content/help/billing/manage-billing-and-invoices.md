@@ -3,6 +3,7 @@ title: 'Manage Billing, Cards and Invoices'
 description: 'Open the secure Stripe portal from AccessBell to update your card, download invoices and receipts, change billing details and see your renewal date.'
 order: 2
 updatedDate: 2026-09-28
+sources: ['stripe-security', 'stripe-privacy']
 ---
 
 Payments are handled by Stripe. AccessBell never sees or stores your full card number. Only the account **Owner** can manage billing.

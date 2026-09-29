@@ -3,6 +3,7 @@ import { render } from 'astro:content';
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import Icon from '../../../../components/Icon.astro';
 import TableOfContents from '../../../../components/TableOfContents.astro';
+import SourceList from '../../../../components/SourceList.astro';
 import { SITE } from '../../../../config/site';
 import { HELP_BASE } from '../../../../data/help';
 import { formatDate } from '../../../../lib/format';
@@ -69,6 +70,8 @@ const schema = [
         <div class="prose">
           <Content />
         </div>
+
+        <SourceList ids={article.data.sources} />
 
         <nav class="help-pager" aria-label="More in this topic">
           {prev ? (

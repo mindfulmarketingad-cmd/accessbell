@@ -3,6 +3,7 @@ title: 'Export Reports'
 description: 'Download a domain issues list as a CSV file for Excel or Google Sheets, or print and save a full report as a PDF for auditors and stakeholders.'
 order: 8
 updatedDate: 2026-09-28
+sources: ['vpat', 'wai-statements']
 ---
 
 Share results with people who do not use AccessBell, keep records for audits, or plan work in a spreadsheet.

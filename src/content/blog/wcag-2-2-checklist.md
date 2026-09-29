@@ -10,13 +10,13 @@ contributors:
 related: ['what-you-should-know-about-wcag-2-2', 'what-is-a-website-accessibility-checker', 'ada-website-compliance-guide']
 ---
 
-The Web Content Accessibility Guidelines (WCAG) 2.2 became a W3C Recommendation on October 5, 2023. It is backward compatible with WCAG 2.1: if your site meets 2.2, it also meets 2.1 and 2.0 at the same level. Most organizations target **Level AA**, which is the level referenced by the majority of laws and procurement policies.
+The Web Content Accessibility Guidelines (WCAG) 2.2 became a [W3C Recommendation](https://www.w3.org/TR/WCAG22/) on October 5, 2023. It is backward compatible with WCAG 2.1: if your site meets 2.2, it also meets 2.1 and 2.0 at the same level. Most organizations target **Level AA**, which is the level referenced by the majority of laws and procurement policies.
 
 This checklist focuses on what changed in 2.2, then gives you a condensed AA checklist you can work through page by page.
 
 ## What Is New in WCAG 2.2
 
-WCAG 2.2 added nine success criteria. Six of them apply at Level A or AA.
+WCAG 2.2 added nine success criteria, summarized by the W3C in [What's New in WCAG 2.2](https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/). Six of them apply at Level A or AA.
 
 | Criterion | Level | What it requires |
 | --- | --- | --- |

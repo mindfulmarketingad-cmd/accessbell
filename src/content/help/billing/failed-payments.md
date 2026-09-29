@@ -3,6 +3,7 @@ title: 'Failed Payments'
 description: 'What happens in AccessBell when a card payment fails, why monitoring pauses, and how the Owner updates the card to restore full access.'
 order: 5
 updatedDate: 2026-09-28
+sources: ['stripe-security']
 ---
 
 If a renewal payment fails, for example because a card has expired, Stripe retries it automatically over the following days.

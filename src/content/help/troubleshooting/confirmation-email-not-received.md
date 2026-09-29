@@ -3,6 +3,7 @@ title: 'I Did Not Get the Confirmation or Reset Email'
 description: 'What to do when your AccessBell confirmation, password reset or invitation email does not arrive: spam folders, resending, typos and company filters.'
 order: 1
 updatedDate: 2026-09-28
+sources: ['gmail-help']
 ---
 
 Emails usually arrive within a minute. If yours has not:

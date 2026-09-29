@@ -3,6 +3,7 @@ title: 'Include and Exclude URL Rules'
 description: 'Control which pages AccessBell discovers on your domain with simple include and exclude rules, using plain text or the * wildcard.'
 order: 3
 updatedDate: 2026-09-28
+sources: ['sitemaps']
 ---
 
 URL rules decide which pages **Find pages** keeps. Use them to focus on one section of a large site or to leave out pages you do not need, such as tag archives or search results.

@@ -51,7 +51,7 @@ const schema = [
   <article class="container checker-body">
     <section aria-labelledby="wcag-intro">
       <h2 id="wcag-intro" class="visually-hidden">About this library</h2>
-      <p>WCAG groups its 87 success criteria under four principles &mdash; Perceivable, Operable, Understandable and Robust &mdash; and three conformance levels, A, AA and AAA. Most legal standards, including the ADA, Section 508 and the European Accessibility Act, point to Level AA. {automated} of the 87 criteria have at least one axe-core rule that can catch a failure automatically; the rest need a person to judge, and every page here says which is which.</p>
+      <p>The <a href="https://www.w3.org/TR/WCAG22/" rel="noopener noreferrer">W3C's WCAG 2.2</a> groups its 87 success criteria under four principles &mdash; Perceivable, Operable, Understandable and Robust &mdash; and three conformance levels, A, AA and AAA. Most legal standards, including the ADA, Section 508 and the European Accessibility Act, point to Level AA. {automated} of the 87 criteria have at least one <a href="https://github.com/dequelabs/axe-core" rel="noopener noreferrer">axe-core</a> rule that can catch a failure automatically; the rest need a person to judge, and every page here says which is which.</p>
       <p>Looking for a scan instead of a reference page? Run the free checker built for the standard you need: {CHECKERS.map((c, i) => <>{i > 0 && ', '}<a href={checkerPath(c)}>{c.name}</a></>)}.</p>
     </section>
 

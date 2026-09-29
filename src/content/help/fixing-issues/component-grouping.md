@@ -3,6 +3,7 @@ title: 'Fix Once With Component Grouping'
 description: 'How AccessBell groups the same failing element found on several pages, so you can fix a shared header, footer or template once and clear every page.'
 order: 3
 updatedDate: 2026-09-28
+sources: ['apg']
 ---
 
 Most websites are built from shared components: a header, a footer, a product card, a newsletter form. When one of them has an accessibility issue, it fails on every page that uses it.

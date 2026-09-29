@@ -3,6 +3,7 @@ title: 'I Cannot Add a Domain or Page'
 description: 'Why the Add Domain or Add URL options are missing or show an error in AccessBell: roles, subscription status, plan limits and pages on the wrong domain.'
 order: 4
 updatedDate: 2026-09-28
+sources: ['mdn-status']
 ---
 
 ## The Add Domain Button Is Missing

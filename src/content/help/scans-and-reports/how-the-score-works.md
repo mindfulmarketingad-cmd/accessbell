@@ -3,6 +3,7 @@ title: 'How the Accessibility Score Works'
 description: 'How AccessBell calculates the score out of 100 for each page and each domain, what raises and lowers it, and why it is a trend line rather than a verdict.'
 order: 2
 updatedDate: 2026-09-28
+sources: ['axe-rules', 'webaim-million']
 ---
 
 Every scan gets a score from 0 to 100. It is a quick way to track progress. It is not a percentage of compliance and it is not a legal measure.

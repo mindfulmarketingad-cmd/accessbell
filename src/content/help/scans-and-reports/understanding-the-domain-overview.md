@@ -3,6 +3,7 @@ title: 'Understanding the Domain Overview'
 description: 'What each part of the AccessBell domain overview means: conformance status, score, active and resolved issues, scan history and coverage.'
 order: 1
 updatedDate: 2026-09-28
+sources: ['understanding', 'wcag22']
 ---
 
 The **Overview** tab is the first thing you see when you open a domain. It answers three questions: where does this domain stand, is it getting better, and which WCAG requirements are affected?

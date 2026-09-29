@@ -3,6 +3,7 @@ title: 'What Is AccessBell?'
 description: 'A plain-English introduction to AccessBell: what it checks, how scans work, what the free scan and the Lite plan include, and what it cannot do.'
 order: 1
 updatedDate: 2026-09-28
+sources: ['wai-intro', 'wcag22', 'axe-core']
 ---
 
 AccessBell is a website accessibility checker. It loads your pages in a real browser, tests them against the Web Content Accessibility Guidelines (WCAG), and tells you what is blocking people with disabilities, where it happens and how to fix it.

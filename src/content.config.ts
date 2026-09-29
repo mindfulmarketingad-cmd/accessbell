@@ -1,6 +1,7 @@
 import { defineCollection, reference } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { SOURCE_IDS } from './data/sources';
 
 /**
  * People (or teams) who write and review articles. Each entry gets a page
@@ -64,6 +65,8 @@ const help = defineCollection({
     /** Position in the Quick Start Guide, when the article belongs there */
     quickStart: z.number().int().optional(),
     updatedDate: z.coerce.date(),
+    /** External references (ids from src/data/sources.ts), shown as "Sources and further reading" */
+    sources: z.array(z.enum(SOURCE_IDS)).min(1),
   }),
 });
 

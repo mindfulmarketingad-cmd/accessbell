@@ -3,6 +3,7 @@ title: 'Filter Reports by WCAG Version and Level'
 description: 'Narrow any AccessBell report to one WCAG version, conformance level, principle, success criterion or severity, and see what moving up a level would add.'
 order: 5
 updatedDate: 2026-09-28
+sources: ['new-in-22', 'new-in-21']
 ---
 
 Reports can be filtered after the scan, instantly, without running it again. This works in the free scanner and in every saved report in the dashboard.

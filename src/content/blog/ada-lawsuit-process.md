@@ -15,7 +15,7 @@ faqs:
   - q: 'How long does an ADA lawsuit take?'
     a: 'Most ADA Title III cases settle within about 6 to 18 months of the complaint being filed. Cases that go through full discovery and motions take longer, and the rare case that goes to trial can last several years.'
   - q: 'Can a business be sued under the ADA because of its website?'
-    a: 'Yes. Thousands of website accessibility lawsuits are filed every year under Title III of the ADA. Courts disagree on whether a business that exists only online is covered, but many courts apply the ADA where a website is connected to a physical store or service. Read our [ADA website compliance guide](/blog/ada-website-compliance-guide) for the details.'
+    a: 'Yes. Thousands of website accessibility lawsuits are filed every year under Title III of the ADA. The Department of Justice''s [guidance on web accessibility and the ADA](https://www.ada.gov/resources/web-guidance/) explains how it applies to websites. Courts disagree on whether a business that exists only online is covered, but many courts apply the ADA where a website is connected to a physical store or service. Read our [ADA website compliance guide](/blog/ada-website-compliance-guide) for the details.'
   - q: 'Does fixing my website end an ADA lawsuit?'
     a: 'Not automatically. Courts often treat a voluntary fix as not ending the case unless it is clear the barriers will not return. Fixing the site still matters: it limits your exposure, supports a settlement and protects you from the next plaintiff.'
   - q: 'What is an ADA demand letter?'

@@ -10,11 +10,11 @@ contributors:
 related: ['what-is-a-website-accessibility-checker', 'wcag-2-2-checklist']
 ---
 
-Accessibility teams often frame testing as a choice: buy a tool or hire an auditor. In practice you need both. Automated testing gives you coverage and speed. Manual testing gives you judgment. The skill is knowing which questions each one can answer.
+Accessibility teams often frame testing as a choice: buy a tool or hire an auditor. In practice you need both. Automated testing gives you coverage and speed. Manual testing gives you judgment. The skill is knowing which questions each one can answer, an approach the W3C's [Evaluating Web Accessibility Overview](https://www.w3.org/WAI/test-evaluate/) also recommends.
 
 ## What Automated Testing Does Well
 
-An automated [website accessibility checker](/) reads your page's code and applies rules that have a clear right or wrong answer. It excels at:
+An automated [website accessibility checker](/) reads your page's code and applies rules that have a clear right or wrong answer, such as the open-source [axe-core](https://github.com/dequelabs/axe-core) rules. It excels at:
 
 - **Scale.** Scanning thousands of pages in minutes, on a schedule.
 - **Consistency.** Applying the same rule the same way every time.

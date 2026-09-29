@@ -3,6 +3,7 @@ title: 'Plan Manual Testing'
 description: 'What automated scans cannot check, and a simple manual testing routine with a keyboard, a screen reader and browser zoom to cover the rest of WCAG.'
 order: 4
 updatedDate: 2026-09-28
+sources: ['wai-evaluate', 'apg']
 ---
 
 Automated testing finds a meaningful share of WCAG issues, and it finds them fast. It cannot judge meaning or experience. A short manual routine on your most important pages covers much of the rest.
