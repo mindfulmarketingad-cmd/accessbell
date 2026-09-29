@@ -25,7 +25,8 @@ const authors = defineCollection({
 const blog = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
   schema: z.object({
-    title: z.string().max(70),
+    /** The H1. Over 70 characters needs a seoTitle for the <title> tag. */
+    title: z.string().max(110),
     /** <title> tag override when the H1 is longer than ~60 characters */
     seoTitle: z.string().max(47).optional(),
     description: z.string().min(110).max(165),
@@ -48,7 +49,7 @@ const blog = defineCollection({
     /** Slugs of related posts for the "Keep reading" block */
     related: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
-  }),
+  }).refine((d) => d.title.length <= 70 || d.seoTitle, { message: 'Titles over 70 characters need a seoTitle', path: ['seoTitle'] }),
 });
 
 /**

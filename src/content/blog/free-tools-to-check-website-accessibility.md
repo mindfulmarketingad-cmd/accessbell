@@ -10,7 +10,7 @@ contributors:
 history:
   - date: 2026-09-28
     note: 'First published. Tool features reviewed against each tool''s own documentation.'
-related: ['what-is-a-website-accessibility-checker', 'automated-vs-manual-accessibility-testing']
+related: ['we-tested-10-accessibility-checker-tools', 'what-is-a-website-accessibility-checker', 'automated-vs-manual-accessibility-testing']
 faqs:
   - q: 'What is the best free tool to check website accessibility?'
     a: 'It depends on who is testing. For a quick, readable report with no installation, start with [AccessBell](/#scan). Developers usually add axe DevTools or Accessibility Insights to their browser, designers like WAVE''s visual overlay, and Section 508 testers use ANDI. Most teams use two or three together.'
@@ -171,5 +171,7 @@ Whatever you choose, make testing a habit rather than a one-time event. Websites
 ## Conclusion
 
 Free accessibility tools are good enough to find most of the objective barriers on your website. WAVE gives you a visual map, axe DevTools and Accessibility Insights serve developers, Lighthouse gives a quick score, and ANDI shows what screen readers will announce.
+
+For head-to-head results, see our test of [10 accessibility checker tools on the same website](/blog/we-tested-10-accessibility-checker-tools), which shows exactly which barriers each one caught and missed.
 
 If you want the fastest path from "is my site accessible?" to a clear, prioritized fix list, with nothing to install and a report anyone on your team can read, start with AccessBell. [Run a free scan now](/#scan), then pair it with a keyboard and a screen reader to cover what automation cannot.

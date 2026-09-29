@@ -10,7 +10,7 @@ contributors:
 history:
   - date: 2026-09-29
     note: 'First published. Pricing and feature claims checked against each vendor''s own pricing page where available, plus independent reviews, as of September 2026.'
-related: ['5-accessibe-alternatives', 'free-tools-to-check-website-accessibility', 'what-is-a-website-accessibility-checker']
+related: ['we-tested-10-accessibility-checker-tools', '5-accessibe-alternatives', 'free-tools-to-check-website-accessibility', 'what-is-a-website-accessibility-checker']
 faqs:
   - q: 'What is the best website accessibility checker overall?'
     a: 'For most teams that want to actually fix their site, AccessBell and AccessibilityChecker.org are the strongest picks: both scan real, rendered pages and show you the failing code rather than patching it with a widget. Which one fits best usually comes down to price and which extra features (AI-assisted fixes, industry-specific checkers) matter to you.'
@@ -91,4 +91,4 @@ Siteimprove is a full digital governance suite bundling accessibility monitoring
 - **Want a free, visual, one-page-at-a-time tool alongside whatever else you use?** WAVE.
 - **Need a bundled enterprise governance suite, budget included?** Siteimprove.
 
-Most teams start the same way regardless of which platform they end up on: see what is actually broken. [Run a free scan](/#scan) and get a real, code-level report in under a minute, no account required.
+Want to see how the engines compare on identical code? We ran [10 accessibility checker tools against the same test website](/blog/we-tested-10-accessibility-checker-tools) and published every result. Most teams start the same way regardless of which platform they end up on: see what is actually broken. [Run a free scan](/#scan) and get a real, code-level report in under a minute, no account required.
