@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+<rect width="800" height="420" fill="#fff"/>
+<rect x="24" y="20" width="364" height="380" rx="16" fill="#fdf0ef" stroke="#f4c7c3" stroke-width="2"/>
+<circle cx="58" cy="58" r="15" fill="#b42318"/><path d="M52 52l12 12M64 52l-12 12" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+<text x="82" y="65" font-size="19" font-weight="700" fill="#b42318" text-anchor="start">Content jumps around</text>
+<rect x="48" y="80" width="316" height="44" rx="10" fill="#fff" stroke="#f4c7c3"/><text x="64" y="108" font-size="15" font-weight="700" fill="#1f2430" text-anchor="start">New: Bridge closed for repairs</text>
+<path d="M206 136v18m0 0l-6-6m6 6l6-6" stroke="#b42318" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="48" y="166" width="316" height="42" rx="10" fill="#fff" stroke="#e3e6ea"/><text x="64" y="193" font-size="15" font-weight="400" fill="#1f2430" text-anchor="start">Trail 4 reopened</text>
+<rect x="48" y="218" width="316" height="42" rx="10" fill="#fff" stroke="#e3e6ea"/><text x="64" y="245" font-size="15" font-weight="400" fill="#1f2430" text-anchor="start">Storm warning lifted</text>
+<rect x="48" y="270" width="316" height="42" rx="10" fill="#fff" stroke="#e3e6ea"/><text x="64" y="297" font-size="15" font-weight="400" fill="#1f2430" text-anchor="start">Parking lot B full</text>
+<rect x="48" y="322" width="316" height="42" rx="10" fill="#fff" stroke="#e3e6ea"/><text x="64" y="349" font-size="15" font-weight="400" fill="#1f2430" text-anchor="start">Ranger talk at 2 pm</text>
+<text x="206" y="386" font-size="14" font-weight="700" fill="#b42318" text-anchor="middle">The item you were reading moves down</text>
+<rect x="412" y="20" width="364" height="380" rx="16" fill="#f4f8f3" stroke="#cfe1ce" stroke-width="2"/>
+<circle cx="446" cy="58" r="15" fill="#44723f"/><path d="M439 58l5 5 10-11" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="470" y="65" font-size="19" font-weight="700" fill="#365c32" text-anchor="start">You control the updates</text>
+<rect x="436" y="80" width="316" height="44" rx="10" fill="#fff" stroke="#cfe1ce"/><rect x="452" y="90" width="120" height="24" rx="12" fill="#e7efe6"/><text x="512" y="107" font-size="13" font-weight="700" fill="#365c32" text-anchor="middle">Updates: Off</text>
+<rect x="600" y="90" width="136" height="24" rx="12" fill="#1f2430"/><text x="668" y="107" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">Show 2 new</text>
+<rect x="436" y="140" width="316" height="42" rx="10" fill="#fff" stroke="#e3e6ea"/><text x="452" y="167" font-size="15" font-weight="400" fill="#1f2430" text-anchor="start">Trail 4 reopened</text>
+<rect x="436" y="192" width="316" height="42" rx="10" fill="#fff" stroke="#e3e6ea"/><text x="452" y="219" font-size="15" font-weight="400" fill="#1f2430" text-anchor="start">Storm warning lifted</text>
+<rect x="436" y="244" width="316" height="42" rx="10" fill="#fff" stroke="#e3e6ea"/><text x="452" y="271" font-size="15" font-weight="400" fill="#1f2430" text-anchor="start">Parking lot B full</text>
+<rect x="436" y="296" width="316" height="42" rx="10" fill="#fff" stroke="#e3e6ea"/><text x="452" y="323" font-size="15" font-weight="400" fill="#1f2430" text-anchor="start">Ranger talk at 2 pm</text>
+<text x="594" y="368" font-size="14" font-weight="700" fill="#365c32" text-anchor="middle">Nothing moves until you choose</text>
+<text x="594" y="390" font-size="14" font-weight="700" fill="#365c32" text-anchor="middle">to show the new updates</text>
+</svg>
