@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+<rect width="800" height="400" fill="#fff"/>
+<text x="40" y="52" font-size="20" font-weight="700" fill="#1f2430" text-anchor="start">Two ways to announce a message</text>
+<rect x="24" y="76" width="752" height="140" rx="16" fill="#f5f6f8" stroke="#d9dde3" stroke-width="2"/><rect x="44" y="96" width="150" height="34" rx="8" fill="#2b2f3a"/><text x="119" y="119" font-size="14" font-weight="400" fill="#e8eaee" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">role="status"</text>
+<text x="44" y="160" font-size="14" font-weight="700" fill="#1f2430" text-anchor="start">Polite</text>
+<text x="44" y="182" font-size="13" font-weight="400" fill="#5b6270" text-anchor="start">Waits its turn</text>
+<text x="300" y="108" font-size="13" font-weight="700" fill="#5b6270" text-anchor="start">What the screen reader says</text>
+<rect x="300" y="124" width="190" height="34" rx="8" fill="#e3e6ea"/><text x="312" y="146" font-size="14" font-weight="400" fill="#1f2430" text-anchor="start">"Shipping address"</text>
+<rect x="500" y="124" width="246" height="34" rx="8" fill="#44723f"/><text x="512" y="146" font-size="14" font-weight="700" fill="#fff" text-anchor="start">"Your changes were saved."</text>
+<text x="300" y="188" font-size="13" font-weight="400" fill="#5b6270" text-anchor="start">Waits for a pause. Right for most status messages.</text>
+<rect x="24" y="236" width="752" height="140" rx="16" fill="#f5f6f8" stroke="#d9dde3" stroke-width="2"/><rect x="44" y="256" width="150" height="34" rx="8" fill="#2b2f3a"/><text x="119" y="279" font-size="14" font-weight="400" fill="#e8eaee" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">role="alert"</text>
+<text x="44" y="320" font-size="14" font-weight="700" fill="#1f2430" text-anchor="start">Assertive</text>
+<text x="44" y="342" font-size="13" font-weight="400" fill="#5b6270" text-anchor="start">Speaks immediately</text>
+<text x="300" y="268" font-size="13" font-weight="700" fill="#5b6270" text-anchor="start">What the screen reader says</text>
+<rect x="300" y="284" width="150" height="34" rx="8" fill="#e3e6ea"/><text x="312" y="306" font-size="14" font-weight="400" fill="#1f2430" text-anchor="start">"Shipping addr…"</text>
+<path d="M456 290l10 10m0 -10l-10 10" stroke="#b42318" stroke-width="2.5" stroke-linecap="round"/><rect x="476" y="284" width="270" height="34" rx="8" fill="#b42318"/><text x="488" y="306" font-size="14" font-weight="700" fill="#fff" text-anchor="start">"Card number is invalid."</text>
+<text x="300" y="348" font-size="13" font-weight="400" fill="#5b6270" text-anchor="start">Interrupts right away. Use only for urgent messages.</text>
+</svg>

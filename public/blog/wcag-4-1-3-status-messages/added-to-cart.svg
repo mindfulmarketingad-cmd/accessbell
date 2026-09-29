@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 440" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+<rect width="800" height="440" fill="#fff"/>
+<rect x="24" y="20" width="364" height="400" rx="16" fill="#fdf0ef" stroke="#f4c7c3" stroke-width="2"/>
+<circle cx="58" cy="58" r="15" fill="#b42318"/><path d="M52 52l12 12M64 52l-12 12" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+<text x="82" y="65" font-size="19" font-weight="700" fill="#b42318" text-anchor="start">Shown, but not announced</text>
+<rect x="48" y="80" width="316" height="190" rx="12" fill="#fff" stroke="#d9dde3" stroke-width="1.5"/><rect x="64" y="96" width="110" height="110" rx="10" fill="#e7efe6"/><path d="M84 190l30-50 22 30 12-14 20 34z" fill="#44723f"/><text x="190" y="120" font-size="17" font-weight="700" fill="#1f2430" text-anchor="start">Day Pack 22L</text>
+<text x="190" y="146" font-size="16" font-weight="600" fill="#5b6270" text-anchor="start">$89</text>
+<rect x="190" y="162" width="152" height="40" rx="8" fill="#353a47"/><text x="266" y="188" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">Add to cart</text>
+<rect x="64" y="220" width="284" height="36" rx="8" fill="#e7efe6" stroke="#cfe1ce"/><text x="80" y="244" font-size="14" font-weight="700" fill="#365c32" text-anchor="start">✓ Added to cart. 2 items in cart.</text>
+<path d="M58 313h5l6-6v22l-6-6h-5z" fill="#5b6270"/><path d="M73 312q5 6 0 12M77 308q9 10 0 20" fill="none" stroke="#5b6270" stroke-width="2.2" stroke-linecap="round"/><rect x="88" y="294" width="276" height="48" rx="12" fill="#fff" stroke="#b42318" stroke-width="1.5"/><path d="M108 342l-6 12 16-12" fill="#fff" stroke="#b42318" stroke-width="1.5" stroke-linejoin="round"/><rect x="103" y="338" width="18" height="6" fill="#fff"/><text x="226.0" y="324" font-size="15" font-weight="700" fill="#b42318" text-anchor="middle">(silence)</text>
+<text x="206" y="388" font-size="14" font-weight="700" fill="#b42318" text-anchor="middle">A plain &lt;div&gt; appears on screen only</text>
+<rect x="412" y="20" width="364" height="400" rx="16" fill="#f4f8f3" stroke="#cfe1ce" stroke-width="2"/>
+<circle cx="446" cy="58" r="15" fill="#44723f"/><path d="M439 58l5 5 10-11" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="470" y="65" font-size="19" font-weight="700" fill="#365c32" text-anchor="start">Shown and announced</text>
+<rect x="436" y="80" width="316" height="190" rx="12" fill="#fff" stroke="#d9dde3" stroke-width="1.5"/><rect x="452" y="96" width="110" height="110" rx="10" fill="#e7efe6"/><path d="M472 190l30-50 22 30 12-14 20 34z" fill="#44723f"/><text x="578" y="120" font-size="17" font-weight="700" fill="#1f2430" text-anchor="start">Day Pack 22L</text>
+<text x="578" y="146" font-size="16" font-weight="600" fill="#5b6270" text-anchor="start">$89</text>
+<rect x="578" y="162" width="152" height="40" rx="8" fill="#353a47"/><text x="654" y="188" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">Add to cart</text>
+<rect x="452" y="220" width="284" height="36" rx="8" fill="#e7efe6" stroke="#cfe1ce"/><text x="468" y="244" font-size="14" font-weight="700" fill="#365c32" text-anchor="start">✓ Added to cart. 2 items in cart.</text>
+<path d="M446 313h5l6-6v22l-6-6h-5z" fill="#5b6270"/><path d="M461 312q5 6 0 12M465 308q9 10 0 20" fill="none" stroke="#5b6270" stroke-width="2.2" stroke-linecap="round"/><rect x="476" y="294" width="276" height="48" rx="12" fill="#fff" stroke="#365c32" stroke-width="1.5"/><path d="M496 342l-6 12 16-12" fill="#fff" stroke="#365c32" stroke-width="1.5" stroke-linejoin="round"/><rect x="491" y="338" width="18" height="6" fill="#fff"/><text x="614.0" y="324" font-size="13.5" font-weight="700" fill="#365c32" text-anchor="middle">"Added to cart. 2 items in cart."</text>
+<text x="594" y="388" font-size="14" font-weight="700" fill="#365c32" text-anchor="middle">role="status" sends it to the screen reader</text>
+</svg>
