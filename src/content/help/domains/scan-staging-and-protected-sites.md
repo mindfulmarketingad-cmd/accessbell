@@ -2,7 +2,7 @@
 title: 'Scan Staging and Password-Protected Sites'
 description: 'Use custom HTTP headers to scan staging environments and pages behind basic authentication or a login, and how AccessBell keeps those values safe.'
 order: 4
-updatedDate: 2026-09-28
+updatedDate: 2026-09-29
 sources: ['mdn-auth']
 ---
 
@@ -20,7 +20,7 @@ Add the staging address as its own domain, for example `staging.example.com`. Se
    - **Basic authentication**: name `Authorization`, value `Basic` followed by a space and your base64-encoded `username:password`
    - **A bypass token**: for example `x-vercel-protection-bypass` with your token, or the header your host documents
    - **A session cookie**: name `Cookie`, value `session=...` copied from a signed-in browser
-4. Select **Save settings**, then **Re-Scan**.
+4. Select **Save settings**, then **Scan now**.
 
 ## How We Keep Header Values Safe
 

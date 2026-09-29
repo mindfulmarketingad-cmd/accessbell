@@ -2,11 +2,11 @@
 title: 'Find and Monitor Pages'
 description: 'Discover the pages on your domain from its sitemap and links, choose up to 25 URLs to monitor, add URLs by hand and stop monitoring pages.'
 order: 1
-updatedDate: 2026-09-28
+updatedDate: 2026-09-29
 sources: ['sitemaps']
 ---
 
-Each domain monitors up to 25 URLs. Monitored pages are scanned when you select Re-Scan and automatically every day. AccessBell helps you find the pages that matter most.
+Each domain monitors up to 25 URLs. Monitored pages are scanned when you select Scan now and automatically every day. AccessBell helps you find the pages that matter most.
 
 ## Find Pages Automatically
 

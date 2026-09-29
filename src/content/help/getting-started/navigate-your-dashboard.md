@@ -3,7 +3,7 @@ title: 'Navigate Your Dashboard'
 description: 'A tour of the AccessBell dashboard: the sidebar, Your Domains, the domain tabs, and where to find team, billing and account settings.'
 order: 7
 quickStart: 4
-updatedDate: 2026-09-28
+updatedDate: 2026-09-29
 sources: ['understanding', 'wcag22']
 ---
 
@@ -27,7 +27,7 @@ The home page of the dashboard. It shows a count of your domains, summary number
 
 ## Inside a Domain
 
-The header shows the domain name, when it was last scanned, **Re-Scan**, **Export** and a menu with **Find pages**, **Domain settings** and **Open website**. Below are five tabs:
+The header shows the domain name, when it was last scanned, **Scan now**, **Export** and a menu with **Find pages**, **Domain settings** and **Open website**. Below are five tabs:
 
 | Tab | What it shows |
 | --- | --- |

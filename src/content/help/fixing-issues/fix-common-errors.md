@@ -3,7 +3,7 @@ title: 'Fix the Most Common Accessibility Errors'
 description: 'Practical fixes for the errors AccessBell finds most often: missing alt text, unlabeled fields, low contrast, empty links and buttons, headings and page language.'
 order: 2
 quickStart: 5
-updatedDate: 2026-09-28
+updatedDate: 2026-09-29
 sources: ['webaim-million', 'understanding']
 ---
 
@@ -64,4 +64,4 @@ Remove `maximum-scale=1` and `user-scalable=no` from the viewport meta tag, so p
 
 ## After Fixing
 
-Deploy the change and select **Re-Scan** on the domain. For a deeper walkthrough of every WCAG 2.2 requirement, see our [WCAG 2.2 checklist](/blog/wcag-2-2-checklist).
+Deploy the change and select **Scan now** on the domain. For a deeper walkthrough of every WCAG 2.2 requirement, see our [WCAG 2.2 checklist](/blog/wcag-2-2-checklist).

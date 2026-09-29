@@ -12,9 +12,9 @@ import Icon from '../../components/Icon.astro';
     </div>
     <div class="top-actions">
       <span class="last-scan" data-last-scan hidden><Icon name="clock" /><span></span></span>
-      <button class="btn btn-outline" type="button" data-rescan-all hidden><Icon name="refresh" /> Re-Scan</button>
+      <button class="btn btn-scan" type="button" data-rescan-all hidden><Icon name="refresh" /> Scan now</button>
       <div class="menu-wrap">
-        <button class="btn" type="button" data-export aria-expanded="false" aria-controls="export-menu"><Icon name="download" /> Export <Icon name="chevron" /></button>
+        <button class="btn btn-outline" type="button" data-export aria-expanded="false" aria-controls="export-menu"><Icon name="download" /> Export <Icon name="chevron" /></button>
         <div class="menu menu-down" id="export-menu" hidden>
           <button type="button" data-export-csv><Icon name="doc" /> Issues as CSV (Excel)</button>
           <button type="button" data-export-print><Icon name="print" /> Print or save as PDF</button>

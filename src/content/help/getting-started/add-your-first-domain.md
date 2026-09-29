@@ -3,7 +3,7 @@ title: 'Add Your First Domain'
 description: 'Add a website or staging environment to your AccessBell dashboard so its pages are monitored, scanned on a schedule and tracked over time.'
 order: 5
 quickStart: 2
-updatedDate: 2026-09-28
+updatedDate: 2026-09-29
 sources: ['sitemaps', 'wai-evaluate']
 ---
 
@@ -35,4 +35,4 @@ See [Find and monitor pages](/resources/help-center/domains/find-and-monitor-pag
 
 ## Run the First Scan
 
-Select **Re-Scan** at the top of the domain to scan every monitored page now. See [Run your first scan](/resources/help-center/getting-started/run-your-first-scan).
+Select **Scan now** at the top of the domain to scan every monitored page now. See [Run your first scan](/resources/help-center/getting-started/run-your-first-scan).

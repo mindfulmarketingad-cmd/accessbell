@@ -2,7 +2,7 @@
 title: 'Scheduled Monitoring and Email Alerts'
 description: 'How AccessBell rescans monitored pages every day, who receives email alerts about new serious issues, and what pauses monitoring.'
 order: 7
-updatedDate: 2026-09-28
+updatedDate: 2026-09-29
 sources: ['webaim-million', 'wai-evaluate']
 ---
 
@@ -12,7 +12,7 @@ Websites change all the time, and every change can introduce a new barrier. Acce
 
 Every monitored page on every domain is rescanned once a day, starting at 06:00 UTC. A domain's Overview shows the **Next scheduled scan**. Scheduled scans use the domain's current [settings](/resources/help-center/domains/scan-settings), including devices and custom headers.
 
-You can also scan at any time with **Re-Scan**. Rescans are unlimited under fair use.
+You can also scan at any time with **Scan now**. Rescans are unlimited under fair use.
 
 ## Email Alerts
 

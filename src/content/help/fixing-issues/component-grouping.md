@@ -2,7 +2,7 @@
 title: 'Fix Once With Component Grouping'
 description: 'How AccessBell groups the same failing element found on several pages, so you can fix a shared header, footer or template once and clear every page.'
 order: 3
-updatedDate: 2026-09-28
+updatedDate: 2026-09-29
 sources: ['apg']
 ---
 
@@ -16,7 +16,7 @@ AccessBell looks at each failing element's tag and classes, for example `button.
 
 1. Start with the group that affects the most pages.
 2. Find the component in your code by searching for its class name.
-3. Fix it once, deploy, and select **Re-Scan**.
+3. Fix it once, deploy, and select **Scan now**.
 
 One fix can clear dozens of failing elements. It is the fastest way to raise your score.
 

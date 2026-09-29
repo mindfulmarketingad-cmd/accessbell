@@ -2,7 +2,7 @@
 title: 'Read an Issue and Decide What to Fix First'
 description: 'What each part of an AccessBell issue means, from severity and WCAG criteria to failing elements and correct markup, and how to prioritize your fixes.'
 order: 1
-updatedDate: 2026-09-28
+updatedDate: 2026-09-29
 sources: ['understanding', 'axe-rules']
 ---
 
@@ -36,4 +36,4 @@ A link at the bottom opens detailed guidance for the rule.
 2. **Issues on many pages**: these usually come from a shared template. See [Component grouping](/resources/help-center/fixing-issues/component-grouping).
 3. **Everything else**, starting with the highest counts.
 
-After you deploy a fix, select **Re-Scan** to confirm it. The Overview's **Resolved since last scan** counts what you fixed.
+After you deploy a fix, select **Scan now** to confirm it. The Overview's **Resolved since last scan** counts what you fixed.

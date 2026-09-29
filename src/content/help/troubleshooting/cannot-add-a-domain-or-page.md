@@ -2,7 +2,7 @@
 title: 'I Cannot Add a Domain or Page'
 description: 'Why the Add Domain or Add URL options are missing or show an error in AccessBell: roles, subscription status, plan limits and pages on the wrong domain.'
 order: 4
-updatedDate: 2026-09-28
+updatedDate: 2026-09-29
 sources: ['mdn-status']
 ---
 
@@ -30,6 +30,6 @@ The domain already monitors 25 URLs. Stop monitoring a page you need less, or [t
 
 The domain has already been added. Find it under Domains in the sidebar.
 
-## The Monitor and Rescan Buttons Are Missing
+## The Monitor and Scan Now Buttons Are Missing
 
 Viewers cannot change pages or run scans, and neither can anyone while the subscription is inactive. Check your role in **Team** and your status in **Billing**.

@@ -134,7 +134,7 @@ function domainSteps(me, { selectTab }) {
       title: 'Scans and monitoring',
       body: [
         'Every monitored page is rescanned automatically each day, and you can see when the last scan ran.',
-        'Use Re-Scan to test every monitored page again right away, for example after you ship a fix.',
+        'Use Scan now to test every monitored page again right away, for example after you ship a fix.',
       ],
     },
     {
@@ -209,7 +209,7 @@ function domainSteps(me, { selectTab }) {
     {
       title: 'That’s the whole tour',
       body: [
-        'Start with the Issues tab and work from critical down. Re-Scan after you fix something to confirm it passes.',
+        'Start with the Issues tab and work from critical down. Scan now again after you fix something to confirm it passes.',
         can(me, 'admin') ? 'Invite your team from Team in the sidebar, and replay this tour anytime from Product tour.' : 'You can replay this tour anytime from Product tour in the sidebar.',
       ],
       before: overview,

@@ -2,7 +2,7 @@
 title: 'Choose WCAG Version, Level and Devices'
 description: 'Set the WCAG version and conformance level each domain is tested against, scan on desktop and mobile, and use page load delay and scrolling.'
 order: 2
-updatedDate: 2026-09-28
+updatedDate: 2026-09-29
 sources: ['new-in-22', 'understanding']
 ---
 
@@ -39,6 +39,6 @@ If your pages load content after a delay, such as a cookie banner, a chat widget
 
 ## Save
 
-Select **Save settings**. The new settings apply to the next scan. Select **Re-Scan** to see the effect straight away.
+Select **Save settings**. The new settings apply to the next scan. Select **Scan now** to see the effect straight away.
 
 Related: [Include and exclude URL rules](/resources/help-center/domains/include-and-exclude-url-rules) and [Scan staging and protected sites](/resources/help-center/domains/scan-staging-and-protected-sites).

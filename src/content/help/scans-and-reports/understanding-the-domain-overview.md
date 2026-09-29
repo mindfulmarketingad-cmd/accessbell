@@ -2,7 +2,7 @@
 title: 'Understanding the Domain Overview'
 description: 'What each part of the AccessBell domain overview means: conformance status, score, active and resolved issues, scan history and coverage.'
 order: 1
-updatedDate: 2026-09-28
+updatedDate: 2026-09-29
 sources: ['understanding', 'wcag22']
 ---
 
@@ -14,7 +14,7 @@ The **Overview** tab is the first thing you see when you open a domain. It answe
 
 - **Not conformant**: automated tests found at least one failure of a WCAG criterion in your target. This is a factual statement about the automated results, not a legal finding.
 - **No automated failures**: nothing in your target failed. You still need a [manual review](/resources/help-center/scans-and-reports/manual-review-items) before you can claim conformance.
-- **Not scanned yet**: select Re-Scan to start.
+- **Not scanned yet**: select Scan now to start.
 
 The **score ring** shows the average score of your monitored pages, out of 100. Green is 90 and above, amber is 60 to 89 and red is below 60. See [How the accessibility score works](/resources/help-center/scans-and-reports/how-the-score-works).
 

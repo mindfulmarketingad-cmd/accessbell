@@ -343,7 +343,7 @@ function renderPages() {
   const row = (p) => {
     const actions = el('td', { class: 'actions' });
     if (canEditPages()) {
-      const scanBtn = el('button', { class: 'btn btn-outline btn-sm', type: 'button', text: 'Rescan' });
+      const scanBtn = el('button', { class: 'btn btn-sm', type: 'button', text: 'Scan now' });
       scanBtn.addEventListener('click', () => rescan(p, scanBtn).catch((e) => setStatus($('[data-page-status]'), 'error', e.message)));
       const stop = el('button', { class: 'btn btn-outline btn-sm', type: 'button', text: 'Stop monitoring' });
       stop.addEventListener('click', busy(stop, $('[data-page-status]'), async () => {
@@ -514,7 +514,7 @@ function bindActions() {
         progress.textContent = `Scanning ${done} of ${total} pages...`;
       });
       const failed = results.filter((r) => r instanceof Error).length;
-      progress.textContent = failed ? `Finished with ${failed} page${failed === 1 ? '' : 's'} that could not be scanned.` : `All ${pages.length} pages rescanned.`;
+      progress.textContent = failed ? `Finished with ${failed} page${failed === 1 ? '' : 's'} that could not be scanned.` : `All ${pages.length} pages scanned.`;
       await load();
     }),
   );
