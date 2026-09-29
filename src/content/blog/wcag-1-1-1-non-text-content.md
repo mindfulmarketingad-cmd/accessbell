@@ -47,7 +47,7 @@ Without a text alternative, anything shown only as an image is lost to people wh
 - A **button that is only an icon**, such as a cart or a search magnifier, is announced as "button", with no hint of what it does.
 - A **chart** that shows your key results is a blank space.
 
-Text alternatives also help people with slow connections who turn images off, people who use translation tools, and search engines, which rely on alt text to understand images.
+Text alternatives also help people with slow connections who turn images off, people who use translation tools, and search engines, which rely on alt text to understand images. Checking alt text is a standard step in any [SEO audit](/blog/seo-audit).
 
 ## Who Is Affected by 1.1.1 Non-text Content
 

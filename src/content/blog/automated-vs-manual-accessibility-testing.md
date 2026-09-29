@@ -7,7 +7,7 @@ category: 'Guides'
 contributors:
   - author: accessbell-editorial-team
     role: Author
-related: ['what-is-a-website-accessibility-checker', 'wcag-2-2-checklist']
+related: ['what-is-a-website-accessibility-checker', 'wcag-2-2-checklist', 'seo-audit']
 ---
 
 Accessibility teams often frame testing as a choice: buy a tool or hire an auditor. In practice you need both. Automated testing gives you coverage and speed. Manual testing gives you judgment. The skill is knowing which questions each one can answer, an approach the W3C's [Evaluating Web Accessibility Overview](https://www.w3.org/WAI/test-evaluate/) also recommends.
