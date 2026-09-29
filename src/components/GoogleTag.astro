@@ -1,0 +1,8 @@
+---
+// Google tag (gtag.js) for Google Ads. The config lives in /js/gtag-config.js because the
+// Content-Security-Policy does not allow inline scripts. Hosts are allowed in vercel.json.
+const GOOGLE_TAG_ID = 'AW-18266125976';
+---
+<!-- Google tag (gtag.js) -->
+<script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_TAG_ID}`}></script>
+<script is:inline src="/js/gtag-config.js"></script>
