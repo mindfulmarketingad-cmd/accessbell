@@ -115,6 +115,7 @@ Charts and maps that tell lines, bars or areas apart only by color fail for many
 - Use **patterns or textures**, such as solid and striped fills. This is the W3C technique [G111, using color and pattern](https://www.w3.org/WAI/WCAG22/Techniques/general/G111).
 - Use **different marker shapes** on line charts, such as circles, squares and triangles.
 - **Label data directly** on the chart, rather than relying only on a color legend.
+- Test your palette with our free [chart color checker](/resources/chart-color-checker), which shows how the colors look with color blindness.
 - Offer the **data as a table** as well, which also helps meet [1.1.1 Non-text Content](/blog/wcag-1-1-1-non-text-content).
 
 ### Pair status colors with icons and words

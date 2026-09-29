@@ -1,0 +1,145 @@
+---
+import CtaBand from '../../components/CtaBand.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import Faq from '../../components/Faq.astro';
+import { faqSchema, type FaqItem } from '../../lib/schema';
+import { SITE } from '../../config/site';
+import { understandingUrl } from '../../lib/wcag-pages';
+
+const PATH = '/resources/chart-color-checker';
+
+const faqs: FaqItem[] = [
+  {
+    q: 'What does the chart color checker test?',
+    a: 'Two things. First, the contrast of each chart color against your background, compared with the 3:1 minimum that WCAG 1.4.11 Non-text Contrast sets for graphics people need to understand. Second, how different your colors look to each other with typical vision and with protanopia, deuteranopia, tritanopia and full color blindness, so you can spot colors that people may confuse.',
+  },
+  {
+    q: 'How does it simulate color blindness?',
+    a: 'It uses the model by Machado, Oliveira and Fernandes (2009), a widely used method for simulating color vision deficiency, at full severity. Grayscale uses WCAG relative luminance. It then measures how different each pair of colors looks with the CIEDE2000 color difference formula.',
+  },
+  {
+    q: 'What does "hard to tell apart" mean?',
+    a: 'We flag a pair of colors when their CIEDE2000 difference is below 10 for that type of vision. This is a practical rule of thumb for small chart marks, not a WCAG requirement. Colors above it can still be hard to match to a legend, which is why charts should never rely on color alone.',
+  },
+  {
+    q: 'Does passing this check make my chart accessible?',
+    a: 'Not on its own. WCAG 1.4.1 Use of Color says color cannot be the only way information is shown, so add direct labels, patterns or different marker shapes as well, and offer the data as a table or text. This tool helps you choose colors that work well alongside those cues.',
+  },
+  {
+    q: 'Do you store the colors I enter?',
+    a: 'No. Everything is calculated in your browser. The web address updates so you can share a link to your palette, and that link contains only the hex codes.',
+  },
+];
+
+const schema = [
+  {
+    '@type': 'WebApplication',
+    name: 'Chart and Infographic Color Checker',
+    url: `${SITE.url}${PATH}`,
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'Any',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    publisher: { '@id': `${SITE.url}/#organization` },
+  },
+  faqSchema(faqs),
+];
+---
+<BaseLayout
+  title="Free Chart Color Checker for Color Blindness | AccessBell"
+  description="Free chart color checker: test chart and infographic colors for WCAG 3:1 contrast and see if people with color blindness can tell them apart. In your browser."
+  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: 'Chart Color Checker', href: PATH }]}
+  schema={schema}
+>
+  <section class="gen-hero" aria-labelledby="ccc-title">
+    <div class="container">
+      <span class="gen-hero-icon"><Icon name="chart" /></span>
+      <h1 id="ccc-title">Chart and Infographic <span class="accent">Color Checker</span></h1>
+      <p class="lead">Use this free chart color checker to test the colors in your charts, graphs and infographics. It checks each color's contrast against your background and shows whether people with color blindness can still tell your colors apart. Everything runs in your browser.</p>
+    </div>
+  </section>
+
+  <div class="container gen-body" data-chart-colors>
+    <section class="gen-main" aria-labelledby="ccc-tool-title">
+      <h2 id="ccc-tool-title" class="visually-hidden">Check your chart colors</h2>
+
+      <div class="ccc-inputs">
+        <div class="gen-card" aria-labelledby="ccc-bg-title">
+          <div class="gen-card-head"><h3 id="ccc-bg-title">Chart Background</h3></div>
+          <div class="gen-card-body">
+            <div class="field">
+              <label for="ccc-bg-hex">Hex value</label>
+              <div class="cc-hex-row">
+                <span class="cc-hex-prefix" aria-hidden="true">#</span>
+                <input id="ccc-bg-hex" type="text" maxlength="7" autocomplete="off" spellcheck="false" value="FFFFFF" data-bg-hex />
+                <input type="color" value="#ffffff" aria-label="Pick background color" data-bg-picker />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="gen-card" aria-labelledby="ccc-series-title">
+          <div class="gen-card-head"><h3 id="ccc-series-title">Chart Colors</h3></div>
+          <div class="gen-card-body">
+            <ol class="ccc-series" data-series></ol>
+            <button type="button" class="btn btn-outline btn-sm" data-add><Icon name="plus" /> Add a color</button>
+            <p class="help">Enter 2 to 8 colors, one for each series, bar or slice.</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="visually-hidden" role="status" aria-live="polite" data-status></p>
+      <p class="ccc-summary" data-summary></p>
+
+      <section class="ccc-block" aria-labelledby="ccc-contrast-title">
+        <h3 id="ccc-contrast-title">Contrast Against the Background</h3>
+        <p>Bars, lines, pie slices and other chart parts that people need to understand need a contrast ratio of at least <strong>3:1</strong> against the background under <a href="/resources/wcag/1-4-11-non-text-contrast">WCAG 1.4.11 Non-text Contrast</a>.</p>
+        <ul class="ccc-results" data-contrast-rows></ul>
+      </section>
+
+      <section class="ccc-block" aria-labelledby="ccc-cvd-title">
+        <h3 id="ccc-cvd-title">Color Blindness Check</h3>
+        <p>How your colors look with different types of color vision, and the pair of colors that is closest together for each.</p>
+        <ul class="ccc-results" data-cvd-rows></ul>
+      </section>
+
+      <div class="cc-actions">
+        <button type="button" class="btn btn-outline btn-sm" data-copy-link><Icon name="copy" /> <span>Copy link to this palette</span></button>
+      </div>
+    </section>
+  </div>
+
+  <section class="cc-explain-section" aria-labelledby="ccc-explain-title">
+    <div class="container cc-prose">
+      <h2 id="ccc-explain-title">How the Chart Color Checker Works</h2>
+      <p>The chart color checker runs two tests. The first compares each color with your background using the WCAG contrast ratio formula. Chart parts that carry meaning need at least 3:1, as explained in the W3C's <a href={understandingUrl('1.4.11')} rel="noopener noreferrer">Understanding Non-text Contrast</a>. If a color falls short, the checker suggests the closest lighter or darker shade of the same hue that passes.</p>
+      <p>The second test simulates how your palette looks with protanopia, deuteranopia and tritanopia, using the model published by <a href="https://doi.org/10.1109/TVCG.2009.113" rel="noopener noreferrer">Machado, Oliveira and Fernandes (2009)</a>, and in grayscale. For each type of vision, it measures the difference between every pair of colors with the CIEDE2000 formula and reports the closest pair. Red and green pairs are the most common problem, because they can look almost the same with protanopia or deuteranopia.</p>
+
+      <h2 id="ccc-beyond-title">Beyond the Chart Color Checker: Don't Rely on Color Alone</h2>
+      <p>Good colors are only half the job. <a href="/blog/wcag-1-4-1-use-of-color">WCAG 1.4.1 Use of Color</a> says color can never be the only way information is shown, as described in the W3C's <a href={understandingUrl('1.4.1')} rel="noopener noreferrer">Understanding Use of Color</a>. Pair your palette with:</p>
+      <ul>
+        <li><strong>Direct labels</strong> on lines, bars and slices, instead of a color legend alone.</li>
+        <li><strong>Patterns or textures</strong>, such as solid and striped fills.</li>
+        <li><strong>Different marker shapes</strong> on line and scatter charts.</li>
+        <li><strong>A data table or text summary</strong>, which also gives the chart a text alternative under <a href="/blog/wcag-1-1-1-non-text-content">WCAG 1.1.1 Non-text Content</a>.</li>
+      </ul>
+      <p>Checking text colors instead? Use our <a href="/resources/contrast-checker">WCAG color contrast checker</a>, and read our guide to <a href="/blog/wcag-1-4-3-contrast-minimum">1.4.3 Contrast (Minimum)</a>.</p>
+    </div>
+  </section>
+
+  <section class="section section-surface" aria-labelledby="ccc-faq-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">FAQ</span>
+        <h2 id="ccc-faq-title">Chart Color Checker Questions</h2>
+        <p>Want every page checked automatically? <a href="/#scan">Run a free WCAG scan</a>.</p>
+      </div>
+      <Faq items={faqs} />
+    </div>
+  </section>
+
+  <CtaBand title="Check Every Chart on Your Site" text="Start a 3-day free trial and AccessBell scans up to 25 pages per domain every day for contrast, missing text alternatives and every other automated WCAG check." />
+</BaseLayout>
+<script>
+  import '../../scripts/chart-color-checker.js';
+</script>

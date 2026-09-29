@@ -20,6 +20,7 @@ const STATIC: Omit<RouteEntry, 'lastmod'>[] = [
   { path: '/resources', label: 'Resources', note: 'Free tools and guides', group: 'main' },
   { path: '/resources/statement-generator', label: 'Accessibility Statement Generator', note: 'Free custom accessibility statement', group: 'main' },
   { path: '/resources/free-accessibility-icon-set', label: 'Free Accessibility Icon Set', note: '17 free SVG and PNG accessibility icons', group: 'main' },
+  { path: '/resources/chart-color-checker', label: 'Chart and Infographic Color Checker', note: 'Free chart color checker for color blindness and contrast', group: 'main' },
   { path: '/resources/contrast-checker', label: 'WCAG Color Contrast Checker', note: 'Free color contrast ratio checker', group: 'main' },
   { path: '/resources/wcag', label: 'WCAG Success Criteria Library', note: 'Every WCAG criterion explained', group: 'main' },
   { path: '/resources/help-center', label: 'Help Center', note: 'Guides for every AccessBell feature', group: 'help' },

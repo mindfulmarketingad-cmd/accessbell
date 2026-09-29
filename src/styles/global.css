@@ -3724,6 +3724,115 @@ a:hover {
   background: #fff;
   cursor: pointer;
 }
+/* Chart color checker */
+.ccc-inputs {
+  display: grid;
+  gap: 20px;
+}
+@media (min-width: 820px) {
+  .ccc-inputs {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+    align-items: start;
+  }
+}
+.ccc-series {
+  display: grid;
+  gap: 14px;
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+}
+.ccc-row label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.ccc-remove {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  justify-content: center;
+}
+.ccc-remove svg {
+  width: 18px;
+  height: 18px;
+}
+.ccc-summary {
+  margin: 28px 0 0;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  font-weight: 600;
+}
+.ccc-block {
+  margin-top: 32px;
+}
+.ccc-block > h3 {
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+}
+.ccc-results {
+  display: grid;
+  gap: 12px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 720px) {
+  .ccc-results {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+}
+.ccc-result {
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #fff;
+}
+.ccc-result p {
+  margin: 8px 0 0;
+  font-size: 0.9375rem;
+}
+.ccc-result .btn {
+  margin-top: 10px;
+}
+.ccc-result-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+}
+.ccc-result-head .tag {
+  margin-left: auto;
+}
+.ccc-result .ccc-preview {
+  margin-top: 10px;
+}
+.ccc-chip {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 1px solid rgb(0 0 0 / 20%);
+  flex: none;
+}
+.ccc-hex {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 0.875rem;
+}
+.ccc-muted {
+  color: var(--ink-500);
+}
+.ccc-preview {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 6px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
 .cc-swatch {
   height: 40px;
   border-radius: var(--radius-sm);
