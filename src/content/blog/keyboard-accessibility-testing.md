@@ -24,7 +24,7 @@ faqs:
     a: 'A missing or removed focus indicator, usually from a CSS reset that includes `outline: none` without replacing it. Without a visible focus indicator, a keyboard user has no way to see where they are on the page.'
 ---
 
-A well-known complaint about accessibility overlays sums up why keyboard testing matters: you cannot patch your way past it with a script that runs in the browser. If a custom dropdown never responds to the arrow keys, or a modal traps focus and never lets go, that is broken in your actual code, and it only gets fixed there. Keyboard accessibility testing is how you find those problems before a real keyboard user does.
+A well-known complaint about [accessibility overlays](/blog/accessibe-alternative) sums up why keyboard testing matters: you cannot patch your way past it with a script that runs in the browser. If a custom dropdown never responds to the arrow keys, or a modal traps focus and never lets go, that is broken in your actual code, and it only gets fixed there. Keyboard accessibility testing is how you find those problems before a real keyboard user does.
 
 ## Why Keyboard Accessibility Testing Matters
 

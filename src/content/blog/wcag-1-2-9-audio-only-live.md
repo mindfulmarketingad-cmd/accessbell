@@ -33,7 +33,7 @@ faqs:
 - **Live:** broadcast as it happens, not recorded and published later
 - **Audio-only:** there is sound but no video, like a radio stream or an audio-only event
 
-For that content, you provide a text alternative with equivalent information, while the audio is live. That usually means **real-time captions** or, when the speaker reads from a script, a **transcript** of that script. A good text alternative includes who is speaking and meaningful sounds, such as [applause] or [music].
+For that content, you provide a [text alternative](/blog/wcag-1-1-1-non-text-content) with equivalent information, while the audio is live. That usually means **real-time captions** or, when the speaker reads from a script, a **transcript** of that script. A good text alternative includes who is speaking and meaningful sounds, such as [applause] or [music].
 
 <figure>
   <img src="/blog/wcag-1-2-9-audio-only-live/live-captions.svg" width="800" height="330" loading="lazy" alt="A live audio player for Trail Talk Radio with a waveform and pause button. Beside it, a live captions panel shows the conversation as text with speaker labels, Host Sam and Guest Ana, and the sound cue [laughter].">

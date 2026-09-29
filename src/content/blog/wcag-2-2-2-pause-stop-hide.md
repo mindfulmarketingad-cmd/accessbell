@@ -139,7 +139,7 @@ Honoring `prefers-reduced-motion` is good practice, but it is a device setting m
 
 ### Let people pause tickers and scrolling text
 
-A scrolling ticker needs a pause or stop button, or a way to show the same content as static text. The W3C lists scrolling content with no pause as failure [F16](https://www.w3.org/WAI/WCAG22/Techniques/failures/F16). The HTML `<marquee>` and `<blink>` elements are obsolete and should not be used at all.
+A scrolling ticker needs a pause or stop button, or a way to show the same content as static text. The W3C lists scrolling content with no pause as failure [F16, scrolling content with no way to pause and restart it](https://www.w3.org/WAI/WCAG22/Techniques/failures/F16). The HTML `<marquee>` and `<blink>` elements are obsolete and should not be used at all.
 
 ### Let people control auto-updating content
 
@@ -150,7 +150,7 @@ For live feeds, scores and dashboards, give people control. Pause updates, let t
   <figcaption>Holding new items until someone asks for them keeps the content still while people read.</figcaption>
 </figure>
 
-This matches the W3C technique [G186, using a control in the web page that stops moving, blinking, or auto-updating content](https://www.w3.org/WAI/WCAG22/Techniques/general/G186). If the updates are important, pair the "Show new" button with a status message so screen reader users know they are waiting.
+This matches the W3C technique [G186, using a control in the web page that stops moving, blinking, or auto-updating content](https://www.w3.org/WAI/WCAG22/Techniques/general/G186). If the updates are important, pair the "Show new" button with a [status message](/blog/wcag-4-1-3-status-messages) so screen reader users know they are waiting.
 
 ### Know the "essential" exception
 

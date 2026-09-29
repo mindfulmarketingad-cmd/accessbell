@@ -123,7 +123,7 @@ Moving focus to the next field once a field is full, as in the phone number exam
 
 ## How to Test for 3.2.2 On Input
 
-Automated tools cannot reliably catch 3.2.2 On Input failures, because they depend on what happens when you *use* the page. In [our test of 10 accessibility checker tools](/blog/we-tested-10-accessibility-checker-tools), every tool missed the barriers that depend on behavior, such as a keyboard trap and an auto-advancing carousel. Test it by hand:
+Automated tools cannot reliably catch 3.2.2 On Input failures, because they depend on what happens when you *use* the page. In [our test of 10 accessibility checker tools](/blog/we-tested-10-accessibility-checker-tools), every tool missed the barriers that depend on behavior, such as a keyboard trap and an [auto-advancing carousel](/blog/wcag-2-2-2-pause-stop-hide). Test it by hand:
 
 1. Use only the keyboard. Tab to each text field, dropdown, radio button and checkbox.
 2. Type into each field and change each value, including with the arrow keys in dropdowns.

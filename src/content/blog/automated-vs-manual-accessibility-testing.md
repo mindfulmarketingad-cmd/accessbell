@@ -27,7 +27,7 @@ These are also the barriers most often cited in legal complaints, which is why a
 
 Automated rules cannot understand meaning, intent or experience. A human tester needs to answer questions like:
 
-- **Is the alt text accurate?** A tool can see alt="chart". Only a person can say it should describe the trend the chart shows.
+- **Is the [alt text](/blog/wcag-1-1-1-non-text-content) accurate?** A tool can see alt="chart". Only a person can say it should describe the trend the chart shows.
 - **Is the focus order logical?** A tool can confirm elements are focusable. A person can tell that focus jumps from the header to the footer and back.
 - **Do error messages help?** "Invalid input" technically identifies an error. "Enter a date in the format MM/DD/YYYY" helps someone fix it.
 - **Are captions correct?** A tool can detect a caption track. It cannot tell if the captions match the dialogue.
@@ -59,7 +59,7 @@ The most effective programs we see follow a simple loop.
 
 **4. Test new components before release.** Add accessibility acceptance criteria to your definition of done. It is far cheaper to catch a keyboard trap in review than in production.
 
-**5. Listen to users.** An accessibility statement with a clear feedback channel surfaces barriers that neither tools nor auditors anticipated.
+**5. Listen to users.** An [accessibility statement](/resources/statement-generator) with a clear feedback channel surfaces barriers that neither tools nor auditors anticipated.
 
 ## Where AI-Assisted Fixes Fit
 

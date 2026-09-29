@@ -108,7 +108,7 @@ Sessions sometimes have to expire. When they do, keep the person's data so they 
 
 ## How to Test for 2.2.3 No Timing
 
-Time limits are hidden in scripts, server settings and business rules, so automated checkers cannot reliably find them. Automated tests also struggle with behavior over time in general: in [our test of 10 accessibility checker tools](/blog/we-tested-10-accessibility-checker-tools), every tool missed an auto-advancing carousel. Test by hand:
+Time limits are hidden in scripts, server settings and business rules, so automated checkers cannot reliably find them. Automated tests also struggle with behavior over time in general: in [our test of 10 accessibility checker tools](/blog/we-tested-10-accessibility-checker-tools), every tool missed an [auto-advancing carousel](/blog/wcag-2-2-2-pause-stop-hide). Test by hand:
 
 1. Look for countdowns, "expires in" messages and timed steps in forms, checkouts and quizzes.
 2. Start a task, then leave the page idle for 30 minutes or more. Come back and see whether your work survived.

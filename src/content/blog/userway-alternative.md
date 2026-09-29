@@ -58,6 +58,6 @@ The pattern across overlay lawsuits, UserWay's included, is the same: a widget p
 1. [Run a free scan](/#scan) of your site to see what a real browser-based audit finds, independent of any widget.
 2. Fix issues in your actual code, starting with the critical and serious ones AccessBell ranks first.
 3. Remove the overlay once fixes are live, so your own testing (and any future audit) reflects your real site.
-4. Turn on scheduled monitoring so regressions are caught automatically instead of by a demand letter.
+4. Turn on scheduled monitoring so regressions are caught automatically instead of by a [demand letter](/blog/ada-demand-letter).
 
 If you want the broader argument for code-level fixes over widgets, see [automated vs. manual accessibility testing](/blog/automated-vs-manual-accessibility-testing), or read what actually happens in an [ADA lawsuit](/blog/ada-lawsuit-process) so you know what a real defense requires.

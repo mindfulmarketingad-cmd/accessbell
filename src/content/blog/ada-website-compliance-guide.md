@@ -41,10 +41,10 @@ Because WCAG 2.2 is backward compatible, building to **WCAG 2.2 AA** is the most
 
 Most website accessibility claims begin with barriers that are easy to find with automated tools and a keyboard:
 
-- Images and image links with no text alternative
+- Images and image links with no [text alternative](/blog/wcag-1-1-1-non-text-content)
 - Form fields without labels, especially on checkout and contact forms
 - Buttons and icon links with no accessible name
-- Low color contrast on text and buttons
+- Low [color contrast](/resources/contrast-checker) on text and buttons
 - Menus, modals and carousels that cannot be used with a keyboard
 - Videos without captions
 - PDFs that are scanned images with no text layer
@@ -67,7 +67,7 @@ Because these barriers are easy to detect, they are also easy for plaintiffs' fi
 
 ## A Note on Overlay Widgets
 
-Some products claim a single line of JavaScript makes a site "ADA compliant." Accessibility overlays modify a page after it loads but do not fix the source code, and they often conflict with the assistive technology people already use. Sites using overlays continue to be sued. Durable compliance comes from fixing the underlying code and keeping it fixed.
+Some products claim a single line of JavaScript makes a site "ADA compliant." [Accessibility overlays](/blog/accessibe-alternative) modify a page after it loads but do not fix the source code, and they often conflict with the assistive technology people already use. Sites using overlays continue to be sued. Durable compliance comes from fixing the underlying code and keeping it fixed.
 
 ## International Requirements to Be Aware Of
 

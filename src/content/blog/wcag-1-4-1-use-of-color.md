@@ -101,7 +101,7 @@ A link inside a paragraph that differs from the text around it only by color fai
 }
 ```
 
-If your design removes underlines, the W3C technique [G183](https://www.w3.org/WAI/WCAG22/Techniques/general/G183) describes the alternative: the link color needs a contrast ratio of at least **3:1** with the surrounding text, and the link needs a non-color cue, such as an underline, on hover and keyboard focus. Check both colors with our free [WCAG color contrast checker](/resources/contrast-checker). Navigation menus and buttons, where it is obvious everything is a link, do not need underlines.
+If your design removes underlines, the W3C technique [G183, using a 3:1 contrast ratio with surrounding text plus a visual cue on hover and focus](https://www.w3.org/WAI/WCAG22/Techniques/general/G183) describes the alternative: the link color needs a contrast ratio of at least **3:1** with the surrounding text, and the link needs a non-color cue, such as an underline, on hover and keyboard focus. Check both colors with our free [WCAG color contrast checker](/resources/contrast-checker). Navigation menus and buttons, where it is obvious everything is a link, do not need underlines.
 
 ### Add patterns and labels to charts
 
@@ -119,7 +119,7 @@ Charts and maps that tell lines, bars or areas apart only by color fail for many
 
 ### Pair status colors with icons and words
 
-Green, amber and red status dots, colored badges and color-coded calendar events all need a second cue. Add an icon (a check, a warning triangle, a cross) and a word ("Online", "Delayed", "Down"). For text that is highlighted by color, such as a changed price, the W3C technique [G182](https://www.w3.org/WAI/WCAG22/Techniques/general/G182) recommends an extra visual cue, such as bold text or an icon.
+Green, amber and red status dots, colored badges and color-coded calendar events all need a second cue. Add an icon (a check, a warning triangle, a cross) and a word ("Online", "Delayed", "Down"). For text that is highlighted by color, such as a changed price, the W3C technique [G182, adding a visual cue when text color differences convey information](https://www.w3.org/WAI/WCAG22/Techniques/general/G182) recommends an extra visual cue, such as bold text or an icon.
 
 ## How to Test for 1.4.1 Use of Color
 

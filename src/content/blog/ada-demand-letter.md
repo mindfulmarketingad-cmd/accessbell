@@ -28,7 +28,7 @@ If you just opened an email or letter claiming your website has accessibility ba
 
 ## What a Demand Letter Is
 
-A demand letter is usually sent by an attorney on behalf of someone with a disability who says they tried to use your website and hit specific barriers, for example a checkout form with no labels, images with no alt text, or a menu that cannot be operated by keyboard. It states that this violates the Americans with Disabilities Act, lists the problems, and demands that you fix them, often alongside a monetary settlement demand, before a lawsuit is filed.
+A demand letter is usually sent by an attorney on behalf of someone with a disability who says they tried to use your website and hit specific barriers, for example a checkout form with no labels, images with no [alt text](/blog/wcag-1-1-1-non-text-content), or a menu that cannot be operated by keyboard. It states that this violates the Americans with Disabilities Act, lists the problems, and demands that you fix them, often alongside a monetary settlement demand, before a lawsuit is filed.
 
 It is not a lawsuit. It is usually an attempt to resolve the claim, and the payment demanded, before either side spends money on litigation.
 

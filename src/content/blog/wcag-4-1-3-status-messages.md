@@ -99,7 +99,7 @@ Two details matter:
   <figcaption>role="status" waits for a pause. role="alert" interrupts, so keep it for messages that cannot wait.</figcaption>
 </figure>
 
-`role="alert"` is assertive: it interrupts whatever the screen reader is saying. It fits important, time-sensitive messages, such as an error that stops a payment. The W3C technique [ARIA19](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA19) covers using it for errors. Overusing it is tiring, so use `role="status"` for everything else.
+`role="alert"` is assertive: it interrupts whatever the screen reader is saying. It fits important, time-sensitive messages, such as an error that stops a payment. The W3C technique [ARIA19, using role=alert or live regions to identify errors](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA19) covers using it for errors. Overusing it is tiring, so use `role="status"` for everything else.
 
 ### Use role="log" for a stream of updates
 

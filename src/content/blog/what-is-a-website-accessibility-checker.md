@@ -18,7 +18,7 @@ That definition sounds simple, but the details matter. Checkers differ in what t
 
 Roughly one in four adults in the United States lives with some form of disability, according to the CDC. Many of them use assistive technology to browse: screen readers that turn text into speech, switch devices and voice control that replace a mouse, magnifiers and high-contrast modes that change how a page looks.
 
-Those tools depend on the page being built correctly. A screen reader cannot describe an image that has no text alternative. A keyboard user cannot reach a menu that only opens on mouse hover. A voice user cannot say "click Submit" if the button's accessible name is empty.
+Those tools depend on the page being built correctly. A screen reader cannot describe an image that has no [text alternative](/blog/wcag-1-1-1-non-text-content). A keyboard user cannot reach a menu that only opens on mouse hover. A voice user cannot say "click Submit" if the button's accessible name is empty.
 
 Finding these problems by hand, across hundreds or thousands of pages, is slow. A checker automates the repetitive part so people can spend their time on the judgment calls.
 
@@ -29,14 +29,14 @@ Most checkers load a page, build its document tree and run a set of rules agains
 - **Text alternatives (WCAG 1.1.1).** Every meaningful image needs an `alt` attribute. Decorative images need an empty one so screen readers skip them.
 - **Page language (3.1.1).** The `<html>` element should declare a language so assistive technology uses the right pronunciation.
 - **Page title (2.4.2).** Each page needs a unique, descriptive `<title>`.
-- **Form labels (1.3.1 and 4.1.2).** Inputs need a programmatic label, not just placeholder text.
+- **[Form labels](/blog/wcag-3-3-2-labels-or-instructions) (1.3.1 and 4.1.2).** Inputs need a programmatic label, not just placeholder text.
 - **Accessible names for links and buttons (2.4.4 and 4.1.2).** Icon-only controls need a text name.
 - **Heading structure (1.3.1).** Headings should form a logical outline without empty headings.
 - **Zoom (1.4.4).** The viewport must not disable pinch zoom.
-- **Color contrast (1.4.3).** Body text needs a contrast ratio of at least 4.5:1 against its background, and large text at least 3:1.
+- **[Color contrast](/resources/contrast-checker) (1.4.3).** Body text needs a contrast ratio of at least 4.5:1 against its background, and large text at least 3:1.
 - **Frames (4.1.2).** Embedded iframes need a title that describes their content.
 
-Our [free website accessibility checker](/) runs these kinds of checks against any public URL and maps every result to its WCAG criterion, so you can see exactly which requirement a failure relates to. You can also open it preset for the standard you are held to: [WCAG 2.2 AA](/resources/wcag-2-2-aa-checker), [WCAG 2.1 AA](/resources/wcag-2-1-aa-checker), the [ADA](/resources/ada-compliance-checker), [Section 508](/resources/section-508-checker) or [EN 301 549](/resources/en-301-549-checker). Each page shows exactly which criteria the automated rules cover.
+Our [free website accessibility checker](/) runs these kinds of checks against any public URL and maps every result to its WCAG criterion, so you can see exactly which requirement a failure relates to. You can also open it preset for the standard you are held to: [WCAG 2.2 AA](/resources/wcag-2-2-aa-checker), [WCAG 2.1 AA](/resources/wcag-2-1-aa-checker), [ADA compliance](/resources/ada-compliance-checker), [Section 508](/resources/section-508-checker) or [EN 301 549](/resources/en-301-549-checker). Each page shows exactly which criteria the automated rules cover.
 
 ## How Results Are Scored
 

@@ -76,7 +76,7 @@ AudioEye pairs automated overlay-style detection with a paid human audit and rem
 
 ## 6. WAVE
 
-[WAVE](https://wave.webaim.org/), built by the nonprofit WebAIM, is one of the most trusted free accessibility tools on the web, in continuous use since 2001. Its browser extension overlays icons directly on your page showing errors, contrast issues, alerts and structural elements, which makes it excellent for visually understanding an issue in context. It has no cost and needs no account, but it does not store results, run scheduled monitoring, or generate a shareable report, so most teams use it alongside a checker like AccessBell rather than instead of one.
+[WAVE](https://wave.webaim.org/), built by the nonprofit WebAIM, is one of the most trusted [free accessibility tools](/blog/free-tools-to-check-website-accessibility) on the web, in continuous use since 2001. Its browser extension overlays icons directly on your page showing errors, contrast issues, alerts and structural elements, which makes it excellent for visually understanding an issue in context. It has no cost and needs no account, but it does not store results, run scheduled monitoring, or generate a shareable report, so most teams use it alongside a checker like AccessBell rather than instead of one.
 
 ## 7. Siteimprove
 

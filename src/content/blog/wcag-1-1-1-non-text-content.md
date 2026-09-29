@@ -30,7 +30,7 @@ faqs:
 
 1.1.1 Non-text Content is a Level A requirement under the **Perceivable** principle, in the guideline "Text Alternatives". It is the first success criterion in WCAG.
 
-**Non-text content** is anything that is not text: photos, illustrations, icons, logos, charts, diagrams, image buttons, image maps, audio and video, and CAPTCHAs. **Text alternatives** are the words that stand in for it, most often the `alt` attribute on an image.
+**Non-text content** is anything that is not text: photos, illustrations, icons, logos, charts, diagrams, image buttons, image maps, audio and video, and [CAPTCHAs](/blog/wcag-3-3-8-accessible-authentication-minimum). **Text alternatives** are the words that stand in for it, most often the `alt` attribute on an image.
 
 The key phrase is "serves the equivalent purpose". Alt text does not describe every pixel. It does the same job the image does on that page.
 
@@ -87,7 +87,7 @@ Tips for good alt text:
 
 ### Decorative images: use an empty alt
 
-If an image is only there for looks, such as a divider, a background pattern or a photo that repeats what the text already says, give it an empty alt so screen readers skip it. This is the W3C technique [H67](https://www.w3.org/WAI/WCAG22/Techniques/html/H67):
+If an image is only there for looks, such as a divider, a background pattern or a photo that repeats what the text already says, give it an empty alt so screen readers skip it. This is the W3C technique [H67, using empty alt text for images that assistive technology should ignore](https://www.w3.org/WAI/WCAG22/Techniques/html/H67):
 
 ```html
 <img src="leaf-divider.svg" alt="">

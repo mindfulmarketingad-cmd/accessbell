@@ -30,7 +30,7 @@ The **ADA lawsuit process** usually follows a predictable path. A business is se
 
 This guide walks through each stage of an ADA Title III lawsuit, how long each one takes and what happens next. It also covers what to do in the first days after you are served. Most examples involve website accessibility cases, but the same federal court process applies to cases about physical barriers.
 
-*This article is general information, not legal advice. Court rules and deadlines vary. If you have been served with a lawsuit or demand letter, speak with a lawyer experienced in ADA defense right away.*
+*This article is general information, not legal advice. Court rules and deadlines vary. If you have been served with a lawsuit or [demand letter](/blog/ada-demand-letter), speak with a lawyer experienced in ADA defense right away.*
 
 ## The ADA Lawsuit Process at a Glance
 
@@ -145,12 +145,12 @@ After a final judgment, either side can appeal. Under Federal Rule of Appellate 
 4. **Preserve records** of your website, testing and communications.
 5. **Get an accessibility audit.** Combine an automated scan with manual testing. Our guide to [automated vs manual accessibility testing](/blog/automated-vs-manual-accessibility-testing) explains why you need both.
 6. **Start fixing real barriers now**, prioritizing the ones named in the complaint and anything that blocks core tasks like checkout, booking or contact forms.
-7. **Avoid quick fixes.** Accessibility overlay widgets do not fix the underlying code, and sites using them continue to be sued.
+7. **Avoid quick fixes.** [Accessibility overlay](/blog/accessibe-alternative) widgets do not fix the underlying code, and sites using them continue to be sued.
 8. **Document everything**: what you fixed, when and how you verified it.
 
 ## How to Reduce the Risk of a Lawsuit
 
-The strongest protection is an accessible website and a record that proves it. Most website complaints cite barriers that automated tools catch quickly, such as missing alt text, unlabeled form fields, low color contrast and buttons without names.
+The strongest protection is an accessible website and a record that proves it. Most website complaints cite barriers that automated tools catch quickly, such as missing [alt text](/blog/wcag-1-1-1-non-text-content), unlabeled form fields, low color contrast and buttons without names.
 
 - Scan your site regularly and fix issues by severity.
 - Test key journeys with a keyboard and a screen reader.

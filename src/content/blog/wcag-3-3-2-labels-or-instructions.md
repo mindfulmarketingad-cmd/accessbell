@@ -66,7 +66,7 @@ Every input needs a label people can see, that stays visible while they type. Th
   <figcaption>Placeholder text disappears when people type. A visible label and hint stay put.</figcaption>
 </figure>
 
-Connect the label to its field in the code with the `label` element, as in the W3C technique [H44](https://www.w3.org/WAI/WCAG22/Techniques/html/H44). Put hints in text next to the field and connect them with `aria-describedby`, so screen readers read them too:
+Connect the label to its field in the code with the `label` element, as in the W3C technique [H44, using label elements to associate text labels with form controls](https://www.w3.org/WAI/WCAG22/Techniques/html/H44). Put hints in text next to the field and connect them with `aria-describedby`, so screen readers read them too:
 
 ```html
 <label for="email">Email</label>
@@ -91,7 +91,7 @@ If an answer must follow a format, say so before people type. The W3C technique 
 <input id="dob" name="dob" inputmode="numeric" autocomplete="bday" aria-describedby="dob-hint">
 ```
 
-Do the same for password rules, file size limits, character limits and anything else that could cause an error. For long forms, a short note at the top that explains what people will need helps too, as in the W3C technique [G184](https://www.w3.org/WAI/WCAG22/Techniques/general/G184).
+Do the same for password rules, file size limits, character limits and anything else that could cause an error. For long forms, a short note at the top that explains what people will need helps too, as in the W3C technique [G184, text instructions at the start of a form](https://www.w3.org/WAI/WCAG22/Techniques/general/G184).
 
 ### Mark required and optional fields in text
 
@@ -106,7 +106,7 @@ Radio buttons, checkboxes and fields that belong together need a label for the g
   <figcaption>Name the group, then label each part, so every field makes sense on its own.</figcaption>
 </figure>
 
-Use `fieldset` and `legend` for the group, as in the W3C technique [H71](https://www.w3.org/WAI/WCAG22/Techniques/html/H71):
+Use `fieldset` and `legend` for the group, as in the W3C technique [H71, describing groups of form controls with fieldset and legend](https://www.w3.org/WAI/WCAG22/Techniques/html/H71):
 
 ```html
 <fieldset>
@@ -118,7 +118,7 @@ Use `fieldset` and `legend` for the group, as in the W3C technique [H71](https:/
 </fieldset>
 ```
 
-A phone number split into several boxes with no label on each part is failure [F82](https://www.w3.org/WAI/WCAG22/Techniques/failures/F82). A single phone field is usually simpler for everyone.
+A phone number split into several boxes with no label on each part is failure [F82, visually formatting phone number fields without a text label](https://www.w3.org/WAI/WCAG22/Techniques/failures/F82). A single phone field is usually simpler for everyone.
 
 ### Keep labels close to their fields
 
@@ -129,7 +129,7 @@ Put each label right above or right beside its field, so the pairing is obvious.
   <figcaption>Labels right above their fields are easy to match at any zoom level.</figcaption>
 </figure>
 
-Checkbox and radio button labels usually go to the right of the control. A search field can be labelled by a clearly worded button next to it, such as "Search", as in the W3C technique [G167](https://www.w3.org/WAI/WCAG22/Techniques/general/G167).
+Checkbox and radio button labels usually go to the right of the control. A search field can be labelled by a clearly worded button next to it, such as "Search", as in the W3C technique [G167, using an adjacent button to label the purpose of a field](https://www.w3.org/WAI/WCAG22/Techniques/general/G167).
 
 ## How to Test for 3.3.2 Labels or Instructions
 

@@ -28,7 +28,7 @@ If you are searching for an **accessiBe alternative**, you have probably already
 
 ## What accessiBe Actually Is
 
-accessiBe's product, accessWidget, is an **accessibility overlay**: a snippet of JavaScript you add to your site that runs in each visitor's browser and tries to adjust things like color contrast, ARIA attributes, and keyboard behavior after the page has already loaded. It does not touch your site's actual HTML, CSS or JavaScript. When you remove the widget, your site's code is exactly as accessible, or inaccessible, as it was before you installed it.
+accessiBe's product, accessWidget, is an **accessibility overlay**: a snippet of JavaScript you add to your site that runs in each visitor's browser and tries to adjust things like [color contrast](/resources/contrast-checker), ARIA attributes, and keyboard behavior after the page has already loaded. It does not touch your site's actual HTML, CSS or JavaScript. When you remove the widget, your site's code is exactly as accessible, or inaccessible, as it was before you installed it.
 
 As of 2026, accessWidget's published pricing starts around $59 a month (or $490 a year) for its Micro plan, covering up to 5,000 monthly visitors, and scales up with traffic from there, reaching close to $4,000 a year at 100,000 visitors ([accessiBe pricing](https://accessibe.com/pricing/accesswidget)). A separate accessFlow product is priced by number of pages instead.
 

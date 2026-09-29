@@ -34,7 +34,7 @@ The checklist is based on the free WCAG 2.2 checklist originally published by Co
 
 The spreadsheet has three tabs.
 
-**Checklist** is where the testing happens. Each row is one specific check, grouped into categories such as Images, Forms and Inputs, and Content, and mapped to its WCAG success criterion and level. For example, WCAG 1.1.1 Non-text Content is split into separate checks for informative images, decorative images, functional images, complex images such as charts, and CAPTCHAs. For every check you record:
+**Checklist** is where the testing happens. Each row is one specific check, grouped into categories such as Images, Forms and Inputs, and Content, and mapped to its WCAG success criterion and level. For example, WCAG 1.1.1 Non-text Content is split into separate checks for informative images, decorative images, functional images, complex images such as charts, and [CAPTCHAs](/blog/wcag-3-3-8-accessible-authentication-minimum). For every check you record:
 
 - A result: **Pass**, **Warning**, **Fail** or **N/A**
 - The element that caused the issue
