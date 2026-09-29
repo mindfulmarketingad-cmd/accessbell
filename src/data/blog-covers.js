@@ -73,6 +73,7 @@ export const COVER_TOPICS = {
   'free-tools-to-check-website-accessibility': { ui: 'wrench', label: 'Free', caption: 'Accessibility testing tools' },
   'grants-for-people-with-disabilities': { ui: 'card', label: 'Grants', caption: 'Funding and support' },
   'keyboard-accessibility-testing': { a11y: 'keyboard', label: 'Tab', caption: 'Keyboard testing' },
+  'stories-of-web-users-with-disabilities': { a11y: 'universal-access', label: 'Stories', caption: 'Web users with disabilities' },
   'seo-audit': { ui: 'search', label: 'SEO', caption: 'Full site audit' },
   'what-is-a-website-accessibility-checker': { a11y: 'universal-access', label: 'WCAG', caption: 'What a checker does' },
 };

@@ -22,7 +22,7 @@ faqs:
     a: 'Seeing disabled people succeed in sports, science, politics, music and film challenges the assumption that disability limits what someone can achieve, and it normalizes disability for audiences who may never have thought about accessibility before.'
 ---
 
-Disability touches nearly every field of achievement. **Helen Keller**, deaf and blind from infancy, became a bestselling author and campaigner. **Michael J. Fox** kept acting and built one of the most effective medical research foundations in the world after a Parkinson's diagnosis. **Alex Zanardi** went from a career-ending crash to four Paralympic gold medals. Their stories are proof that a disability does not set the limit on what someone can do. Here are 15 people with disabilities whose work changed their fields, and what their stories can teach the rest of us.
+Disability touches nearly every field of achievement. **Helen Keller**, deaf and blind from infancy, became a bestselling author and campaigner. **Michael J. Fox** kept acting and built one of the most effective medical research foundations in the world after a Parkinson's diagnosis. **Alex Zanardi** went from a career-ending crash to four Paralympic gold medals. Their stories are proof that a disability does not set the limit on what someone can do. Here are 15 people with disabilities whose work changed their fields, and what their stories can teach the rest of us. For everyday examples of how disability shapes the way people use websites, read our [stories of web users with disabilities](/blog/stories-of-web-users-with-disabilities).
 
 ## Quick Facts
 

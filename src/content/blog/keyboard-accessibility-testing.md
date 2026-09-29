@@ -33,6 +33,8 @@ A well-known complaint about [accessibility overlays](/blog/accessibe-alternativ
 - Power users and people with repetitive strain injuries often navigate by keyboard by choice.
 - WCAG requires it directly: [2.1.1 Keyboard](/resources/wcag/2-1-1-keyboard) (Level A) requires all functionality to be operable through a keyboard interface, and [2.1.2 No Keyboard Trap](/resources/wcag/2-1-2-no-keyboard-trap) (Level A) requires that keyboard focus can always move away from any component.
 
+Our [stories of web users with disabilities](/blog/stories-of-web-users-with-disabilities) show what this looks like for a reporter who cannot use a mouse.
+
 ## How to Test: The Basic Method
 
 You do not need special software to start. Set your mouse aside, or disable your trackpad, and work through your page using only:
