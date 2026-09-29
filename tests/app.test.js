@@ -151,6 +151,39 @@ test('signup creates an owner account and a secure session', { skip }, async () 
   assert.equal(me.body.billing.domainQuota, 0);
 });
 
+test('with email confirmation on, sign-up asks the person to confirm instead of failing', { skip }, async () => {
+  fake.state.confirmEmail = true;
+  try {
+    const c = new Client('10.0.0.5');
+    const signup = await c.post('auth/signup', { email: 'confirm-me@acme.test', password: 'correct horse' });
+    assert.equal(signup.status, 200);
+    assert.equal(signup.body.status, 'confirm_email');
+    assert.equal(signup.headers.getSetCookie().length, 0, 'no session until the email is confirmed');
+
+    // An address that already has an account gets the same answer.
+    const again = await c.post('auth/signup', { email: 'owner@acme.test', password: 'another pass' });
+    assert.equal(again.status, 200);
+    assert.equal(again.body.status, 'confirm_email');
+
+    const login = await c.post('auth/login', { email: 'confirm-me@acme.test', password: 'correct horse' });
+    assert.equal(login.status, 400);
+    assert.equal(login.body.code, 'email_not_confirmed');
+
+    const resend = await c.post('auth/resend', { email: 'confirm-me@acme.test' });
+    assert.equal(resend.status, 200);
+    assert.equal((await c.post('auth/resend', { email: 'mailer-down@example.com' })).body.code, 'email_send_failed');
+  } finally {
+    fake.state.confirmEmail = false;
+  }
+});
+
+test('signing up with a registered email points to sign in', { skip }, async () => {
+  const c = new Client('10.0.0.6');
+  const r = await c.post('auth/signup', { email: 'owner@acme.test', password: 'another pass' });
+  assert.equal(r.status, 400);
+  assert.match(r.body.error, /already exists/);
+});
+
 test('requests without a session or from another origin are rejected', { skip }, async () => {
   const anon = new Client('10.0.0.2');
   assert.equal((await anon.get('me')).status, 401);

@@ -4,7 +4,9 @@ import http from 'node:http';
 import crypto from 'node:crypto';
 
 export function startFakeAuth(pool) {
-  const users = new Map(); // email -> { id, email, password }
+  const users = new Map(); // email -> { id, email, password, confirmed }
+  // Mimics Supabase with "Confirm email" turned on: sign-up returns a user but no session.
+  const state = { confirmEmail: false };
   const tokens = new Map(); // access token -> user
   const refresh = new Map(); // refresh token -> user
   const issue = (user) => {
@@ -17,7 +19,7 @@ export function startFakeAuth(pool) {
   const createUser = async (email, password) => {
     const id = crypto.randomUUID();
     await pool.query('insert into auth.users (id, email) values ($1, $2)', [id, email]);
-    const u = { id, email, password };
+    const u = { id, email, password, confirmed: !state.confirmEmail };
     users.set(email, u);
     return u;
   };
@@ -33,12 +35,19 @@ export function startFakeAuth(pool) {
     const bearer = (req.headers.authorization || '').replace('Bearer ', '');
     const path = url.pathname.replace('/auth/v1', '');
     if (path === '/signup' && req.method === 'POST') {
+      if (state.confirmEmail) {
+        // Existing addresses get an obfuscated user, so the response does not reveal them.
+        if (users.has(data.email)) return send(200, { id: crypto.randomUUID(), email: data.email, identities: [] });
+        const u = await createUser(data.email, data.password);
+        return send(200, { id: u.id, email: u.email, identities: [{ provider: 'email' }] });
+      }
       if (users.has(data.email)) return send(422, { error_code: 'user_already_exists' });
       return send(200, issue(await createUser(data.email, data.password)));
     }
     if (path === '/token' && url.searchParams.get('grant_type') === 'password') {
       const u = users.get(data.email);
       if (!u || u.password !== data.password) return send(400, { error_code: 'invalid_credentials' });
+      if (!u.confirmed) return send(400, { error_code: 'email_not_confirmed' });
       return send(200, issue(u));
     }
     if (path === '/token' && url.searchParams.get('grant_type') === 'refresh_token') {
@@ -74,6 +83,6 @@ export function startFakeAuth(pool) {
     send(404, {});
   });
   return new Promise((resolve) => {
-    server.listen(0, '127.0.0.1', () => resolve({ server, users, tokens, expire: (at) => tokens.delete(at) }));
+    server.listen(0, '127.0.0.1', () => resolve({ server, users, tokens, state, expire: (at) => tokens.delete(at) }));
   });
 }

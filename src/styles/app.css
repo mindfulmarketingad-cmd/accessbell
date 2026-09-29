@@ -1067,6 +1067,9 @@ fieldset.field legend {
   --btn-bg: var(--sage-800);
   --btn-border: var(--sage-800);
 }
+.auth-resend {
+  margin-bottom: 0.75rem;
+}
 .req {
   color: var(--danger);
 }

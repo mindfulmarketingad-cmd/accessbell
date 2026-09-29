@@ -60,6 +60,10 @@ const publicRoutes = {
     limit('signup', ip);
     const { email, password } = credentials(body);
     const result = await auth.signUp(email, password, `${appOrigin(request)}/app/auth/callback`);
+    // With "Confirm email" on in Supabase, sign-up returns a user but no session until the
+    // link in the email is clicked. Supabase also answers this way for an address that is
+    // already registered, so the response does not reveal whether an account exists.
+    if (!result.session && result.user) return { body: { status: 'confirm_email' } };
     if (!result.session) throw new AppError(503, 'We could not create your account right now. Please try again in a moment.', 'signup_failed');
     const user = result.session.user || (await auth.getUser(result.session.accessToken));
     await ensureUserSetup(user);
@@ -76,6 +80,17 @@ const publicRoutes = {
     const user = session.user || (await auth.getUser(session.accessToken));
     await ensureUserSetup(user);
     return { body: { status: 'signed_in' }, cookies: sessionCookies(request, session) };
+  },
+
+  /** Send the sign-up confirmation email again. Same response whether or not the account exists. */
+  async 'POST auth/resend'({ request, body, ip }) {
+    limit('email', ip);
+    const email = String(body?.email || '').trim().toLowerCase();
+    if (!EMAIL.test(email)) throw badRequest('Enter a valid email address.');
+    await auth.resendConfirmation(email, `${appOrigin(request)}/app/auth/callback`).catch((err) => {
+      if (err.status === 429 || err.code === 'email_send_failed') throw err;
+    });
+    return { body: { status: 'sent' } };
   },
 
   async 'POST auth/forgot'({ request, body, ip }) {

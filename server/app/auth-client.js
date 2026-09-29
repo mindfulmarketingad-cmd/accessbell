@@ -14,13 +14,16 @@ const FRIENDLY = {
   otp_expired: 'That link has expired. Please request a new one.',
   same_password: 'Choose a password different from your current one.',
   signup_disabled: 'Sign-ups are currently closed.',
+  user_already_exists: 'An account already exists for that email. Sign in, or reset your password if you have forgotten it.',
+  email_exists: 'An account already exists for that email. Sign in, or reset your password if you have forgotten it.',
+  email_not_confirmed: 'Please confirm your email address first, using the link we sent you.',
   // Supabase's built-in test mailer only delivers to members of the Supabase organization.
   email_address_not_authorized: 'We could not send email to that address. Please contact support.',
   email_send_failed: 'We could not send the email right now. Please try again in a few minutes or contact support.',
 };
 
 // Endpoints that send an email; a 5xx from these almost always means delivery failed.
-const SENDS_EMAIL = new Set(['/recover', '/invite']);
+const SENDS_EMAIL = new Set(['/signup', '/resend', '/recover', '/invite']);
 
 async function call(path, { method = 'POST', body, token, admin = false, query } = {}) {
   const c = config();
@@ -91,6 +94,9 @@ export const auth = {
   },
   async signOut(accessToken) {
     await call('/logout', { token: accessToken, query: { scope: 'local' } }).catch(() => {});
+  },
+  async resendConfirmation(email, redirectTo) {
+    await call('/resend', { body: { type: 'signup', email }, query: { redirect_to: redirectTo } });
   },
   async recover(email, redirectTo) {
     await call('/recover', { body: { email }, query: { redirect_to: redirectTo } });

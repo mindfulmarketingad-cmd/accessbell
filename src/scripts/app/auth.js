@@ -47,10 +47,16 @@ if (form) {
     const password = form.elements.password?.value;
     try {
       if (mode === 'login') {
+        resend.hidden = true;
         await api('auth/login', { method: 'POST', body: { email, password }, redirectOn401: false });
         location.assign(safeNext());
       } else if (mode === 'signup') {
-        await api('auth/signup', { method: 'POST', body: { email, password }, redirectOn401: false });
+        const res = await api('auth/signup', { method: 'POST', body: { email, password }, redirectOn401: false });
+        if (res.status === 'confirm_email') {
+          setStatus(status, 'success', `Almost done. We sent a confirmation link to ${email}. Open it to finish creating your account. Already have an account? Sign in instead.`);
+          resend.hidden = false;
+          return;
+        }
         location.assign('/app');
       } else if (mode === 'forgot') {
         await api('auth/forgot', { method: 'POST', body: { email }, redirectOn401: false });
@@ -62,8 +68,29 @@ if (form) {
       }
     } catch (err) {
       setStatus(status, 'error', err.message);
+      if (err.code === 'email_not_confirmed') resend.hidden = false;
     } finally {
       button.disabled = false;
+    }
+  });
+
+  // Resend the sign-up confirmation email (after sign-up, or when signing in unconfirmed).
+  const resend = document.createElement('button');
+  resend.type = 'button';
+  resend.className = 'btn btn-outline auth-resend';
+  resend.textContent = 'Resend confirmation email';
+  resend.hidden = true;
+  status.after(resend);
+  resend.addEventListener('click', async () => {
+    const email = form.elements.email?.value.trim();
+    resend.disabled = true;
+    try {
+      await api('auth/resend', { method: 'POST', body: { email }, redirectOn401: false });
+      setStatus(status, 'success', `If ${email} is waiting for confirmation, a new link is on its way. Check your spam folder too.`);
+    } catch (err) {
+      setStatus(status, 'error', err.message);
+    } finally {
+      resend.disabled = false;
     }
   });
 }
