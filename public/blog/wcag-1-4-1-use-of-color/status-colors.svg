@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 440" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+<rect width="800" height="440" fill="#fff"/>
+<text x="24" y="34" font-size="15" font-weight="700" fill="#5b6270" text-anchor="start">In color</text>
+<text x="412" y="34" font-size="15" font-weight="700" fill="#5b6270" text-anchor="start">Seen without color</text>
+<rect x="24" y="44" width="364" height="190" rx="16" fill="#fdf0ef" stroke="#f4c7c3" stroke-width="2"/>
+<circle cx="58" cy="82" r="15" fill="#b42318"/><path d="M52.0 76.0l12.0 12.0M64.0 76.0l-12.0 12.0" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+<text x="82" y="89" font-size="19" font-weight="700" fill="#b42318" text-anchor="start">Color alone</text>
+<rect x="48" y="124" width="316" height="40" rx="8" fill="#fff" stroke="#d9dde3"/><circle cx="70" cy="144" r="8" fill="#3f9a4a"/><text x="88" y="150" font-size="15" font-weight="600" fill="#1f2430" text-anchor="start">Checkout service</text>
+<rect x="48" y="174" width="316" height="40" rx="8" fill="#fff" stroke="#d9dde3"/><circle cx="70" cy="194" r="8" fill="#d64545"/><text x="88" y="200" font-size="15" font-weight="600" fill="#1f2430" text-anchor="start">Search service</text>
+<rect x="412" y="44" width="364" height="190" rx="16" fill="#fdf0ef" stroke="#f4c7c3" stroke-width="2"/>
+<circle cx="446" cy="82" r="15" fill="#b42318"/><path d="M440.0 76.0l12.0 12.0M452.0 76.0l-12.0 12.0" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+<text x="470" y="89" font-size="19" font-weight="700" fill="#b42318" text-anchor="start">Which one is down?</text>
+<rect x="436" y="124" width="316" height="40" rx="8" fill="#fff" stroke="#d9dde3"/><circle cx="458" cy="144" r="8" fill="#747474"/><text x="476" y="150" font-size="15" font-weight="600" fill="#1f2430" text-anchor="start">Checkout service</text>
+<rect x="436" y="174" width="316" height="40" rx="8" fill="#fff" stroke="#d9dde3"/><circle cx="458" cy="194" r="8" fill="#747474"/><text x="476" y="200" font-size="15" font-weight="600" fill="#1f2430" text-anchor="start">Search service</text>
+<rect x="24" y="244" width="364" height="190" rx="16" fill="#f4f8f3" stroke="#cfe1ce" stroke-width="2"/>
+<circle cx="58" cy="282" r="15" fill="#44723f"/><path d="M51.0 282l5.0 5.0 10.0 -11.0" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="82" y="289" font-size="19" font-weight="700" fill="#365c32" text-anchor="start">Color plus icon and text</text>
+<rect x="48" y="324" width="316" height="40" rx="8" fill="#fff" stroke="#d9dde3"/><circle cx="70" cy="344" r="8" fill="#3f9a4a"/><path d="M66 344l3 3 5-6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><text x="88" y="350" font-size="15" font-weight="600" fill="#1f2430" text-anchor="start">Checkout service</text>
+<text x="350" y="350" font-size="14" font-weight="700" fill="#1f2430" text-anchor="end">Online</text>
+<rect x="48" y="374" width="316" height="40" rx="8" fill="#fff" stroke="#d9dde3"/><circle cx="70" cy="394" r="8" fill="#d64545"/><path d="M67 391l6 6m0-6l-6 6" stroke="#fff" stroke-width="2" stroke-linecap="round"/><text x="88" y="400" font-size="15" font-weight="600" fill="#1f2430" text-anchor="start">Search service</text>
+<text x="350" y="400" font-size="14" font-weight="700" fill="#1f2430" text-anchor="end">Down</text>
+<rect x="412" y="244" width="364" height="190" rx="16" fill="#f4f8f3" stroke="#cfe1ce" stroke-width="2"/>
+<circle cx="446" cy="282" r="15" fill="#44723f"/><path d="M439.0 282l5.0 5.0 10.0 -11.0" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="470" y="289" font-size="19" font-weight="700" fill="#365c32" text-anchor="start">Still clear</text>
+<rect x="436" y="324" width="316" height="40" rx="8" fill="#fff" stroke="#d9dde3"/><circle cx="458" cy="344" r="8" fill="#747474"/><path d="M454 344l3 3 5-6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><text x="476" y="350" font-size="15" font-weight="600" fill="#1f2430" text-anchor="start">Checkout service</text>
+<text x="738" y="350" font-size="14" font-weight="700" fill="#1f2430" text-anchor="end">Online</text>
+<rect x="436" y="374" width="316" height="40" rx="8" fill="#fff" stroke="#d9dde3"/><circle cx="458" cy="394" r="8" fill="#747474"/><path d="M455 391l6 6m0-6l-6 6" stroke="#fff" stroke-width="2" stroke-linecap="round"/><text x="476" y="400" font-size="15" font-weight="600" fill="#1f2430" text-anchor="start">Search service</text>
+<text x="738" y="400" font-size="14" font-weight="700" fill="#1f2430" text-anchor="end">Down</text>
+</svg>

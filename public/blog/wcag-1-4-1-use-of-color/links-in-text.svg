@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+<rect width="800" height="300" fill="#fff"/>
+<rect x="24" y="20" width="364" height="260" rx="16" fill="#fdf0ef" stroke="#f4c7c3" stroke-width="2"/>
+<circle cx="58" cy="58" r="15" fill="#b42318"/><path d="M52.0 52.0l12.0 12.0M64.0 52.0l-12.0 12.0" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+<text x="82" y="65" font-size="19" font-weight="700" fill="#b42318" text-anchor="start">Color alone</text>
+<rect x="48" y="84" width="316" height="100" rx="10" fill="#fff" stroke="#d9dde3"/><text x="64" y="112" font-size="15" fill="#1f2430">Pitch your tent well away from</text>
+<text x="64" y="138" font-size="15" fill="#1f2430">the water and check the <tspan fill="#3b5f8a">fire rules</tspan></text>
+<text x="64" y="164" font-size="15" fill="#1f2430">before you light a stove.</text>
+<text x="206" y="216" font-size="14" font-weight="700" fill="#b42318" text-anchor="middle">The link is only a slightly</text>
+<text x="206" y="238" font-size="14" font-weight="700" fill="#b42318" text-anchor="middle">different shade of text</text>
+<rect x="412" y="20" width="364" height="260" rx="16" fill="#f4f8f3" stroke="#cfe1ce" stroke-width="2"/>
+<circle cx="446" cy="58" r="15" fill="#44723f"/><path d="M439.0 58l5.0 5.0 10.0 -11.0" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="470" y="65" font-size="19" font-weight="700" fill="#365c32" text-anchor="start">Underlined link</text>
+<rect x="436" y="84" width="316" height="100" rx="10" fill="#fff" stroke="#d9dde3"/><text x="452" y="112" font-size="15" fill="#1f2430">Pitch your tent well away from</text>
+<text x="452" y="138" font-size="15" fill="#1f2430">the water and check the <tspan fill="#2c5f2d" text-decoration="underline">fire rules</tspan></text>
+<text x="452" y="164" font-size="15" fill="#1f2430">before you light a stove.</text>
+<text x="594" y="216" font-size="14" font-weight="700" fill="#365c32" text-anchor="middle">The underline shows it is a link,</text>
+<text x="594" y="238" font-size="14" font-weight="700" fill="#365c32" text-anchor="middle">whatever colors people see</text>
+</svg>
