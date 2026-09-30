@@ -8,7 +8,7 @@ const MISSING = new Set(['42P01', '42703']);
 
 export const ACTIVITY_ACTIONS = new Set([
   'note', 'fix.added', 'fix.enabled', 'fix.disabled', 'fix.removed', 'statement.saved', 'settings.updated', 'pages.selected',
-  'page.added', 'page.monitored', 'page.unmonitored', 'page.removed', 'domain.added',
+  'page.added', 'page.monitored', 'page.unmonitored', 'page.removed', 'domain.added', 'toolbar.updated',
 ]);
 
 export async function logActivity(ctx, domainId, action, detail = {}, happenedOn = null) {

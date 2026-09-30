@@ -28,6 +28,7 @@ const ACTION = {
   'page.unmonitored': 'Page monitoring turned off',
   'page.removed': 'Page removed',
   'domain.added': 'Domain added',
+  'toolbar.updated': 'PageAssist toolbar changed',
 };
 
 export function activityText(a) {
@@ -35,6 +36,7 @@ export function activityText(a) {
   if (a.action === 'note') return d.page ? `${d.text} (${d.page})` : d.text;
   if (a.action.startsWith('fix.')) return `${d.kind === 'alt' ? 'Alt text' : d.kind === 'lang' ? 'Page language' : 'Accessible name'} "${d.value}" on ${d.selector}`;
   if (a.action === 'settings.updated') return `WCAG ${d.wcagVersion} Level ${d.wcagLevel}, ${(d.devices || []).join(' and ')}`;
+  if (a.action === 'toolbar.updated') return d.enabled ? `Turned on, bottom ${d.position}` : 'Turned off';
   if (a.action === 'pages.selected') return plural(d.monitored || 0, 'page') + ' monitored';
   if (a.action === 'statement.saved') return d.organization ? `${d.organization}, ${d.status === 'conformant' ? 'fully conformant' : 'partially conformant'}` : '';
   return d.page || d.url || '';

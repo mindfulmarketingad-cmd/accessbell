@@ -3877,3 +3877,21 @@ a.count-pill:hover {
   width: 16px;
   height: 16px;
 }
+
+/* PageAssist toolbar settings */
+.toolbar-form {
+  display: grid;
+  gap: 12px;
+  max-width: 420px;
+}
+.toolbar-form .field {
+  display: grid;
+  gap: 6px;
+}
+.toolbar-form .btn {
+  justify-self: start;
+}
+.toolbar-note {
+  max-width: 64ch;
+  margin-top: 12px;
+}

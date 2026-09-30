@@ -390,3 +390,44 @@ export function mountStatementFlow(box, { domain, siteKey, existing, me, onFinis
   );
   show();
 }
+
+
+// ---------- PageAssist toolbar (Settings tab) ----------
+
+/** Turn the visitor toolbar on or off and choose its corner. Admins and owners can change it. */
+export async function mountToolbar(box, { domainId, canEdit, fixConnected }) {
+  const { toolbar } = await api(`domain/toolbar?id=${encodeURIComponent(domainId)}`);
+  const status = el('p', { class: 'status-line', role: 'status', 'aria-live': 'polite' });
+  const enabled = el('input', { type: 'checkbox', id: 'pa-enabled', checked: toolbar.enabled || undefined, disabled: !canEdit || undefined });
+  const position = el('select', { id: 'pa-position', disabled: !canEdit || undefined }, [
+    el('option', { value: 'right', text: 'Bottom right', selected: toolbar.position !== 'left' || undefined }),
+    el('option', { value: 'left', text: 'Bottom left', selected: toolbar.position === 'left' || undefined }),
+  ]);
+  const save = el('button', { class: 'btn', type: 'submit', text: 'Save toolbar settings', disabled: !canEdit || undefined });
+  const form = el('form', { class: 'toolbar-form', novalidate: true }, [
+    el('label', { class: 'check-inline', for: 'pa-enabled' }, [enabled, 'Show the PageAssist toolbar on my site']),
+    el('div', { class: 'field' }, [el('label', { for: 'pa-position', text: 'Position' }), position]),
+    save,
+    status,
+  ]);
+  form.addEventListener(
+    'submit',
+    busy(save, status, async () => {
+      const r = await api('domain/toolbar', { method: 'POST', body: { id: domainId, enabled: enabled.checked, position: position.value } });
+      setStatus(
+        status,
+        'success',
+        r.toolbar.enabled
+          ? fixConnected
+            ? 'Saved. The toolbar appears on your site the next time a page loads.'
+            : 'Saved. The toolbar appears once the AccessBellFix snippet is installed on your site.'
+          : 'Saved. The toolbar is turned off.',
+      );
+    }),
+  );
+  box.replaceChildren(
+    form,
+    el('p', { class: 'muted toolbar-note', text: 'The toolbar changes how your site looks for the visitor who uses it. It does not fix your code or make your site conform to WCAG on its own, so keep fixing the issues AccessBell finds.' }),
+    canEdit ? null : el('p', { class: 'muted', text: 'Only admins and the owner can change these settings.' }),
+  );
+}

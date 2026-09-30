@@ -10,7 +10,7 @@ import { setupTour } from './onboarding.js';
 import { codeBlock } from './code-block.js';
 import { issueVisual } from '../shared/issue-visuals.js';
 import { domainMenu, scanDomainWithDialog, scanMessage, relative, nextScheduledScan } from './domain-actions.js';
-import { mountFixInstall, mountFixList, mountStatementFlow, statementUrl } from './site-tools.js';
+import { mountFixInstall, mountFixList, mountStatementFlow, statementUrl, mountToolbar } from './site-tools.js';
 import { mountVault } from './vault.js';
 
 const me = await boot();
@@ -633,6 +633,9 @@ async function renderSiteTools() {
     $('[data-fix-promo]').hidden = true;
   });
   mountFixInstall(installBox, { domainId: id, hostname: data.domain.hostname, siteKey: setup.siteKey, headingLevel: 'h3' });
+  mountToolbar($('[data-toolbar]'), { domainId: id, canEdit: can(me, 'admin'), fixConnected: Boolean(seenRecently) }).catch((err) =>
+    $('[data-toolbar]').replaceChildren(el('p', { class: 'muted', text: err.message })),
+  );
 
   const showStatement = async () => {
     const r = await api(`domain/statement?id=${encodeURIComponent(id)}`);

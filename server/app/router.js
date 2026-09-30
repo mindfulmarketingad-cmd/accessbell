@@ -13,7 +13,7 @@ import { domainIssue } from './issues.js';
 import { one } from './db.js';
 import { listMembers, inviteMember, changeRole, removeMember } from './team.js';
 import { config, missingConfig } from './config.js';
-import { getFixSetup, verifyFix, addFix, updateFix, publicFixRules, getStatement, saveStatement, publicStatement } from './site-setup.js';
+import { getFixSetup, verifyFix, addFix, updateFix, publicFixRules, getStatement, saveStatement, publicStatement, setToolbar, getToolbar } from './site-setup.js';
 import { AppError, badRequest, unauthorized } from './errors.js';
 import { addNote, vault, certificate, createRecord, getRecord, verifyRecord } from './records.js';
 
@@ -306,6 +306,12 @@ const routes = {
   },
   async 'POST domain/fix/update'({ ctx, body }) {
     return updateFix(ctx, body?.id, body?.fixId, { enabled: body?.enabled, remove: body?.remove === true });
+  },
+  async 'GET domain/toolbar'({ ctx, url }) {
+    return getToolbar(ctx, url.searchParams.get('id'));
+  },
+  async 'POST domain/toolbar'({ ctx, body }) {
+    return setToolbar(ctx, body?.id, body);
   },
   async 'GET domain/statement'({ ctx, url }) {
     return getStatement(ctx, url.searchParams.get('id'));

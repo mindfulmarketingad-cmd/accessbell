@@ -806,6 +806,18 @@ test('AccessBellFix: site key, approved fixes, public rules with CORS, and conne
   assert.equal(missing.foundInPage, false);
   assert.ok(missing.seenAt, 'the script loading the rules above counts as a recent connection');
 
+  // PageAssist toolbar: off by default, admins turn it on, and the script receives it.
+  const pubUrl = `${ORIGIN}/api/app?route=fix&k=${setup.body.siteKey}`;
+  assert.equal((await (await handle(new Request(pubUrl))).json()).toolbar, undefined);
+  assert.deepEqual((await owner.get(`domain/toolbar?id=${domain.id}`)).body.toolbar, { enabled: false, position: 'right' });
+  const on = await owner.post('domain/toolbar', { id: domain.id, enabled: true, position: 'left' });
+  assert.deepEqual(on.body.toolbar, { enabled: true, position: 'left' });
+  assert.deepEqual((await (await handle(new Request(pubUrl))).json()).toolbar, { position: 'left' });
+  await owner.post('domain/settings', { id: domain.id, settings: { wcagLevel: 'AA' } });
+  assert.equal((await owner.get(`domain/toolbar?id=${domain.id}`)).body.toolbar.enabled, true, 'saving scan settings keeps the toolbar setting');
+  await owner.post('domain/toolbar', { id: domain.id, enabled: false });
+  assert.equal((await (await handle(new Request(pubUrl))).json()).toolbar, undefined);
+
   await owner.post('domain/fix/update', { id: domain.id, fixId: off.body.fix.id, remove: true });
   assert.equal((await owner.get(`domain/fix?id=${domain.id}`)).body.fixes.length, 2);
 });

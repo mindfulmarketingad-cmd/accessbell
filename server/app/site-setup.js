@@ -127,6 +127,24 @@ export async function updateFix(ctx, domainId, fixId, { enabled, remove }) {
   });
 }
 
+// ---------- PageAssist toolbar ----------
+
+/** Turn the visitor toolbar on or off, and choose which corner it sits in. */
+export async function setToolbar(ctx, domainId, input) {
+  requireRole(ctx, 'admin');
+  const domain = await getDomain(ctx, domainId);
+  const toolbar = { enabled: input?.enabled === true, position: input?.position === 'left' ? 'left' : 'right' };
+  await query(`update app.domains set settings = jsonb_set(settings, '{toolbar}', $2::jsonb) where id = $1`, [domain.id, JSON.stringify(toolbar)]);
+  await logActivity(ctx, domain.id, 'toolbar.updated', toolbar);
+  return { toolbar };
+}
+
+export async function getToolbar(ctx, domainId) {
+  const domain = await getDomain(ctx, domainId);
+  const t = domain.settings?.toolbar || {};
+  return { toolbar: { enabled: t.enabled === true, position: t.position === 'left' ? 'left' : 'right' } };
+}
+
 // ---------- AccessBellFix (public, called by the script on the customer's site) ----------
 
 /** The approved fixes for a site key. Only served while the account has dashboard access. */
@@ -134,7 +152,11 @@ export async function publicFixRules(key) {
   if (!validKey(key)) throw notFound('Unknown site.');
   return needsMigration(async () => {
     const domain = await withAccessRule((rule) =>
-      one(`select d.id, d.fix_seen_at, ${rule} as has_access from app.domains d join app.accounts a on a.id = d.account_id where d.site_key = $1`, [key]),
+      one(
+        `select d.id, d.fix_seen_at, d.settings->'toolbar' as toolbar, ${rule} as has_access
+           from app.domains d join app.accounts a on a.id = d.account_id where d.site_key = $1`,
+        [key],
+      ),
     );
     if (!domain) throw notFound('Unknown site.');
     if (!domain.fix_seen_at || Date.now() - new Date(domain.fix_seen_at).getTime() > 10 * 60 * 1000) {
@@ -142,7 +164,8 @@ export async function publicFixRules(key) {
     }
     if (!domain.has_access) return { fixes: [] };
     const fixes = await query('select kind, selector, value from app.fixes where domain_id = $1 and enabled order by created_at asc', [domain.id]);
-    return { fixes };
+    const toolbar = domain.toolbar?.enabled ? { position: domain.toolbar.position === 'left' ? 'left' : 'right' } : null;
+    return toolbar ? { fixes, toolbar } : { fixes };
   });
 }
 
