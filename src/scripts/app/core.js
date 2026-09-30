@@ -103,6 +103,9 @@ export function busy(button, statusNode, fn) {
     event?.preventDefault?.();
     if (button.disabled) return;
     button.disabled = true;
+    // A spinning circle shows on the button while the work runs.
+    button.classList.add('is-busy');
+    button.setAttribute('aria-busy', 'true');
     if (statusNode) setStatus(statusNode, '', '');
     try {
       await fn(event);
@@ -111,6 +114,8 @@ export function busy(button, statusNode, fn) {
       else alert(err.message);
     } finally {
       button.disabled = false;
+      button.classList.remove('is-busy');
+      button.removeAttribute('aria-busy');
     }
   };
 }

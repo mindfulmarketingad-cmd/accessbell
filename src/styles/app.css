@@ -3439,3 +3439,21 @@ a.count-pill:hover {
 .review-title {
   color: var(--ink-900);
 }
+
+/* Spinning circle on a button while its action runs */
+.btn.is-busy {
+  cursor: progress;
+}
+.btn.is-busy::before {
+  content: '';
+  flex: none;
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: ab-spin 0.7s linear infinite;
+}
+.btn.is-busy[disabled] {
+  opacity: 1;
+}

@@ -383,11 +383,18 @@ const canEditPages = () => me.subscribed && can(me, 'member');
 
 async function rescan(page, button) {
   button.disabled = true;
+  button.classList.add('is-busy');
+  button.setAttribute('aria-busy', 'true');
   button.textContent = 'Scanning...';
+  // Announce it too, since the button label is replaced when the table redraws.
+  setStatus($('[data-page-status]'), '', `Scanning ${page.url}...`);
   try {
     await api('scan', { method: 'POST', body: { pageId: page.id } });
-  } finally {
     await load();
+    setStatus($('[data-page-status]'), 'success', `Scanned ${page.url}.`);
+  } catch (err) {
+    await load();
+    throw err;
   }
 }
 
