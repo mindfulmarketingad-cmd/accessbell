@@ -203,6 +203,57 @@ const faqs: FaqItem[] = [
     a: 'Scan at least weekly and after every major release. Websites change constantly, and new content is the most common source of regressions. The Pro plan monitors your pages continuously and includes unlimited rescans.',
   },
 ];
+const challenges = [
+  {
+    icon: 'scale',
+    title: 'Knowing which standard applies',
+    problem: 'The ADA does not name a technical standard for private businesses. Courts and settlements usually point to WCAG 2.1 Level AA, government rules use WCAG 2.1 or 2.0, and WCAG 2.2 is the newest version.',
+    fix: 'Choose WCAG 2.2, 2.1 or 2.0 at Level A, AA or AAA, or a preset for the ADA, Section 508 or EN 301 549. <a href="/blog/ada-website-compliance-guide">ADA website compliance guide</a>',
+  },
+  {
+    icon: 'refresh',
+    title: 'Websites never stop changing',
+    problem: 'New products, blog posts, plugins and redesigns add new barriers after you fix the old ones. A one-time audit is out of date the next time someone edits the site.',
+    fix: 'Scheduled scans of up to 500 pages per domain, with email alerts when something new fails.',
+  },
+  {
+    icon: 'eye',
+    title: 'Automated tools cannot test everything',
+    problem: 'Software can find missing alt text or low contrast, but a person has to judge whether alt text is accurate or a page makes sense with a screen reader.',
+    fix: 'Clear labels for what was tested automatically and step-by-step procedures for what needs a person. <a href="/blog/automated-vs-manual-accessibility-testing">Automated vs manual testing</a>',
+  },
+  {
+    icon: 'code',
+    title: 'Knowing how to fix each issue',
+    problem: 'WCAG is written for specialists. Small teams often know something is wrong but not which line of code to change, and developer time is limited.',
+    fix: 'The failing HTML and a corrected example for every issue, grouped by shared template so one fix clears many pages. AccessBellFix can apply approved fixes right away.',
+  },
+  {
+    icon: 'layers',
+    title: 'Overlays that promise instant compliance',
+    problem: 'Widgets that claim to make a site compliant overnight do not change your code. In 2025 the FTC ordered one overlay vendor to pay $1 million over those claims.',
+    fix: 'AccessBell finds the barriers in your code so they are fixed at the source. <a href="/blog/accessibe-alternative">Why overlays fall short</a>',
+  },
+  {
+    icon: 'doc',
+    title: 'PDFs and documents',
+    problem: 'Menus, forms and policies shared as PDFs have to be accessible too, and many are exported without tags, a title or a language.',
+    fix: 'Finds the PDFs linked from your pages, checks each one and fixes the title and language. <a href="/resources/pdf-accessibility-checker">Free PDF checker</a>',
+  },
+  {
+    icon: 'shield',
+    title: 'Proving good faith',
+    problem: 'If a demand letter arrives, you need to show what you tested, what you fixed and when. Most teams have no record.',
+    fix: 'The Compliance Vault keeps dated scan records, a fix log and exportable evidence packages. <a href="/resources/help-center/scans-and-reports/compliance-vault">How the Compliance Vault works</a>',
+  },
+  {
+    icon: 'card',
+    title: 'Cost for small businesses',
+    problem: 'Expert audits and enterprise platforms are often quoted in the thousands of dollars, and overlay pricing can rise with your traffic.',
+    fix: 'A flat $29 per domain per month, or $199 per year, with every feature included. <a href="/pricing">See pricing</a>',
+  },
+];
+
 ---
 <BaseLayout
   title="Website Accessibility Checker - Free WCAG Scan | AccessBell"
@@ -263,6 +314,26 @@ const faqs: FaqItem[] = [
       <p class="stat-foot">
         Figures count lawsuits, not unique companies. See <a href="/blog/what-happens-after-being-sued-for-ada-website-compliance">what happens after being sued for ADA website compliance</a> and <a href="/pricing#suits-title">what real cases cost</a>.
       </p>
+    </div>
+  </section>
+
+  <section class="section section-surface" aria-labelledby="challenges-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Why compliance is hard</span>
+        <h2 id="challenges-title">Common Challenges With ADA Compliance, WCAG and <span class="accent">Accessibility Compliance</span></h2>
+        <p>Keeping a website accessible is hard, even for businesses that care about it. These are the problems teams run into most often, and how AccessBell helps with each one.</p>
+      </div>
+      <ul class="challenge-grid">
+        {challenges.map((c) => (
+          <li class="challenge-card">
+            <span class="challenge-icon"><Icon name={c.icon} /></span>
+            <h3>{c.title}</h3>
+            <p>{c.problem}</p>
+            <p class="challenge-fix"><strong>How AccessBell helps:</strong> <Fragment set:html={c.fix} /></p>
+          </li>
+        ))}
+      </ul>
     </div>
   </section>
 

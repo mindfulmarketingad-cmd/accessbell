@@ -7145,3 +7145,49 @@ h2[tabindex='-1']:focus {
   margin: 4px 0 0;
   font-size: 0.9375rem;
 }
+
+/* ---------- Homepage: common compliance challenges ---------- */
+.challenge-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.challenge-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 24px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+.challenge-card h3 {
+  margin: 0;
+  font-size: 1.0625rem;
+}
+.challenge-card p {
+  margin: 0;
+  color: var(--ink-700);
+  font-size: 0.9375rem;
+}
+.challenge-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--sage-100);
+  color: var(--sage-700);
+}
+.challenge-icon svg {
+  width: 20px;
+  height: 20px;
+}
+.challenge-card .challenge-fix {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
