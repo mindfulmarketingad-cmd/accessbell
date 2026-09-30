@@ -3,12 +3,13 @@ import { query, one } from './db.js';
 import { LIMITS } from './config.js';
 import { AppError, badRequest, notFound } from './errors.js';
 import { requireRole, requireSubscription } from './accounts.js';
-import { getPage, getDomain, DEFAULT_SETTINGS } from './domains.js';
+import { getPage, getDomain, DEFAULT_SETTINGS, linksFromHtml } from './domains.js';
 import { browserAudit, sanitizeHeaders } from '../browser-audit.js';
 import { audit } from '../audit.js';
 import { fetchPage } from '../fetch-page.js';
 import { UnsafeUrlError } from '../net-guard.js';
 import { tagsFor, standardFor } from '../wcag.js';
+import { recordDocuments, isPdfUrl } from './documents.js';
 
 /** Run one device scan. Browser first; HTML audit if the browser is unavailable. */
 /** Screenshots of failing elements kept per scan (see stripOldShots). */
@@ -53,7 +54,8 @@ export async function runAudit(url, settings, device, { browser = browserAudit, 
   }
   const page = await fetcher(url);
   const report = audit(page.html, { standard: 'wcag22' });
-  return { ...report, finalUrl: page.finalUrl, device, engine: 'html', standard };
+  const documents = linksFromHtml(page.html, page.finalUrl).filter(isPdfUrl);
+  return { ...report, finalUrl: page.finalUrl, device, engine: 'html', standard, documents };
 }
 
 /**
@@ -79,6 +81,10 @@ export async function scanPage(page, { accountId, trigger = 'manual', userId = n
         ],
       );
       if ((r.issues || []).some((i) => i.shot)) await stripOldShots(page.id, device, row.id);
+      // PDFs linked from the page are listed on the Documents tab for PDF checks.
+      if (r.documents?.length) {
+        await recordDocuments({ id: page.domain_id, hostname: page.hostname || new URL(page.url).hostname }, page.url, r.documents);
+      }
     } catch (err) {
       const message = err?.expose ? err.message : 'The page could not be scanned.';
       row = await one(

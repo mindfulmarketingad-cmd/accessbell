@@ -44,3 +44,7 @@ Because most sites reuse templates, fixing an issue on one product page usually 
 ## Who Can Do This
 
 Members, Admins and the Owner can choose pages and start scans. Viewers can see the list but not change it.
+
+## PDFs on Your Pages
+
+Links to PDF files are not added as pages. AccessBell lists them on the **Documents** tab instead, where you can [check and fix PDF accessibility](/resources/help-center/scans-and-reports/pdf-accessibility-scanning).

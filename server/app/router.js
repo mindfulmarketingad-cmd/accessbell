@@ -16,6 +16,7 @@ import { config, missingConfig } from './config.js';
 import { getFixSetup, verifyFix, addFix, updateFix, publicFixRules, getStatement, saveStatement, publicStatement, setToolbar, getToolbar } from './site-setup.js';
 import { AppError, badRequest, unauthorized } from './errors.js';
 import { addNote, vault, certificate, createRecord, getRecord, verifyRecord } from './records.js';
+import { listDocuments, addDocument, scanDocument, getDocument, documentFile, removeDocument } from './documents.js';
 
 const limits = {
   login: createRateLimiter({ limit: 10, windowMs: 10 * 60_000 }),
@@ -306,6 +307,24 @@ const routes = {
   },
   async 'POST domain/fix/update'({ ctx, body }) {
     return updateFix(ctx, body?.id, body?.fixId, { enabled: body?.enabled, remove: body?.remove === true });
+  },
+  async 'GET domain/documents'({ ctx, url }) {
+    return listDocuments(ctx, url.searchParams.get('id'));
+  },
+  async 'POST domain/documents/add'({ ctx, body }) {
+    return addDocument(ctx, body?.id, body?.url);
+  },
+  async 'GET document'({ ctx, url }) {
+    return getDocument(ctx, url.searchParams.get('id'));
+  },
+  async 'POST document/scan'({ ctx, body }) {
+    return scanDocument(ctx, body?.id);
+  },
+  async 'GET document/file'({ ctx, url }) {
+    return documentFile(ctx, url.searchParams.get('id'));
+  },
+  async 'POST document/remove'({ ctx, body }) {
+    return removeDocument(ctx, body?.id);
   },
   async 'GET domain/toolbar'({ ctx, url }) {
     return getToolbar(ctx, url.searchParams.get('id'));

@@ -56,3 +56,5 @@ For issues that need a design or content change, such as color contrast, follow 
 3. **Everything else**, starting with the highest counts.
 
 After you deploy a fix, select **Scan now** to confirm it. The Overview's **Resolved since last scan** counts what you fixed.
+
+Visitors who need larger text or stronger contrast can also use the optional [PageAssist accessibility toolbar](/resources/help-center/domains/pageassist-toolbar), but it does not replace fixing the issue.

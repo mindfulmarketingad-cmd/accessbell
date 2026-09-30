@@ -35,6 +35,13 @@ export const SOURCES = {
   'mdn-aria-label': { label: 'aria-label', publisher: 'MDN Web Docs', url: 'https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-label' },
   'mdn-csp': { label: 'Content-Security-Policy header', publisher: 'MDN Web Docs', url: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy' },
   'w3c-csp': { label: 'Content Security Policy Level 3', publisher: 'W3C', url: 'https://www.w3.org/TR/CSP3/' },
+  'text-spacing': { label: 'Understanding Success Criterion 1.4.12: Text Spacing', publisher: 'W3C Web Accessibility Initiative', url: 'https://www.w3.org/WAI/WCAG22/Understanding/text-spacing.html' },
+  'resize-text': { label: 'Understanding Success Criterion 1.4.4: Resize Text', publisher: 'W3C Web Accessibility Initiative', url: 'https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html' },
+  'mdn-reduced-motion': { label: 'prefers-reduced-motion', publisher: 'MDN Web Docs', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion' },
+  'pdf-techniques': { label: 'PDF Techniques for WCAG 2.2', publisher: 'W3C', url: 'https://www.w3.org/WAI/WCAG22/Techniques/#pdf' },
+  'pdf-title': { label: 'PDF18: Specifying the document title using the Title entry of the document information dictionary', publisher: 'W3C', url: 'https://www.w3.org/WAI/WCAG22/Techniques/pdf/PDF18' },
+  'pdf-lang': { label: 'PDF16: Setting the default language using the /Lang entry in the document catalog', publisher: 'W3C', url: 'https://www.w3.org/WAI/WCAG22/Techniques/pdf/PDF16' },
+  'pdf-alt': { label: 'PDF1: Applying text alternatives to images with the Alt entry in PDF documents', publisher: 'W3C', url: 'https://www.w3.org/WAI/WCAG22/Techniques/pdf/PDF1' },
   'gmail-help': { label: 'Gmail Help', publisher: 'Google', url: 'https://support.google.com/mail' },
 } as const;
 

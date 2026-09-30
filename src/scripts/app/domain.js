@@ -12,6 +12,7 @@ import { issueVisual } from '../shared/issue-visuals.js';
 import { domainMenu, scanDomainWithDialog, scanMessage, relative, nextScheduledScan } from './domain-actions.js';
 import { mountFixInstall, mountFixList, mountStatementFlow, statementUrl, mountToolbar } from './site-tools.js';
 import { mountVault } from './vault.js';
+import { mountDocuments } from './documents.js';
 
 const me = await boot();
 const id = qs('id');
@@ -675,13 +676,14 @@ try {
   bindSettings();
   bindActions();
   const vault = mountVault({ panel: $('#panel-vault'), box: $('[data-vault]'), domainId: id, me, selectTab });
+  mountDocuments({ panel: $('#panel-documents'), box: $('[data-documents]'), domainId: id, me });
   $('[data-export-vault]').addEventListener('click', () => {
     $('[data-export]').click();
     vault.openPackage();
   });
   const params = new URLSearchParams(location.search);
   const tab = params.get('tab');
-  if (['overview', 'issues', 'review', 'vault', 'pages', 'settings'].includes(tab)) selectTab(tab);
+  if (['overview', 'issues', 'review', 'vault', 'documents', 'pages', 'settings'].includes(tab)) selectTab(tab);
   if (params.get('setup') === 'fix') openFixSetup();
   const exp = params.get('export');
   if (exp) history.replaceState(null, '', `${location.pathname}?id=${encodeURIComponent(id)}`);

@@ -8,6 +8,7 @@ import { assertSafeUrl } from '../net-guard.js';
 import { fetchPage } from '../fetch-page.js';
 import { VERSIONS, LEVELS } from '../wcag.js';
 import { logActivity } from './activity.js';
+import { recordDocuments, isPdfUrl } from './documents.js';
 
 export const DEFAULT_SETTINGS = {
   wcagVersion: '2.2',
@@ -391,7 +392,7 @@ export async function addPages(ctx, domainId, urls) {
 
 const SKIP_EXT = /\.(pdf|jpe?g|png|gif|webp|svg|ico|zip|gz|mp4|mp3|webm|css|js|json|xml|txt|docx?|xlsx?|pptx?)$/i;
 
-function linksFromHtml(html, base) {
+export function linksFromHtml(html, base) {
   const out = new Set();
   const walk = (node) => {
     for (const c of node.childNodes || []) {
@@ -464,11 +465,16 @@ export async function discoverPages(ctx, domainId, { fetcher = fetchPage } = {})
 
   const seen = new Set();
   const found = [];
+  const pdfs = [];
   const consider = (u, source) => {
     let url;
     try {
       url = new URL(u);
     } catch {
+      return;
+    }
+    if (['http:', 'https:'].includes(url.protocol) && isPdfUrl(url.toString())) {
+      pdfs.push(url.toString());
       return;
     }
     if (!['http:', 'https:'].includes(url.protocol) || SKIP_EXT.test(url.pathname)) return;
@@ -495,6 +501,7 @@ export async function discoverPages(ctx, domainId, { fetcher = fetchPage } = {})
       )
     : [];
   const added = rows.length;
+  if (pdfs.length) await recordDocuments(domain, domain.base_url + '/', pdfs);
   await query(`update app.domains set settings = settings || jsonb_build_object('discoveredAt', now()) where id = $1`, [domain.id]);
   return { found: toSave.length, added, fromSitemap: fromSitemap.length, fromLinks: fromLinks.length };
 }

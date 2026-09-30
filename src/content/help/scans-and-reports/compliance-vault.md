@@ -43,3 +43,5 @@ The **Accessibility Certificate** unlocks when every scanned page scores 100 in 
 ## What the Vault Cannot Do
 
 Automated testing detects many, but not all, WCAG failures, and an issue that is no longer detected may have been fixed or removed from the page. The vault documents your effort. It is not legal advice or a guarantee against claims.
+
+PDFs linked from your site are checked separately. See [Check and fix PDF accessibility](/resources/help-center/scans-and-reports/pdf-accessibility-scanning).

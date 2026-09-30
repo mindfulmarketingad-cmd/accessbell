@@ -41,6 +41,7 @@ import Icon from '../../components/Icon.astro';
       <button type="button" role="tab" id="tab-issues" aria-controls="panel-issues" aria-selected="false" tabindex="-1"><Icon name="alert" /> Issues <span class="tab-count" data-count-issues></span></button>
       <button type="button" role="tab" id="tab-review" aria-controls="panel-review" aria-selected="false" tabindex="-1"><Icon name="eye" /> Manually Required <span class="tab-count" data-count-review></span></button>
       <button type="button" role="tab" id="tab-vault" aria-controls="panel-vault" aria-selected="false" tabindex="-1"><Icon name="shield" /> Compliance Vault</button>
+      <button type="button" role="tab" id="tab-documents" aria-controls="panel-documents" aria-selected="false" tabindex="-1"><Icon name="doc" /> Documents</button>
       <button type="button" role="tab" id="tab-pages" aria-controls="panel-pages" aria-selected="false" tabindex="-1"><Icon name="list" /> Pages</button>
       <button type="button" role="tab" id="tab-settings" aria-controls="panel-settings" aria-selected="false" tabindex="-1"><Icon name="gear" /> Settings</button>
     </div>
@@ -116,6 +117,12 @@ import Icon from '../../components/Icon.astro';
       <h2 class="visually-hidden">Compliance Vault</h2>
       <p class="vault-intro">Your audit-ready accessibility history and compliance evidence, kept automatically.</p>
       <div data-vault><p class="muted">Loading...</p></div>
+    </div>
+
+    <div role="tabpanel" id="panel-documents" aria-labelledby="tab-documents" tabindex="0" hidden>
+      <h2 class="visually-hidden">Documents</h2>
+      <p class="vault-intro">PDF accessibility: every PDF linked from your pages, checked for tags, a title and language, alt text on figures, scanned pages, form labels, bookmarks and security settings. <a href="/resources/help-center/scans-and-reports/pdf-accessibility-scanning">How PDF checks work</a></p>
+      <div data-documents><p class="muted">Loading...</p></div>
     </div>
 
     <div role="tabpanel" id="panel-pages" aria-labelledby="tab-pages" tabindex="0" hidden>

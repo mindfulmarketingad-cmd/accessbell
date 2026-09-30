@@ -288,7 +288,16 @@ export async function browserAudit(
       tags || TAGS_FOR_STANDARD[standard] || TAGS.wcag22,
     );
     const shots = screenshots ? await captureIssueShots(page, results.violations, screenshots) : {};
-    return { finalUrl, device, ...mapAxeResults(results, standard, shots) };
+    // PDF links on the page, for PDF accessibility checks.
+    const documents = await page
+      .evaluate(() =>
+        [...document.querySelectorAll('a[href]')]
+          .map((a) => a.href)
+          .filter((h) => /^https?:/i.test(h) && /\.pdf$/i.test(new URL(h).pathname))
+          .slice(0, 100),
+      )
+      .catch(() => []);
+    return { finalUrl, device, ...mapAxeResults(results, standard, shots), documents };
   } finally {
     await browser.close().catch(() => {});
   }

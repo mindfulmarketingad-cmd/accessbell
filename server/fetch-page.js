@@ -59,7 +59,7 @@ function requestOnce(url, deadline, accept) {
   });
 }
 
-function readBody(res, deadline) {
+function readBody(res, deadline, maxBytes = LIMITS.maxBytes, tooBig = 'The page is too large to check (limit 3 MB of HTML).') {
   return new Promise((resolve, reject) => {
     const encoding = String(res.headers['content-encoding'] || '').trim().toLowerCase();
     let stream = res;
@@ -79,7 +79,7 @@ function readBody(res, deadline) {
     stream.on('data', (chunk) => {
       size += chunk.length;
       // Counted after decompression, so compression bombs are cut off too.
-      if (size > LIMITS.maxBytes) return fail(new FetchError('The page is too large to check (limit 3 MB of HTML).', 413));
+      if (size > maxBytes) return fail(new FetchError(tooBig, 413));
       chunks.push(chunk);
     });
     stream.on('end', () => {
@@ -112,6 +112,15 @@ const KINDS = {
   html: { accept: 'text/html,application/xhtml+xml;q=0.9,*/*;q=0.1', types: ['text/html', 'application/xhtml+xml'], label: 'an HTML page. Enter the URL of a web page' },
   xml: { accept: 'application/xml,text/xml;q=0.9,*/*;q=0.1', types: ['xml'], label: 'an XML sitemap' },
   text: { accept: 'text/plain,*/*;q=0.1', types: ['text/plain'], label: 'a text file' },
+  pdf: {
+    accept: 'application/pdf,*/*;q=0.1',
+    types: ['application/pdf', 'application/x-pdf', 'application/octet-stream', 'binary/octet-stream'],
+    label: 'a PDF file',
+    binary: true,
+    maxBytes: 20 * 1024 * 1024,
+    timeoutMs: 25_000,
+    tooBig: 'The PDF is too large to check (limit 20 MB).',
+  },
 };
 
 /**
@@ -121,7 +130,8 @@ const KINDS = {
  */
 export async function fetchPage(input, { kind = 'html' } = {}) {
   const spec = KINDS[kind] || KINDS.html;
-  const deadline = Date.now() + LIMITS.timeoutMs;
+  const deadline = Date.now() + (spec.timeoutMs || LIMITS.timeoutMs);
+  const maxBytes = spec.maxBytes || LIMITS.maxBytes;
   let url = assertSafeUrl(input);
 
   for (let hop = 0; hop <= LIMITS.maxRedirects; hop++) {
@@ -153,12 +163,13 @@ export async function fetchPage(input, { kind = 'html' } = {}) {
     }
 
     const declared = Number(res.headers['content-length']);
-    if (Number.isFinite(declared) && declared > LIMITS.maxBytes) {
+    if (Number.isFinite(declared) && declared > maxBytes) {
       res.destroy();
-      throw new FetchError('The page is too large to check (limit 3 MB of HTML).', 413);
+      throw new FetchError(spec.tooBig || 'The page is too large to check (limit 3 MB of HTML).', 413);
     }
 
-    const body = await readBody(res, deadline);
+    const body = await readBody(res, deadline, maxBytes, spec.tooBig);
+    if (spec.binary) return { finalUrl: url.toString(), status, body };
     const text = decode(body, type);
     return { finalUrl: url.toString(), status, html: text, text };
   }

@@ -6,7 +6,7 @@ updatedDate: 2026-09-30
 sources: ['mdn-script', 'mdn-aria-label', 'understanding']
 ---
 
-AccessBellFix is an optional, one-line script. Once it is on your site, you can add fixes in AccessBell and it applies them in your visitors' browsers. It only applies fixes you have added and approved. It does not change your design, add a widget or make changes on its own.
+AccessBellFix is an optional, one-line script. Once it is on your site, you can add fixes in AccessBell and it applies them in your visitors' browsers. It only applies fixes you have added and approved. It does not change your design or make changes on its own. The same snippet can also show the optional [PageAssist accessibility toolbar](/resources/help-center/domains/pageassist-toolbar) for your visitors, but only if you turn it on.
 
 ## What It Can Fix
 

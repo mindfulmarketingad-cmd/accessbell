@@ -3895,3 +3895,113 @@ a.count-pill:hover {
   max-width: 64ch;
   margin-top: 12px;
 }
+
+/* ---------- Documents (PDF accessibility) ---------- */
+.doc-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.doc-summary p {
+  margin: 0;
+}
+.doc-summary .btn svg,
+.doc-detail .btn svg,
+.doc-fix .btn svg {
+  width: 16px;
+  height: 16px;
+}
+.doc-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: var(--ink-900);
+  overflow-wrap: anywhere;
+}
+.doc-name svg {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  color: var(--sage-700);
+}
+.doc-url {
+  display: block;
+  font-size: 0.8125rem;
+  overflow-wrap: anywhere;
+}
+.doc-table td {
+  vertical-align: top;
+}
+/* Keeps screen-reader-only text inside the scroll box on small screens */
+.doc-table-wrap {
+  position: relative;
+}
+.doc-add {
+  margin-top: 20px;
+}
+.row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.doc-facts {
+  margin: 12px 0;
+}
+.doc-issues {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.doc-issues li {
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.doc-issues p {
+  margin: 6px 0 0;
+}
+.doc-issue-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.doc-wcag {
+  font-size: 0.875rem;
+}
+.doc-passes {
+  margin-top: 16px;
+}
+.doc-passes summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.doc-passes ul {
+  display: grid;
+  gap: 4px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.doc-passes li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.doc-passes svg {
+  width: 15px;
+  height: 15px;
+  color: var(--sage-700);
+}
+.doc-fix {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}

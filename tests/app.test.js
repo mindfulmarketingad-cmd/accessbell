@@ -126,6 +126,7 @@ before(async () => {
   await db.query(readFileSync(new URL('../supabase/migrations/0006_page_limit_500.sql', import.meta.url), 'utf8'));
   await db.query(readFileSync(new URL('../supabase/migrations/0007_billing_interval.sql', import.meta.url), 'utf8'));
   await db.query(readFileSync(new URL('../supabase/migrations/0008_compliance_records.sql', import.meta.url), 'utf8'));
+  await db.query(readFileSync(new URL('../supabase/migrations/0009_documents.sql', import.meta.url), 'utf8'));
 
   fake = await startFakeAuth(db);
   const { port } = fake.server.address();
@@ -973,4 +974,62 @@ test('Compliance Vault: fix log, activity, notes, fingerprinted records, public 
   assert.equal(cert.status, 200);
   assert.equal(cert.body.hostname, 'vault-example.com');
   assert.equal(cert.body.standard, 'WCAG 2.2 Level AA');
+});
+
+test('PDF documents: found on scanned pages, checked for accessibility and fetched for fixing', { skip }, async () => {
+  const { PDFDocument, StandardFonts } = await import('pdf-lib');
+  const docsModule = await import('../server/app/documents.js');
+  const owner = new Client('10.0.11.1');
+  await owner.post('auth/signup', { email: 'pdfs@acme.test', password: 'correct horse' });
+  const accountId = (await owner.get('me')).body.account.id;
+  await activate(accountId, 1);
+  await owner.post('domains', { url: 'pdf-example.com' });
+  const domain = (await owner.get('domains')).body.domains.find((d) => d.hostname === 'pdf-example.com');
+  const pageRow = (await db.query('select p.*, d.settings from app.pages p join app.domains d on d.id = p.domain_id where p.domain_id = $1', [domain.id])).rows[0];
+
+  // A page scan records the PDFs it links to, on this site only.
+  const html = '<!doctype html><html lang="en"><head><title>Menus</title></head><body><main><h1>Menus</h1>' +
+    '<a href="/files/menu.pdf">Menu</a> <a href="https://cdn.pdf-example.com/price-list.PDF#page=2">Prices</a> ' +
+    '<a href="https://elsewhere.test/other.pdf">Other site</a> <a href="/about">About</a></main></body></html>';
+  await scanning.scanPage(pageRow, { accountId, deps: { fetcher: async (url) => ({ finalUrl: url, html }) } });
+  let list = (await owner.get(`domain/documents?id=${domain.id}`)).body;
+  assert.deepEqual(list.documents.map((d) => d.url).sort(), ['https://cdn.pdf-example.com/price-list.PDF', 'https://pdf-example.com/files/menu.pdf']);
+  assert.ok(list.documents.every((d) => d.status === 'pending' && d.foundOn === pageRow.url));
+
+  assert.equal((await owner.post('domain/documents/add', { id: domain.id, url: 'https://elsewhere.test/x.pdf' })).status, 400);
+  const added = await owner.post('domain/documents/add', { id: domain.id, url: 'pdf-example.com/forms/signup.pdf' });
+  assert.equal(added.status, 200);
+
+  // Checking a PDF stores its issues.
+  const pdf = await PDFDocument.create({ updateMetadata: false });
+  pdf.addPage().drawText('Lunch menu', { font: await pdf.embedFont(StandardFonts.Helvetica) });
+  const bytes = Buffer.from(await pdf.save());
+  const me = await owner.get('me');
+  const ctx = { user: { id: me.body.user.id }, account: (await db.query('select * from app.accounts where id = $1', [accountId])).rows[0], role: 'owner', subscriber: true };
+  const menu = list.documents.find((d) => d.url.endsWith('menu.pdf'));
+  const scanned = await docsModule.scanDocument(ctx, menu.id, { fetcher: async () => ({ body: bytes }) });
+  assert.equal(scanned.document.status, 'done');
+  assert.deepEqual(scanned.document.issues.map((i) => i.id).sort(), ['pdf-lang', 'pdf-title', 'pdf-untagged']);
+  const detail = (await owner.get(`document?id=${menu.id}`)).body.document;
+  assert.equal(detail.issuesCount, 3);
+  assert.equal(detail.pages, 1);
+
+  const broken = await docsModule.scanDocument(ctx, added.body.document.id, { fetcher: async () => ({ body: Buffer.from('<html>') }) });
+  assert.equal(broken.document.status, 'failed');
+  assert.match(broken.document.error, /could not be read as a PDF/);
+
+  const file = await docsModule.documentFile(ctx, menu.id, { fetcher: async () => ({ body: bytes }) });
+  assert.equal(file.name, 'menu.pdf');
+  assert.equal(Buffer.from(file.base64, 'base64').length, bytes.length);
+
+  // Other accounts cannot see or scan these documents.
+  const outsider = new Client('10.0.11.2');
+  await outsider.post('auth/signup', { email: 'pdf-outsider@evil.test', password: 'correct horse' });
+  await markSubscriber((await outsider.get('me')).body.account.id);
+  assert.equal((await outsider.get(`document?id=${menu.id}`)).status, 404);
+  assert.equal((await outsider.get(`domain/documents?id=${domain.id}`)).status, 404);
+
+  assert.equal((await owner.post('document/remove', { id: added.body.document.id })).status, 200);
+  list = (await owner.get(`domain/documents?id=${domain.id}`)).body;
+  assert.equal(list.documents.length, 2);
 });

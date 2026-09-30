@@ -427,7 +427,10 @@ export async function mountToolbar(box, { domainId, canEdit, fixConnected }) {
   );
   box.replaceChildren(
     form,
-    el('p', { class: 'muted toolbar-note', text: 'The toolbar changes how your site looks for the visitor who uses it. It does not fix your code or make your site conform to WCAG on its own, so keep fixing the issues AccessBell finds.' }),
+    el('p', { class: 'muted toolbar-note' }, [
+      'The toolbar changes how your site looks for the visitor who uses it. It does not fix your code or make your site conform to WCAG on its own, so keep fixing the issues AccessBell finds. ',
+      el('a', { href: '/resources/help-center/domains/pageassist-toolbar', text: 'About the toolbar' }),
+    ]),
     canEdit ? null : el('p', { class: 'muted', text: 'Only admins and the owner can change these settings.' }),
   );
 }

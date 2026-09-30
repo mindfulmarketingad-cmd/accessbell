@@ -54,7 +54,13 @@ export const FEATURE_GROUPS: FeatureGroup[] = [
       'Failing Elements',
       'Component Grouping',
       'AI-Assisted Fixes',
+      'PDF Accessibility Scanning',
+      'PDF Title and Language Remediation',
     ],
+  },
+  {
+    title: 'On-Site Tools',
+    features: ['AccessBellFix Approved Fixes', 'PageAssist Visitor Toolbar'],
   },
   {
     title: 'Dashboard and Reporting',
