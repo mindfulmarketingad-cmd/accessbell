@@ -1,7 +1,7 @@
 ---
 title: 'Contact Support'
 description: 'How to reach the AccessBell team for help with your account, scans or billing, what to include so we can help quickly, and when to expect a reply.'
-order: 5
+order: 6
 updatedDate: 2026-09-28
 sources: ['understanding']
 ---

@@ -33,6 +33,8 @@ export const SOURCES = {
   'vpat': { label: 'VPAT (Voluntary Product Accessibility Template)', publisher: 'Information Technology Industry Council', url: 'https://www.itic.org/policy/accessibility/vpat' },
   'mdn-script': { label: 'The <script> element', publisher: 'MDN Web Docs', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script' },
   'mdn-aria-label': { label: 'aria-label', publisher: 'MDN Web Docs', url: 'https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-label' },
+  'mdn-csp': { label: 'Content-Security-Policy header', publisher: 'MDN Web Docs', url: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy' },
+  'w3c-csp': { label: 'Content Security Policy Level 3', publisher: 'W3C', url: 'https://www.w3.org/TR/CSP3/' },
   'gmail-help': { label: 'Gmail Help', publisher: 'Google', url: 'https://support.google.com/mail' },
 } as const;
 

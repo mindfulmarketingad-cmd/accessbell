@@ -2,7 +2,7 @@
 title: 'Install AccessBellFix'
 description: 'Add the AccessBellFix snippet to your site, validate the connection and apply fixes you approve, such as alt text and button names. Guides for popular platforms.'
 order: 8
-updatedDate: 2026-09-29
+updatedDate: 2026-09-30
 sources: ['mdn-script', 'mdn-aria-label', 'understanding']
 ---
 
@@ -64,6 +64,8 @@ Not sure how to do it? Select **Send to my developer** to email the code and the
 Select **Validate connection**. AccessBell loads your home page and looks for your site key. It also counts as connected if the script has loaded on any of your pages in the last 7 days, which helps when a caching or tag manager setup hides the code from the home page.
 
 If it is not found, check the change is saved and published, clear any site cache and try again.
+
+If your site has a Content Security Policy, allow `https://www.accessbell.co` in it, or the browser will block the script even though the connection check finds it. See [AccessBellFix is blocked by a Content Security Policy](/resources/help-center/troubleshooting/accessbellfix-content-security-policy).
 
 ## Add a Fix
 
