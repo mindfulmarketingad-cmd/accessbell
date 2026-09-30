@@ -3,11 +3,17 @@ title: 'What Is a Website Accessibility Checker? How Automated Testing Works'
 seoTitle: 'What Is a Website Accessibility Checker?'
 description: 'A plain-English guide to website accessibility checkers: what they test, how they map results to WCAG, what they miss, and how to choose one.'
 pubDate: 2026-09-14
+updatedDate: 2026-09-30
 category: 'Guides'
 contributors:
   - author: joseph-edwards
     role: Author
 related: ['automated-vs-manual-accessibility-testing', 'wcag-2-2-checklist']
+history:
+  - date: 2026-09-14
+    note: 'First published.'
+  - date: 2026-09-30
+    note: 'Added how AccessBell scores a page and what each score range means.'
 ---
 
 A **website accessibility checker** is software that inspects the code of a web page and flags patterns that are known to block people with disabilities. It reads the page the way a browser does, compares what it finds against the Web Content Accessibility Guidelines (WCAG), and reports each failure with a location, a severity and a fix.
@@ -49,6 +55,20 @@ A good report does three things with each finding.
 **It explains the fix.** "Image missing alt text" is a finding. "Add an alt attribute that describes the image's purpose, or alt=\"\" if it is decorative" is a fix.
 
 Many checkers also produce a single score. Treat it as a trend line, not a verdict. A score of 92 does not mean a site is 92 percent compliant with the law. It means the automated rules found fewer problems than on a page that scored 60.
+
+### How AccessBell Scores a Page
+
+AccessBell gives every scanned page a score out of 100. Each page starts at 100 and loses points for every failing check, weighted by severity: 10 for a critical issue, 7 for serious, 4 for moderate and 2 for minor, with a little more taken off when the same check fails on many elements. Here is how to read the result:
+
+| Score | Result | What it means |
+| --- | --- | --- |
+| 0–49 | Poor Accessibility | Significant barriers are present. The page is largely unusable for many people with disabilities and may carry legal risk. |
+| 50–69 | Needs Improvement | Some accessibility features are in place, but notable issues remain that make the page hard to use. |
+| 70–89 | Fair Accessibility | Many key problems have been resolved. The page is generally usable, though not yet fully inclusive. |
+| 90–99 | Highly Accessible | Only a few automated issues remain. Fix them, then complete the manual checks listed in your report. |
+| 100 | No Automated Issues | The page passed every automated check. To claim WCAG conformance, a person still needs to complete the manual checks, such as keyboard and screen reader testing, that no automated tool can do. |
+
+A score of 100 is a strong result, but it is not proof of compliance on its own. The next section explains why.
 
 ## What Automated Checkers Cannot Tell You
 
