@@ -274,6 +274,10 @@ export async function browserAudit(
     }
     const delay = Math.min(Math.max(Number(delayMs) || 0, 0), 10_000);
     if (delay) await page.waitForTimeout(delay);
+    // If the site runs AccessBellFix, test the page after its approved fixes are applied.
+    await page
+      .waitForFunction(() => !document.querySelector('script[data-site][src*="/fix.js"]') || (window.AccessBellFix && window.AccessBellFix.ready), null, { timeout: 6000 })
+      .catch(() => {});
 
     const finalUrl = page.url();
     assertSafeUrl(finalUrl);

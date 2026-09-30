@@ -12,6 +12,8 @@
   if (!/^[A-Za-z0-9_-]{16,40}$/.test(key)) return;
   var origin = new URL(me.src, location.href).origin;
   var fixes = [];
+  // Scanners (including AccessBell's) wait for ready so they test the fixed page.
+  var state = (window.AccessBellFix = { ready: false, applied: 0 });
 
   function setAttr(el, name, value) {
     if (el.getAttribute(name) !== value) el.setAttribute(name, value);
@@ -64,7 +66,11 @@
       fixes = (data && data.fixes) || [];
       if (!fixes.length) return;
       apply();
+      state.applied = fixes.length;
       new MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true });
     })
-    .catch(function () {});
+    .catch(function () {})
+    .then(function () {
+      state.ready = true;
+    });
 })();

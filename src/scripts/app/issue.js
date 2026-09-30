@@ -24,6 +24,9 @@ const FIXABLE = {
   'image-alt': 'alt', 'input-image-alt': 'alt', 'role-img-alt': 'alt', 'svg-img-alt': 'alt', 'area-alt': 'alt',
   'button-name': 'name', 'input-button-name': 'name', 'link-name': 'name', 'select-name': 'name', 'aria-command-name': 'name',
   'html-has-lang': 'lang', 'html-lang-valid': 'lang',
+  // Fields and widgets are named with aria-label, which AccessBellFix applies as a 'name' fix.
+  label: 'name', 'aria-input-field-name': 'name', 'aria-toggle-field-name': 'name', 'aria-meter-name': 'name',
+  'aria-progressbar-name': 'name', 'aria-tooltip-name': 'name', 'aria-dialog-name': 'name', 'summary-name': 'name', 'object-alt': 'name',
 };
 const kebab = (s) => s.toLowerCase().replace(/[()]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const criterionPath = (sc) => `/resources/wcag/${sc.replace(/\./g, '-')}-${kebab(CRITERIA[sc]?.name || sc)}`;
@@ -108,10 +111,47 @@ function renderDescription() {
 // ---------- Failed and fixed elements ----------
 
 let fixSeq = 0;
+let installDialog;
+
+/** Shown when someone selects Fix now before AccessBellFix is installed on their site. */
+function installPrompt({ returnTo, onCopy }) {
+  if (!installDialog) {
+    const copyInstead = el('button', { class: 'btn btn-outline', type: 'button', text: 'Copy the code fix instead' });
+    const later = el('button', { class: 'btn btn-outline', type: 'button', text: 'Not now' });
+    const node = el('dialog', { class: 'dialog install-dialog', 'aria-labelledby': 'install-title', 'aria-describedby': 'install-text' }, [
+      el('div', { class: 'dialog-body' }, [
+        el('span', { class: 'install-icon', 'aria-hidden': 'true' }, [icon('sparkle')]),
+        el('h2', { id: 'install-title', text: 'Install AccessBellFix for seamless, fast fixes' }),
+        el('p', { id: 'install-text', text: 'Fix now applies fixes on your live site through AccessBellFix, a lightweight script you add once. After that, every fix is one click: no code changes, and nothing goes live until you approve it.' }),
+        el('ol', { class: 'install-steps' }, [
+          el('li', { text: 'Copy one line of code from your domain settings.' }),
+          el('li', { text: 'Paste it before </head> on your site, or in your site builder\'s custom code settings.' }),
+          el('li', { text: 'Come back and select Fix now on any issue.' }),
+        ]),
+        el('div', { class: 'install-actions' }, [
+          el('a', { class: 'btn btn-accent', href: `/app/domain?id=${encodeURIComponent(domainId)}&setup=fix` }, [icon('sparkle'), 'Set up AccessBellFix']),
+          copyInstead,
+          later,
+        ]),
+      ]),
+    ]);
+    later.addEventListener('click', () => node.close());
+    copyInstead.addEventListener('click', () => {
+      node.close();
+      installDialog.onCopy?.();
+    });
+    node.addEventListener('close', () => installDialog.returnTo?.focus());
+    document.body.append(node);
+    installDialog = { node };
+  }
+  installDialog.returnTo = returnTo;
+  installDialog.onCopy = onCopy;
+  installDialog.node.showModal();
+}
 
 /**
  * Fix one element: type the text once, copy the corrected code into your site,
- * or apply it with AccessBellFix (for the fixes the script supports).
+ * or select Fix now to apply it with AccessBellFix (for the fixes the script supports).
  */
 function fixPanel(element, { kind, editable }) {
   const rule = ELEMENT_FIXES[data.issue.id];
@@ -132,26 +172,29 @@ function fixPanel(element, { kind, editable }) {
       setStatus(status, 'error', 'Copy is not available in this browser. Select the code and copy it.');
     }
   });
-  const actions = [copy];
+  const actions = [];
   if (kind && editable && element.target) {
-    const apply = el('button', { type: 'button', class: 'btn btn-sm' }, [icon('sparkle'), el('span', { text: 'Apply with AccessBellFix' })]);
-    apply.addEventListener(
+    const fixNow = el('button', { type: 'button', class: 'btn btn-sm btn-accent' }, [icon('sparkle'), el('span', { text: 'Fix now' })]);
+    fixNow.addEventListener(
       'click',
-      busy(apply, status, async () => {
-        if (!input.value.trim()) throw new Error(`${rule.ask} first.`);
+      busy(fixNow, status, async () => {
+        if (!input.value.trim()) {
+          input.focus();
+          throw new Error(`${rule.ask} first, then select Fix now.`);
+        }
+        // Fix now works through AccessBellFix. Without it, offer to install it (or copy the code).
+        if (fixConnected !== true) {
+          installPrompt({ returnTo: fixNow, onCopy: () => copy.click() });
+          return;
+        }
         await api('domain/fix/add', { method: 'POST', body: { id: domainId, kind, selector: element.target, value: input.value.trim() } });
-        apply.replaceWith(el('span', { class: 'el-fix-done' }, [icon('check'), 'Added to AccessBellFix']));
-        setStatus(
-          status,
-          'success',
-          fixConnected === false
-            ? 'Fix saved. It goes live once AccessBellFix is installed on your site.'
-            : 'Fix added. AccessBellFix applies it the next time the page loads, and your next scan confirms it.',
-        );
+        fixNow.replaceWith(el('span', { class: 'el-fix-done' }, [icon('check'), 'Fixed with AccessBellFix']));
+        setStatus(status, 'success', 'Fixed. AccessBellFix applies it on your site the next time the page loads, and your next scan confirms it.');
       }),
     );
-    actions.push(apply);
+    actions.push(fixNow);
   }
+  actions.push(copy);
   return el('div', { class: 'el-fix' }, [
     el('p', { class: 'el-fix-title' }, [icon('wrench'), 'Fix this element']),
     el('label', { for: id, text: rule.ask }),
@@ -215,7 +258,7 @@ function renderElements() {
     ? ''
     : inCode
       ? FIXABLE[data.issue.id]
-        ? ' Type the text under any element to get its corrected code to copy into your site, or apply it with AccessBellFix.'
+        ? ' Type the text under any element to get its corrected code to copy into your site, or select Fix now to fix it on your live site.'
         : ' Type the text under any element to get its corrected code to copy into your site.'
       : ' Follow "What to fix" under each element, and see the correct markup on the Issue Overview tab.';
   $('[data-failed-sub]').textContent = data.failed.length

@@ -45,7 +45,7 @@ It has three tabs:
 On the **Failed Elements** tab, many issues show a **Fix this element** box under each element: missing alt text, buttons and links with no name, unlabeled form fields, untitled frames and a missing page language. Type the text once, for example what the image shows or what the button does, and AccessBell writes the element's corrected code for you:
 
 1. Select **Copy code** and paste it over the element in your site or template, then rescan.
-2. Or select **Apply with AccessBellFix** to fix it without editing your code. See [install AccessBellFix](/resources/help-center/getting-started/install-accessbellfix). Fixes you add before the script is installed go live once it is.
+2. Or select **Fix now** to fix it on your live site without editing your code. Fix now works through AccessBellFix: if it is not installed on your site yet, AccessBell shows you how to add it in a few minutes. See [install AccessBellFix](/resources/help-center/getting-started/install-accessbellfix).
 
 For issues that need a design or content change, such as color contrast, follow **What to fix** under each element and the correct markup on the **Issue Overview** tab.
 
