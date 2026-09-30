@@ -16,10 +16,10 @@ export function startFakeAuth(pool) {
     refresh.set(rt, user);
     return { access_token: at, refresh_token: rt, expires_in: 3600, user: { id: user.id, email: user.email } };
   };
-  const createUser = async (email, password) => {
+  const createUser = async (email, password, confirmed = !state.confirmEmail) => {
     const id = crypto.randomUUID();
     await pool.query('insert into auth.users (id, email) values ($1, $2)', [id, email]);
-    const u = { id, email, password, confirmed: !state.confirmEmail };
+    const u = { id, email, password, confirmed };
     users.set(email, u);
     return u;
   };
@@ -74,6 +74,20 @@ export function startFakeAuth(pool) {
     if (path === '/resend') {
       if (data.email === 'mailer-down@example.com') return send(500, { code: 'unexpected_failure', msg: 'Error sending confirmation email' });
       return send(200, {});
+    }
+    if (path === '/admin/users' && req.method === 'POST') {
+      if (bearer !== 'service-key') return send(401, {});
+      if (users.has(data.email)) return send(422, { error_code: 'email_exists' });
+      const u = await createUser(data.email, data.password, data.email_confirm === true || !state.confirmEmail);
+      return send(200, { id: u.id, email: u.email });
+    }
+    const adminUser = /^\/admin\/users\/([^/]+)$/.exec(path);
+    if (adminUser && req.method === 'PUT') {
+      if (bearer !== 'service-key') return send(401, {});
+      const u = [...users.values()].find((x) => x.id === adminUser[1]);
+      if (!u) return send(404, { error_code: 'user_not_found' });
+      if (data.email_confirm === true) u.confirmed = true;
+      return send(200, { id: u.id, email: u.email });
     }
     if (path === '/invite') {
       if (bearer !== 'service-key') return send(401, {});

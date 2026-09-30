@@ -57,12 +57,50 @@ function credentials(body) {
 /** Where Supabase email links should land. Uses the caller's own (allow-listed) origin. */
 const appOrigin = (request) => request.headers.get('origin') || config().appUrl;
 
+/**
+ * Sign in, completing any sign-up that is still waiting for a confirmation email.
+ * Supabase only answers email_not_confirmed once the password has matched, so
+ * confirming at that point never lets a wrong password in.
+ */
+async function signInConfirming(email, password) {
+  try {
+    return await auth.signIn(email, password);
+  } catch (err) {
+    if (err.code !== 'email_not_confirmed' || !config().supabaseServiceKey) throw err;
+    const row = await one('select id from auth.users where lower(email) = lower($1)', [email]);
+    if (!row) throw err;
+    await auth.confirmUser(row.id);
+    return auth.signIn(email, password);
+  }
+}
+
+const EXISTS = new Set(['email_exists', 'user_already_exists']);
+
 // ---------- Public auth routes (no session required) ----------
 
 const publicRoutes = {
   async 'POST auth/signup'({ request, body, ip }) {
     limit('signup', ip);
     const { email, password } = credentials(body);
+    // New accounts are created already confirmed: people start using AccessBell straight
+    // away, with no confirmation email, and their profile is created in app.profiles now.
+    if (config().supabaseServiceKey) {
+      let session;
+      try {
+        await auth.createConfirmedUser(email, password);
+      } catch (err) {
+        if (!EXISTS.has(err.code)) throw err;
+        // Already registered: sign in if the password matches (this also finishes a
+        // sign-up that was waiting for a confirmation email). Otherwise say it exists.
+        session = await signInConfirming(email, password).catch(() => {
+          throw err;
+        });
+      }
+      session ??= await auth.signIn(email, password);
+      const user = session.user || (await auth.getUser(session.accessToken));
+      await ensureUserSetup(user);
+      return { body: { status: 'signed_in' }, cookies: sessionCookies(request, session) };
+    }
     const result = await auth.signUp(email, password, `${appOrigin(request)}/app/auth/callback`);
     // With "Confirm email" on in Supabase, sign-up returns a user but no session until the
     // link in the email is clicked. Supabase also answers this way for an address that is
@@ -79,7 +117,7 @@ const publicRoutes = {
     const email = String(body?.email || '').trim().toLowerCase();
     const password = String(body?.password || '');
     if (!EMAIL.test(email) || !password || password.length > 72) throw unauthorized('Email or password is incorrect.');
-    const session = await auth.signIn(email, password);
+    const session = await signInConfirming(email, password);
     if (!session) throw unauthorized('Email or password is incorrect.');
     const user = session.user || (await auth.getUser(session.accessToken));
     await ensureUserSetup(user);

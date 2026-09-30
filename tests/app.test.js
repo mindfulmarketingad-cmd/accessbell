@@ -175,27 +175,34 @@ test('signup creates an owner account and a secure session', { skip }, async () 
   assert.equal(me.body.billing.domainQuota, 0);
 });
 
-test('with email confirmation on, sign-up asks the person to confirm instead of failing', { skip }, async () => {
+test('sign-up needs no email confirmation, even with "Confirm email" on in Supabase', { skip }, async () => {
   fake.state.confirmEmail = true;
   try {
     const c = new Client('10.0.0.5');
-    const signup = await c.post('auth/signup', { email: 'confirm-me@acme.test', password: 'correct horse' });
+    const signup = await c.post('auth/signup', { email: 'no-confirm@acme.test', password: 'correct horse' });
     assert.equal(signup.status, 200);
-    assert.equal(signup.body.status, 'confirm_email');
-    assert.equal(signup.headers.getSetCookie().length, 0, 'no session until the email is confirmed');
+    assert.equal(signup.body.status, 'signed_in');
+    assert.ok(signup.headers.getSetCookie().length > 0, 'signed in straight away');
+    const profile = (await db.query("select p.email from app.profiles p where p.email = 'no-confirm@acme.test'")).rows;
+    assert.equal(profile.length, 1, 'the profile is created in app.profiles at sign-up');
+    assert.equal((await c.get('me')).body.user.email, 'no-confirm@acme.test');
 
-    // An address that already has an account gets the same answer.
-    const again = await c.post('auth/signup', { email: 'owner@acme.test', password: 'another pass' });
-    assert.equal(again.status, 200);
-    assert.equal(again.body.status, 'confirm_email');
+    // An account stuck waiting for a confirmation email (created before this change).
+    fake.users.set('stuck@acme.test', { id: crypto.randomUUID(), email: 'stuck@acme.test', password: 'correct horse', confirmed: false });
+    await db.query('insert into auth.users (id, email) values ($1, $2)', [fake.users.get('stuck@acme.test').id, 'stuck@acme.test']);
+    const wrong = await new Client('10.0.0.15').post('auth/login', { email: 'stuck@acme.test', password: 'wrong password' });
+    assert.equal(wrong.status, 400, 'a wrong password never confirms or signs in');
+    assert.equal(fake.users.get('stuck@acme.test').confirmed, false);
+    const again = await new Client('10.0.0.16').post('auth/signup', { email: 'stuck@acme.test', password: 'correct horse' });
+    assert.equal(again.body.status, 'signed_in', 'signing up again with the same password finishes the account');
+    assert.equal(fake.users.get('stuck@acme.test').confirmed, true);
+    assert.equal((await db.query("select 1 from app.profiles where email = 'stuck@acme.test'")).rows.length, 1);
 
-    const login = await c.post('auth/login', { email: 'confirm-me@acme.test', password: 'correct horse' });
-    assert.equal(login.status, 400);
-    assert.equal(login.body.code, 'email_not_confirmed');
-
-    const resend = await c.post('auth/resend', { email: 'confirm-me@acme.test' });
-    assert.equal(resend.status, 200);
-    assert.equal((await c.post('auth/resend', { email: 'mailer-down@example.com' })).body.code, 'email_send_failed');
+    // Sign-in also completes a stuck account when the password is right.
+    fake.users.set('stuck2@acme.test', { id: crypto.randomUUID(), email: 'stuck2@acme.test', password: 'correct horse', confirmed: false });
+    await db.query('insert into auth.users (id, email) values ($1, $2)', [fake.users.get('stuck2@acme.test').id, 'stuck2@acme.test']);
+    const login = await new Client('10.0.0.17').post('auth/login', { email: 'stuck2@acme.test', password: 'correct horse' });
+    assert.equal(login.body.status, 'signed_in');
   } finally {
     fake.state.confirmEmail = false;
   }

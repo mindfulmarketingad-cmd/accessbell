@@ -107,6 +107,14 @@ export const auth = {
   async verifyTokenHash(tokenHash, type) {
     return toSession(await call('/verify', { body: { token_hash: tokenHash, type } }));
   },
+  /** Admin: create a user whose email is already confirmed, so no confirmation email is sent. */
+  async createConfirmedUser(email, password) {
+    return call('/admin/users', { admin: true, body: { email, password, email_confirm: true } });
+  },
+  /** Admin: mark an existing user's email as confirmed. */
+  async confirmUser(userId) {
+    return call(`/admin/users/${encodeURIComponent(userId)}`, { method: 'PUT', admin: true, body: { email_confirm: true } });
+  },
   /** Admin: send an invitation email and create the user. Returns the user. */
   async invite(email, redirectTo) {
     return call('/invite', { admin: true, body: { email }, query: { redirect_to: redirectTo } });
