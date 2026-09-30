@@ -1,7 +1,7 @@
 ---
 title: 'WCAG 4.1.3 Status Messages Explained in Plain English'
 seoTitle: 'WCAG 4.1.3 Status Messages Explained'
-description: 'WCAG 4.1.3 Status Messages explained simply: what counts as a status message, how to announce it with role=status or alert, code examples and how to test.'
+description: 'WCAG 4.1.3 Status Messages explained simply: what counts, how to announce it with role status, alert, progressbar or aria-live, form errors and how to test.'
 pubDate: 2026-09-29
 category: 'WCAG Codes Explained'
 contributors:
@@ -9,8 +9,10 @@ contributors:
     role: Author
 history:
   - date: 2026-09-29
+    note: 'Added sections on progress bars, aria-live and aria-atomic, and linking form errors to fields, with two new illustrations. Checked against WAI-ARIA 1.2 and the W3C techniques ARIA19, ARIA22 and ARIA23.'
+  - date: 2026-09-29
     note: 'First published. Checked against the W3C WCAG 2.2 Recommendation, the Understanding document for 4.1.3 Status Messages and WAI-ARIA 1.2.'
-related: ['wcag-3-2-2-on-input', 'keyboard-accessibility-testing', 'wcag-2-aa-checklist']
+related: ['wcag-3-2-2-on-input', 'keyboard-accessibility-testing', 'wcag-2-aa-checklist', 'wcag-4-1-2-name-role-value']
 faqs:
   - q: 'What level is WCAG 4.1.3 Status Messages?'
     a: 'Level AA. It was added in WCAG 2.1, so it applies to any site that targets WCAG 2.1 or 2.2 Level AA. It is not part of WCAG 2.0.'
@@ -105,6 +107,56 @@ Two details matter:
 
 For chat windows, activity feeds and other messages that arrive in order, use `role="log"`, as in the W3C technique [ARIA23, using role=log to identify sequential information updates](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA23). New entries are announced as they are added.
 
+### Use role="progressbar" to show progress
+
+For a task that takes a while, such as an upload or a multi-step import, `role="progressbar"` tells assistive technology the element is a progress indicator and exposes its value:
+
+```html
+<div role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+     aria-label="Uploading report.pdf"></div>
+```
+
+Update `aria-valuenow` as the task moves along. A progress bar is not a live region, though, and screen readers do not all speak every change to its value. So do both: keep the visual bar accurate, and also write milestones such as "Uploading, 50 percent" and "Upload complete" into your `role="status"` container.
+
+<figure>
+  <img src="/blog/wcag-4-1-3-status-messages/progress-announcements.svg" width="800" height="410" loading="lazy" alt="An upload of report.pdf at 60 percent, coded as a progressbar with aria-valuenow 60. Below it, four milestone announcements a screen reader might make through a status region: Uploading 25 percent, 50 percent, 75 percent and Upload complete.">
+  <figcaption>Show every step on screen, and announce the milestones.</figcaption>
+</figure>
+
+### Fine-tune with aria-live and aria-atomic
+
+The roles above are shortcuts for two attributes. Under [WAI-ARIA 1.2](https://www.w3.org/TR/wai-aria-1.2/), each role sets defaults for `aria-live` (how urgently changes are announced) and `aria-atomic` (whether the whole region or only the changed part is read):
+
+| Role | aria-live | aria-atomic | Behavior |
+| --- | --- | --- | --- |
+| `status` | `polite` | `true` | Waits for a pause, then reads the whole message |
+| `alert` | `assertive` | `true` | Interrupts, then reads the whole message |
+| `log` | `polite` | `false` | Waits, then reads only the new entry |
+
+When a role is not enough, you can set the attributes yourself on a container that is already in the page:
+
+```html
+<div aria-live="polite" aria-atomic="true">File has been uploaded.</div>
+```
+
+Use `aria-live="polite"` for updates that can wait and `aria-live="assertive"` for critical ones. Add `aria-atomic="true"` when the message only makes sense read as a whole, for example "3 of 12 files uploaded" where only the number changes. Support for these defaults varies between browsers and screen readers, so setting the attributes explicitly next to the role is a common precaution.
+
+### Announce form errors and link them to their field
+
+A validation error is a status message when it appears without moving focus. Give it a role so it is announced, and also connect it to its field so a screen reader user hears the error again when they return to the field:
+
+```html
+<input id="email" type="email" aria-invalid="true" aria-describedby="email-error">
+<p id="email-error" role="alert">Enter an email address like name@example.com</p>
+```
+
+`aria-describedby` has strong support. The newer `aria-errormessage` attribute was designed for exactly this job, but support is still uneven across browsers and assistive technology, so `aria-describedby` is the safer choice today. Without either one, a person who fills in a form and presses Submit may hear nothing and assume it worked. See [3.3.1 Error Identification](/resources/wcag/3-3-1-error-identification) for the wording requirements.
+
+<figure>
+  <img src="/blog/wcag-4-1-3-status-messages/error-message-link.svg" width="800" height="412" loading="lazy" alt="An email field with a red outline holds sam@example and shows the error Enter an email address like name@example.com. The input has aria-invalid true and aria-describedby email-error, which matches the id of the error paragraph, so a screen reader reads the error with the field.">
+  <figcaption>The matching id ties the error to the field.</figcaption>
+</figure>
+
 ### Keep messages short and clear
 
 - Say what happened in plain words: "Saved" is better than an icon alone.
@@ -118,7 +170,7 @@ The W3C lists missing roles as failure [F103, providing status messages that can
 1. **List the messages.** Walk through key tasks, such as searching, filtering, adding to cart, saving and submitting forms, and note every message that appears without focus moving.
 2. **Turn on a screen reader.** Use NVDA or JAWS on Windows, VoiceOver on a Mac or iPhone, or TalkBack on Android.
 3. **Repeat each task with the keyboard.** Does the screen reader announce each message, without you moving to it?
-4. **Check the code.** Each message should sit inside an element with `role="status"`, `role="alert"`, `role="log"` or an `aria-live` attribute, and that element should be on the page before the message appears.
+4. **Check the code.** Each message should sit inside an element with `role="status"`, `role="alert"`, `role="log"`, `role="progressbar"` (with milestone text in a status region) or an `aria-live` attribute, and that element should be on the page before the message appears.
 5. **Check the tone.** Only urgent messages should interrupt.
 
 Our [keyboard accessibility testing guide](/blog/keyboard-accessibility-testing) covers the keyboard part of this routine. For a quick reference, see our [4.1.3 Status Messages page](/resources/wcag/4-1-3-status-messages) in the WCAG library, and the W3C's [Understanding 4.1.3 Status Messages](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html).
