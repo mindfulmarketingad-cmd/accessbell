@@ -59,7 +59,7 @@ This is the financial case for fixing real issues now: the cost of a scan, devel
 
 ## What Happens if You Ignore It
 
-Sources consistently describe the same pattern: the sender escalates to a filed lawsuit if a demand letter goes unanswered. Once a complaint is filed, you are on a legal clock (commonly 21 days to answer), the costs above increase, and you lose the leniency that comes from moving early. If you have already been served with a lawsuit rather than a demand letter, see our [ADA lawsuit process guide](/blog/ada-lawsuit-process) for what happens next and the deadlines involved.
+Sources consistently describe the same pattern: the sender escalates to a filed lawsuit if a demand letter goes unanswered. Once a complaint is filed, you are on a legal clock (commonly 21 days to answer), the costs above increase, and you lose the leniency that comes from moving early. If you have already been served with a lawsuit rather than a demand letter, see our [ADA lawsuit process guide](/blog/ada-lawsuit-process) for the deadlines involved, and [one small store's story of being sued for violating ADA website compliance](/blog/what-happens-after-being-sued-for-ada-website-compliance) for what it cost them.
 
 ## After the Letter: Staying Out of the Next One
 

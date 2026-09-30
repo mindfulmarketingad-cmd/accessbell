@@ -5,6 +5,7 @@ import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
 import ProcessTour from '../components/ProcessTour.astro';
 import CostCalculator from '../components/CostCalculator.astro';
+import { LAWSUITS } from '../data/lawsuits';
 import { PLAN, FEATURE_GROUPS } from '../data/pricing';
 import { faqSchema, softwareSchema, type FaqItem } from '../lib/schema';
 
@@ -111,7 +112,36 @@ const faqs: FaqItem[] = [
     </div>
   </section>
 
-  <section class="section section-surface" aria-labelledby="process-title">
+  <section class="section section-surface" aria-labelledby="suits-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Lawsuit examples</span>
+        <h2 id="suits-title">What Being Sued <span class="accent">Actually Costs</span></h2>
+        <p>Businesses of every size have been sued over inaccessible websites. Here is what some of them paid, next to what a year of AccessBell Pro costs: ${PLAN.price * 12} per domain.</p>
+      </div>
+      <ul class="suit-grid">
+        {LAWSUITS.map((s) => (
+          <li class="suit-card">
+            <p class="suit-head"><strong>{s.company}</strong><span class="tag">{s.year}</span></p>
+            <p>{s.what}</p>
+            <p class="suit-cost"><Icon name="scale" /><span>{s.cost}</span></p>
+            {s.paid ? (
+              <p class="suit-years">Equal to <strong>{Math.floor(s.paid / (PLAN.price * 12)).toLocaleString('en-US')} years</strong> of AccessBell Pro for one domain</p>
+            ) : null}
+            <p class="suit-source">Source: {s.source.url.startsWith('/')
+              ? <a href={s.source.url}>{s.source.label}</a>
+              : <a href={s.source.url} rel="noopener noreferrer">{s.source.label}</a>}</p>
+          </li>
+        ))}
+      </ul>
+      <div class="suit-note">
+        <p><strong>How AccessBell helps you avoid this.</strong> The barriers named in many complaints, such as missing alt text, unlabeled form fields and buttons with no name, are ones automated scans find. AccessBell scans up to {PLAN.urlsPerDomain} pages per domain every day, shows you the failing code and how to fix it, and keeps a dated record of every scan and fix. You pay to fix your site either way. The difference is whether you do it on your schedule or after a complaint.</p>
+        <p class="muted">"Years of Pro" divides the amount paid by ${PLAN.price * 12}, one year of Pro for one domain. It is not a claim that AccessBell would have prevented these cases, and no tool can guarantee you will not be sued. Read <a href="/blog/what-happens-after-being-sued-for-ada-website-compliance">what happens after being sued for violating ADA website compliance</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="process-title">
     <div class="container">
       <div class="section-head">
         <span class="eyebrow">How it works</span>
@@ -122,7 +152,7 @@ const faqs: FaqItem[] = [
     </div>
   </section>
 
-  <section class="section" aria-labelledby="ai-title">
+  <section class="section section-surface" aria-labelledby="ai-title">
     <div class="container grid-2">
       <div class="feature-copy">
         <span class="eyebrow">AI-assisted fixes</span>
@@ -150,7 +180,7 @@ const faqs: FaqItem[] = [
     </div>
   </section>
 
-  <section class="section section-surface" aria-labelledby="dash-title">
+  <section class="section" aria-labelledby="dash-title">
     <div class="container">
       <div class="section-head">
         <span class="eyebrow">Dashboard</span>
@@ -194,7 +224,7 @@ const faqs: FaqItem[] = [
     </div>
   </section>
 
-  <section class="section" aria-labelledby="pfaq-title">
+  <section class="section section-surface" aria-labelledby="pfaq-title">
     <div class="container">
       <div class="section-head">
         <span class="eyebrow">FAQ</span>

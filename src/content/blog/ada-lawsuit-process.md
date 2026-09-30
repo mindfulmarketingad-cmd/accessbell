@@ -55,7 +55,7 @@ Title III covers public accommodations: businesses open to the public, such as s
 - **State laws** can add damages. That is why many cases are filed in states such as California and New York, where state civil rights laws allow them.
 - **The Department of Justice** can also bring enforcement actions, which can include civil penalties.
 
-Because attorney fees drive much of the cost, resolving a case early is usually cheaper than fighting it for months.
+Because attorney fees drive much of the cost, resolving a case early is usually cheaper than fighting it for months. For real numbers, see [what happens after being sued for violating ADA website compliance](/blog/what-happens-after-being-sued-for-ada-website-compliance), which walks through one small store's $5,000 settlement and what large brands paid.
 
 ## Before the Lawsuit: Demand Letters
 

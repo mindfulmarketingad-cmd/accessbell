@@ -49,7 +49,7 @@ Most website accessibility claims begin with barriers that are easy to find with
 - Videos without captions
 - PDFs that are scanned images with no text layer
 
-Because these barriers are easy to detect, they are also easy for plaintiffs' firms to find at scale. Fixing them first is the highest-return activity for most businesses. If a claim does arrive, our guide to the [ADA lawsuit process](/blog/ada-lawsuit-process) explains each stage and its deadlines.
+Because these barriers are easy to detect, they are also easy for plaintiffs' firms to find at scale. Fixing them first is the highest-return activity for most businesses. If a claim does arrive, our guide to the [ADA lawsuit process](/blog/ada-lawsuit-process) explains each stage and its deadlines, and [what happens after being sued for violating ADA website compliance](/blog/what-happens-after-being-sued-for-ada-website-compliance) shows what settlements have cost real businesses.
 
 ## Steps That Reduce Risk
 

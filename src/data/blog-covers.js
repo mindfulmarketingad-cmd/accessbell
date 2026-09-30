@@ -67,6 +67,7 @@ export const COVER_TOPICS = {
   'we-tested-10-accessibility-checker-tools': { ui: 'chart', label: '10 tools', caption: 'One test page, 35 barriers' },
   'ada-demand-letter': { ui: 'mail', label: 'ADA', caption: 'Demand letters' },
   'ada-lawsuit-process': { ui: 'scale', label: 'ADA', caption: 'The lawsuit process' },
+  'what-happens-after-being-sued-for-ada-website-compliance': { ui: 'scale', label: 'ADA', caption: 'After being sued' },
   'ada-requirements-for-bathrooms': { a11y: 'universal-access', label: 'ADA', caption: 'Accessible bathrooms' },
   'ada-requirements-for-ramps': { a11y: 'wheelchair', label: 'ADA', caption: 'Ramp requirements' },
   'ada-title-iii-law-for-businesses': { ui: 'scale', label: 'Title III', caption: 'ADA law for businesses' },
