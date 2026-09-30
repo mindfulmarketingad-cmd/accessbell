@@ -216,3 +216,5 @@ No single tool caught more than 69% of our barriers, so a practical setup looks 
 3. **Test by hand.** Use a keyboard, a screen reader and our [WCAG 2.2 checklist](/blog/wcag-2-2-checklist) for everything automation cannot judge.
 
 For a broader buyer's view of paid checkers and overlays, see our comparison of the [best website accessibility checkers](/blog/website-accessibility-checkers), or start now with a [free scan of your own site](/#scan).
+
+Comparing paid platforms as well? See the [5 best website accessibility testing software tools](/blog/best-website-accessibility-testing-software) by features, pricing and free resources.

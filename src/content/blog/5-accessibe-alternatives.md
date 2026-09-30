@@ -86,3 +86,5 @@ It is also the most expensive option here: pricing is commonly reported in the $
 - **Want a vendor's team to own remediation for you, at enterprise pricing?** AudioEye.
 
 Whichever direction you take, start by seeing what is actually on your site. [Run a free scan](/#scan) to see how many issues your page has in under a minute, no account required, and subscribe for the code-level report.
+
+Buying for a small business? See our updated list of the [best ADA compliance software for small businesses](/blog/best-ada-compliance-software-for-small-businesses).

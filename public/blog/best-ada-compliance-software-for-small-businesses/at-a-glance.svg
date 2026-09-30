@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+<rect width="960" height="520" fill="#f4f8f3"/>
+<text x="480.0" y="50" font-size="22" font-weight="800" fill="#22262f" text-anchor="middle">5 best ADA compliance software for small businesses</text>
+<text x="128" y="92" font-size="13" font-weight="700" fill="#5b6170" text-anchor="start">Tool</text>
+<text x="410" y="92" font-size="13" font-weight="700" fill="#5b6170" text-anchor="start">Type</text>
+<text x="900" y="92" font-size="13" font-weight="700" fill="#5b6170" text-anchor="end">Starting price</text>
+<rect x="40" y="106" width="880" height="66" rx="14" fill="#fff" stroke="#44723f" stroke-width="3"/>
+<circle cx="84" cy="139" r="20" fill="#44723f"/><text x="84" y="146" font-size="18" font-weight="800" fill="#fff" text-anchor="middle">1</text>
+<text x="128" y="137" font-size="19" font-weight="800" fill="#22262f" text-anchor="start">AccessBell</text>
+<text x="128" y="158" font-size="13" font-weight="600" fill="#44723f" text-anchor="start">Our pick</text>
+<rect x="400" y="123" width="247" height="32" rx="16" fill="#e8f1e7"/><text x="413" y="144" font-size="14" font-weight="600" fill="#365c32" text-anchor="start">Monitors and fixes your code</text>
+<text x="900" y="146" font-size="16" font-weight="800" fill="#22262f" text-anchor="end">$29/mo or $199/yr</text>
+<rect x="40" y="186" width="880" height="66" rx="14" fill="#fff" stroke="#d9dde3" stroke-width="2"/>
+<circle cx="84" cy="219" r="20" fill="#353a47"/><text x="84" y="226" font-size="18" font-weight="800" fill="#fff" text-anchor="middle">2</text>
+<text x="128" y="217" font-size="19" font-weight="800" fill="#22262f" text-anchor="start">AccessibilityChecker.org</text>
+<text x="128" y="238" font-size="13" font-weight="600" fill="#44723f" text-anchor="start"></text>
+<rect x="400" y="203" width="263" height="32" rx="16" fill="#e8f1e7"/><text x="413" y="224" font-size="14" font-weight="600" fill="#365c32" text-anchor="start">Scanner with AI-assisted fixes</text>
+<text x="900" y="226" font-size="16" font-weight="800" fill="#22262f" text-anchor="end">$69/mo, billed yearly</text>
+<rect x="40" y="266" width="880" height="66" rx="14" fill="#fff" stroke="#d9dde3" stroke-width="2"/>
+<circle cx="84" cy="299" r="20" fill="#353a47"/><text x="84" y="306" font-size="18" font-weight="800" fill="#fff" text-anchor="middle">3</text>
+<text x="128" y="297" font-size="19" font-weight="800" fill="#22262f" text-anchor="start">AudioEye</text>
+<text x="128" y="318" font-size="13" font-weight="600" fill="#44723f" text-anchor="start"></text>
+<rect x="400" y="283" width="295" height="32" rx="16" fill="#f1f2f4"/><text x="413" y="304" font-size="14" font-weight="600" fill="#353a47" text-anchor="start">Automated fixes + managed services</text>
+<text x="900" y="306" font-size="16" font-weight="800" fill="#22262f" text-anchor="end">Tiered plans</text>
+<rect x="40" y="346" width="880" height="66" rx="14" fill="#fff" stroke="#d9dde3" stroke-width="2"/>
+<circle cx="84" cy="379" r="20" fill="#353a47"/><text x="84" y="386" font-size="18" font-weight="800" fill="#fff" text-anchor="middle">4</text>
+<text x="128" y="377" font-size="19" font-weight="800" fill="#22262f" text-anchor="start">UserWay</text>
+<text x="128" y="398" font-size="13" font-weight="600" fill="#44723f" text-anchor="start"></text>
+<rect x="400" y="363" width="224" height="32" rx="16" fill="#fdf6e7"/><text x="413" y="384" font-size="14" font-weight="600" fill="#8a5a00" text-anchor="start">Overlay widget, free tier</text>
+<text x="900" y="386" font-size="16" font-weight="800" fill="#22262f" text-anchor="end">$490/yr</text>
+<rect x="40" y="426" width="880" height="66" rx="14" fill="#fff" stroke="#d9dde3" stroke-width="2"/>
+<circle cx="84" cy="459" r="20" fill="#353a47"/><text x="84" y="466" font-size="18" font-weight="800" fill="#fff" text-anchor="middle">5</text>
+<text x="128" y="457" font-size="19" font-weight="800" fill="#22262f" text-anchor="start">accessiBe</text>
+<text x="128" y="478" font-size="13" font-weight="600" fill="#44723f" text-anchor="start"></text>
+<rect x="400" y="443" width="287" height="32" rx="16" fill="#fdf6e7"/><text x="413" y="464" font-size="14" font-weight="600" fill="#8a5a00" text-anchor="start">Overlay widget, priced by traffic</text>
+<text x="900" y="466" font-size="16" font-weight="800" fill="#22262f" text-anchor="end">$490/yr</text>
+</svg>

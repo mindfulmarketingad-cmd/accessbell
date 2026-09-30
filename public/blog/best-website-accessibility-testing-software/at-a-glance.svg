@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+<rect width="960" height="520" fill="#f4f8f3"/>
+<text x="480.0" y="50" font-size="22" font-weight="800" fill="#22262f" text-anchor="middle">5 best website accessibility testing software tools</text>
+<text x="128" y="92" font-size="13" font-weight="700" fill="#5b6170" text-anchor="start">Tool</text>
+<text x="360" y="92" font-size="13" font-weight="700" fill="#5b6170" text-anchor="start">Type</text>
+<text x="900" y="92" font-size="13" font-weight="700" fill="#5b6170" text-anchor="end">Starting price</text>
+<rect x="40" y="106" width="880" height="66" rx="14" fill="#fff" stroke="#44723f" stroke-width="3"/>
+<circle cx="84" cy="139" r="20" fill="#44723f"/><text x="84" y="146" font-size="18" font-weight="800" fill="#fff" text-anchor="middle">1</text>
+<text x="128" y="137" font-size="19" font-weight="800" fill="#22262f" text-anchor="start">AccessBell</text>
+<text x="128" y="158" font-size="13" font-weight="600" fill="#44723f" text-anchor="start">Our pick</text>
+<rect x="350" y="123" width="318" height="32" rx="16" fill="#e8f1e7"/><text x="363" y="144" font-size="14" font-weight="600" fill="#365c32" text-anchor="start">Whole-site monitoring with code fixes</text>
+<text x="900" y="146" font-size="16" font-weight="800" fill="#22262f" text-anchor="end">$29/mo or $199/yr</text>
+<rect x="40" y="186" width="880" height="66" rx="14" fill="#fff" stroke="#d9dde3" stroke-width="2"/>
+<circle cx="84" cy="219" r="20" fill="#353a47"/><text x="84" y="226" font-size="18" font-weight="800" fill="#fff" text-anchor="middle">2</text>
+<text x="128" y="217" font-size="19" font-weight="800" fill="#22262f" text-anchor="start">axe DevTools</text>
+<text x="128" y="238" font-size="13" font-weight="600" fill="#44723f" text-anchor="start"></text>
+<rect x="350" y="203" width="279" height="32" rx="16" fill="#f1f2f4"/><text x="363" y="224" font-size="14" font-weight="600" fill="#353a47" text-anchor="start">Browser extension for developers</text>
+<text x="900" y="226" font-size="16" font-weight="800" fill="#22262f" text-anchor="end">Free; Pro per user</text>
+<rect x="40" y="266" width="880" height="66" rx="14" fill="#fff" stroke="#d9dde3" stroke-width="2"/>
+<circle cx="84" cy="299" r="20" fill="#353a47"/><text x="84" y="306" font-size="18" font-weight="800" fill="#fff" text-anchor="middle">3</text>
+<text x="128" y="297" font-size="19" font-weight="800" fill="#22262f" text-anchor="start">WAVE</text>
+<text x="128" y="318" font-size="13" font-weight="600" fill="#44723f" text-anchor="start"></text>
+<rect x="350" y="283" width="255" height="32" rx="16" fill="#f1f2f4"/><text x="363" y="304" font-size="14" font-weight="600" fill="#353a47" text-anchor="start">Free visual browser extension</text>
+<text x="900" y="306" font-size="16" font-weight="800" fill="#22262f" text-anchor="end">Free</text>
+<rect x="40" y="346" width="880" height="66" rx="14" fill="#fff" stroke="#d9dde3" stroke-width="2"/>
+<circle cx="84" cy="379" r="20" fill="#353a47"/><text x="84" y="386" font-size="18" font-weight="800" fill="#fff" text-anchor="middle">4</text>
+<text x="128" y="377" font-size="19" font-weight="800" fill="#22262f" text-anchor="start">Pope Tech</text>
+<text x="128" y="398" font-size="13" font-weight="600" fill="#44723f" text-anchor="start"></text>
+<rect x="350" y="363" width="239" height="32" rx="16" fill="#f1f2f4"/><text x="363" y="384" font-size="14" font-weight="600" fill="#353a47" text-anchor="start">Site platform built on WAVE</text>
+<text x="900" y="386" font-size="16" font-weight="800" fill="#22262f" text-anchor="end">Free or $25/mo</text>
+<rect x="40" y="426" width="880" height="66" rx="14" fill="#fff" stroke="#d9dde3" stroke-width="2"/>
+<circle cx="84" cy="459" r="20" fill="#353a47"/><text x="84" y="466" font-size="18" font-weight="800" fill="#fff" text-anchor="middle">5</text>
+<text x="128" y="457" font-size="19" font-weight="800" fill="#22262f" text-anchor="start">Siteimprove</text>
+<text x="128" y="478" font-size="13" font-weight="600" fill="#44723f" text-anchor="start"></text>
+<rect x="350" y="443" width="152" height="32" rx="16" fill="#f1f2f4"/><text x="363" y="464" font-size="14" font-weight="600" fill="#353a47" text-anchor="start">Enterprise suite</text>
+<text x="900" y="466" font-size="16" font-weight="800" fill="#22262f" text-anchor="end">By quote</text>
+</svg>
