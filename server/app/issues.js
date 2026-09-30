@@ -3,6 +3,7 @@
 import { query } from './db.js';
 import { getDomain } from './domains.js';
 import { badRequest, notFound } from './errors.js';
+import { ISSUES_WITHOUT_SHOTS } from './scanning.js';
 
 const MAX_ELEMENTS = 200;
 
@@ -16,7 +17,7 @@ export async function domainIssue(ctx, domainId, ruleId) {
   // The two most recent completed scans of each monitored page and device.
   const scans = await query(
     `select * from (
-       select s.page_id, s.device, s.issues, s.review, s.created_at, p.url,
+       select s.id, s.page_id, s.device, ${ISSUES_WITHOUT_SHOTS('s.issues')} as issues, s.review, s.created_at, p.url,
               row_number() over (partition by s.page_id, s.device order by s.created_at desc) as rn
          from app.scans s
          join app.pages p on p.id = s.page_id and p.monitored
@@ -42,7 +43,7 @@ export async function domainIssue(ctx, domainId, ruleId) {
         meta = hit;
         kind = issue ? 'failed' : 'review';
       }
-      failed.push({ url: scan.url, device: scan.device, scannedAt: scan.created_at, count: hit.count || 1, elements: elementsOf(hit) });
+      failed.push({ scanId: scan.id, url: scan.url, device: scan.device, scannedAt: scan.created_at, count: hit.count || 1, elements: elementsOf(hit) });
     }
     // Fixed: failing in the previous scan of this page, gone from the latest.
     const prev = previous.get(`${scan.page_id}|${scan.device}`);
@@ -58,6 +59,18 @@ export async function domainIssue(ctx, domainId, ruleId) {
   if (!meta) throw notFound('This issue was not found in the latest scans of this domain.');
 
   const elements = failed.reduce((n, f) => n + f.count, 0);
+  // One screenshot of the problem on a real page, if the latest scans captured one.
+  let shot = null;
+  let shotUrl = null;
+  if (kind === 'failed' && failed.length) {
+    const row = await query(
+      `select s.id, e->>'shot' as shot from app.scans s, jsonb_array_elements(coalesce(s.issues, '[]'::jsonb)) e
+        where s.id = any($1::uuid[]) and e->>'id' = $2 and e ? 'shot' limit 1`,
+      [failed.map((f) => f.scanId), rule],
+    );
+    shot = row[0]?.shot && /^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(row[0].shot) ? row[0].shot : null;
+    shotUrl = shot ? failed.find((f) => f.scanId === row[0].id)?.url || null : null;
+  }
   const trim = (list) => {
     let left = MAX_ELEMENTS;
     return list.map((f) => {
@@ -79,10 +92,12 @@ export async function domainIssue(ctx, domainId, ruleId) {
       wcag: meta.wcag || [],
       helpUrl: meta.helpUrl || null,
     },
+    shot,
+    shotUrl,
     pages: new Set(failed.map((f) => f.url)).size,
     elements,
     share: kind === 'failed' && totalIssues ? elements / totalIssues : null,
-    failed: trim(failed.sort((a, b) => b.count - a.count)),
+    failed: trim(failed.sort((a, b) => b.count - a.count)).map(({ scanId, ...f }) => f),
     fixed: trim(fixed),
     fixedElements: fixed.reduce((n, f) => n + f.count, 0),
   };

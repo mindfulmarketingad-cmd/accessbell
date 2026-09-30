@@ -8,6 +8,7 @@ import { fixExample } from '../shared/fix-examples.js';
 import { criteriaFor, PRINCIPLES } from '../../../server/wcag-criteria.js';
 import { setupTour } from './onboarding.js';
 import { codeBlock } from './code-block.js';
+import { issueVisual } from '../shared/issue-visuals.js';
 import { domainMenu, scanDomainWithDialog, scanMessage, relative, nextScheduledScan } from './domain-actions.js';
 import { mountFixInstall, mountFixList, mountStatementFlow, statementUrl } from './site-tools.js';
 
@@ -271,6 +272,7 @@ function issueDetails(r) {
   return el('div', { class: 'issue-body' }, [
     el('h3', {}, ['1. What is ', el('span', { class: 'accent-text', text: 'wrong' })]),
     el('p', { text: r.description || r.title }),
+    issueVisual(r),
     el('h3', {}, ['2. Where it ', el('span', { class: 'accent-text', text: 'happens' })]),
     el('p', { class: 'muted', text: `${plural(r.elements, 'element')} on ${plural(r.pages, 'page')}${r.samples.length ? '. Examples:' : '.'}` }),
     where,

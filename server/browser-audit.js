@@ -80,7 +80,7 @@ function fixText(node) {
  * Convert raw axe results into the report shape the website renders.
  * `standard` is a free-scan standard id or a { id, label } object.
  */
-export function mapAxeResults(results, standard = 'wcag22') {
+export function mapAxeResults(results, standard = 'wcag22', shots = {}) {
   const std = typeof standard === 'object' ? standard : STANDARDS[standard] || STANDARDS.wcag22;
 
   const issues = results.violations
@@ -95,6 +95,7 @@ export function mapAxeResults(results, standard = 'wcag22') {
       samples: v.nodes.slice(0, LIMITS.maxSamples).map((n) => clip(n.html, 220)),
       elements: v.nodes.slice(0, LIMITS.maxElements).map(elementOf),
       helpUrl: safeHelpUrl(v.helpUrl),
+      ...(shots[v.id] ? { shot: shots[v.id] } : {}),
     }))
     .sort((a, b) => IMPACT_ORDER[a.impact] - IMPACT_ORDER[b.impact] || b.count - a.count);
 
@@ -126,6 +127,52 @@ export function mapAxeResults(results, standard = 'wcag22') {
     notes.push('Few Level AAA criteria can be tested automatically. Use the assisted manual testing procedures for the rest.');
   }
   return { engine: 'browser', standard: std, score: scoreFrom(issues), summary, issues, passes, review, notes };
+}
+
+const clampTo = (v, min, max) => Math.min(Math.max(v, min), Math.max(min, max));
+
+/**
+ * A small screenshot of the first failing element of each issue, outlined in
+ * red, so people can see the problem on their own page. Returns
+ * { ruleId: 'data:image/jpeg;base64,...' }. Elements inside frames or shadow
+ * DOM, and hidden or off-screen elements, are skipped.
+ */
+export async function captureIssueShots(page, violations, max = 6) {
+  const shots = {};
+  const vp = page.viewportSize() || { width: 1280, height: 900 };
+  for (const v of (violations || []).slice(0, max)) {
+    const node = (v.nodes || []).find((n) => Array.isArray(n.target) && n.target.length === 1 && typeof n.target[0] === 'string');
+    if (!node) continue;
+    try {
+      const handle = await page.$(node.target[0]);
+      if (!handle) continue;
+      await handle.scrollIntoViewIfNeeded({ timeout: 1500 });
+      const box = await handle.boundingBox();
+      if (!box || box.width < 2 || box.height < 2) continue;
+      // Page-wide problems (such as a missing language) have nothing to outline.
+      if (/^(html|body|head)\b/i.test(node.target[0]) || (box.width >= vp.width * 0.95 && box.height >= vp.height * 0.9)) continue;
+      if (box.x + box.width < 0 || box.y + box.height < 0 || box.x > vp.width || box.y > vp.height) continue;
+      // The element with some of the page around it, at most 640 x 360.
+      const pad = 28;
+      const w = Math.min(Math.max(box.width + pad * 2, 380), 640, vp.width);
+      const h = Math.min(Math.max(box.height + pad * 2, 170), 360, vp.height);
+      const x = clampTo(box.x + box.width / 2 - w / 2, 0, vp.width - w);
+      const y = box.height + pad * 2 > h ? clampTo(box.y - pad, 0, vp.height - h) : clampTo(box.y + box.height / 2 - h / 2, 0, vp.height - h);
+      await page.evaluate((b) => {
+        const d = document.createElement('div');
+        d.id = '__accessbell_highlight';
+        d.style.cssText = `position:fixed;left:${b.x - 3}px;top:${b.y - 3}px;width:${b.width + 6}px;height:${b.height + 6}px;border:3px solid #d92d20;border-radius:4px;box-shadow:0 0 0 4px rgba(255,255,255,.9);z-index:2147483647;pointer-events:none;box-sizing:border-box`;
+        document.documentElement.appendChild(d);
+      }, box);
+      const buf = await page.screenshot({ clip: { x, y, width: w, height: h }, type: 'jpeg', quality: 55, scale: 'css', animations: 'disabled', timeout: 4000 });
+      shots[v.id] = `data:image/jpeg;base64,${buf.toString('base64')}`;
+    } catch {
+      // A screenshot is a bonus; the issue is still reported without one.
+    } finally {
+      await page.evaluate(() => document.getElementById('__accessbell_highlight')?.remove()).catch(() => {});
+    }
+  }
+  return shots;
 }
 
 export const DEVICES = {
@@ -168,7 +215,7 @@ const sameSite = (host, target) => host === target || host.endsWith('.' + target
  */
 export async function browserAudit(
   input,
-  { standard = 'wcag22', tags, device = 'desktop', headers = {}, delayMs = 0, scroll = false, endpoint = process.env.BROWSER_WS_ENDPOINT } = {},
+  { standard = 'wcag22', tags, device = 'desktop', headers = {}, delayMs = 0, scroll = false, screenshots = 0, endpoint = process.env.BROWSER_WS_ENDPOINT } = {},
 ) {
   if (!endpoint) throw new Error('BROWSER_WS_ENDPOINT is not set');
   const url = assertSafeUrl(input);
@@ -187,8 +234,8 @@ export async function browserAudit(
 
     await page.route('**/*', (route) => {
       const req = route.request();
-      // Skip heavy assets that do not affect the audit.
-      if (['image', 'media', 'font'].includes(req.resourceType())) return route.abort();
+      // Skip heavy assets that do not affect the audit. Screenshots need images and fonts.
+      if ((screenshots ? ['media'] : ['image', 'media', 'font']).includes(req.resourceType())) return route.abort();
       // Never let the page navigate a frame to a private or internal address.
       if (req.isNavigationRequest()) {
         try {
@@ -236,7 +283,8 @@ export async function browserAudit(
       (t) => window.axe.run(document, { runOnly: { type: 'tag', values: t }, resultTypes: ['violations', 'incomplete'] }),
       tags || TAGS_FOR_STANDARD[standard] || TAGS.wcag22,
     );
-    return { finalUrl, device, ...mapAxeResults(results, standard) };
+    const shots = screenshots ? await captureIssueShots(page, results.violations, screenshots) : {};
+    return { finalUrl, device, ...mapAxeResults(results, standard, shots) };
   } finally {
     await browser.close().catch(() => {});
   }

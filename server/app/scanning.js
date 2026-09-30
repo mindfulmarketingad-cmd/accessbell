@@ -11,6 +11,26 @@ import { UnsafeUrlError } from '../net-guard.js';
 import { tagsFor, standardFor } from '../wcag.js';
 
 /** Run one device scan. Browser first; HTML audit if the browser is unavailable. */
+/** Screenshots of failing elements kept per scan (see stripOldShots). */
+export const SHOTS_PER_SCAN = 5;
+
+/** Issues with the screenshot data removed, as a SQL expression over a scan's issues column. */
+export const ISSUES_WITHOUT_SHOTS = (col = 's.issues') =>
+  `(select coalesce(jsonb_agg(e - 'shot'), '[]'::jsonb) from jsonb_array_elements(coalesce(${col}, '[]'::jsonb)) e)`;
+
+/**
+ * Screenshots are only kept on the latest scan of each page and device, so
+ * storage stays small however long a page is monitored.
+ */
+async function stripOldShots(pageId, device, keepScanId) {
+  await query(
+    `update app.scans s set issues = ${ISSUES_WITHOUT_SHOTS('s.issues')}
+      where s.page_id = $1 and s.device = $2 and s.id <> $3 and s.status = 'done'
+        and jsonb_path_exists(coalesce(s.issues, '[]'::jsonb), '$[*].shot')`,
+    [pageId, device, keepScanId],
+  );
+}
+
 export async function runAudit(url, settings, device, { browser = browserAudit, fetcher = fetchPage } = {}) {
   const s = { ...DEFAULT_SETTINGS, ...settings };
   const standard = standardFor(s.wcagVersion, s.wcagLevel);
@@ -24,6 +44,7 @@ export async function runAudit(url, settings, device, { browser = browserAudit, 
         headers: headerMap,
         delayMs: s.delayMs,
         scroll: s.scroll,
+        screenshots: SHOTS_PER_SCAN,
       });
     } catch (err) {
       if (err instanceof UnsafeUrlError) throw err;
@@ -57,6 +78,7 @@ export async function scanPage(page, { accountId, trigger = 'manual', userId = n
           JSON.stringify(r.review || []), JSON.stringify(r.notes || []), r.finalUrl, trigger, userId,
         ],
       );
+      if ((r.issues || []).some((i) => i.shot)) await stripOldShots(page.id, device, row.id);
     } catch (err) {
       const message = err?.expose ? err.message : 'The page could not be scanned.';
       row = await one(

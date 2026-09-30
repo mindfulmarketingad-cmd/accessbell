@@ -5863,3 +5863,31 @@ h2[tabindex='-1']:focus {
   cursor: pointer;
   font-weight: 600;
 }
+
+/* ---------- Issue visuals (report, dashboard) ---------- */
+.issue-visual {
+  margin: 12px 0;
+  max-width: 560px;
+}
+.issue-visual svg,
+.issue-visual img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+/* Screenshots are shown at their real size or smaller, never blown up. */
+.issue-visual-shot img {
+  width: auto;
+  max-width: 100%;
+}
+.issue-visual-shot img {
+  border: 1px solid var(--border);
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+}
+.issue-visual figcaption {
+  margin-top: 6px;
+  font-size: 0.8125rem;
+  color: var(--ink-500);
+}

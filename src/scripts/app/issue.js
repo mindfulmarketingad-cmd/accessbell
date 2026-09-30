@@ -4,6 +4,7 @@ import { initTabs } from './tabs.js';
 import { codeBlock } from './code-block.js';
 import { fixExample } from '../shared/fix-examples.js';
 import { affectedBy } from '../shared/affected.js';
+import { issueVisual } from '../shared/issue-visuals.js';
 import { CRITERIA } from '../../../server/wcag-criteria.js';
 
 const me = await boot();
@@ -74,6 +75,7 @@ function renderDescription() {
       el('h3', { text: '1. What does this mean?' }),
       el('div', { class: 'desc-card' }, [
         el('p', { text: issue.description || issue.title }),
+        issueVisual({ id: issue.id, shot: data.shot }, { where: data.shotUrl ? data.shotUrl.replace(/^https?:\/\//, '') : undefined }),
         issue.kind === 'review'
           ? el('p', { text: 'Automated testing could not decide whether these elements pass, so a person needs to check each one. They are not counted as failures.' })
           : null,

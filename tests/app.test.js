@@ -579,6 +579,21 @@ test('scans are stored per device, update the page, and feed the overview with c
   assert.ok(listed.pages >= listed.monitored);
   await rescan(pages[2].id, [issue]);
 
+  // Screenshots: kept only on the latest scan of a page, never sent with the overview.
+  const shot = 'data:image/jpeg;base64,/9j/AAAA';
+  await rescan(pages[1].id, [{ ...issue, shot }]);
+  await rescan(pages[1].id, [{ ...issue, shot }]);
+  const shotRows = (await db.query(`select id, jsonb_path_exists(issues, '$[*].shot') as has from app.scans where page_id = $1 and status = 'done' order by created_at desc`, [pages[1].id])).rows;
+  assert.equal(shotRows.filter((r) => r.has).length, 2, 'only the latest scan per device keeps its screenshot');
+  assert.ok(shotRows.slice(0, 2).every((r) => r.has));
+  const ovShots = await owner.get(`domain?id=${domain.id}`);
+  assert.ok(!JSON.stringify(ovShots.body).includes('data:image/jpeg'), 'the overview never carries screenshots');
+  const withShot = await owner.get(`domain/issue?id=${domain.id}&rule=button-name`);
+  assert.equal(withShot.body.shot, shot);
+  assert.equal(withShot.body.shotUrl, pages[1].url);
+  assert.ok(!JSON.stringify(withShot.body.failed).includes('data:image/jpeg'));
+  await rescan(pages[1].id, [issue]);
+
   const history = await owner.get(`page?id=${pages[0].id}`);
   assert.equal(history.body.scans.length, 2);
   const scan = await owner.get(`scan?id=${history.body.scans[0].id}`);

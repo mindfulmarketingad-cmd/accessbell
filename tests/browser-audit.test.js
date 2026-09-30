@@ -63,6 +63,11 @@ test('axe results map to the report shape used by the website', () => {
   assert.deepEqual(r.issues[1].elements[0], { html: '<p class="muted">Low contrast</p>', target: 'main > p.muted', fix: 'Element has insufficient color contrast of 2.1 (expected 4.5:1).' });
   assert.ok(r.issues[1].elements[1].html.length <= 300);
   assert.equal(r.review[0].elements.length, 2);
+  // A screenshot of the problem is attached to its issue when the scan captured one.
+  const shot = 'data:image/jpeg;base64,AAAA';
+  const withShot = mapAxeResults(fixture, 'wcag22', { 'image-alt': shot });
+  assert.equal(withShot.issues.find((i) => i.id === 'image-alt').shot, shot);
+  assert.equal(withShot.issues.find((i) => i.id === 'color-contrast').shot, undefined);
   assert.ok(r.score < 100);
 });
 

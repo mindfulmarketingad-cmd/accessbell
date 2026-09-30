@@ -39,7 +39,8 @@ export async function POST(request) {
     let report;
     if (process.env.BROWSER_WS_ENDPOINT) {
       try {
-        report = await browserAudit(url, { standard });
+        // Screenshots of the first failing element of up to 6 issues, shown on the report.
+        report = await browserAudit(url, { standard, screenshots: 6 });
       } catch (err) {
         if (err instanceof UnsafeUrlError) throw err;
         // Browser unreachable, page failed to load, etc. The HTML audit

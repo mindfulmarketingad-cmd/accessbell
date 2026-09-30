@@ -504,7 +504,10 @@ export async function domainOverview(ctx, domainId) {
   // the overview, the one before it shows what was resolved.
   const recent = await query(
     `select * from (
-       select s.page_id, s.device, s.score, s.issues, s.passes, s.review, s.created_at,
+       select s.page_id, s.device, s.score,
+              -- Screenshots are left out: the overview never shows them and they are large.
+              (select coalesce(jsonb_agg(e - 'shot'), '[]'::jsonb) from jsonb_array_elements(coalesce(s.issues, '[]'::jsonb)) e) as issues,
+              s.passes, s.review, s.created_at,
               row_number() over (partition by s.page_id, s.device order by s.created_at desc) as rn
          from app.scans s
          join app.pages p on p.id = s.page_id and p.monitored

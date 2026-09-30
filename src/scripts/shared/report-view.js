@@ -1,6 +1,7 @@
 // Report rendering with WCAG filters, shared by the free scanner and the
 // dashboard. All report data is inserted with textContent, never as HTML.
 import { CRITERIA, PRINCIPLES, LEVEL_RANK, VERSION_RANK, criterion, withinTarget } from '../../../server/wcag-criteria.js';
+import { issueVisual } from './issue-visuals.js';
 
 const IMPACTS = ['critical', 'serious', 'moderate', 'minor'];
 const IMPACT_LABEL = { critical: 'Critical', serious: 'Serious', moderate: 'Moderate', minor: 'Minor' };
@@ -88,6 +89,7 @@ export function renderReport(scan, { level = 2, emptyText } = {}) {
       ]);
       const link = helpLink(issue.helpUrl, 'Learn how to fix this');
       if (link) item.append(el('p', {}, [link]));
+      item.append(issueVisual(issue));
       for (const s of issue.samples || []) item.append(el('pre', {}, [el('code', { text: s })]));
       list.append(item);
     }
