@@ -2,6 +2,7 @@
 import { coverFor } from '../lib/covers';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroDemo from '../components/HeroDemo.astro';
 import ScanForm from '../components/ScanForm.astro';
 import Icon from '../components/Icon.astro';
 import Faq from '../components/Faq.astro';
@@ -207,17 +208,15 @@ const faqs: FaqItem[] = [
   description="Free website accessibility checker. Scan any page against WCAG 2.2, ADA and Section 508 in seconds and get clear, code-level fixes for every issue found."
   schema={[softwareSchema(), faqSchema(faqs)]}
 >
-  <script slot="head" is:inline src="/js/flow.js" defer></script>
-  <section class="hero hero-flow" id="scan" aria-labelledby="hero-title">
-    <canvas class="flow-canvas" data-flow aria-hidden="true"></canvas>
-    <div class="container">
+  <section class="hero hero-split" id="scan" aria-labelledby="hero-title">
+    <div class="container hero-grid">
       <div class="hero-copy">
         <h1 id="hero-title">
           <span class="h1-kicker">Website Accessibility Checker</span>
-          Find Out if Your Website Is <span class="accent">Accessible and Compliant</span>
+          Make Your Website ADA Compliant <span class="accent">and Keep It That Way</span>
         </h1>
         <p class="lead">
-          Paste a URL and get a WCAG 2.2 audit in seconds, free and with no signup. Every failure comes with the offending HTML, the success criterion it breaks and the fix, so developers, QA and content teams can act on it straight away.
+          AccessBell scans every page against WCAG 2.2, flags the kinds of barriers named in ADA website lawsuits, shows the exact code fix, and rescans on a schedule so new issues are caught early. Try a free scan, no signup needed.
         </p>
         <ScanForm id="hero" />
         <div class="compliance-row">
@@ -227,6 +226,7 @@ const faqs: FaqItem[] = [
           </ul>
         </div>
       </div>
+      <HeroDemo />
     </div>
   </section>
 

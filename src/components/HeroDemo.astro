@@ -1,0 +1,164 @@
+---
+/**
+ * Homepage hero animation: a looping, simplified run of the AccessBell dashboard.
+ * Pages are found, scanned, violations are flagged, a fix is suggested, then the
+ * daily scheduled scan catches a new issue. Decorative, with a text alternative,
+ * a pause button (WCAG 2.2.2) and a still frame for reduced motion.
+ */
+import Icon from './Icon.astro';
+
+const pages = [
+  { path: '/', x: -27, y: -32 },
+  { path: '/products', x: 20, y: -36 },
+  { path: '/checkout', x: -4, y: -14 },
+  { path: '/contact', x: 25, y: -1 },
+  { path: '/cart', x: -28, y: 7 },
+  { path: '/blog', x: 3, y: 20 },
+  { path: 'sitemap.xml', x: 24, y: 32 },
+  { path: '/about', x: -22, y: 34 },
+];
+const issues = [
+  { title: 'Image missing alt text', impact: 'critical', label: 'Critical', sc: '1.1.1', level: 'A', count: 12 },
+  { title: 'Form field has no label', impact: 'serious', label: 'Serious', sc: '3.3.2', level: 'A', count: 4 },
+  { title: 'Low color contrast', impact: 'serious', label: 'Serious', sc: '1.4.3', level: 'AA', count: 31 },
+];
+const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+const steps = ['Find pages', 'Scan', 'Flag violations', 'Suggest fixes', 'Monitor daily'];
+---
+<figure class="hd" data-hero-demo data-step="3">
+  <div
+    class="hd-stage"
+    data-stage
+    data-scene="fix"
+    role="img"
+    aria-label="Animation of AccessBell at work: it finds the pages on your site, scans them against WCAG 2.2, flags violations such as images missing alt text, suggests the code fix, and rescans every day to catch new issues."
+  >
+    <div class="hd-layer" aria-hidden="true">
+      {pages.map((p, i) => (
+        <span class="hd-chip" style={`--x:${p.x};--y:${p.y};--i:${i}`}>
+          <span class="hd-bob"><Icon name="doc" />{p.path}</span>
+        </span>
+      ))}
+
+      <div class="hd-card hd-scan">
+        <span class="hd-spinner"></span>
+        <div>
+          <strong>Scanning 42 pages</strong>
+          <span>WCAG 2.2 AA · desktop and mobile</span>
+          <span class="hd-bar"><i></i></span>
+        </div>
+      </div>
+
+      {issues.map((it, i) => (
+        <div class={`hd-card hd-issue hd-issue-${i + 1}`} style={`--i:${i}`}>
+          <div class="hd-row">
+            <strong>{it.title}</strong>
+            {i === 0 ? (
+              <span class="hd-status">
+                <span class={`hd-tag hd-tag-${it.impact} hd-open`}>{it.label}</span>
+                <span class="hd-tag hd-tag-fixed hd-fixed"><Icon name="check" />Fixed</span>
+              </span>
+            ) : (
+              <span class={`hd-tag hd-tag-${it.impact}`}>{it.label}</span>
+            )}
+          </div>
+          <span class="hd-meta">WCAG {it.sc} · Level {it.level} · {it.count} elements</span>
+        </div>
+      ))}
+
+      <div class="hd-card hd-fix">
+        <span class="hd-label"><Icon name="sparkle" />Suggested fix</span>
+        <code class="hd-code"><span class="hd-del">- &lt;img src="sofa.jpg"&gt;</span><span class="hd-add">+ &lt;img src="sofa.jpg" alt="Grey sofa"&gt;</span></code>
+        <span class="hd-apply">Apply fix</span>
+      </div>
+
+      <div class="hd-card hd-schedule">
+        <div class="hd-row">
+          <strong><Icon name="clock" />Scheduled scan</strong>
+          <span class="hd-tag hd-tag-fixed">Daily</span>
+        </div>
+        <span class="hd-meta">example.com · every day at 06:00 UTC</span>
+        <ol class="hd-days">
+          {days.map((d, i) => <li style={`--i:${i}`}><span>{d}</span><i><Icon name="check" /></i></li>)}
+        </ol>
+      </div>
+
+      <div class="hd-card hd-alert">
+        <span class="hd-ping"></span>
+        <span class="hd-from"><Icon name="bell" />AccessBell <em>to</em> you</span>
+        <strong>New issue caught on /checkout</strong>
+        <span class="hd-meta">Button has no name · WCAG 4.1.2 · fix suggested</span>
+      </div>
+    </div>
+  </div>
+  <ol class="hd-steps" aria-hidden="true">
+    {steps.map((s, i) => <li data-step={i}>{s}</li>)}
+  </ol>
+  <button class="hd-toggle" type="button" data-demo-toggle aria-label="Pause animation" hidden>
+    <Icon name="pause" class="hd-icon-pause" /><Icon name="play" class="hd-icon-play" />
+  </button>
+</figure>
+
+<script>
+  const SCENES: [string, number][] = [
+    ['discover', 3200],
+    ['scan', 3000],
+    ['issues', 3400],
+    ['fix', 4600],
+    ['monitor', 5600],
+  ];
+  const root = document.querySelector<HTMLElement>('[data-hero-demo]');
+  const stage = root?.querySelector<HTMLElement>('[data-stage]');
+  const toggle = root?.querySelector<HTMLButtonElement>('[data-demo-toggle]');
+  if (root && stage && toggle) {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let index = 0;
+    let timer = 0;
+    let userPaused = false;
+    let onScreen = true;
+
+    const show = (n: number) => {
+      index = n;
+      stage.dataset.scene = SCENES[n][0];
+      root.dataset.step = String(n);
+    };
+    const tick = () => {
+      timer = window.setTimeout(() => {
+        show((index + 1) % SCENES.length);
+        tick();
+      }, SCENES[index][1]);
+    };
+    const update = () => {
+      toggle.hidden = reduce.matches;
+      if (reduce.matches) {
+        window.clearTimeout(timer);
+        timer = 0;
+        show(3);
+        return;
+      }
+      const run = !userPaused && onScreen && !document.hidden;
+      root.dataset.paused = String(!run);
+      if (run && !timer) tick();
+      if (!run) {
+        window.clearTimeout(timer);
+        timer = 0;
+      }
+    };
+
+    toggle.addEventListener('click', () => {
+      userPaused = !userPaused;
+      root.dataset.userPaused = String(userPaused);
+      toggle.setAttribute('aria-label', userPaused ? 'Play animation' : 'Pause animation');
+      update();
+    });
+    document.addEventListener('visibilitychange', update);
+    reduce.addEventListener('change', update);
+    new IntersectionObserver(([entry]) => {
+      onScreen = entry.isIntersecting;
+      update();
+    }).observe(root);
+
+    if (!reduce.matches) show(0);
+    update();
+  }
+</script>
