@@ -2,11 +2,11 @@
 title: 'Your Plan and Pricing'
 description: 'What AccessBell Pro includes, how per-domain pricing works, what counts as a URL, and what fair use means for unlimited rescans.'
 order: 1
-updatedDate: 2026-09-28
+updatedDate: 2026-09-30
 sources: ['stripe-security']
 ---
 
-AccessBell has one plan, **Pro**, at **$29 per domain per month**. Every feature is included on every domain.
+AccessBell has one plan, **Pro**, at **$29 per domain per month** or **$199 per domain per year** billed annually. Every feature is included on every domain, whichever way you pay.
 
 ## What Is Included
 
@@ -33,6 +33,6 @@ Rescan as often as you like. To keep the service fast for everyone, very high au
 
 ## Price per Domain
 
-Your monthly price is $29 multiplied by the number of domains in your plan. The **Billing** page shows the current total. See [Add more domains to your plan](/resources/help-center/billing/add-more-domains-to-your-plan).
+Monthly billing is $29 multiplied by the number of domains in your plan, after a 3-day free trial. Annual billing is $199 per domain per year, which saves $149 per domain compared with 12 monthly payments. The **Billing** page shows the current total. See [Add more domains to your plan](/resources/help-center/billing/add-more-domains-to-your-plan).
 
 Need more than 500 URLs per domain? [Talk to us](/contact?topic=sales).

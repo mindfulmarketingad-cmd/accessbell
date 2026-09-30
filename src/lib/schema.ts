@@ -46,6 +46,21 @@ export function softwareSchema() {
           billingDuration: 'P1M',
         },
       },
+      {
+        '@type': 'Offer',
+        name: `${PLAN.name} plan, billed annually`,
+        description: `Up to ${PLAN.urlsPerDomain} URLs per domain, unlimited rescans and AI-assisted fixes`,
+        price: String(PLAN.annualPrice),
+        priceCurrency: PLAN.currency,
+        url: `${SITE.url}/pricing`,
+        priceSpecification: {
+          '@type': 'UnitPriceSpecification',
+          price: String(PLAN.annualPrice),
+          priceCurrency: PLAN.currency,
+          unitText: 'per domain per year',
+          billingDuration: 'P1Y',
+        },
+      },
     ],
   };
 }

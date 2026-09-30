@@ -1,5 +1,5 @@
 // Subscription status, trial checkout and the Stripe customer portal.
-import { boot, el, fmtDate, busy, startCheckout, openPortal } from './core.js';
+import { boot, el, fmtDate, busy, planButtons, openPortal } from './core.js';
 
 const me = await boot();
 const b = me.billing;
@@ -10,7 +10,9 @@ const kpi = (label, value, note) => el('div', { class: 'kpi' }, [el('span', { te
 $('[data-billing-kpis]').replaceChildren(
   kpi('Status', STATUS[b.status] || b.status, b.status === 'trialing' && b.trialEndsAt ? `Ends ${fmtDate(b.trialEndsAt)}` : ''),
   kpi('Domains in plan', String(b.domainQuota), `${b.domainsUsed} in use`),
-  kpi('Monthly price', `$${29 * Math.max(b.domainQuota, 1)}`, `$29 x ${Math.max(b.domainQuota, 1)} domain${b.domainQuota === 1 ? '' : 's'}`),
+  b.interval === 'year'
+    ? kpi('Annual price', `$${199 * Math.max(b.domainQuota, 1)}`, `$199 x ${Math.max(b.domainQuota, 1)} domain${b.domainQuota === 1 ? '' : 's'}, billed yearly`)
+    : kpi('Monthly price', `$${29 * Math.max(b.domainQuota, 1)}`, `$29 x ${Math.max(b.domainQuota, 1)} domain${b.domainQuota === 1 ? '' : 's'}`),
   kpi(b.status === 'trialing' ? 'First charge' : 'Renews', fmtDate(b.status === 'trialing' ? b.trialEndsAt : b.currentPeriodEnd)),
 );
 
@@ -21,10 +23,8 @@ const status = $('[data-billing-status]');
 if (me.role !== 'owner') {
   note.textContent = 'Only the account owner can change billing.';
 } else if (!b.hasCustomer || ['none', 'canceled', 'incomplete_expired'].includes(b.status)) {
-  note.textContent = 'Start your 3-day free trial. You can choose how many domains to monitor at checkout and change it any time.';
-  const start = el('button', { class: 'btn btn-accent', type: 'button', text: b.status === 'none' ? 'Start 3-day free trial' : 'Restart subscription' });
-  start.addEventListener('click', busy(start, status, startCheckout));
-  actions.append(start);
+  note.textContent = 'Choose monthly ($29/mo per domain, 3-day free trial) or annual ($199/year per domain). Same features on both. You can choose how many domains to monitor at checkout and change it any time.';
+  actions.append(planButtons(status, { restart: b.status !== 'none' }));
 } else {
   note.textContent = 'Change the number of domains, update your card, download invoices or cancel in the secure Stripe portal.';
   const portal = el('button', { class: 'btn', type: 'button', text: 'Manage billing' });

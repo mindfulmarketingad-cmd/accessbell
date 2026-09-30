@@ -124,6 +124,7 @@ before(async () => {
   await db.query(readFileSync(new URL('../supabase/migrations/0004_subscriber_emails.sql', import.meta.url), 'utf8'));
   await db.query(readFileSync(new URL('../supabase/migrations/0005_domain_setup.sql', import.meta.url), 'utf8'));
   await db.query(readFileSync(new URL('../supabase/migrations/0006_page_limit_500.sql', import.meta.url), 'utf8'));
+  await db.query(readFileSync(new URL('../supabase/migrations/0007_billing_interval.sql', import.meta.url), 'utf8'));
 
   fake = await startFakeAuth(db);
   const { port } = fake.server.address();
@@ -133,6 +134,7 @@ before(async () => {
     SUPABASE_ANON_KEY: 'anon-key',
     SUPABASE_SERVICE_ROLE_KEY: 'service-key',
     STRIPE_PAYMENT_LINK: 'https://buy.stripe.com/test_link',
+    STRIPE_PAYMENT_LINK_ANNUAL: 'https://buy.stripe.com/test_annual',
   });
   delete process.env.BROWSER_WS_ENDPOINT;
 
@@ -248,6 +250,26 @@ test('paid features require a subscription; checkout link carries the account id
   assert.equal(link.origin + link.pathname, 'https://buy.stripe.com/test_link');
   assert.equal(link.searchParams.get('client_reference_id'), me.body.account.id);
   assert.equal(link.searchParams.get('prefilled_email'), 'owner@acme.test');
+
+  const annual = new URL((await owner.get('billing/checkout?plan=annual')).body.url);
+  assert.equal(annual.origin + annual.pathname, 'https://buy.stripe.com/test_annual');
+  assert.equal(annual.searchParams.get('client_reference_id'), me.body.account.id);
+});
+
+test('an annual subscription is recorded as yearly billing', { skip }, async () => {
+  const owner = new Client('10.0.1.21');
+  await owner.post('auth/signup', { email: 'annual@acme.test', password: 'correct horse' });
+  const me = await owner.get('me');
+  const sub = {
+    id: `sub_${crypto.randomUUID().slice(0, 8)}`,
+    customer: `cus_${crypto.randomUUID().slice(0, 8)}`,
+    status: 'trialing',
+    items: { data: [{ quantity: 1, price: { recurring: { interval: 'year' } } }] },
+  };
+  await billing.applySubscription(me.body.account.id, sub);
+  const row = (await db.query('select billing_interval from app.accounts where id = $1', [me.body.account.id])).rows[0];
+  assert.equal(row.billing_interval, 'year');
+  assert.equal((await owner.get('me')).body.billing.interval, 'year');
 });
 
 test('an admin (ADMIN_EMAILS) gets a dashboard and can add a domain without subscribing', { skip }, async () => {

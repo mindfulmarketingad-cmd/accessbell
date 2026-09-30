@@ -6458,3 +6458,55 @@ h2[tabindex='-1']:focus {
   margin-top: 12px;
   font-size: 0.9375rem;
 }
+
+/* ---------- Pricing: monthly and annual options ---------- */
+.plan-options {
+  display: grid;
+  gap: 12px;
+  margin-top: 24px;
+}
+.plan-option {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: #fff;
+}
+.plan-option-annual {
+  border: 2px solid var(--sage-700);
+}
+.plan-option .plan-option-name {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0;
+  font-size: 1rem;
+}
+.plan-save {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--sage-100);
+  color: var(--sage-800);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.plan-option-price {
+  margin: 0;
+  color: var(--ink-500);
+}
+.plan-option-price strong {
+  color: var(--ink-900);
+  font-size: 1.75rem;
+  letter-spacing: -0.02em;
+}
+.plan-option-note {
+  margin: 0 0 10px;
+  color: var(--ink-500);
+  font-size: 0.875rem;
+}
+.plan-option .btn {
+  margin-top: auto;
+}

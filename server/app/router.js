@@ -184,8 +184,8 @@ const routes = {
     return { account: { id: a.id, name: a.name } };
   },
 
-  async 'GET billing/checkout'({ ctx }) {
-    return { url: checkoutUrl(ctx) };
+  async 'GET billing/checkout'({ ctx, url }) {
+    return { url: checkoutUrl(ctx, url.searchParams.get('plan') === 'annual' ? 'annual' : 'monthly') };
   },
   async 'POST billing/portal'({ ctx, request }) {
     return { url: await portalUrl(ctx, `${appOrigin(request)}/app/billing`) };

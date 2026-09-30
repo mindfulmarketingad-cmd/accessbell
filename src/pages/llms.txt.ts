@@ -23,7 +23,7 @@ export const GET: APIRoute = async () => {
       'Product',
       [
         link('Home and free scanner', '/', 'Scan any public page for WCAG issues. No sign-up needed.'),
-        link('Pricing', '/pricing', `${PLAN.name} plan: $${PLAN.price} per domain per month, up to ${PLAN.urlsPerDomain} monitored URLs per domain, 3-day free trial.`),
+        link('Pricing', '/pricing', `${PLAN.name} plan: $${PLAN.price} per domain per month or $${PLAN.annualPrice} per domain per year, up to ${PLAN.urlsPerDomain} monitored URLs per domain, 3-day free trial.`),
         link('Methodology', '/methodology', 'How scans work: the axe-core engine, what automated testing covers and what needs manual review.'),
         link('About', '/about'),
         link('Contact', '/contact', `Sales and support. Email ${SITE.email}.`),
@@ -76,7 +76,7 @@ export const GET: APIRoute = async () => {
 ${SITE.name} (${SITE.domain}) is a ${SITE.tagline.toLowerCase()}. Key facts:
 
 - The free scanner tests one public page at a time against WCAG 2.2 AA, WCAG 2.1 AA, the ADA, Section 508 or EN 301 549, with no account needed.
-- The paid ${PLAN.name} plan costs $${PLAN.price} per domain per month after a 3-day free trial. It monitors up to ${PLAN.urlsPerDomain} URLs per domain with daily rescans, tracks issues over time and emails alerts when new issues appear.
+- The paid ${PLAN.name} plan costs $${PLAN.price} per domain per month after a 3-day free trial, or $${PLAN.annualPrice} per domain per year billed annually, with the same features. It monitors up to ${PLAN.urlsPerDomain} URLs per domain with daily rescans, tracks issues over time and emails alerts when new issues appear.
 - Scans run the open-source axe-core engine in a real browser. Automated testing finds many but not all accessibility issues, so every report also lists the WCAG criteria that need manual review.
 - Content on this site explains technical standards and is not legal advice.
 

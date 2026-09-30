@@ -3457,3 +3457,10 @@ a.count-pill:hover {
 .btn.is-busy[disabled] {
   opacity: 1;
 }
+
+/* Monthly and annual checkout buttons */
+.plan-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}

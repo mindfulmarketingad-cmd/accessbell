@@ -19,7 +19,11 @@ const steps = [
 const faqs: FaqItem[] = [
   {
     q: 'Is the price per domain?',
-    a: `Yes. Pro is $${PLAN.price} per domain per month. Add as many domains as you need, and each one gets ${PLAN.urlsPerDomain} URLs, unlimited rescans and every feature.`,
+    a: `Yes. Pro is $${PLAN.price} per domain per month, or $${PLAN.annualPrice} per domain per year when billed annually. Add as many domains as you need, and each one gets ${PLAN.urlsPerDomain} URLs, unlimited rescans and every feature.`,
+  },
+  {
+    q: 'What is the difference between monthly and annual billing?',
+    a: `Only the price and how often you pay. Both include every feature. Monthly is $${PLAN.price} per domain after a 3-day free trial. Annual is $${PLAN.annualPrice} per domain per year, which saves $${PLAN.price * 12 - PLAN.annualPrice} a year compared with paying monthly.`,
   },
   {
     q: 'What counts as a URL?',
@@ -76,12 +80,25 @@ const faqs: FaqItem[] = [
           <p class="plan-price plan-price-trial">
             <strong>3-Day Free Trial</strong>
           </p>
-          <p class="plan-billed">Then ${PLAN.price}/mo per domain after your trial. Cancel anytime.</p>
+          <p class="plan-billed">Then ${PLAN.price}/mo per domain, or ${PLAN.annualPrice}/year per domain billed annually. Same features on both.</p>
           <p class="plan-blurb">{PLAN.blurb}</p>
           <ul class="check-list">
             {PLAN.highlights.map((h) => <li><Icon name="check" />{h}</li>)}
           </ul>
-          <a class="btn btn-accent btn-lg btn-block" href={PLAN.ctaHref}>{PLAN.cta} <Icon name="arrow" /></a>
+          <div class="plan-options">
+            <div class="plan-option">
+              <h3 class="plan-option-name">Monthly</h3>
+              <p class="plan-option-price"><strong>${PLAN.price}</strong> /mo per domain</p>
+              <p class="plan-option-note">3-day free trial. Cancel anytime.</p>
+              <a class="btn btn-accent btn-block" href={PLAN.ctaHref}>{PLAN.cta} <Icon name="arrow" /></a>
+            </div>
+            <div class="plan-option plan-option-annual">
+              <h3 class="plan-option-name">Annual <span class="plan-save">Save {Math.round((1 - PLAN.annualPrice / (PLAN.price * 12)) * 100)}%</span></h3>
+              <p class="plan-option-price"><strong>${PLAN.annualPrice}</strong> /year per domain</p>
+              <p class="plan-option-note">Works out to ${(PLAN.annualPrice / 12).toFixed(2)}/mo. Save ${PLAN.price * 12 - PLAN.annualPrice} a year.</p>
+              <a class="btn btn-block" href={PLAN.annualCtaHref}>Choose annual <Icon name="arrow" /></a>
+            </div>
+          </div>
           <p class="plan-note">Need more than {PLAN.urlsPerDomain} URLs per domain? <a href="/contact?topic=sales">Talk to us</a>.</p>
         </div>
         <div class="plan-single-features">
@@ -117,7 +134,7 @@ const faqs: FaqItem[] = [
       <div class="section-head">
         <span class="eyebrow">Lawsuit examples</span>
         <h2 id="suits-title">What Being Sued <span class="accent">Actually Costs</span></h2>
-        <p>Businesses of every size have been sued over inaccessible websites. Here is what some of them paid, next to what a year of AccessBell Pro costs: ${PLAN.price * 12} per domain.</p>
+        <p>Businesses of every size have been sued over inaccessible websites. Here is what some of them paid, next to what a year of AccessBell Pro costs: ${PLAN.annualPrice} per domain on the annual plan.</p>
       </div>
       <ul class="suit-grid">
         {LAWSUITS.map((s) => (
@@ -126,7 +143,7 @@ const faqs: FaqItem[] = [
             <p>{s.what}</p>
             <p class="suit-cost"><Icon name="scale" /><span>{s.cost}</span></p>
             {s.paid ? (
-              <p class="suit-years">Equal to <strong>{Math.floor(s.paid / (PLAN.price * 12)).toLocaleString('en-US')} years</strong> of AccessBell Pro for one domain</p>
+              <p class="suit-years">Equal to <strong>{Math.floor(s.paid / PLAN.annualPrice).toLocaleString('en-US')} years</strong> of AccessBell Pro for one domain</p>
             ) : null}
             <p class="suit-source">Source: {s.source.url.startsWith('/')
               ? <a href={s.source.url}>{s.source.label}</a>
@@ -136,7 +153,7 @@ const faqs: FaqItem[] = [
       </ul>
       <div class="suit-note">
         <p><strong>How AccessBell helps you avoid this.</strong> The barriers named in many complaints, such as missing alt text, unlabeled form fields and buttons with no name, are ones automated scans find. AccessBell scans up to {PLAN.urlsPerDomain} pages per domain every day, shows you the failing code and how to fix it, and keeps a dated record of every scan and fix. You pay to fix your site either way. The difference is whether you do it on your schedule or after a complaint.</p>
-        <p class="muted">"Years of Pro" divides the amount paid by ${PLAN.price * 12}, one year of Pro for one domain. It is not a claim that AccessBell would have prevented these cases, and no tool can guarantee you will not be sued. Read <a href="/blog/what-happens-after-being-sued-for-ada-website-compliance">what happens after being sued for violating ADA website compliance</a>.</p>
+        <p class="muted">"Years of Pro" divides the amount paid by ${PLAN.annualPrice}, one year of Pro for one domain on the annual plan. It is not a claim that AccessBell would have prevented these cases, and no tool can guarantee you will not be sued. Read <a href="/blog/what-happens-after-being-sued-for-ada-website-compliance">what happens after being sued for violating ADA website compliance</a>.</p>
       </div>
     </div>
   </section>

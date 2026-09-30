@@ -30,6 +30,7 @@ export function config(env = process.env) {
     stripeSecretKey: env.STRIPE_SECRET_KEY || '',
     stripeWebhookSecret: env.STRIPE_WEBHOOK_SECRET || '',
     stripePaymentLink: env.STRIPE_PAYMENT_LINK || 'https://buy.stripe.com/8x2bJ2gyKdFe7My31kfrW0o',
+    stripePaymentLinkAnnual: env.STRIPE_PAYMENT_LINK_ANNUAL || 'https://buy.stripe.com/3cI14ogyK44EaYKeK2frW0p',
     resendApiKey: env.RESEND_API_KEY || '',
     emailFrom: env.EMAIL_FROM || 'AccessBell <alerts@accessbell.co>',
     appUrl: (env.APP_URL || 'https://www.accessbell.co').replace(/\/$/, ''),

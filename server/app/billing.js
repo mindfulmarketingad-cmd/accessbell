@@ -10,6 +10,8 @@ import { one } from './db.js';
 import { AppError } from './errors.js';
 import { requireRole, isAdminUser } from './accounts.js';
 
+const UNDEFINED_COLUMN = '42703';
+
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 // ---------- Stripe API ----------
@@ -47,10 +49,10 @@ export async function stripe(method, path, body) {
 
 // ---------- Customer-facing links ----------
 
-/** Payment Link URL that ties the checkout to this account. */
-export function checkoutUrl(ctx) {
+/** Payment Link URL that ties the checkout to this account. `plan` is 'monthly' or 'annual'. */
+export function checkoutUrl(ctx, plan = 'monthly') {
   requireRole(ctx, 'owner');
-  const url = new URL(config().stripePaymentLink);
+  const url = new URL(plan === 'annual' ? config().stripePaymentLinkAnnual : config().stripePaymentLink);
   url.searchParams.set('client_reference_id', ctx.account.id);
   if (ctx.user.email) url.searchParams.set('prefilled_email', ctx.user.email);
   return url.toString();
@@ -100,7 +102,7 @@ export async function applySubscription(accountId, sub) {
   const quantity = items.reduce((n, i) => n + (Number(i.quantity) || 0), 0) || Number(sub.quantity) || 1;
   const periodEnd = sub.current_period_end || items[0]?.current_period_end || null;
   const customer = typeof sub.customer === 'string' ? sub.customer : sub.customer?.id;
-  return one(
+  const row = await one(
     `update app.accounts
         set stripe_customer_id = $2,
             stripe_subscription_id = $3,
@@ -112,6 +114,16 @@ export async function applySubscription(accountId, sub) {
       returning id, subscription_status, domain_quota`,
     [accountId, customer, sub.id, sub.status, quantity, toDate(sub.trial_end), toDate(periodEnd)],
   );
+  const interval = items[0]?.price?.recurring?.interval || items[0]?.plan?.interval;
+  if (interval === 'month' || interval === 'year') {
+    try {
+      await one('update app.accounts set billing_interval = $2 where id = $1', [accountId, interval]);
+    } catch (err) {
+      // Migration 0007 not run yet: the subscription itself is already saved.
+      if (err.code !== UNDEFINED_COLUMN) throw err;
+    }
+  }
+  return row;
 }
 
 async function accountForCheckout(session) {
@@ -201,6 +213,7 @@ export async function billingSummary(ctx) {
     domainsUsed: row.used,
     trialEndsAt: ctx.account.trial_ends_at,
     currentPeriodEnd: ctx.account.current_period_end,
+    interval: ctx.account.billing_interval === 'year' ? 'year' : 'month',
     hasCustomer: Boolean(ctx.account.stripe_customer_id),
   };
 }

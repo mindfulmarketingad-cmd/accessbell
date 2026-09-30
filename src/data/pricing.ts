@@ -1,8 +1,10 @@
-/** The single AccessBell offer. Price is per domain, per month. */
+/** The single AccessBell offer, billed monthly or yearly with the same features. Prices are per domain. */
 export const PLAN = {
   id: 'lite',
   name: 'Pro',
   price: 29,
+  annualPrice: 199,
+  annualCtaHref: '/app/signup?plan=annual',
   currency: 'USD',
   urlsPerDomain: 500,
   blurb: 'Continuous WCAG monitoring and AI-assisted fixes for every domain you run.',

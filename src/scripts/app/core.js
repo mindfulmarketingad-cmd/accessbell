@@ -164,8 +164,7 @@ function renderPending(me) {
   if (paid) {
     action = el('p', { class: 'pending-done', text: 'Payment received. Thank you!' });
   } else if (isOwner) {
-    action = el('button', { class: 'btn btn-accent', type: 'button', text: 'Start 3-day free trial' });
-    action.addEventListener('click', busy(action, status, startCheckout));
+    action = planButtons(status);
   } else {
     action = el('p', { text: 'Ask the owner of this account to start the subscription.' });
   }
@@ -177,7 +176,7 @@ function renderPending(me) {
       el('ol', { class: 'pending-steps' }, [
         el('li', { class: paid ? 'is-done' : null }, [
           el('h2', { text: 'Start your 3-day free trial' }),
-          el('p', { text: 'Add your card on our secure Stripe checkout. You are not charged until the trial ends, then it is $29/mo per domain. Cancel anytime.' }),
+          el('p', { text: 'Pick monthly ($29/mo per domain, after a 3-day free trial) or annual ($199/year per domain) and add your card on our secure Stripe checkout. Same features on both. Cancel anytime.' }),
           action,
         ]),
         el('li', {}, [
@@ -287,9 +286,29 @@ export function disclosure(button, panel) {
   return set;
 }
 
-export async function startCheckout() {
-  const { url } = await api('billing/checkout');
+/** The plan picked on the pricing page before signing up, if any. */
+export function preferredPlan() {
+  try {
+    return sessionStorage.getItem('ab_plan') === 'annual' ? 'annual' : 'monthly';
+  } catch {
+    return 'monthly';
+  }
+}
+
+export async function startCheckout(plan = 'monthly') {
+  const { url } = await api(`billing/checkout?plan=${plan === 'annual' ? 'annual' : 'monthly'}`);
   location.assign(url);
+}
+
+/** Monthly and annual checkout buttons. The plan picked on the pricing page comes first. */
+export function planButtons(status, { restart = false } = {}) {
+  const monthly = el('button', { class: 'btn', type: 'button', text: restart ? 'Restart monthly, $29/mo' : 'Start 3-day free trial, $29/mo' });
+  const annual = el('button', { class: 'btn', type: 'button', text: restart ? 'Restart annual, $199/yr' : 'Pay annually, $199/yr' });
+  monthly.addEventListener('click', busy(monthly, status, () => startCheckout('monthly')));
+  annual.addEventListener('click', busy(annual, status, () => startCheckout('annual')));
+  const order = preferredPlan() === 'annual' ? [annual, monthly] : [monthly, annual];
+  order[0].classList.add('btn-accent');
+  return el('div', { class: 'plan-buttons' }, order);
 }
 
 export async function openPortal() {
@@ -306,13 +325,13 @@ function renderBanner(me) {
   if ((b.status === 'none' && !me.subscribed) || b.status === 'canceled' || b.status === 'incomplete_expired') {
     const isOwner = me.role === 'owner';
     const button = isOwner ? el('button', { class: 'btn btn-accent', type: 'button', text: b.status === 'none' ? 'Start 3-day free trial' : 'Restart subscription' }) : null;
-    if (button) button.addEventListener('click', busy(button, null, startCheckout));
+    if (button) button.addEventListener('click', busy(button, null, () => startCheckout(preferredPlan())));
     banner = el('div', { class: 'banner', role: 'region', 'aria-label': 'Subscription' }, [
       el('div', {}, [
         el('strong', { text: b.status === 'none' ? 'Start monitoring with AccessBell Pro' : 'Your subscription has ended' }),
         el('p', {
           text: isOwner
-            ? '$29 per domain per month after a 3-day free trial. Up to 500 URLs per domain, unlimited rescans and AI-assisted fixes.'
+            ? '$29 per domain per month after a 3-day free trial, or $199 per domain per year. Up to 500 URLs per domain, unlimited rescans and AI-assisted fixes.'
             : 'Ask the account owner to start the subscription to unlock monitoring.',
         }),
       ]),

@@ -1,6 +1,6 @@
 // Add Domain wizard: Indexing > Configure settings > AccessBellFix (optional)
 // > Accessibility statement (optional, with its own steps).
-import { api, el, icon, busy, setStatus, startCheckout } from './core.js';
+import { api, el, icon, busy, setStatus, planButtons } from './core.js';
 import { mountFixInstall, mountStatementFlow, GUIDE_URL } from './site-tools.js';
 
 const STEPS = [
@@ -223,11 +223,9 @@ export function setupAddDomain(me, { getBilling }) {
     Object.assign(form, { url: prefill, sitemapUrl: '', wcagVersion: '2.2', wcagLevel: 'AA', devices: ['desktop'], includeSubdomains: false });
     let blocked = null;
     if (!me.subscribed) {
-      const trial = el('button', { class: 'btn', type: 'button', text: 'Start free trial' });
-      trial.addEventListener('click', busy(trial, status, startCheckout));
       blocked = [
-        el('p', { text: 'Start your 3-day free trial of AccessBell Pro to add domains. $29 per domain per month after the trial.' }),
-        me.role === 'owner' ? trial : el('p', { class: 'muted', text: 'Ask the account owner to start the subscription.' }),
+        el('p', { text: 'Subscribe to AccessBell Pro to add domains: $29 per domain per month after a 3-day free trial, or $199 per domain per year.' }),
+        me.role === 'owner' ? planButtons(status) : el('p', { class: 'muted', text: 'Ask the account owner to start the subscription.' }),
       ];
     } else if (billing.domainsUsed >= billing.domainQuota) {
       blocked = [

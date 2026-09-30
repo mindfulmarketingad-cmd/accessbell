@@ -119,7 +119,7 @@ The cheapest lawsuit is the one that never gets filed. Common barriers take minu
   <figcaption>The small store's settlement and legal fee alone would cover about 20 years of AccessBell Pro for one domain.</figcaption>
 </figure>
 
-AccessBell Pro is $29 per domain per month and monitors up to 500 URLs per domain. A year costs $348, less than a tenth of the small store's settlement, and you pay to fix your site either way. The difference is whether you fix it on your schedule or on a plaintiff's. See [pricing and the lawsuit cost comparison](/pricing) for the numbers side by side.
+AccessBell Pro is $29 per domain per month, or $199 per domain per year on the annual plan, and monitors up to 500 URLs per domain. A year costs $348 billed monthly or $199 billed annually, less than a tenth of the small store's settlement either way, and you pay to fix your site either way. The difference is whether you fix it on your schedule or on a plaintiff's. See [pricing and the lawsuit cost comparison](/pricing) for the numbers side by side.
 
 No tool can guarantee you will never be sued, and AccessBell does not claim to. What it does is find the barriers plaintiffs look for, show you how to fix them and keep proof that you did.
 

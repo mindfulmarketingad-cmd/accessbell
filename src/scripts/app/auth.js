@@ -7,6 +7,14 @@ function safeNext(fallback = '/app') {
   return /^\/app(\/[\w\-./?=&%]*)?$/.test(next) && !next.startsWith('//') ? next : fallback;
 }
 
+// Remember the plan picked on the pricing page, so checkout offers it first.
+try {
+  const plan = new URLSearchParams(location.search).get('plan');
+  if (plan === 'annual' || plan === 'monthly') sessionStorage.setItem('ab_plan', plan);
+} catch {
+  // Storage blocked: checkout simply offers monthly first.
+}
+
 // Show or hide the password. The button keeps its name and reports its state.
 document.querySelectorAll('[data-password-toggle]').forEach((btn) => {
   const input = document.getElementById(btn.getAttribute('aria-controls'));
