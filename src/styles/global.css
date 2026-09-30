@@ -5079,41 +5079,75 @@ h2[tabindex='-1']:focus {
   flex: none;
 }
 
-/* Scene 1: pages found */
-.hd-chip {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(0.4);
-  transition:
-    left 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--i) * 70ms),
-    top 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--i) * 70ms),
-    transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--i) * 70ms),
-    opacity 0.5s ease calc(var(--i) * 70ms);
+/* Scene 1: pages found, listed and checked off one by one */
+.hd-pages {
+  top: 28px;
 }
-.hd-stage[data-scene='discover'] .hd-chip {
-  left: calc(50% + var(--x) * 1%);
-  top: calc(50% + var(--y) * 1%);
+.hd-stage[data-scene='discover'] .hd-pages {
   opacity: 1;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, 0) scale(1);
 }
-.hd-bob {
-  display: inline-flex;
-  align-items: center;
+.hd-pages-src {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+.hd-page-list {
+  display: grid;
   gap: 6px;
-  padding: 7px 12px;
-  white-space: nowrap;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.hd-page-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
   font: 600 13px/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   color: var(--ink-800);
-  background: #fff;
-  border: 1px solid var(--border-strong);
-  border-radius: 999px;
-  box-shadow: var(--shadow-sm);
-  animation: hd-bob 3s ease-in-out calc(var(--i) * -0.45s) infinite;
 }
-.hd-bob svg {
+.hd-page-list li > svg {
   color: var(--sage-700);
+}
+.hd-page-list span {
+  flex: 1;
+  min-width: 0;
+}
+.hd-page-list i {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--sage-700);
+  color: #fff;
+  opacity: 0;
+  transform: scale(0.6);
+  /* Leaving the scene: stay visible until the card has faded, then reset. */
+  transition: opacity 0s linear 0.5s, transform 0s linear 0.5s;
+}
+.hd-page-list i svg {
+  width: 12px;
+  height: 12px;
+  stroke-width: 2.8;
+}
+.hd-page-list li {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0s linear 0.5s, transform 0s linear 0.5s;
+}
+.hd-stage[data-scene='discover'] .hd-page-list li {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.35s ease calc(0.3s + var(--i) * 0.4s), transform 0.35s ease calc(0.3s + var(--i) * 0.4s);
+}
+.hd-stage[data-scene='discover'] .hd-page-list i {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.3s ease calc(0.6s + var(--i) * 0.4s), transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1.4) calc(0.6s + var(--i) * 0.4s);
 }
 
 /* Shared card */
@@ -5499,11 +5533,6 @@ h2[tabindex='-1']:focus {
   }
 }
 
-@keyframes hd-bob {
-  50% {
-    transform: translateY(-5px);
-  }
-}
 @keyframes hd-fill {
   to {
     width: 100%;

@@ -7,16 +7,7 @@
  */
 import Icon from './Icon.astro';
 
-const pages = [
-  { path: '/', x: -27, y: -32 },
-  { path: '/products', x: 20, y: -36 },
-  { path: '/checkout', x: -4, y: -14 },
-  { path: '/contact', x: 25, y: -1 },
-  { path: '/cart', x: -28, y: 7 },
-  { path: '/blog', x: 3, y: 20 },
-  { path: 'sitemap.xml', x: 24, y: 32 },
-  { path: '/about', x: -22, y: 34 },
-];
+const pages = ['/landing-page', '/products', '/cart', '/checkout', '/contact', '/blog'];
 const issues = [
   { title: 'Image missing alt text', impact: 'critical', label: 'Critical', sc: '1.1.1', level: 'A', count: 12 },
   { title: 'Form field has no label', impact: 'serious', label: 'Serious', sc: '3.3.2', level: 'A', count: 4 },
@@ -34,11 +25,17 @@ const steps = ['Find pages', 'Scan', 'Flag violations', 'Suggest fixes', 'Monito
     aria-label="Animation of AccessBell at work: it finds the pages on your site, scans them against WCAG 2.2, flags violations such as images missing alt text, suggests the code fix, and rescans every day to catch new issues."
   >
     <div class="hd-layer" aria-hidden="true">
-      {pages.map((p, i) => (
-        <span class="hd-chip" style={`--x:${p.x};--y:${p.y};--i:${i}`}>
-          <span class="hd-bob"><Icon name="doc" />{p.path}</span>
-        </span>
-      ))}
+      <div class="hd-card hd-pages">
+        <div class="hd-row">
+          <strong><Icon name="search" />Finding pages</strong>
+          <span class="hd-meta hd-pages-src">sitemap.xml</span>
+        </div>
+        <ul class="hd-page-list">
+          {pages.map((p, i) => (
+            <li style={`--i:${i}`}><Icon name="doc" /><span>{p}</span><i><Icon name="check" /></i></li>
+          ))}
+        </ul>
+      </div>
 
       <div class="hd-card hd-scan">
         <span class="hd-spinner"></span>
@@ -101,7 +98,7 @@ const steps = ['Find pages', 'Scan', 'Flag violations', 'Suggest fixes', 'Monito
 
 <script>
   const SCENES: [string, number][] = [
-    ['discover', 3200],
+    ['discover', 3800],
     ['scan', 3000],
     ['issues', 3400],
     ['fix', 4600],
