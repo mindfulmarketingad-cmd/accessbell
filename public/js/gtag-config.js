@@ -6,4 +6,5 @@ function gtag() {
 }
 window.gtag = gtag;
 gtag('js', new Date());
-gtag('config', 'AW-18266125976');
+gtag('config', 'AW-18266125976'); // Google Ads
+gtag('config', 'G-9D58JPR6ZV'); // Google Analytics 4
