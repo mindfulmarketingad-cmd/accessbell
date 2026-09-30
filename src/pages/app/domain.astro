@@ -18,6 +18,7 @@ import Icon from '../../components/Icon.astro';
         <div class="menu menu-down" id="export-menu" hidden>
           <button type="button" data-export-csv><Icon name="doc" /> Fixing instructions (CSV for Excel)</button>
           <button type="button" data-export-print><Icon name="print" /> PDF summary (print or save as PDF)</button>
+          <button type="button" data-export-vault><Icon name="shield" /> Legal evidence package</button>
         </div>
       </div>
       <div data-domain-menu></div>
@@ -30,6 +31,7 @@ import Icon from '../../components/Icon.astro';
       <button type="button" role="tab" id="tab-overview" aria-controls="panel-overview" aria-selected="true" tabindex="0"><Icon name="chart" /> Overview</button>
       <button type="button" role="tab" id="tab-issues" aria-controls="panel-issues" aria-selected="false" tabindex="-1"><Icon name="alert" /> Issues <span class="tab-count" data-count-issues></span></button>
       <button type="button" role="tab" id="tab-review" aria-controls="panel-review" aria-selected="false" tabindex="-1"><Icon name="eye" /> Manually Required <span class="tab-count" data-count-review></span></button>
+      <button type="button" role="tab" id="tab-vault" aria-controls="panel-vault" aria-selected="false" tabindex="-1"><Icon name="shield" /> Compliance Vault</button>
       <button type="button" role="tab" id="tab-pages" aria-controls="panel-pages" aria-selected="false" tabindex="-1"><Icon name="list" /> Pages</button>
       <button type="button" role="tab" id="tab-settings" aria-controls="panel-settings" aria-selected="false" tabindex="-1"><Icon name="gear" /> Settings</button>
     </div>
@@ -107,6 +109,12 @@ import Icon from '../../components/Icon.astro';
       <h2 class="visually-hidden">Manually required</h2>
       <p class="muted">Automated testing flagged these for a person to check. They are not counted as failures. Every success criterion also needs a manual check to confirm conformance; see the coverage table on the Overview tab.</p>
       <div data-review></div>
+    </div>
+
+    <div role="tabpanel" id="panel-vault" aria-labelledby="tab-vault" tabindex="0" hidden>
+      <h2 class="visually-hidden">Compliance Vault</h2>
+      <p class="vault-intro">Your audit-ready accessibility history and compliance evidence, kept automatically.</p>
+      <div data-vault><p class="muted">Loading...</p></div>
     </div>
 
     <div role="tabpanel" id="panel-pages" aria-labelledby="tab-pages" tabindex="0" hidden>

@@ -15,6 +15,7 @@ import { listMembers, inviteMember, changeRole, removeMember } from './team.js';
 import { config, missingConfig } from './config.js';
 import { getFixSetup, verifyFix, addFix, updateFix, publicFixRules, getStatement, saveStatement, publicStatement } from './site-setup.js';
 import { AppError, badRequest, unauthorized } from './errors.js';
+import { addNote, vault, certificate, createRecord, getRecord, verifyRecord } from './records.js';
 
 const limits = {
   login: createRateLimiter({ limit: 10, windowMs: 10 * 60_000 }),
@@ -139,6 +140,11 @@ const publicRoutes = {
   async 'GET fix'({ url }) {
     const out = await publicFixRules(url.searchParams.get('k'));
     return { body: out, headers: { 'Access-Control-Allow-Origin': '*', 'Cache-Control': 'public, max-age=60' } };
+  },
+
+  /** Check that a compliance record ID and fingerprint match a record AccessBell issued. */
+  async 'GET record/verify'({ url }) {
+    return { body: await verifyRecord(url.searchParams.get('id'), url.searchParams.get('sha256')) };
   },
 
   /** The hosted accessibility statement for a site. */
@@ -268,6 +274,22 @@ const routes = {
   },
   async 'POST domain/statement'({ ctx, body }) {
     return saveStatement(ctx, body?.id, body?.statement);
+  },
+  async 'GET domain/vault'({ ctx, url }) {
+    return vault(ctx, url.searchParams.get('id'));
+  },
+  async 'GET domain/certificate'({ ctx, url }) {
+    return certificate(ctx, url.searchParams.get('id'));
+  },
+  async 'POST domain/note'({ ctx, body }) {
+    return addNote(ctx, body?.id, body);
+  },
+  async 'POST domain/record'({ ctx, body }) {
+    const { id, sha256 } = await createRecord(ctx, body?.id, { from: body?.from, to: body?.to });
+    return { id, sha256 };
+  },
+  async 'GET record'({ ctx, url }) {
+    return getRecord(ctx, url.searchParams.get('id'));
   },
   async 'GET team'({ ctx }) {
     return { members: await listMembers(ctx), role: ctx.role, userId: ctx.user.id };

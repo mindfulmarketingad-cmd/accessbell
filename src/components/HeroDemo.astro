@@ -31,8 +31,8 @@ const steps = ['Find pages', 'Scan', 'Flag violations', 'Suggest fixes', 'Monito
           <span class="hd-meta hd-pages-src">sitemap.xml</span>
         </div>
         <ul class="hd-page-list">
-          {pages.map((p, i) => (
-            <li style={`--i:${i}`}><Icon name="doc" /><span>{p}</span><i><Icon name="check" /></i></li>
+          {pages.map((p) => (
+            <li><Icon name="doc" /><span>{p}</span><i><Icon name="check" /></i></li>
           ))}
         </ul>
       </div>
@@ -47,7 +47,7 @@ const steps = ['Find pages', 'Scan', 'Flag violations', 'Suggest fixes', 'Monito
       </div>
 
       {issues.map((it, i) => (
-        <div class={`hd-card hd-issue hd-issue-${i + 1}`} style={`--i:${i}`}>
+        <div class={`hd-card hd-issue hd-issue-${i + 1}`}>
           <div class="hd-row">
             <strong>{it.title}</strong>
             {i === 0 ? (
@@ -76,7 +76,7 @@ const steps = ['Find pages', 'Scan', 'Flag violations', 'Suggest fixes', 'Monito
         </div>
         <span class="hd-meta">example.com · every day at 06:00 UTC</span>
         <ol class="hd-days">
-          {days.map((d, i) => <li style={`--i:${i}`}><span>{d}</span><i><Icon name="check" /></i></li>)}
+          {days.map((d) => <li><span>{d}</span><i><Icon name="check" /></i></li>)}
         </ol>
       </div>
 

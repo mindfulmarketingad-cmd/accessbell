@@ -33,3 +33,7 @@ It is named after the domain and today's date, for example `example.com-accessib
 The printed report includes the overview, scan history, the coverage table and every issue with its fix, without the sidebar and buttons.
 
 To print a single page's report instead, open it from the **Pages** tab and use your browser's print command.
+
+## Legal Evidence Packages
+
+For audits and legal claims, export a dated, verifiable record of your testing and fixes from the Compliance Vault tab. See [use the Compliance Vault for legal evidence](/resources/help-center/scans-and-reports/compliance-vault).

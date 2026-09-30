@@ -1,0 +1,68 @@
+---
+// Public check that a Legal Evidence Package is genuine and unaltered.
+// Shows only the website, the period and when it was issued, never the contents.
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Verify an Evidence Package | AccessBell" description="Check that an AccessBell Legal Evidence Package is genuine and has not been altered." noindex>
+  <section class="page-hero" aria-labelledby="verify-title">
+    <div class="container verify-wrap">
+      <h1 id="verify-title">Verify an Evidence Package</h1>
+      <p class="lead">Enter the record ID and SHA-256 fingerprint printed on the package to confirm AccessBell issued it and that it has not been changed.</p>
+      <form class="verify-form" data-verify novalidate>
+        <div class="field">
+          <label for="v-id">Record ID</label>
+          <input id="v-id" name="id" type="text" autocomplete="off" spellcheck="false" maxlength="36" required />
+        </div>
+        <div class="field">
+          <label for="v-sha">SHA-256 fingerprint</label>
+          <input id="v-sha" name="sha256" type="text" autocomplete="off" spellcheck="false" maxlength="64" required />
+        </div>
+        <button class="btn btn-accent" type="submit">Verify</button>
+      </form>
+      <div class="verify-result" data-verify-result role="status" aria-live="polite"></div>
+      <p class="verify-note">The fingerprint is the SHA-256 of the package's record.json file. If the file you have gives a different fingerprint, it has been changed since it was issued.</p>
+    </div>
+  </section>
+</BaseLayout>
+<script>
+  const form = document.querySelector('[data-verify]') as HTMLFormElement;
+  const out = document.querySelector('[data-verify-result]') as HTMLElement;
+  const params = new URLSearchParams(location.search);
+  const idInput = form.elements.namedItem('id') as HTMLInputElement;
+  const shaInput = form.elements.namedItem('sha256') as HTMLInputElement;
+  idInput.value = params.get('id') || '';
+  shaInput.value = params.get('sha256') || '';
+  const day = (v: string) => new Date(`${v}T00:00:00Z`).toLocaleDateString('en-US', { dateStyle: 'long', timeZone: 'UTC' });
+
+  async function check() {
+    const id = idInput.value.trim();
+    const sha = shaInput.value.trim().toLowerCase();
+    if (!id || !sha) {
+      out.className = 'verify-result is-bad';
+      out.textContent = 'Enter both the record ID and the fingerprint.';
+      return;
+    }
+    out.className = 'verify-result';
+    out.textContent = 'Checking...';
+    try {
+      const res = await fetch(`/api/app/record/verify?id=${encodeURIComponent(id)}&sha256=${encodeURIComponent(sha)}`, { credentials: 'omit' });
+      const r = await res.json();
+      if (!res.ok) throw new Error(r.error || 'The check could not be completed. Please try again.');
+      if (r.valid) {
+        out.className = 'verify-result is-good';
+        out.textContent = `Genuine and unaltered. AccessBell issued this package for ${r.hostname}, covering ${day(r.from)} to ${day(r.to)}, on ${new Date(r.issuedAt).toLocaleString('en-US', { dateStyle: 'long', timeStyle: 'short' })}.`;
+      } else {
+        out.className = 'verify-result is-bad';
+        out.textContent = 'Not verified. No package matches this record ID and fingerprint. Check both values, or the package may have been changed.';
+      }
+    } catch (err) {
+      out.className = 'verify-result is-bad';
+      out.textContent = (err as Error).message;
+    }
+  }
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    check();
+  });
+  if (idInput.value && shaInput.value) check();
+</script>

@@ -125,6 +125,7 @@ before(async () => {
   await db.query(readFileSync(new URL('../supabase/migrations/0005_domain_setup.sql', import.meta.url), 'utf8'));
   await db.query(readFileSync(new URL('../supabase/migrations/0006_page_limit_500.sql', import.meta.url), 'utf8'));
   await db.query(readFileSync(new URL('../supabase/migrations/0007_billing_interval.sql', import.meta.url), 'utf8'));
+  await db.query(readFileSync(new URL('../supabase/migrations/0008_compliance_records.sql', import.meta.url), 'utf8'));
 
   fake = await startFakeAuth(db);
   const { port } = fake.server.address();
@@ -869,4 +870,85 @@ test('found pages: add pages by hand, select up to 500 to scan, and failed scans
   const listed = (await owner.get('domains')).body.domains.find((d) => d.id === domain.id);
   assert.equal(listed.failedPages, 1);
   assert.equal(listed.scannedPages, 1);
+});
+
+test('Compliance Vault: fix log, activity, notes, fingerprinted records, public verification and the certificate', { skip }, async () => {
+  const owner = new Client('10.0.9.1');
+  await owner.post('auth/signup', { email: 'vault@acme.test', password: 'correct horse' });
+  const accountId = (await owner.get('me')).body.account.id;
+  await activate(accountId, 1);
+  const created = await owner.post('domains', { url: 'vault-example.com' });
+  assert.equal(created.status, 200);
+  const domain = (await owner.get('domains')).body.domains.find((d) => d.hostname === 'vault-example.com');
+  const pageRow = (await db.query('select p.*, d.settings from app.pages p join app.domains d on d.id = p.domain_id where p.domain_id = $1', [domain.id])).rows[0];
+
+  const button = { id: 'button-name', title: 'Buttons must have discernible text', impact: 'critical', wcag: [{ sc: '4.1.2', level: 'A' }], count: 2 };
+  const alt = { id: 'image-alt', title: 'Images must have alternative text', impact: 'serious', wcag: ['1.1.1'], count: 3 };
+  const scan = async (issues, score) => {
+    const browser = async (url, opts) => ({ ...fakeReport(issues), ...(score === undefined ? {} : { score }), device: opts.device, finalUrl: url });
+    process.env.BROWSER_WS_ENDPOINT = 'ws://fake';
+    try {
+      await scanning.scanPage(pageRow, { accountId, deps: { browser } });
+    } finally {
+      delete process.env.BROWSER_WS_ENDPOINT;
+    }
+  };
+  await scan([button, alt]);
+  await scan([alt]);
+  await scan([]);
+
+  // Changes made in the dashboard are logged, and notes record work done elsewhere.
+  assert.equal((await owner.post('domain/fix/add', { id: domain.id, kind: 'alt', selector: 'img.logo', value: 'Vault Co logo' })).status, 200);
+  assert.equal((await owner.post('domain/note', { id: domain.id, text: '' })).status, 400);
+  assert.equal((await owner.post('domain/note', { id: domain.id, text: 'Future', date: '2999-01-01' })).status, 400);
+  const note = await owner.post('domain/note', { id: domain.id, text: 'Relabelled checkout buttons in theme v2.3, tested with NVDA.', page: '/checkout' });
+  assert.equal(note.status, 200);
+
+  const v = (await owner.get(`domain/vault?id=${domain.id}`)).body;
+  assert.equal(v.migrationNeeded, false);
+  assert.equal(v.archive.length, 12);
+  assert.equal(v.archive[11].scans, 3, 'this month holds the three scans');
+  assert.deepEqual(v.fixLog.map((f) => f.title), ['Images must have alternative text', 'Buttons must have discernible text'], 'newest first');
+  assert.deepEqual(v.fixLog[1].wcag, ['4.1.2']);
+  assert.deepEqual(v.fixLog[0].wcag, ['1.1.1'], 'plain WCAG strings are read too');
+  const actions = v.activity.map((a) => a.action);
+  for (const a of ['note', 'fix.added', 'domain.added']) assert.ok(actions.includes(a), `${a} is logged`);
+  assert.equal(v.certificateReady, false, 'the fake scans score 80');
+  assert.equal((await owner.get(`domain/certificate?id=${domain.id}`)).status, 409);
+
+  // Records: stored as issued, fingerprinted and verifiable without revealing contents.
+  assert.equal((await owner.post('domain/record', { id: domain.id, from: '2026-02-01', to: '2025-01-01' })).status, 400);
+  const issued = await owner.post('domain/record', { id: domain.id });
+  assert.equal(issued.status, 200);
+  assert.match(issued.body.sha256, /^[0-9a-f]{64}$/);
+  const got = (await owner.get(`record?id=${issued.body.id}`)).body;
+  assert.equal(crypto.createHash('sha256').update(got.body, 'utf8').digest('hex'), issued.body.sha256);
+  const record = JSON.parse(got.body);
+  assert.equal(record.recordId, issued.body.id);
+  assert.equal(record.domain.hostname, 'vault-example.com');
+  assert.equal(record.scans.total, 3);
+  assert.equal(record.remediation.resolved, 2);
+  assert.ok(record.activity.some((a) => a.action === 'note' && a.detail.page === '/checkout'));
+  assert.equal(record.fixes.length, 1);
+  assert.ok(!got.body.includes('headers'), 'no header settings in the record');
+  assert.equal((await owner.get('domain/vault?id=' + domain.id)).body.records[0].id, issued.body.id);
+
+  const anon = new Client('10.0.9.2');
+  const ok = await anon.get(`record/verify?id=${issued.body.id}&sha256=${issued.body.sha256}`);
+  assert.deepEqual([ok.status, ok.body.valid, ok.body.hostname], [200, true, 'vault-example.com']);
+  assert.equal(ok.body.body, undefined, 'verification never returns the record');
+  assert.equal((await anon.get(`record/verify?id=${issued.body.id}&sha256=${'0'.repeat(64)}`)).body.valid, false);
+
+  const outsider = new Client('10.0.9.3');
+  await outsider.post('auth/signup', { email: 'vault-outsider@evil.test', password: 'correct horse' });
+  await markSubscriber((await outsider.get('me')).body.account.id);
+  assert.equal((await outsider.get(`record?id=${issued.body.id}`)).status, 404);
+  assert.equal((await outsider.get(`domain/vault?id=${domain.id}`)).status, 404);
+
+  // A clean scan with a perfect score unlocks the certificate.
+  await scan([], 100);
+  const cert = await owner.get(`domain/certificate?id=${domain.id}`);
+  assert.equal(cert.status, 200);
+  assert.equal(cert.body.hostname, 'vault-example.com');
+  assert.equal(cert.body.standard, 'WCAG 2.2 Level AA');
 });

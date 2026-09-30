@@ -1,0 +1,51 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+import Icon from '../../components/Icon.astro';
+---
+<AppLayout title="Accessibility certificate" section="overview">
+  <header class="domain-top no-print">
+    <a class="icon-btn" href="/app" data-back><Icon name="back" /><span class="visually-hidden">Back to the Compliance Vault</span></a>
+    <div class="domain-title">
+      <nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="/app">Domains</a></li></ol></nav>
+      <p class="record-kicker">Accessibility Certificate</p>
+    </div>
+    <div class="top-actions" data-cert-actions hidden>
+      <button class="btn btn-accent" type="button" data-cert-print><Icon name="print" /> Download as PDF</button>
+    </div>
+  </header>
+  <p class="progress-note" data-progress role="status" aria-live="polite"></p>
+  <div data-cert></div>
+</AppLayout>
+<script>
+  import { api, boot, el, qs, fmtDate } from '../../scripts/app/core.js';
+
+  await boot();
+  const id = qs('id') || '';
+  const $ = (s: string) => document.querySelector(s) as HTMLElement;
+  $('[data-back]').setAttribute('href', `/app/domain?id=${encodeURIComponent(id)}&tab=vault`);
+  try {
+    const c = await api(`domain/certificate?id=${encodeURIComponent(id)}`);
+    document.title = `Accessibility certificate: ${c.hostname} | AccessBell`;
+    const day = (v: string) => new Date(v).toLocaleDateString('en-US', { dateStyle: 'long' });
+    $('[data-cert]').replaceChildren(
+      el('article', { class: 'cert', 'aria-labelledby': 'cert-title' }, [
+        el('p', { class: 'cert-brand', text: 'AccessBell' }),
+        el('h1', { id: 'cert-title', text: 'Certificate of Accessibility Testing' }),
+        el('p', { class: 'cert-lead', text: 'This certifies that' }),
+        el('p', { class: 'cert-site', text: c.hostname }),
+        el('p', { class: 'cert-body', text: `passed every automated ${c.standard} check run by AccessBell on all ${c.pages} scanned page${c.pages === 1 ? '' : 's'} (${c.devices.join(' and ')}) in the latest scans, completed ${day(c.lastScanAt)}.` }),
+        el('p', { class: 'cert-score' }, [el('strong', { text: '100/100' }), el('span', { text: 'Accessibility score' })]),
+        el('dl', { class: 'cert-facts' }, [
+          el('dt', { text: 'Issued to' }), el('dd', { text: c.organization || c.hostname }),
+          el('dt', { text: 'Issued' }), el('dd', { text: fmtDate(c.issuedAt, true) }),
+          el('dt', { text: 'Monitoring' }), el('dd', { text: 'Scanned every day by AccessBell' }),
+        ]),
+        el('p', { class: 'cert-note', text: 'Automated testing detects many, but not all, WCAG failures. This certificate reflects automated test results on the date shown. It is not a certification of full WCAG conformance or of legal compliance, which also require manual testing.' }),
+      ]),
+    );
+    $('[data-cert-actions]').hidden = false;
+    $('[data-cert-print]').addEventListener('click', () => window.print());
+  } catch (err) {
+    $('[data-progress]').textContent = (err as Error).message;
+  }
+</script>

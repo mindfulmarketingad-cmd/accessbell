@@ -27,6 +27,8 @@ export const FEATURE_GROUPS: FeatureGroup[] = [
       'Assisted Manual Testing Procedures',
       'Domain-Wide WCAG Compliance Overview',
       'Automated Audit Evidence Collection',
+      'Compliance Vault: Legal Evidence Packages',
+      'Proof of Fixes Log and Remediation Notes',
     ],
   },
   {

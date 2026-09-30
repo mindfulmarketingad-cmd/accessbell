@@ -7,6 +7,7 @@ import { requireRole, requireSubscription, isAdminUser } from './accounts.js';
 import { assertSafeUrl } from '../net-guard.js';
 import { fetchPage } from '../fetch-page.js';
 import { VERSIONS, LEVELS } from '../wcag.js';
+import { logActivity } from './activity.js';
 
 export const DEFAULT_SETTINGS = {
   wcagVersion: '2.2',
@@ -250,7 +251,7 @@ export async function createDomain(ctx, input) {
   requireRole(ctx, 'admin');
   requireSubscription(ctx);
   const { hostname, baseUrl } = normalizeSiteUrl(input);
-  return tx(async (q) => {
+  const created = await tx(async (q) => {
     // Lock the account row so concurrent requests cannot exceed the quota.
     const [account] = await q('select domain_quota from app.accounts where id = $1 for update', [ctx.account.id]);
     const [{ n }] = await q('select count(*)::int as n from app.domains where account_id = $1', [ctx.account.id]);
@@ -268,6 +269,8 @@ export async function createDomain(ctx, input) {
     await q(`insert into app.pages (domain_id, url, monitored, source) values ($1, $2, true, 'manual')`, [domain.id, baseUrl + '/']);
     return domain;
   });
+  await logActivity(ctx, created.id, 'domain.added', { url: baseUrl });
+  return created;
 }
 
 export async function updateDomainSettings(ctx, domainId, input) {
@@ -275,6 +278,13 @@ export async function updateDomainSettings(ctx, domainId, input) {
   const domain = await getDomain(ctx, domainId);
   const settings = validateSettings(input || {}, domain.settings, domain);
   await query('update app.domains set settings = $2 where id = $1', [domain.id, settings]);
+  // Only the public settings: header values can be secrets.
+  await logActivity(ctx, domain.id, 'settings.updated', {
+    wcagVersion: settings.wcagVersion,
+    wcagLevel: settings.wcagLevel,
+    devices: settings.devices,
+    includeSubdomains: settings.includeSubdomains,
+  });
   return publicSettings(settings);
 }
 
@@ -296,8 +306,9 @@ export async function addPage(ctx, domainId, url) {
   requireSubscription(ctx);
   const domain = await getDomain(ctx, domainId);
   const clean = normalizePageUrl(url, domain);
+  let page;
   try {
-    return await one(
+    page = await one(
       `insert into app.pages (domain_id, url, monitored, source) values ($1, $2, true, 'manual')
        on conflict (domain_id, url) do update set monitored = true
        returning *`,
@@ -306,23 +317,29 @@ export async function addPage(ctx, domainId, url) {
   } catch (err) {
     throw limitError(err);
   }
+  await logActivity(ctx, domain.id, 'page.added', { page: page.url });
+  return page;
 }
 
 export async function setMonitored(ctx, pageId, monitored) {
   requireRole(ctx, 'member');
   if (monitored) requireSubscription(ctx);
   const page = await getPage(ctx, pageId);
+  let updated;
   try {
-    return await one('update app.pages set monitored = $2 where id = $1 returning *', [page.id, monitored === true]);
+    updated = await one('update app.pages set monitored = $2 where id = $1 returning *', [page.id, monitored === true]);
   } catch (err) {
     throw limitError(err);
   }
+  if (page.monitored !== updated.monitored) await logActivity(ctx, page.domain_id, updated.monitored ? 'page.monitored' : 'page.unmonitored', { page: page.url });
+  return updated;
 }
 
 export async function deletePage(ctx, pageId) {
   requireRole(ctx, 'member');
   const page = await getPage(ctx, pageId);
   await query('delete from app.pages where id = $1', [page.id]);
+  await logActivity(ctx, page.domain_id, 'page.removed', { page: page.url });
 }
 
 /**
@@ -337,13 +354,15 @@ export async function selectPages(ctx, domainId, pageIds) {
   if (!ids.length) throw badRequest('Select at least one page to scan.');
   if (ids.length > LIMITS.monitoredPagesPerDomain) throw badRequest(`Select up to ${LIMITS.monitoredPagesPerDomain} pages.`);
   if (ids.some((x) => !/^[0-9a-f-]{36}$/i.test(x))) throw badRequest('One of the selected pages was not found.');
-  return tx(async (q) => {
+  const monitored = await tx(async (q) => {
     const found = await q('select id from app.pages where domain_id = $1 and id = any($2::uuid[])', [domain.id, ids]);
     if (found.length !== ids.length) throw badRequest('One of the selected pages was not found. Reload and try again.');
     await q('update app.pages set monitored = false where domain_id = $1 and monitored and not (id = any($2::uuid[]))', [domain.id, ids]);
     await q('update app.pages set monitored = true where domain_id = $1 and id = any($2::uuid[]) and not monitored', [domain.id, ids]);
     return q('select id, url from app.pages where domain_id = $1 and monitored order by url', [domain.id]);
   });
+  await logActivity(ctx, domain.id, 'pages.selected', { monitored: monitored.length });
+  return monitored;
 }
 
 /** Add pages by hand to the found pages list. They are not monitored until selected. */

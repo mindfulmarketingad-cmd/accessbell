@@ -5079,6 +5079,45 @@ h2[tabindex='-1']:focus {
   flex: none;
 }
 
+/* Stagger index per item. Set here, not in style attributes, which the CSP blocks. */
+.hd-page-list li:nth-child(1),
+.hd-days li:nth-child(1) {
+  --i: 0;
+}
+.hd-page-list li:nth-child(2),
+.hd-days li:nth-child(2) {
+  --i: 1;
+}
+.hd-page-list li:nth-child(3),
+.hd-days li:nth-child(3) {
+  --i: 2;
+}
+.hd-page-list li:nth-child(4),
+.hd-days li:nth-child(4) {
+  --i: 3;
+}
+.hd-page-list li:nth-child(5),
+.hd-days li:nth-child(5) {
+  --i: 4;
+}
+.hd-page-list li:nth-child(6),
+.hd-days li:nth-child(6) {
+  --i: 5;
+}
+.hd-page-list li:nth-child(7),
+.hd-days li:nth-child(7) {
+  --i: 6;
+}
+.hd-issue-1 {
+  --i: 0;
+}
+.hd-issue-2 {
+  --i: 1;
+}
+.hd-issue-3 {
+  --i: 2;
+}
+
 /* Scene 1: pages found, listed and checked off one by one */
 .hd-pages {
   top: 28px;
@@ -6743,4 +6782,52 @@ h2[tabindex='-1']:focus {
   .scan-lock-plans {
     grid-template-columns: 1fr;
   }
+}
+
+/* ---------- Evidence package verification ---------- */
+.verify-wrap {
+  max-width: 720px;
+}
+.verify-form {
+  display: grid;
+  gap: 14px;
+  margin-top: 24px;
+}
+.verify-form .field {
+  display: grid;
+  gap: 6px;
+}
+.verify-form label {
+  font-weight: 600;
+  color: var(--ink-900);
+}
+.verify-form input {
+  padding: 10px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  font: 500 0.9375rem/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+.verify-form .btn {
+  justify-self: start;
+}
+.verify-result:not(:empty) {
+  margin-top: 20px;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.verify-result.is-good {
+  background: var(--sage-100);
+  color: var(--sage-800);
+  font-weight: 600;
+}
+.verify-result.is-bad {
+  background: var(--danger-bg);
+  color: var(--danger);
+  font-weight: 600;
+}
+.verify-note {
+  margin-top: 20px;
+  color: var(--ink-500);
+  font-size: 0.9375rem;
 }

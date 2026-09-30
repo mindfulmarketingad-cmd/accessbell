@@ -7,6 +7,7 @@ import { getDomain } from './domains.js';
 import { withAccessRule } from './access.js';
 import { fetchPage } from '../fetch-page.js';
 import { AppError, badRequest, notFound } from './errors.js';
+import { logActivity } from './activity.js';
 
 const UNDEFINED_TABLE = '42P01';
 const UNDEFINED_COLUMN = '42703';
@@ -103,6 +104,7 @@ export async function addFix(ctx, domainId, input) {
        returning id, kind, selector, value, enabled, created_at`,
       [domain.id, fix.kind, fix.selector, fix.value, ctx.user.id],
     );
+    await logActivity(ctx, domain.id, 'fix.added', { kind: fix.kind, selector: fix.selector, value: fix.value });
     return { fix: row };
   });
 }
@@ -113,9 +115,11 @@ export async function updateFix(ctx, domainId, fixId, { enabled, remove }) {
     const domain = await getDomain(ctx, domainId);
     if (!/^[0-9a-f-]{36}$/i.test(String(fixId || ''))) throw notFound('Fix not found.');
     const rows = remove
-      ? await query('delete from app.fixes where id = $1 and domain_id = $2 returning id', [fixId, domain.id])
-      : await query('update app.fixes set enabled = $3 where id = $1 and domain_id = $2 returning id', [fixId, domain.id, enabled === true]);
+      ? await query('delete from app.fixes where id = $1 and domain_id = $2 returning kind, selector, value', [fixId, domain.id])
+      : await query('update app.fixes set enabled = $3 where id = $1 and domain_id = $2 returning kind, selector, value', [fixId, domain.id, enabled === true]);
     if (!rows.length) throw notFound('Fix not found.');
+    const { kind, selector, value } = rows[0];
+    await logActivity(ctx, domain.id, remove ? 'fix.removed' : enabled === true ? 'fix.enabled' : 'fix.disabled', { kind, selector, value });
     return { status: 'ok' };
   });
 }
@@ -183,6 +187,7 @@ export async function saveStatement(ctx, domainId, input) {
     const domain = await getDomain(ctx, domainId);
     const statement = { ...validateStatement(input), updatedAt: new Date().toISOString() };
     await query('update app.domains set statement = $2 where id = $1', [domain.id, JSON.stringify(statement)]);
+    await logActivity(ctx, domain.id, 'statement.saved', { organization: statement.org, status: statement.status });
     return { statement, siteKey: await siteKeyFor(domain) };
   });
 }

@@ -1,0 +1,22 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+import Icon from '../../components/Icon.astro';
+---
+<AppLayout title="Evidence package" section="overview">
+  <header class="domain-top no-print">
+    <a class="icon-btn" href="/app" data-back><Icon name="back" /><span class="visually-hidden">Back to the Compliance Vault</span></a>
+    <div class="domain-title">
+      <nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="/app">Domains</a></li><li data-crumb-host></li></ol></nav>
+      <p class="record-kicker">Legal Evidence Package</p>
+    </div>
+    <div class="top-actions record-actions" data-record-actions hidden>
+      <button class="btn btn-outline" type="button" data-record-zip><Icon name="download" /> Download ZIP bundle</button>
+      <button class="btn btn-accent" type="button" data-record-print><Icon name="print" /> Save as PDF</button>
+    </div>
+  </header>
+  <p class="progress-note" data-progress role="status" aria-live="polite"></p>
+  <article class="record-doc" data-record aria-labelledby="record-title"></article>
+</AppLayout>
+<script>
+  import '../../scripts/app/record.js';
+</script>
