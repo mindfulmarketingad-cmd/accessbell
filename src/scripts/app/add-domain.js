@@ -224,7 +224,7 @@ export function setupAddDomain(me, { getBilling }) {
     let blocked = null;
     if (!me.subscribed) {
       blocked = [
-        el('p', { text: 'Subscribe to AccessBell Pro to add domains: $29 per domain per month after a 3-day free trial, or $199 per domain per year.' }),
+        el('p', { text: 'Subscribe to AccessBell Pro to add domains. Start a 3-day free trial, then pay $29 per domain per month or $199 per domain per year.' }),
         me.role === 'owner' ? planButtons(status) : el('p', { class: 'muted', text: 'Ask the account owner to start the subscription.' }),
       ];
     } else if (billing.domainsUsed >= billing.domainQuota) {

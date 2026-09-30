@@ -23,7 +23,7 @@ const status = $('[data-billing-status]');
 if (me.role !== 'owner') {
   note.textContent = 'Only the account owner can change billing.';
 } else if (!b.hasCustomer || ['none', 'canceled', 'incomplete_expired'].includes(b.status)) {
-  note.textContent = 'Choose monthly ($29/mo per domain, 3-day free trial) or annual ($199/year per domain). Same features on both. You can choose how many domains to monitor at checkout and change it any time.';
+  note.textContent = 'Choose monthly ($29/mo per domain) or yearly ($199/year per domain). Both start with a 3-day free trial and include every feature. You can choose how many domains to monitor at checkout and change it any time.';
   actions.append(planButtons(status, { restart: b.status !== 'none' }));
 } else {
   note.textContent = 'Change the number of domains, update your card, download invoices or cancel in the secure Stripe portal.';

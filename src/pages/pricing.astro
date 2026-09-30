@@ -23,7 +23,7 @@ const faqs: FaqItem[] = [
   },
   {
     q: 'What is the difference between monthly and annual billing?',
-    a: `Only the price and how often you pay. Both include every feature. Monthly is $${PLAN.price} per domain after a 3-day free trial. Annual is $${PLAN.annualPrice} per domain per year, which saves $${PLAN.price * 12 - PLAN.annualPrice} a year compared with paying monthly.`,
+    a: `Only the price and how often you pay. Both start with a 3-day free trial and include every feature. Monthly is $${PLAN.price} per domain. Annual is $${PLAN.annualPrice} per domain per year, which saves $${PLAN.price * 12 - PLAN.annualPrice} a year compared with paying monthly.`,
   },
   {
     q: 'What counts as a URL?',
@@ -39,7 +39,7 @@ const faqs: FaqItem[] = [
   },
   {
     q: 'Is there a free trial?',
-    a: 'Yes. Pro starts with a 3-day free trial. Cancel before it ends and you will not be charged. See <a href="/resources/help-center/getting-started/start-your-free-trial">how the free trial works</a>.',
+    a: 'Yes. Both monthly and annual billing start with a 3-day free trial. Cancel before it ends and you will not be charged. See <a href="/resources/help-center/getting-started/start-your-free-trial">how the free trial works</a>.',
   },
   {
     q: 'Can I cancel at any time?',
@@ -95,8 +95,8 @@ const faqs: FaqItem[] = [
             <div class="plan-option plan-option-annual">
               <h3 class="plan-option-name">Annual <span class="plan-save">Save {Math.round((1 - PLAN.annualPrice / (PLAN.price * 12)) * 100)}%</span></h3>
               <p class="plan-option-price"><strong>${PLAN.annualPrice}</strong> /year per domain</p>
-              <p class="plan-option-note">Works out to ${(PLAN.annualPrice / 12).toFixed(2)}/mo. Save ${PLAN.price * 12 - PLAN.annualPrice} a year.</p>
-              <a class="btn btn-block" href={PLAN.annualCtaHref}>Choose annual <Icon name="arrow" /></a>
+              <p class="plan-option-note">3-day free trial. Works out to ${(PLAN.annualPrice / 12).toFixed(2)}/mo, saving ${PLAN.price * 12 - PLAN.annualPrice} a year.</p>
+              <a class="btn btn-block" href={PLAN.annualCtaHref}>{PLAN.cta} <Icon name="arrow" /></a>
             </div>
           </div>
           <p class="plan-note">Need more than {PLAN.urlsPerDomain} URLs per domain? <a href="/contact?topic=sales">Talk to us</a>.</p>

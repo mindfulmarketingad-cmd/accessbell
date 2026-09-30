@@ -176,7 +176,7 @@ function renderPending(me) {
       el('ol', { class: 'pending-steps' }, [
         el('li', { class: paid ? 'is-done' : null }, [
           el('h2', { text: 'Start your 3-day free trial' }),
-          el('p', { text: 'Pick monthly ($29/mo per domain, after a 3-day free trial) or annual ($199/year per domain) and add your card on our secure Stripe checkout. Same features on both. Cancel anytime.' }),
+          el('p', { text: 'Pick monthly ($29/mo per domain) or yearly ($199/year per domain) and add your card on our secure Stripe checkout. Both start with a 3-day free trial and include every feature. Cancel anytime.' }),
           action,
         ]),
         el('li', {}, [
@@ -302,8 +302,8 @@ export async function startCheckout(plan = 'monthly') {
 
 /** Monthly and annual checkout buttons. The plan picked on the pricing page comes first. */
 export function planButtons(status, { restart = false } = {}) {
-  const monthly = el('button', { class: 'btn', type: 'button', text: restart ? 'Restart monthly, $29/mo' : 'Start 3-day free trial, $29/mo' });
-  const annual = el('button', { class: 'btn', type: 'button', text: restart ? 'Restart annual, $199/yr' : 'Pay annually, $199/yr' });
+  const monthly = el('button', { class: 'btn', type: 'button', text: restart ? 'Restart monthly, $29/mo' : 'Monthly: 3-day free trial, then $29/mo' });
+  const annual = el('button', { class: 'btn', type: 'button', text: restart ? 'Restart yearly, $199/yr' : 'Yearly: 3-day free trial, then $199/yr' });
   monthly.addEventListener('click', busy(monthly, status, () => startCheckout('monthly')));
   annual.addEventListener('click', busy(annual, status, () => startCheckout('annual')));
   const order = preferredPlan() === 'annual' ? [annual, monthly] : [monthly, annual];
@@ -331,7 +331,7 @@ function renderBanner(me) {
         el('strong', { text: b.status === 'none' ? 'Start monitoring with AccessBell Pro' : 'Your subscription has ended' }),
         el('p', {
           text: isOwner
-            ? '$29 per domain per month after a 3-day free trial, or $199 per domain per year. Up to 500 URLs per domain, unlimited rescans and AI-assisted fixes.'
+            ? '3-day free trial, then $29 per domain per month or $199 per domain per year. Up to 500 URLs per domain, unlimited rescans and AI-assisted fixes.'
             : 'Ask the account owner to start the subscription to unlock monitoring.',
         }),
       ]),

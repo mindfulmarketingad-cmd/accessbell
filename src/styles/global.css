@@ -6547,16 +6547,13 @@ h2[tabindex='-1']:focus {
 .scan-panel {
   position: relative;
 }
-.scan-panel.is-locked {
-  min-height: 680px;
-}
 .scan-lock {
   position: absolute;
   inset: 0;
   z-index: 2;
   display: grid;
-  place-items: center;
-  padding: 16px;
+  place-items: start center;
+  padding: 20px 16px;
   border-radius: inherit;
   background: rgb(255 255 255 / 0.72);
   backdrop-filter: blur(3px);
@@ -6692,5 +6689,58 @@ h2[tabindex='-1']:focus {
 @media (prefers-reduced-motion: reduce) {
   .scan-lock {
     animation: none;
+  }
+}
+.scan-lock-plans {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 18px;
+  text-align: left;
+}
+.scan-lock-plan {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+.scan-lock-plan.is-best {
+  border: 2px solid var(--sage-700);
+}
+.scan-lock-card .scan-lock-plan p {
+  margin: 0;
+}
+.scan-lock-card .scan-lock-plan-name {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  color: var(--ink-900);
+  font-weight: 700;
+}
+.scan-lock-save {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--sage-100);
+  color: var(--sage-800);
+  font-size: 0.75rem;
+}
+.scan-lock-plan-price strong {
+  color: var(--ink-900);
+  font-size: 1.625rem;
+  letter-spacing: -0.02em;
+}
+.scan-lock-card .scan-lock-plan-note {
+  margin-bottom: 10px;
+  font-size: 0.8125rem;
+}
+.scan-lock-plan .btn {
+  margin-top: auto;
+}
+@media (max-width: 480px) {
+  .scan-lock-plans {
+    grid-template-columns: 1fr;
   }
 }

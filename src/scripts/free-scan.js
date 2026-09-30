@@ -161,6 +161,15 @@ const SEVERITIES = [
   ['minor', 'Minor'],
 ];
 
+function planCard({ name, price, unit, note, href, accent }) {
+  return el('div', { class: `scan-lock-plan${accent ? ' is-best' : ''}` }, [
+    el('p', { class: 'scan-lock-plan-name' }, [name, accent ? el('span', { class: 'scan-lock-save', text: 'Best value' }) : null]),
+    el('p', { class: 'scan-lock-plan-price' }, [el('strong', { text: price }), ` ${unit}`]),
+    el('p', { class: 'scan-lock-plan-note', text: `3-day free trial · ${note}` }),
+    el('a', { class: `btn btn-block${accent ? ' btn-accent' : ''}`, href, text: 'Start 3-day free trial' }),
+  ]);
+}
+
 /** The subscribe prompt, shown over the checklist on its last step. */
 function showLocked(panel, r, url) {
   section.setAttribute('aria-busy', 'false');
@@ -201,14 +210,18 @@ function showLocked(panel, r, url) {
     severity,
     teaser,
     el('p', { text: 'Subscribe to see every issue, where it is on the page, the failing code and how to fix it. Pro also monitors up to 500 pages per domain every day and emails you when something breaks.' }),
-    el('div', { class: 'scan-lock-actions' }, [
-      el('a', { class: 'btn btn-accent', href: '/app/signup?plan=monthly', text: 'Start 3-day free trial' }),
-      el('a', { class: 'btn', href: '/app/signup?plan=annual', text: 'Or pay $199/year' }),
+    el('div', { class: 'scan-lock-plans' }, [
+      planCard({ name: 'Monthly', price: '$29', unit: '/mo per domain', note: 'Cancel anytime', href: '/app/signup?plan=monthly', accent: false }),
+      planCard({ name: 'Yearly', price: '$199', unit: '/year per domain', note: 'Save 43% vs monthly', href: '/app/signup?plan=annual', accent: true }),
     ]),
-    el('p', { class: 'scan-lock-note' }, ['$29/mo per domain after the trial, or $199/year. Already subscribed? ', el('a', { href: '/app/login', text: 'Log in to your dashboard' }), '.']),
+    el('p', { class: 'scan-lock-note' }, ['Both plans start with a 3-day free trial and include every feature. Already subscribed? ', el('a', { href: '/app/login', text: 'Log in to your dashboard' }), '.']),
   ]);
   panel.classList.add('is-locked');
   panel.append(el('div', { class: 'scan-lock', role: 'region', 'aria-labelledby': 'scan-lock-title' }, [card]));
+  // The prompt can be taller than the checklist behind it: grow the panel to fit.
+  const fit = () => panel.style.setProperty('min-height', `${card.offsetHeight + 72}px`);
+  fit();
+  window.addEventListener('resize', fit);
   heading.focus({ preventScroll: true });
   card.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'center' });
 }
