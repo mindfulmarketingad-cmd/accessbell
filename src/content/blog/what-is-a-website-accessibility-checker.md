@@ -36,7 +36,7 @@ Most checkers load a page, build its document tree and run a set of rules agains
 - **[Color contrast](/resources/contrast-checker) (1.4.3).** Body text needs a contrast ratio of at least 4.5:1 against its background, and large text at least 3:1.
 - **Frames (4.1.2).** Embedded iframes need a title that describes their content.
 
-Our [free website accessibility checker](/) runs these kinds of checks against any public URL and maps every result to its WCAG criterion, so you can see exactly which requirement a failure relates to. You can also open it preset for the standard you are held to: [WCAG 2.2 AA](/resources/wcag-2-2-aa-checker), [WCAG 2.1 AA](/resources/wcag-2-1-aa-checker), [ADA compliance](/resources/ada-compliance-checker), [Section 508](/resources/section-508-checker) or [EN 301 549](/resources/en-301-549-checker). Each page shows exactly which criteria the automated rules cover.
+Our [free website accessibility checker](/) runs these kinds of checks against any public URL and tells you how many issues it found. With AccessBell Pro, every result is mapped to its WCAG criterion, so you can see exactly which requirement a failure relates to. You can also open it preset for the standard you are held to: [WCAG 2.2 AA](/resources/wcag-2-2-aa-checker), [WCAG 2.1 AA](/resources/wcag-2-1-aa-checker), [ADA compliance](/resources/ada-compliance-checker), [Section 508](/resources/section-508-checker) or [EN 301 549](/resources/en-301-549-checker). Each page shows exactly which criteria the automated rules cover.
 
 ## How Results Are Scored
 

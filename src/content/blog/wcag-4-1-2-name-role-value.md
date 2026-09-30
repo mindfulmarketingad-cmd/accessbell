@@ -158,7 +158,7 @@ The W3C publishes the technique list in [Understanding 4.1.2 Name, Role, Value](
 
 Unlike some criteria, a lot of 4.1.2 can be checked automatically. Combine tools with a short manual routine:
 
-1. **Run an automated scan.** A [free accessibility scan](/#scan) flags buttons, links and fields with no name, invalid roles and missing ARIA attributes, each with the failing HTML. Our guide to [automated vs manual accessibility testing](/blog/automated-vs-manual-accessibility-testing) explains what tools can and cannot judge.
+1. **Run an automated scan.** An automated checker flags buttons, links and fields with no name, invalid roles and missing ARIA attributes, each with the failing HTML. A [free accessibility scan](/#scan) shows how many a page has, and AccessBell Pro lists each one. Our guide to [automated vs manual accessibility testing](/blog/automated-vs-manual-accessibility-testing) explains what tools can and cannot judge.
 2. **Look at the accessibility tree.** Chrome and Firefox both show each element's computed name, role and state in their developer tools. Check that key controls show the values you expect.
 3. **Tab through the page.** Every control should be reachable, show where focus is, and work with Enter or Space.
 4. **Use a screen reader.** Listen to a few controls. Each should announce a meaningful name, its role and its state, such as "Menu, button, collapsed".

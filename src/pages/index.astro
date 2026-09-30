@@ -179,7 +179,7 @@ const faqs: FaqItem[] = [
   },
   {
     q: 'Is the AccessBell accessibility checker free?',
-    a: 'Yes. You can scan any public page for free with no account. The Pro plan, $29 per domain per month or $199 per domain per year, adds domain crawling, continuous monitoring, AI-assisted fixes, reports and team features.',
+    a: 'Yes. You can scan any public page for free with no account and see how many issues it has and how severe they are. To see each issue and its fix, subscribe to Pro. The Pro plan, $29 per domain per month or $199 per domain per year, adds domain crawling, continuous monitoring, AI-assisted fixes, reports and team features.',
   },
   {
     q: 'Which accessibility standards does AccessBell check?',
@@ -205,7 +205,7 @@ const faqs: FaqItem[] = [
 ---
 <BaseLayout
   title="Website Accessibility Checker - Free WCAG Scan | AccessBell"
-  description="Free website accessibility checker. Scan any page against WCAG 2.2, ADA and Section 508 in seconds and get clear, code-level fixes for every issue found."
+  description="Free website accessibility checker. Scan any page against WCAG 2.2, ADA and Section 508 to see how many issues it has, then get code-level fixes with Pro."
   schema={[softwareSchema(), faqSchema(faqs)]}
 >
   <section class="hero hero-split" id="scan" aria-labelledby="hero-title">
@@ -216,7 +216,7 @@ const faqs: FaqItem[] = [
           Make Your Website ADA Compliant <span class="accent">and Keep It That Way</span>
         </h1>
         <p class="lead">
-          AccessBell scans every page against WCAG 2.2, flags the kinds of barriers named in ADA website lawsuits, shows the exact code fix, and rescans on a schedule so new issues are caught early. Try a free scan, no signup needed.
+          AccessBell scans every page against WCAG 2.2, flags the kinds of barriers named in ADA website lawsuits, shows the exact code fix, and rescans on a schedule so new issues are caught early. Run a free scan to see how many issues your site has.
         </p>
         <ScanForm id="hero" />
         <div class="compliance-row">

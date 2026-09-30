@@ -101,7 +101,7 @@ Unknown roles, misspelled `aria-` attributes and missing required attributes are
 
 You do not need a 4.1.1 test, but a few quick checks catch the bugs above:
 
-1. **Run an automated scan.** A [free accessibility scan](/#scan) reports duplicate IDs that break labels or ARIA references, invalid roles and other structural problems, each with the failing HTML.
+1. **Run an automated scan.** An automated checker reports duplicate IDs that break labels or ARIA references, invalid roles and other structural problems, each with the failing HTML. A [free accessibility scan](/#scan) shows how many a page has, and AccessBell Pro lists each one.
 2. **Validate as a debugging aid.** The W3C's [Nu HTML Checker](https://validator.w3.org/nu/) finds unclosed elements and duplicate attributes. Treat the results as hints, not as WCAG failures, and fix those that affect structure.
 3. **Search the page for repeated IDs** used by labels and ARIA attributes, especially in components that render more than once, such as cards, tabs and repeated forms.
 4. **Check the accessibility tree.** In your browser's developer tools, confirm that key fields still show the right name and role.

@@ -10,10 +10,12 @@ contributors:
 history:
   - date: 2026-09-28
     note: 'First published. Tool features reviewed against each tool''s own documentation.'
+  - date: 2026-09-30
+    note: 'Updated: the free AccessBell scan now shows issue counts by severity; the full report with fixes is part of AccessBell Pro.'
 related: ['we-tested-10-accessibility-checker-tools', 'what-is-a-website-accessibility-checker', 'automated-vs-manual-accessibility-testing']
 faqs:
   - q: 'What is the best free tool to check website accessibility?'
-    a: 'It depends on who is testing. For a quick, readable report with no installation, start with [AccessBell](/#scan). Developers usually add axe DevTools or Accessibility Insights to their browser, designers like WAVE''s visual overlay, and Section 508 testers use ANDI. Most teams use two or three together.'
+    a: 'It depends on who is testing. For a quick issue count with no installation, start with [AccessBell](/#scan), which shows the full report with fixes on its paid plan. Developers usually add axe DevTools or Accessibility Insights to their browser, designers like WAVE''s visual overlay, and Section 508 testers use ANDI. Most teams use two or three together.'
   - q: 'Can a free accessibility checker make my website ADA compliant?'
     a: 'No tool can make a site compliant on its own. Automated checkers reliably find code-level failures such as missing alt text, unlabeled form fields and low contrast, but some WCAG requirements need a person to judge them. Use automated tools to find and fix the objective issues, then test with a keyboard and a screen reader.'
   - q: 'Do these tools work on pages behind a login?'
@@ -23,7 +25,7 @@ faqs:
   - q: 'Does a Lighthouse accessibility score of 100 mean my site is accessible?'
     a: 'No. Lighthouse runs a subset of automated checks and weights them into a score. A perfect score means none of those checks failed, not that the page meets WCAG. Many barriers, like confusing focus order or unhelpful alt text, can only be found with manual testing.'
   - q: 'Can I test against WCAG 2.1 AA only?'
-    a: 'Yes. In the free AccessBell scanner, choose "WCAG 2.1 AA" from the standard menu and the scan runs only the WCAG 2.0 and 2.1 Level A and AA rules. After the scan, the report filters let you narrow results by version, level, principle, success criterion or severity. Pro plan customers can set WCAG 2.0, 2.1 or 2.2 and Level A, AA or AAA for each domain.'
+    a: 'Yes. In the free AccessBell scanner, choose "WCAG 2.1 AA" from the standard menu and the scan runs only the WCAG 2.0 and 2.1 Level A and AA rules, and reports how many issues it found. In the dashboard, report filters narrow results by version, level, principle, success criterion or severity. Pro plan customers can set WCAG 2.0, 2.1 or 2.2 and Level A, AA or AAA for each domain.'
 ---
 
 The best **free tools to check website accessibility** are AccessBell, WAVE, axe DevTools, Accessibility Insights, Google Lighthouse and ANDI. Each one finds barriers that stop people with disabilities from using a website, such as missing [alt text](/blog/wcag-1-1-1-non-text-content), unlabeled form fields, low [color contrast](/resources/contrast-checker) and buttons with no name. They differ in who they are built for, how you run them and how they present results.
@@ -34,7 +36,7 @@ This guide compares all six so you can pick the right mix for your team. We make
 
 | Tool | How you run it | Best for | Tests pages behind a login | Engine |
 | --- | --- | --- | --- | --- |
-| **AccessBell** (our tool) | Website: paste a URL | Quick, readable reports with fix guidance, no install | Paid plan, via custom headers | axe-core in a real browser |
+| **AccessBell** (our tool) | Website: paste a URL | A free issue count by severity; full report with fixes on the paid plan | Paid plan, via custom headers | axe-core in a real browser |
 | **WAVE** | Browser extension or website | Visual, on-page review | Yes, with the extension | WebAIM's own rules |
 | **axe DevTools** | Browser extension | Developers debugging code | Yes | axe-core |
 | **Accessibility Insights** | Browser extension | Fast checks plus guided manual testing | Yes | axe-core plus guided tests |
@@ -51,26 +53,28 @@ The practical takeaway: use one or two automated tools to find and fix the objec
 
 ## 1. AccessBell (Our Tool)
 
-**Best for:** anyone who wants a clear accessibility report in seconds, without installing anything.
+**Best for:** a quick, install-free answer to "how many accessibility issues does this page have?", then a full report and monitoring if you subscribe.
 
-[AccessBell](/) is a free **website accessibility checker** that runs in your browser. Paste a URL, choose a standard, and it loads the page in a real browser, runs the open-source axe-core engine and returns a report mapped to WCAG success criteria.
+[AccessBell](/) is a **website accessibility checker** that runs in your browser. Paste a URL, choose a standard, and it loads the page in a real browser and runs the open-source axe-core engine against WCAG success criteria.
 
-### Why We Think It Is the Best Place to Start
+**What is free and what is paid.** The free scan tells you how many issues the page has and how severe they are (critical, serious, moderate and minor). To see the issues themselves, with the failing code and how to fix each one, you need AccessBell Pro, which starts with a 3-day free trial. If you want a free tool that lists every issue, WAVE, axe DevTools and the others below do that at no cost.
+
+### Where It Fits
 
 - **Nothing to install.** It works in any browser, on any device, including phones and tablets. That makes it easy to use on locked-down work computers and to share with non-technical teammates.
-- **Choose exactly what to test against.** Pick WCAG 2.2 AA, WCAG 2.1 AA, ADA, Section 508 or EN 301 549. If your goal is WCAG 2.1 AA, choose it, and the scan runs only the rules for that version and level. Nothing beyond your target appears in the report.
-- **Filter the report after the scan.** Narrow results by WCAG version, level, principle, a specific success criterion or severity. The report also tells you how many more issues moving up a level would add, which helps when your goal is "WCAG 2.1 AA and no more than necessary."
-- **Plain-language fixes.** Each issue explains what is wrong, why it matters, which WCAG criterion it fails and how to fix it, with the exact failing code and a link to detailed guidance.
-- **Ranked by impact.** Critical and serious issues come first, so you know what to fix today.
+- **Choose exactly what to test against.** Pick WCAG 2.2 AA, WCAG 2.1 AA, ADA, Section 508 or EN 301 549. The scan runs only the rules for that version and level.
+- **A fast severity count.** The free scan is a quick way to see whether a page has a few problems or many before you spend time on it.
+- **Plain-language fixes, with Pro.** In the dashboard, each issue explains what is wrong, which WCAG criterion it fails and how to fix it, with the failing code, and you can filter by version, level, principle, criterion or severity.
 - **Honest about limits.** Items a machine cannot decide appear in a separate "needs manual review" list instead of being hidden or reported as failures.
-- **Grows with you.** When you are ready, the Pro plan adds monitoring of up to 500 URLs per domain with unlimited rescans. It also adds scheduled scans, a scan history you can use as audit evidence, component grouping and team roles.
+- **Grows with you.** Pro monitors up to 500 URLs per domain with daily scans, unlimited rescans, scan history you can use as audit evidence, component grouping and team roles.
 
 ### Limitations
 
-- The free scan checks **one public page at a time**. For pages behind a login, use a browser extension below or AccessBell Pro with custom headers.
+- The free scan shows **counts only**, not which issues were found. The other tools in this guide list every issue for free.
+- It checks **one public page at a time**. For pages behind a login, use a browser extension below or AccessBell Pro with custom headers.
 - It reports what automated rules can detect. Pair it with the manual checks described later in this guide.
 
-[Run a free AccessBell scan](/#scan) to see how your page scores, or open it preset for [WCAG 2.2 AA](/resources/wcag-2-2-aa-checker), [WCAG 2.1 AA](/resources/wcag-2-1-aa-checker), [ADA compliance](/resources/ada-compliance-checker), [Section 508](/resources/section-508-checker) or [EN 301 549](/resources/en-301-549-checker).
+[Run a free AccessBell scan](/#scan) to see how many issues your page has, or open it preset for [WCAG 2.2 AA](/resources/wcag-2-2-aa-checker), [WCAG 2.1 AA](/resources/wcag-2-1-aa-checker), [ADA compliance](/resources/ada-compliance-checker), [Section 508](/resources/section-508-checker) or [EN 301 549](/resources/en-301-549-checker).
 
 ## 2. WAVE by WebAIM
 
@@ -161,7 +165,7 @@ Most teams do not need all six tools. Pick based on who is testing:
 | If you are... | Start with | Add |
 | --- | --- | --- |
 | A business owner or marketer | AccessBell | WAVE for a visual view |
-| A designer or content editor | WAVE | AccessBell for shareable reports |
+| A designer or content editor | WAVE | AccessBell Pro for shareable reports |
 | A front-end developer | axe DevTools or Accessibility Insights | AccessBell to track progress over time |
 | A federal agency or vendor | ANDI | Accessibility Insights for guided manual tests |
 | Tracking many pages or domains | AccessBell Pro (paid) | Any extension for spot checks |
@@ -174,4 +178,4 @@ Free accessibility tools are good enough to find most of the objective barriers 
 
 For head-to-head results, see our test of [10 accessibility checker tools on the same website](/blog/we-tested-10-accessibility-checker-tools), which shows exactly which barriers each one caught and missed.
 
-If you want the fastest path from "is my site accessible?" to a clear, prioritized fix list, with nothing to install and a report anyone on your team can read, start with AccessBell. [Run a free scan now](/#scan), then pair it with a keyboard and a screen reader to cover what automation cannot.
+If you want the fastest answer to "is my site accessible?" with nothing to install, start with an AccessBell scan, and subscribe when you want a prioritized fix list anyone on your team can read. [Run a free scan now](/#scan), then pair it with a keyboard and a screen reader to cover what automation cannot.

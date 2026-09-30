@@ -1,4 +1,8 @@
-// POST /api/scan  { url, standard } -> accessibility report for one public page
+// POST /api/scan  { url, standard } -> issue counts for one public page
+//
+// The free scan is a preview: it returns how many issues were found and how
+// severe they are, never which ones. Subscribers see every issue, the failing
+// code and the fix in the dashboard.
 //
 // Uses a real browser with axe-core when BROWSER_WS_ENDPOINT is configured,
 // and falls back to the HTML-only audit if the browser is unavailable.
@@ -15,6 +19,27 @@ const perHour = createRateLimiter({ limit: 30, windowMs: 60 * 60_000 });
 async function htmlAudit(url, standard) {
   const page = await fetchPage(url);
   return { finalUrl: page.finalUrl, engine: 'html', ...audit(page.html, { standard }) };
+}
+
+/** Counts only: nothing that names an issue, an element or a fix. */
+export function preview(report) {
+  const s = report.summary || {};
+  const n = (v) => (Number.isFinite(v) ? v : 0);
+  return {
+    locked: true,
+    finalUrl: report.finalUrl,
+    engine: report.engine,
+    standard: report.standard ? { id: report.standard.id, label: report.standard.label } : undefined,
+    summary: {
+      issues: n(s.issues),
+      critical: n(s.critical),
+      serious: n(s.serious),
+      moderate: n(s.moderate),
+      minor: n(s.minor),
+      rulesFailed: n(s.rulesFailed),
+      rulesPassed: n(s.rulesPassed),
+    },
+  };
 }
 
 export async function POST(request) {
@@ -39,8 +64,7 @@ export async function POST(request) {
     let report;
     if (process.env.BROWSER_WS_ENDPOINT) {
       try {
-        // Screenshots of the first failing element of up to 6 issues, shown on the report.
-        report = await browserAudit(url, { standard, screenshots: 6 });
+        report = await browserAudit(url, { standard });
       } catch (err) {
         if (err instanceof UnsafeUrlError) throw err;
         // Browser unreachable, page failed to load, etc. The HTML audit
@@ -53,7 +77,7 @@ export async function POST(request) {
     } else {
       report = await htmlAudit(url, standard);
     }
-    return json(200, { url: body.url, scannedAt: new Date().toISOString(), ...report });
+    return json(200, { url: body.url, scannedAt: new Date().toISOString(), ...preview(report) });
   } catch (err) {
     if (err && err.expose) return json(err.status || 422, { error: err.message });
     console.error('scan failed', err);

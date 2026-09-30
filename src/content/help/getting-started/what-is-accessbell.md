@@ -10,7 +10,7 @@ AccessBell is a website accessibility checker. It loads your pages in a real bro
 
 ## Two Ways to Use AccessBell
 
-**The free scan** checks one public page at a time from the [homepage](/#scan). There is nothing to install and no account needed. It is the quickest way to see where a page stands.
+**The free scan** checks one public page at a time from the [homepage](/#scan). There is nothing to install and no account needed. It tells you how many issues the page has and how severe they are. To see each issue and its fix, subscribe to Pro.
 
 **AccessBell Pro** is the paid plan for ongoing work. For $29 per domain per month you get:
 

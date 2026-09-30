@@ -189,7 +189,7 @@ export const PLATFORMS: Platform[] = [
     name: 'IONOS',
     kind: 'host',
     seoTitle: 'Free IONOS Accessibility Checker',
-    description: 'Free IONOS accessibility checker. Scan any site hosted on IONOS, whether built with its website builder or WordPress, for WCAG issues and fixes.',
+    description: 'Free IONOS accessibility checker. Scan any site hosted on IONOS, whether built with its website builder or WordPress, for WCAG issues.',
     lead: 'Scan any website hosted on IONOS for real WCAG failures, whether you built it with the IONOS website builder, WordPress or your own code.',
     stat: {
       text: 'WebAIM’s annual analysis of the top one million home pages finds detectable WCAG failures on the vast majority of them, year after year, with low-contrast text, missing alternative text and missing form labels among the most common.',
@@ -212,7 +212,7 @@ export const PLATFORMS: Platform[] = [
       'Rescan after changing templates, installing plugins or adding new sections, since each change can introduce new issues.',
     ],
     faqs: [
-      { q: 'Is my IONOS website accessible?', a: 'That depends on the site, not the hosting. Templates, plugins and the content you add decide how accessible it is. A free scan shows the automated issues on any page in seconds.' },
+      { q: 'Is my IONOS website accessible?', a: 'That depends on the site, not the hosting. Templates, plugins and the content you add decide how accessible it is. A free scan shows how many automated issues any page has in seconds.' },
       { q: 'Do I need to install anything on IONOS to scan my site?', a: 'No. AccessBell scans the live public page in a browser, the same way a visitor sees it. You do not need a plugin, a code snippet or your hosting login.' },
       { q: 'Does the European Accessibility Act apply to my IONOS site?', a: 'It may. Since 28 June 2025, the EAA applies to many businesses that sell certain products and services to consumers in the EU, including e-commerce, and it refers to the EN 301 549 standard. Micro-enterprises providing services are exempt. Check with a legal adviser for your situation.' },
     ],
@@ -257,7 +257,7 @@ export const PLATFORMS: Platform[] = [
     name: 'Bluehost',
     kind: 'host',
     seoTitle: 'Free Bluehost Accessibility Checker',
-    description: 'Free Bluehost accessibility checker. Scan WordPress sites hosted on Bluehost for WCAG failures in themes, plugins, forms and content, with fixes.',
+    description: 'Free Bluehost accessibility checker. Scan WordPress sites hosted on Bluehost for WCAG failures in themes, plugins, forms and content.',
     lead: 'Scan your Bluehost-hosted WordPress site for real WCAG failures in the theme, plugins, forms and content, and see how to fix each one.',
     stat: {
       text: 'WebAIM’s annual analysis of the top one million home pages finds detectable WCAG failures on the vast majority of them, year after year, with low-contrast text, missing alternative text and missing form labels among the most common.',
@@ -280,7 +280,7 @@ export const PLATFORMS: Platform[] = [
       'Add alt text in the media library and give icon links and buttons a text label.',
     ],
     faqs: [
-      { q: 'Is my Bluehost WordPress site accessible?', a: 'Not automatically. The theme, plugins and content decide how accessible it is. A free scan shows the automated issues on any page.' },
+      { q: 'Is my Bluehost WordPress site accessible?', a: 'Not automatically. The theme, plugins and content decide how accessible it is. A free scan shows how many automated issues any page has.' },
       { q: 'Do I need a plugin to check accessibility on Bluehost?', a: 'No. AccessBell scans the live page in a browser, so there is nothing to install on your hosting account or WordPress site.' },
       { q: 'Will an accessibility plugin make my site compliant?', a: 'Not on its own. Overlay widgets do not change your site’s code. Plugins that fix markup can help with some site-wide issues, but content and plugin output still need fixing directly.' },
     ],
@@ -291,7 +291,7 @@ export const PLATFORMS: Platform[] = [
     name: 'Hosting.com',
     kind: 'host',
     seoTitle: 'Free Hosting.com Accessibility Checker',
-    description: 'Free Hosting.com accessibility checker. Scan any site hosted on Hosting.com, WordPress or custom, for WCAG failures and get a fix for each issue.',
+    description: 'Free Hosting.com accessibility checker. Scan any site hosted on Hosting.com, WordPress or custom, for WCAG failures and see how many issues it has.',
     lead: 'Scan any website hosted on Hosting.com, from WordPress to custom code, for real WCAG failures and a clear fix for each one.',
     stat: {
       text: 'WebAIM’s annual analysis of the top one million home pages finds detectable WCAG failures on the vast majority of them, year after year, with low-contrast text, missing alternative text and missing form labels among the most common.',
@@ -325,7 +325,7 @@ export const PLATFORMS: Platform[] = [
     name: 'GoDaddy',
     kind: 'host',
     seoTitle: 'Free GoDaddy Accessibility Checker',
-    description: 'Free GoDaddy accessibility checker. Scan sites built with GoDaddy Websites + Marketing or WordPress on GoDaddy for WCAG failures and how to fix them.',
+    description: 'Free GoDaddy accessibility checker. Scan sites built with GoDaddy Websites + Marketing or WordPress on GoDaddy for WCAG failures.',
     lead: 'Scan your GoDaddy site, whether it is built with Websites + Marketing or WordPress, for real WCAG failures and how to fix each one.',
     stat: {
       text: 'WebAIM’s annual analysis of the top one million home pages finds detectable WCAG failures on the vast majority of them, year after year, with low-contrast text, missing alternative text and missing form labels among the most common.',
@@ -359,7 +359,7 @@ export const PLATFORMS: Platform[] = [
     name: 'HostGator',
     kind: 'host',
     seoTitle: 'Free HostGator Accessibility Checker',
-    description: 'Free HostGator accessibility checker. Scan WordPress and other sites hosted on HostGator for WCAG failures, from contrast to forms, with a fix for each.',
+    description: 'Free HostGator accessibility checker. Scan WordPress and other sites hosted on HostGator for WCAG failures, from contrast to forms.',
     lead: 'Scan your HostGator-hosted site, WordPress or otherwise, for real WCAG failures, from low contrast to unlabeled forms, with a fix for each.',
     stat: {
       text: 'WebAIM’s annual analysis of the top one million home pages finds detectable WCAG failures on the vast majority of them, year after year, with low-contrast text, missing alternative text and missing form labels among the most common.',
@@ -382,7 +382,7 @@ export const PLATFORMS: Platform[] = [
       'Fix theme-level colors and fonts first, then check each plugin that adds a form, gallery or embed.',
     ],
     faqs: [
-      { q: 'Is my HostGator website accessible?', a: 'Not automatically. The theme, plugins and content you use decide that. Run a free scan to see the automated issues on any page.' },
+      { q: 'Is my HostGator website accessible?', a: 'Not automatically. The theme, plugins and content you use decide that. Run a free scan to see how many automated issues any page has.' },
       { q: 'Do I need to install anything on HostGator?', a: 'No. AccessBell scans the live page in a browser, so nothing needs to be installed on your hosting account or site.' },
       { q: 'What should I check by hand after a scan?', a: 'Use the keyboard to move through menus, forms and pop-ups, and check that images, links and buttons make sense when read aloud. Our testing guides explain how.' },
     ],
@@ -393,7 +393,7 @@ export const PLATFORMS: Platform[] = [
     name: 'DreamHost',
     kind: 'host',
     seoTitle: 'Free DreamHost Accessibility Checker',
-    description: 'Free DreamHost accessibility checker. Scan WordPress and other sites hosted on DreamHost for WCAG failures in themes, plugins and content, with fixes.',
+    description: 'Free DreamHost accessibility checker. Scan WordPress and other sites hosted on DreamHost for WCAG failures in themes, plugins and content.',
     lead: 'Scan your DreamHost-hosted WordPress or custom site for real WCAG failures in the theme, plugins and content, with a fix for each one.',
     stat: {
       text: 'WebAIM’s annual analysis of the top one million home pages finds detectable WCAG failures on the vast majority of them, year after year, with low-contrast text, missing alternative text and missing form labels among the most common.',
@@ -416,7 +416,7 @@ export const PLATFORMS: Platform[] = [
       'Fix theme colors and form markup once, in the theme or a child theme, so every page benefits.',
     ],
     faqs: [
-      { q: 'Is my DreamHost site accessible?', a: 'That depends on the site, not the hosting. Your theme, plugins and content decide how accessible it is. A free scan shows the automated issues.' },
+      { q: 'Is my DreamHost site accessible?', a: 'That depends on the site, not the hosting. Your theme, plugins and content decide how accessible it is. A free scan shows how many automated issues a page has.' },
       { q: 'Can AccessBell scan a static site hosted on DreamHost?', a: 'Yes. AccessBell scans any public page in a real browser, however it was built.' },
       { q: 'How often should I scan a blog?', a: 'Scan after theme and plugin changes, and regularly as you publish. AccessBell Pro rescans up to 500 pages per domain every day and alerts you to new issues.' },
     ],

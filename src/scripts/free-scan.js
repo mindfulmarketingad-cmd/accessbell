@@ -1,6 +1,9 @@
-// Free accessibility checker on the homepage: submits a URL to /api/scan and
-// renders the report with WCAG filters. All data is inserted as text, never HTML.
-import { el, mountFilteredReport } from './shared/report-view.js';
+// Free accessibility checker: submits a URL to /api/scan, runs the checklist
+// animation, and just before it finishes asks the visitor to subscribe to see
+// the results. The API returns counts only, so the preview shows how many
+// issues were found and how severe they are, never which ones.
+// All data is inserted as text, never HTML.
+import { el } from './shared/report-view.js';
 
 const forms = document.querySelectorAll('[data-scan-form]');
 const section = document.getElementById('scan-results');
@@ -122,17 +125,19 @@ function showLoading(url, standard) {
   }, 1300);
 
   return {
-    async finish() {
+    panel: mount.firstChild,
+    /** Tick through every check but the last, which keeps spinning. */
+    async toLastStep() {
       clearInterval(timer);
       const fast = reducedMotion() ? 0 : 90;
-      while (done < steps.length) {
+      while (done < steps.length - 1) {
         setState(done, 'done');
         done++;
-        if (done < steps.length) setState(done, 'active');
+        setState(done, 'active');
         progress();
         if (fast) await wait(fast);
       }
-      if (!reducedMotion()) await wait(350);
+      if (!reducedMotion()) await wait(400);
     },
     stop() {
       stopped = true;
@@ -148,30 +153,64 @@ function showFailure(message) {
   heading.focus({ preventScroll: true });
 }
 
-function render(r) {
-  section.setAttribute('aria-busy', 'false');
-  const band = r.score >= 90 ? 'high' : r.score >= 60 ? 'mid' : 'low';
-  const ring = el('div', { class: 'score-ring', 'data-band': band, role: 'img', 'aria-label': `Accessibility score ${r.score} out of 100` }, [el('span', { 'aria-hidden': 'true', text: String(r.score) })]);
-  ring.style.setProperty('--pct', String(r.score));
+const plural = (n, word) => `${n.toLocaleString()} ${word}${n === 1 ? '' : 's'}`;
+const SEVERITIES = [
+  ['critical', 'Critical'],
+  ['serious', 'Serious'],
+  ['moderate', 'Moderate'],
+  ['minor', 'Minor'],
+];
 
-  const heading = el('h2', { tabindex: '-1', text: 'Accessibility report' });
-  const head = el('div', { class: 'results-head' }, [
-    ring,
-    el('div', {}, [heading, el('p', { text: r.finalUrl }), el('p', { text: `${r.standard.label} - scanned ${new Date(r.scannedAt).toLocaleString()}` })]),
-    el('ul', { class: 'results-stats' }, [
-      el('li', {}, [el('strong', { text: String(r.summary.issues) }), el('span', { text: 'Issues' })]),
-      el('li', {}, [el('strong', { text: String(r.summary.rulesFailed) }), el('span', { text: 'Checks failed' })]),
-      el('li', {}, [el('strong', { text: String(r.summary.rulesPassed) }), el('span', { text: 'Checks passed' })]),
+/** The subscribe prompt, shown over the checklist on its last step. */
+function showLocked(panel, r, url) {
+  section.setAttribute('aria-busy', 'false');
+  const host = (() => {
+    try {
+      return new URL(r.finalUrl || url).hostname;
+    } catch {
+      return url;
+    }
+  })();
+  const total = r.summary?.issues || 0;
+  const label = r.standard?.label || 'WCAG';
+  const heading = el('h2', { id: 'scan-lock-title', tabindex: '-1', text: total ? 'Subscribe to See Your Results' : 'Your Scan Is Almost Done' });
+  const found = total
+    ? el('p', { class: 'scan-lock-lead' }, ['We found ', el('strong', { text: plural(total, 'accessibility issue') }), ` on ${host}, tested against ${label}.`])
+    : el('p', { class: 'scan-lock-lead' }, [`Our automated checks found no issues on this page of ${host}. Automated testing covers only part of ${label}, so subscribe to scan every page and track what needs a manual check.`]);
+  const severity = total
+    ? el(
+        'ul',
+        { class: 'scan-lock-sev', 'aria-label': 'Issues by severity' },
+        SEVERITIES.map(([key, name]) => el('li', { 'data-sev': key }, [el('strong', { text: String(r.summary[key] || 0) }), el('span', { text: name })])),
+      )
+    : null;
+  // Placeholder rows, blurred: they stand for the report without revealing anything in it.
+  const teaser = total
+    ? el(
+        'div',
+        { class: 'scan-lock-preview', 'aria-hidden': 'true' },
+        SEVERITIES.filter(([key]) => r.summary[key] > 0)
+          .slice(0, 3)
+          .map(([key]) => el('div', { class: 'scan-lock-row', 'data-sev': key }, [el('i'), el('span'), el('b')])),
+      )
+    : null;
+  const card = el('div', { class: 'scan-lock-card' }, [
+    el('span', { class: 'scan-lock-kicker', text: total ? 'Report ready' : 'Scan complete' }),
+    heading,
+    found,
+    severity,
+    teaser,
+    el('p', { text: 'Subscribe to see every issue, where it is on the page, the failing code and how to fix it. Pro also monitors up to 500 pages per domain every day and emails you when something breaks.' }),
+    el('div', { class: 'scan-lock-actions' }, [
+      el('a', { class: 'btn btn-accent', href: '/app/signup?plan=monthly', text: 'Start 3-day free trial' }),
+      el('a', { class: 'btn', href: '/app/signup?plan=annual', text: 'Or pay $199/year' }),
     ]),
+    el('p', { class: 'scan-lock-note' }, ['$29/mo per domain after the trial, or $199/year. Already subscribed? ', el('a', { href: '/app/login', text: 'Log in to your dashboard' }), '.']),
   ]);
-  const reportBox = el('div', { class: 'results-filtered' });
-  const foot = el('div', { class: 'results-foot' }, [
-    el('p', { text: 'This free check tests one page with automated rules. Automated testing finds many, but not all, WCAG failures. Pro monitors up to 500 URLs per domain with daily rescans and alerts. Try it free for 3 days, then $29/mo per domain.' }),
-    el('a', { class: 'btn btn-accent', href: '/app/signup', text: 'Start 3-day free trial' }),
-  ]);
-  mount.replaceChildren(el('div', { class: 'results-card' }, [head, reportBox, foot]));
-  mountFilteredReport(reportBox, r, { level: 3 });
+  panel.classList.add('is-locked');
+  panel.append(el('div', { class: 'scan-lock', role: 'region', 'aria-labelledby': 'scan-lock-title' }, [card]));
   heading.focus({ preventScroll: true });
+  card.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'center' });
 }
 
 for (const form of forms) {
@@ -201,8 +240,8 @@ for (const form of forms) {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || 'The scan could not be completed. Please try again.');
-      await scan.finish();
-      render(data);
+      await scan.toLastStep();
+      showLocked(scan.panel, data, parsed.url);
     } catch (err) {
       scan.stop();
       showFailure(err.name === 'AbortError' ? 'The page took too long to respond. Please try again later.' : err.message);

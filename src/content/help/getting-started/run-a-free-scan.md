@@ -1,12 +1,12 @@
 ---
 title: 'Run a Free Accessibility Scan'
-description: 'How to check any public web page for free with the AccessBell scanner, choose a WCAG standard, and read and filter the report.'
+description: 'How to check any public web page for free with the AccessBell scanner, choose a WCAG standard, and what the free preview shows compared with Pro.'
 order: 2
-updatedDate: 2026-09-28
+updatedDate: 2026-09-30
 sources: ['axe-core', 'wai-evaluate']
 ---
 
-The free scan checks a single public page against WCAG and gives you a full report in under a minute. You do not need an account.
+The free scan checks a single public page against WCAG in under a minute and tells you how many issues it found and how severe they are. You do not need an account. To see each issue and how to fix it, subscribe to AccessBell Pro.
 
 ## Run a Scan
 
@@ -24,24 +24,16 @@ The free scan checks a single public page against WCAG and gives you a full repo
 
 The standard you choose decides which rules run. If you pick WCAG 2.1 AA, rules that only apply to WCAG 2.2 or to Level AAA are not run.
 
-## Read the Report
+## What the Free Scan Shows
 
-The report starts with a score out of 100 and a summary, followed by three lists:
+The free scan is a preview. When it finishes, you see:
 
-- **Issues to fix**, sorted from critical to minor. Each one shows what is wrong, the WCAG criterion it fails, how to fix it and the failing code.
-- **Needs manual review**, for items automated testing could not decide.
-- **Checks passed**.
+- **How many issues** the page has against the standard you chose
+- **How severe they are**: the number of critical, serious, moderate and minor issues
 
-## Filter the Report
+To see the issues themselves, subscribe to AccessBell Pro. In the dashboard, every issue shows what is wrong, the WCAG criterion it fails, where it is on the page, the failing code and how to fix it. You can also filter the report by WCAG version, level, principle, success criterion and severity. See [Filter reports by WCAG version and level](/resources/help-center/scans-and-reports/filter-reports-by-wcag-version).
 
-Use the filters above the results to narrow the list without scanning again:
-
-- **WCAG version** and **Level**, for example only WCAG 2.1 Level AA issues
-- **Principle**: perceivable, operable, understandable or robust
-- **Success criterion**, with a count for each
-- **Severity**: critical, serious, moderate or minor
-
-The summary line tells you how many issues match and, when it applies, how many more you would add by moving up a level. See [Filter reports by WCAG version and level](/resources/help-center/scans-and-reports/filter-reports-by-wcag-version).
+Pro is $29 per domain per month after a 3-day free trial, or $199 per domain per year. [Start your free trial](/resources/help-center/getting-started/start-your-free-trial).
 
 ## Limits of the Free Scan
 

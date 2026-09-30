@@ -6,7 +6,7 @@ updatedDate: 2026-09-28
 sources: ['new-in-22', 'new-in-21']
 ---
 
-Reports can be filtered after the scan, instantly, without running it again. This works in the free scanner and in every saved report in the dashboard.
+Reports can be filtered after the scan, instantly, without running it again. This works in every report in the dashboard.
 
 ## The Filters
 
