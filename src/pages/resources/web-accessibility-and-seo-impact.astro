@@ -1,0 +1,151 @@
+---
+import ResearchReport from '../../components/ResearchReport.astro';
+
+const PATH = '/resources/web-accessibility-and-seo-impact';
+const faqs = [
+  {
+    q: 'What impact does web accessibility have on SEO?',
+    a: 'Studies find a positive link, though not proof of cause. A 2025 Semrush analysis of 10,000 sites found that sites with higher accessibility scores had 23% more organic traffic, ranked for 27% more keywords and had a stronger Authority Score. Many accessibility fixes, such as alt text, headings and descriptive links, are also standard SEO advice.',
+  },
+  {
+    q: 'Is accessibility a Google ranking factor?',
+    a: 'None of the research we found shows that Google uses accessibility as a ranking signal, and we are not aware of a Google statement saying it does. What is clear is that Google\'s own SEO Starter Guide recommends practices that overlap with accessibility, so doing accessibility well usually helps SEO as a side effect.',
+  },
+  {
+    q: 'Does the research prove that accessibility improves rankings?',
+    a: 'No. The studies show correlation. Sites that improve accessibility often improve other things at the same time, such as content, structure and speed, and the research cannot separate those effects. Treat the numbers as evidence that the two goals point the same way, not as a guaranteed uplift.',
+  },
+  {
+    q: 'Which accessibility fixes help SEO the most?',
+    a: 'The ones that also give search engines clearer text and structure: image alt text, one descriptive H1 with a logical heading order, descriptive link text instead of "click here", unique page titles, captions and transcripts for audio and video, and a mobile-friendly layout that works when zoomed.',
+  },
+  {
+    q: 'Is this AccessBell\'s own study?',
+    a: 'No. We summarise studies published by Semrush, run with AccessibilityChecker.org and BuiltWith. AccessibilityChecker.org is a competitor of AccessBell, so we name it plainly and add our own caveats. The sources are listed at the end.',
+  },
+];
+const history = [
+  { date: '2026-09-30', note: 'First published. Figures are from the 2025 and 2023 Semrush studies with AccessibilityChecker.org and BuiltWith, and from Google Search Central guidance. We did not run our own study for this report.' },
+];
+---
+<ResearchReport
+  path={PATH}
+  seoTitle="What Impact Does Web Accessibility Have on SEO? | AccessBell"
+  description="What impact does web accessibility have on SEO? Studies of thousands of sites link it to more traffic and keywords. See the data, the caveats and the fixes."
+  eyebrow="Research report"
+  title="What Impact Does Web Accessibility Have on SEO?"
+  lead="What impact does web accessibility have on SEO? Two large Semrush studies link better accessibility to more organic traffic, more ranking keywords and stronger authority. This research report explains the data, what it can and cannot prove, and which fixes help both people and search."
+  authors={['anton-stewart']}
+  published="2026-09-30"
+  stats={[
+    { value: '10,000', label: 'websites analysed in the 2025 Semrush study' },
+    { value: '+23%', label: 'organic traffic for sites with higher accessibility scores' },
+    { value: '+27%', label: 'more organic keywords ranked' },
+    { value: '73.4%', label: 'of 847 sites grew organic traffic after installing accessibility tools' },
+  ]}
+  toc={[
+    { slug: 'impact', text: 'What Impact Does Web Accessibility Have on SEO?' },
+    { slug: 'research', text: 'What the Research Found About Accessibility and SEO' },
+    { slug: 'caveats', text: 'What the Studies Can and Cannot Prove' },
+    { slug: 'overlap', text: 'Where Web Accessibility and SEO Overlap' },
+    { slug: 'how-to', text: 'How to Get SEO Benefits From Accessibility Work' },
+  ]}
+  sources={['semrush-2025-study', 'semrush-2023-study', 'google-seo-starter', 'google-image-seo', 'webaim-million-2026', 'wcag22']}
+  faqs={faqs}
+  history={history}
+>
+  <h2 id="impact">What Impact Does Web Accessibility Have on SEO?</h2>
+  <p>
+    The short answer is that <strong>the two goals point in the same direction</strong>. Making a site accessible means clear structure, text for every image, descriptive links, readable pages and content that works on any device. Those are also the things search engines need to understand a page. Published studies find that more accessible sites tend to get more organic traffic and rank for more keywords.
+  </p>
+  <p>
+    The evidence is a correlation, not proof that accessibility causes higher rankings, and we say so plainly below. Even so, the practical case is strong: most accessibility fixes cost little, help real people, and line up with Google's own SEO guidance.
+  </p>
+
+  <h2 id="research">What the Research Found About Accessibility and SEO</h2>
+  <p>
+    Both studies below were run by Semrush with AccessibilityChecker.org and BuiltWith. AccessibilityChecker.org is a competitor of AccessBell. We did not run these studies. We summarise them and add our own caveats.
+  </p>
+
+  <h3>2025: 10,000 websites</h3>
+  <p>
+    <a href="https://www.semrush.com/news/420048-study-why-accessibility-matters-more-than-ever-for-seo-performance/">Semrush's 2025 analysis</a> compared 10,000 websites with their accessibility compliance scores. Sites with higher scores showed:
+  </p>
+  <figure>
+    <img src="/images/research/seo-2025-study.svg" width="800" height="338" loading="lazy" alt="Bar chart of reported differences for sites with higher accessibility scores: 23 percent more organic traffic, 27 percent more organic keywords and a 19 percent higher Authority Score.">
+    <figcaption>Reported differences for sites with higher accessibility scores. Source: Semrush, 2025.</figcaption>
+  </figure>
+  <ul>
+    <li><strong>About 23% more organic traffic</strong> on average</li>
+    <li><strong>About 27% more organic keywords</strong> ranked</li>
+    <li><strong>About 19% higher Authority Score</strong>, Semrush's measure of a domain's strength</li>
+  </ul>
+  <p>The same study reported that <strong>70% of the sites failed to meet accessibility standards</strong>, which fits what the WebAIM Million found: see our report on the <a href="/resources/present-state-of-web-accessibility-2026">present state of web accessibility in 2026</a>.</p>
+
+  <h3>2023: 847 sites before and after</h3>
+  <p>
+    <a href="https://www.semrush.com/news/242494-study-is-web-accessibility-key-to-driving-organic-traffic/">An earlier Semrush study</a> looked at 847 websites that had installed accessibility remediation tools. BuiltWith identified when each tool was installed, and Semrush measured organic traffic for three months before and three months after.
+  </p>
+  <figure>
+    <img src="/images/research/seo-traffic-outcomes.svg" width="800" height="290" loading="lazy" alt="Stacked bar: 66.1 percent of sites grew organic traffic by 1 to 50 percent, 7.3 percent grew more than 50 percent, and 26.6 percent, derived, did not grow. The average change was plus 12 percent.">
+    <figcaption>Organic traffic change for 847 sites. The 26.6% figure is derived: 100% minus 73.4%. Source: Semrush, 2023.</figcaption>
+  </figure>
+  <ul>
+    <li><strong>66.1%</strong> of sites grew organic traffic by between 1% and 50%.</li>
+    <li><strong>7.3%</strong> grew by more than 50%, so <strong>73.4%</strong> grew in total.</li>
+    <li>The average change across all sites was a <strong>12% increase</strong> in organic traffic.</li>
+  </ul>
+  <details>
+    <summary>View both studies as a table</summary>
+    <table>
+      <thead><tr><th scope="col">Study</th><th scope="col">Sites</th><th scope="col">Finding</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Semrush, 2025</th><td>10,000</td><td>Higher accessibility scores: about 23% more organic traffic, 27% more organic keywords, 19% higher Authority Score</td></tr>
+        <tr><th scope="row">Semrush, 2023</th><td>847</td><td>73.4% grew organic traffic in the 3 months after remediation; average change +12%</td></tr>
+      </tbody>
+    </table>
+  </details>
+
+  <h2 id="caveats">What the Studies Can and Cannot Prove</h2>
+  <p>These are useful signals, and it is worth being clear about their limits:</p>
+  <ul>
+    <li><strong>Correlation, not causation.</strong> Sites that invest in accessibility often improve content, structure and speed at the same time. The studies cannot separate those effects.</li>
+    <li><strong>No control group in the 2023 study.</strong> Traffic naturally rises and falls with seasons and market changes, and the study compared three months either side of an install.</li>
+    <li><strong>Not a ranking-factor test.</strong> None of the research shows that Google uses accessibility scores to rank pages, and we are not aware of a Google statement saying it does.</li>
+    <li><strong>Averages hide variation.</strong> Not every site gained. 26.6% of the 2023 sites did not grow, by our calculation from the published figures.</li>
+    <li><strong>A partner with an interest.</strong> The studies involved a vendor that sells accessibility tools. That does not make the data wrong, and it is a reason to read it critically.</li>
+  </ul>
+  <p>The fair reading is that accessibility work is unlikely to hurt SEO, has a plausible route to help it, and has independent reasons to do it anyway.</p>
+
+  <h2 id="overlap">Where Web Accessibility and SEO Overlap</h2>
+  <p>
+    The plausible route is simple: search engines read your pages a bit like assistive technology does. Both rely on text and structure in the code, not on how a page looks. Google's <a href="https://developers.google.com/search/docs/fundamentals/seo-starter-guide">SEO Starter Guide</a> and its <a href="https://developers.google.com/search/docs/appearance/google-images">image guidance</a> recommend several practices that are also WCAG requirements.
+  </p>
+  <figure>
+    <img src="/images/research/accessibility-seo-overlap.svg" width="800" height="500" loading="lazy" alt="Venn diagram. Accessibility only: keyboard access, visible focus, color contrast, motion controls. SEO only: backlinks, keyword research, site authority, sitemaps. Both: image alt text, headings, descriptive links, page titles, captions, transcripts, mobile friendly design.">
+    <figcaption>Many of the same fixes help people, screen readers and search engines.</figcaption>
+  </figure>
+  <table>
+    <thead><tr><th scope="col">Practice</th><th scope="col">Accessibility benefit</th><th scope="col">SEO benefit</th></tr></thead>
+    <tbody>
+      <tr><th scope="row"><a href="/blog/wcag-1-1-1-non-text-content">Image alt text</a></th><td>Screen reader users know what an image shows</td><td>Search engines understand the image, which helps image search</td></tr>
+      <tr><th scope="row">Logical headings, one H1</th><td>Screen reader users navigate by heading</td><td>Clear page structure and topic</td></tr>
+      <tr><th scope="row">Descriptive link text</th><td>Links make sense out of context</td><td>Anchor text signals what the target page is about</td></tr>
+      <tr><th scope="row">Unique, descriptive page titles</th><td>Users know where they are, and tabs are distinguishable</td><td>Titles are a core on-page signal and appear in results</td></tr>
+      <tr><th scope="row">Captions and transcripts</th><td>Deaf and hard of hearing users can follow</td><td>Adds crawlable text for audio and video</td></tr>
+      <tr><th scope="row"><a href="/resources/wcag/3-1-1-language-of-page">Page language</a></th><td>Screen readers use the right voice</td><td>Signals the language of the page</td></tr>
+      <tr><th scope="row">Mobile-friendly, zoomable layout</th><td>Works at high zoom and on small screens</td><td>Supports mobile search experience</td></tr>
+    </tbody>
+  </table>
+  <p>Some accessibility work has no direct SEO effect, such as keyboard access and color contrast. It still improves usability, and better usability tends to keep visitors on the page. Likewise, backlinks and keyword research are pure SEO. The two disciplines overlap, they do not replace each other.</p>
+
+  <h2 id="how-to">How to Get SEO Benefits From Accessibility Work</h2>
+  <ol>
+    <li><strong>Start with what both need.</strong> Add meaningful alt text, fix heading order, replace "click here" links and give every page a unique title. A <a href="/#scan">free WCAG scan</a> finds missing alt text, empty links and heading problems in seconds.</li>
+    <li><strong>Add text alternatives for media.</strong> Caption videos and add transcripts to podcasts. See <a href="/resources/wcag/1-2-2-captions-prerecorded">1.2.2 Captions (Prerecorded)</a>.</li>
+    <li><strong>Fix the errors that hurt everyone.</strong> Low contrast text, unlabeled fields and empty buttons are the most common failures on the web, as our <a href="/resources/present-state-of-web-accessibility-2026">2026 research report</a> shows.</li>
+    <li><strong>Combine audits.</strong> When you run an SEO audit, add an accessibility scan. Our <a href="/blog/seo-audit">SEO audit guide</a> shows what a full site check covers.</li>
+    <li><strong>Test by hand.</strong> Tab through the page and try a screen reader. If the page makes sense that way, a crawler can follow it too.</li>
+    <li><strong>Monitor.</strong> New content brings new issues. <a href="/app/signup">Start a 3-day free trial</a> and AccessBell Pro rescans up to 500 URLs per domain every day.</li>
+  </ol>
+</ResearchReport>

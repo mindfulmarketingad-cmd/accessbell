@@ -1,0 +1,157 @@
+---
+import ResearchReport from '../../components/ResearchReport.astro';
+
+const PATH = '/resources/present-state-of-web-accessibility-2026';
+const faqs = [
+  {
+    q: 'What is the present state of web accessibility in 2026?',
+    a: 'Poor, and slightly worse than a year ago. The WebAIM Million found detectable WCAG 2 failures on 95.9% of the top one million home pages in 2026, up from 94.8% in 2025, with an average of 56.1 detected errors per page, up from 51.',
+  },
+  {
+    q: 'Is web accessibility getting better or worse?',
+    a: 'On this measure, worse. Both the share of pages with detected failures and the average number of errors per page rose between 2025 and 2026. Low contrast text became more common too, from 79.1% of home pages to 83.9%.',
+  },
+  {
+    q: 'What are the most common web accessibility problems?',
+    a: 'Six: low contrast text, missing image alt text, missing form input labels, empty links, empty buttons and a missing document language. Together they made up 96% of the errors WebAIM detected. All six can be found by an automated scan and fixed in code.',
+  },
+  {
+    q: "Is this AccessBell's own research?",
+    a: 'No. This report summarises published data, mainly the WebAIM Million, and adds our own analysis and fixes. We did not scan these pages ourselves. Every figure names its source, and the sources are listed at the end of the report.',
+  },
+  {
+    q: 'Does an automated scan find all accessibility problems?',
+    a: 'No. The WebAIM figures come from automated detection, which finds only a portion of real problems. A page with no detected errors can still be hard to use, so pair automated scans with manual testing. See our guide to [automated vs manual accessibility testing](/blog/automated-vs-manual-accessibility-testing).',
+  },
+];
+const history = [
+  { date: '2026-09-30', note: 'First published. Figures are from the WebAIM Million 2026 report, the World Health Organization disability fact sheet and reporting on the U.S. Department of Justice Title II compliance date extension. We did not run our own scan for this report.' },
+];
+---
+<ResearchReport
+  path={PATH}
+  seoTitle="Present State of Web Accessibility in 2026 | AccessBell"
+  description="The present state of web accessibility in 2026: 95.9% of home pages have detectable WCAG failures, errors are up 10.1% and six issues cause 96% of them."
+  eyebrow="Research report"
+  title="Present State of Web Accessibility in 2026 (AccessBell Research Report)"
+  lead="The present state of web accessibility in 2026 is a story of slow progress reversing. This AccessBell research report pulls together the latest published data on how accessible the web really is, which failures cause most of the damage, and what to fix first."
+  authors={['joseph-edwards']}
+  published="2026-09-30"
+  stats={[
+    { value: '95.9%', label: 'of home pages had detected WCAG 2 failures (94.8% in 2025)' },
+    { value: '56.1', label: 'average detected errors per home page, up 10.1%' },
+    { value: '83.9%', label: 'of home pages had low contrast text, the most common failure' },
+    { value: '96%', label: 'of all detected errors came from just six failure types' },
+  ]}
+  toc={[
+    { slug: 'present-state', text: 'What Is the Present State of Web Accessibility in 2026?' },
+    { slug: 'how-we-built-this', text: 'How We Built This Research Report' },
+    { slug: 'numbers', text: 'Web Accessibility in 2026: The Numbers' },
+    { slug: 'six-failures', text: 'The Six Failures Behind the State of Web Accessibility' },
+    { slug: 'what-it-means', text: 'What the 2026 Numbers Tell Us' },
+    { slug: 'context', text: 'Why Web Accessibility Matters in 2026' },
+    { slug: 'what-to-do', text: 'How to Improve Web Accessibility on Your Site' },
+  ]}
+  sources={['webaim-million-2026', 'who-disability', 'doj-title-ii-dates', 'ada-web', 'wcag22', 'wai-evaluate']}
+  faqs={faqs}
+  history={history}
+>
+  <h2 id="present-state">What Is the Present State of Web Accessibility in 2026?</h2>
+  <p>
+    The most thorough yearly measurement of the web is <a href="https://webaim.org/projects/million/">the WebAIM Million</a>, which runs an automated accessibility check on the home pages of the top one million websites. Its 2026 results show that the present state of web accessibility has slipped:
+  </p>
+  <ul>
+    <li><strong>95.9%</strong> of home pages had detectable failures of the Web Content Accessibility Guidelines (WCAG) 2, up from 94.8% in 2025.</li>
+    <li>Pages averaged <strong>56.1 detected errors</strong>, up from 51 the year before, an increase of 10.1%.</li>
+    <li>More than <strong>56 million</strong> distinct errors were detected across the million pages.</li>
+    <li>Only about <strong>4 in 100</strong> home pages (4.1%) had no detected errors, which is simply 100% minus 95.9%.</li>
+  </ul>
+  <p>
+    For anyone responsible for a website, the message is that a typical page today has dozens of accessibility problems that a machine can find, and that the trend is going the wrong way.
+  </p>
+
+  <h2 id="how-we-built-this">How We Built This Research Report</h2>
+  <p>
+    <strong>This report does not present new testing by AccessBell.</strong> We gathered the most reliable published 2026 data, checked each figure against its source, and added analysis and fix guidance from our own accessibility work. Where a number appears, the source is named. Some limits to keep in mind:
+  </p>
+  <ul>
+    <li><strong>Home pages only.</strong> The WebAIM Million tests the home page of each site, not whole sites. Inner pages such as checkout and account areas may be better or worse.</li>
+    <li><strong>Automated detection only.</strong> Automated tools find many problems but not all. A page with no detected errors is not necessarily accessible. Our <a href="/methodology">methodology page</a> explains what automation can and cannot cover.</li>
+    <li><strong>A snapshot of popular sites.</strong> The top million sites are not every site. Smaller and newer sites may look different.</li>
+    <li><strong>Year-on-year comparisons</strong> use the figures WebAIM published for 2025 and 2026.</li>
+  </ul>
+  <p>We looked for a second large 2026 dataset to cross-check WebAIM and did not find one we could verify, so we have not padded this report with weaker numbers.</p>
+
+  <h2 id="numbers">Web Accessibility in 2026: The Numbers</h2>
+  <h3>Almost every home page has failures</h3>
+  <figure>
+    <img src="/images/research/failures-share-2026.svg" width="800" height="282" loading="lazy" alt="Bar chart: 94.8 percent of home pages had detected WCAG 2 failures in 2025 and 95.9 percent in 2026.">
+    <figcaption>Share of home pages with detected WCAG 2 failures. Source: WebAIM Million, 2026 report.</figcaption>
+  </figure>
+  <h3>The average page has more errors than last year</h3>
+  <figure>
+    <img src="/images/research/errors-per-page-2026.svg" width="800" height="282" loading="lazy" alt="Bar chart: an average of 51 detected errors per home page in 2025 and 56.1 in 2026, an increase of 10.1 percent.">
+    <figcaption>Average detected errors per home page. Source: WebAIM Million, 2026 report.</figcaption>
+  </figure>
+  <details>
+    <summary>View the headline data as a table</summary>
+    <table>
+      <thead><tr><th scope="col">Measure</th><th scope="col">2025</th><th scope="col">2026</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Home pages with detected WCAG 2 failures</th><td>94.8%</td><td>95.9%</td></tr>
+        <tr><th scope="row">Average detected errors per home page</th><td>51</td><td>56.1 (up 10.1%)</td></tr>
+        <tr><th scope="row">Home pages with low contrast text</th><td>79.1%</td><td>83.9%</td></tr>
+      </tbody>
+    </table>
+  </details>
+
+  <h2 id="six-failures">The Six Failures Behind the State of Web Accessibility</h2>
+  <p>
+    The same six kinds of error have led the WebAIM results for seven years in a row, and they account for 96% of everything detected. That concentration is good news: fix these six and you clear most of the problems on the page.
+  </p>
+  <figure>
+    <img src="/images/research/common-failures-2026.svg" width="800" height="494" loading="lazy" alt="Bar chart of the share of home pages with each failure: low contrast text 83.9 percent, missing image alt text 53.1, missing form input labels 51.0, empty links 45.4, empty buttons 29.6 and missing document language 15.8.">
+    <figcaption>The six most common failures on home pages, 2026. Source: WebAIM Million.</figcaption>
+  </figure>
+  <table>
+    <thead><tr><th scope="col">Failure</th><th scope="col">Home pages</th><th scope="col">WCAG criterion</th><th scope="col">The fix</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Low contrast text</th><td>83.9%</td><td><a href="/blog/wcag-1-4-3-contrast-minimum">1.4.3 Contrast (Minimum)</a></td><td>Reach 4.5:1 for body text. Check with our <a href="/resources/contrast-checker">contrast checker</a>.</td></tr>
+      <tr><th scope="row">Missing image alt text</th><td>53.1%</td><td><a href="/blog/wcag-1-1-1-non-text-content">1.1.1 Non-text Content</a></td><td>Describe informative images, and use empty alt for decorative ones.</td></tr>
+      <tr><th scope="row">Missing form input labels</th><td>51.0%</td><td><a href="/blog/wcag-3-3-2-labels-or-instructions">3.3.2 Labels or Instructions</a></td><td>Give every field a visible, connected label.</td></tr>
+      <tr><th scope="row">Empty links</th><td>45.4%</td><td><a href="/blog/wcag-4-1-2-name-role-value">4.1.2 Name, Role, Value</a></td><td>Give icon and image links a text name.</td></tr>
+      <tr><th scope="row">Empty buttons</th><td>29.6%</td><td><a href="/blog/wcag-4-1-2-name-role-value">4.1.2 Name, Role, Value</a></td><td>Give icon-only buttons an accessible name.</td></tr>
+      <tr><th scope="row">Missing document language</th><td>15.8%</td><td><a href="/resources/wcag/3-1-1-language-of-page">3.1.1 Language of Page</a></td><td>Add <code>lang</code> to the <code>html</code> element.</td></tr>
+    </tbody>
+  </table>
+  <p>Low contrast text alone was found on 83.9% of pages, up from 79.1% in 2025, with an average of 34 instances per home page.</p>
+
+  <h2 id="what-it-means">What the 2026 Numbers Tell Us</h2>
+  <ol>
+    <li><strong>The basics are still not done.</strong> Alt text, labels and contrast are among the oldest requirements in WCAG, yet each is missing on a large share of pages.</li>
+    <li><strong>The problem is concentrated.</strong> Because six types cause 96% of errors, a focused clean-up beats a scattergun approach.</li>
+    <li><strong>Most of it can be found automatically.</strong> These six are exactly what a scanner reports well. There is little excuse for shipping them, and continuous scanning stops them coming back.</li>
+    <li><strong>Automation is the floor, not the ceiling.</strong> Real usability, including keyboard access, meaningful alt text and clear content, still needs people to test. Our <a href="/blog/keyboard-accessibility-testing">keyboard testing guide</a> is a quick place to start.</li>
+    <li><strong>Standing still means falling behind.</strong> Errors per page rose 10.1% in a year, so sites that do not monitor tend to accumulate problems as content and code change.</li>
+  </ol>
+
+  <h2 id="context">Why Web Accessibility Matters in 2026</h2>
+  <p>
+    <strong>People.</strong> The World Health Organization estimates that <a href="https://www.who.int/news-room/fact-sheets/detail/disability-and-health">1.3 billion people, or 16% of the global population</a>, experience a significant disability. Our <a href="/blog/stories-of-web-users-with-disabilities">stories of web users with disabilities</a> show what the failures above feel like in practice.
+  </p>
+  <p>
+    <strong>Law.</strong> In the United States, the Department of Justice's rule for state and local government websites adopted WCAG 2.1 Level AA. In April 2026 the DOJ moved its compliance dates back a year, to <strong>April 26, 2027</strong> for entities serving 50,000 people or more and <strong>April 26, 2028</strong> for smaller ones, as summarised by <a href="https://www.reedsmith.com/articles/doj-extends-digital-accessibility-compliance-dates-under-title-ii-of-the-ada/">Reed Smith</a>. The requirements themselves did not change. Private businesses fall under Title III of the ADA, where the DOJ has said the ADA applies to websites but has not set a technical standard: see our guides to <a href="/blog/ada-title-iii-law-for-businesses">ADA Title III law for businesses</a> and the <a href="/blog/ada-website-compliance-guide">ADA website compliance guide</a>. In the European Union, the European Accessibility Act has applied since 28 June 2025, and our <a href="/resources/en-301-549-checker">EN 301 549 checker</a> tests against the related standard.
+  </p>
+  <p>
+    <strong>Business.</strong> Inaccessible pages lose customers, add legal risk and are harder to maintain. We look at one of the upsides in <a href="/resources/web-accessibility-and-seo-impact">what impact web accessibility has on SEO</a>.
+  </p>
+
+  <h2 id="what-to-do">How to Improve Web Accessibility on Your Site</h2>
+  <ol>
+    <li><strong>Measure.</strong> Run a <a href="/#scan">free WCAG scan</a> of your home page and two key journeys, such as checkout and contact.</li>
+    <li><strong>Fix the six.</strong> Start with contrast, alt text, labels, link and button names, and the language attribute. Most fixes are small template changes.</li>
+    <li><strong>Test by hand.</strong> Use only a keyboard, try a screen reader and check that nothing depends on color alone. Follow our <a href="/blog/wcag-2-aa-checklist">WCAG 2 AA checklist</a>.</li>
+    <li><strong>Publish a statement.</strong> Use our free <a href="/resources/statement-generator">accessibility statement generator</a> to say what you support and how people can reach you.</li>
+    <li><strong>Monitor.</strong> New pages and plugins bring new errors. <a href="/app/signup">Start a 3-day free trial</a> and AccessBell Pro rescans up to 500 URLs per domain every day and alerts you when something regresses.</li>
+  </ol>
+</ResearchReport>

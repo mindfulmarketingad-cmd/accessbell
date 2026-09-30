@@ -1,0 +1,166 @@
+---
+// Layout for AccessBell research reports under /resources: header with byline,
+// key findings, a table of contents, the report body (slot), authors, review
+// history, FAQ and sources. Use it for pages that summarise published data.
+import { getEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from './Icon.astro';
+import CtaBand from './CtaBand.astro';
+import AuthorAvatar from './AuthorAvatar.astro';
+import TableOfContents from './TableOfContents.astro';
+import SourceList from './SourceList.astro';
+import { SITE } from '../config/site';
+import { formatDate } from '../lib/format';
+import { authorPath, authorSchema } from '../lib/authors';
+import { faqSchema } from '../lib/schema';
+import { inlineMarkdown, stripMarkdown } from '../lib/inline-markdown';
+import type { SourceId } from '../data/sources';
+
+interface Props {
+  path: string;
+  seoTitle: string;
+  description: string;
+  eyebrow: string;
+  title: string;
+  lead: string;
+  authors: string[];
+  published: string;
+  updated?: string;
+  stats: { value: string; label: string }[];
+  toc: { slug: string; text: string }[];
+  sources: SourceId[];
+  faqs: { q: string; a: string }[];
+  history: { date: string; note: string }[];
+  image?: string;
+  imageAlt?: string;
+}
+const p = Astro.props;
+const url = `${SITE.url}${p.path}`;
+const people = await Promise.all(p.authors.map((id) => getEntry('authors', id)));
+const authors = people.filter((a): a is NonNullable<typeof a> => Boolean(a));
+const toc = [
+  ...p.toc.map((t) => ({ depth: 2, ...t })),
+  { depth: 2, slug: 'faq', text: 'Frequently Asked Questions' },
+  { depth: 2, slug: 'sources-title', text: 'Sources and Further Reading' },
+  { depth: 2, slug: 'about-the-authors', text: authors.length > 1 ? 'About the Authors' : 'About the Author' },
+];
+const schema = [
+  {
+    '@type': 'Article',
+    '@id': `${url}#article`,
+    headline: p.title,
+    description: p.description,
+    datePublished: new Date(p.published).toISOString(),
+    dateModified: new Date(p.updated ?? p.published).toISOString(),
+    mainEntityOfPage: { '@id': `${url}#webpage` },
+    url,
+    articleSection: 'Research',
+    inLanguage: 'en-US',
+    author: authors.map((a) => ({ '@id': `${SITE.url}${authorPath(a)}#author` })),
+    publisher: { '@id': `${SITE.url}/#organization` },
+    image: `${SITE.url}${p.image ?? SITE.ogImage}`,
+  },
+  ...authors.map(authorSchema),
+  faqSchema(p.faqs.map((f) => ({ q: f.q, a: stripMarkdown(f.a) }))),
+];
+---
+<BaseLayout
+  title={p.seoTitle}
+  description={p.description}
+  ogType="article"
+  article={{ published: new Date(p.published).toISOString(), modified: p.updated ? new Date(p.updated).toISOString() : undefined, section: 'Research' }}
+  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: p.eyebrow, href: p.path }]}
+  schema={schema}
+  image={p.image}
+  imageAlt={p.imageAlt}
+>
+  <article>
+    <header class="container article-head">
+      <span class="eyebrow">{p.eyebrow}</span>
+      <h1>{p.title}</h1>
+      <p class="lead">{p.lead}</p>
+      <div class="byline">
+        <div class="byline-people">
+          {authors.map((a) => (
+            <a class="byline-person" href={authorPath(a)}>
+              <AuthorAvatar name={a.data.name} />
+              <span><strong>{a.data.name}</strong><small>Author</small></span>
+            </a>
+          ))}
+        </div>
+        <div class="article-meta">
+          <span>Published <time datetime={new Date(p.published).toISOString()}>{formatDate(new Date(p.published))}</time></span>
+          {p.updated && <span>Updated <time datetime={new Date(p.updated).toISOString()}>{formatDate(new Date(p.updated))}</time></span>}
+        </div>
+      </div>
+    </header>
+
+    <div class="container article-layout">
+      <div class="article-main">
+        <section class="report-stats" aria-labelledby="key-findings">
+          <h2 id="key-findings">Key Findings at a Glance</h2>
+          <ul>
+            {p.stats.map((s) => <li><strong>{s.value}</strong><span>{s.label}</span></li>)}
+          </ul>
+        </section>
+
+        <TableOfContents headings={toc} variant="inline" />
+
+        <div class="prose report-body">
+          <slot />
+
+          <section class="article-faq" aria-labelledby="faq">
+            <h2 id="faq">Frequently Asked Questions</h2>
+            {p.faqs.map((f) => (
+              <>
+                <h3>{f.q}</h3>
+                <p set:html={inlineMarkdown(f.a)} />
+              </>
+            ))}
+          </section>
+        </div>
+
+        <SourceList ids={p.sources} />
+
+        <section class="author-box" aria-labelledby="about-the-authors">
+          <h2 id="about-the-authors">{authors.length > 1 ? 'About the Authors' : 'About the Author'}</h2>
+          {authors.map((a) => (
+            <div class="author-box-item">
+              <AuthorAvatar name={a.data.name} size="lg" />
+              <div>
+                <p class="author-box-name"><a href={authorPath(a)}>{a.data.name}</a><span class="tag">Author</span></p>
+                <p class="author-box-title">{a.data.jobTitle}</p>
+                <p>{a.data.shortBio}</p>
+              </div>
+            </div>
+          ))}
+          <p class="author-box-more"><a class="link-arrow" href="/authors">Meet all our authors <Icon name="arrow" /></a></p>
+        </section>
+
+        <details class="review-history">
+          <summary>How we reviewed this report</summary>
+          <ol>
+            {p.history.map((h, i) => (
+              <li>
+                <time datetime={new Date(h.date).toISOString()}>{formatDate(new Date(h.date))}</time>
+                {i === 0 && <span class="tag tag-pass">Current version</span>}
+                <p>{h.note}</p>
+              </li>
+            ))}
+          </ol>
+        </details>
+      </div>
+
+      <aside class="article-aside" aria-label="Report tools">
+        <TableOfContents headings={toc} variant="aside" />
+        <div class="aside-card">
+          <h2>Check Your Website</h2>
+          <p>Run our free website accessibility checker and get a WCAG 2.2 report in seconds.</p>
+          <a class="btn btn-block" href="/#scan">Run a free scan <Icon name="arrow" /></a>
+        </div>
+      </aside>
+    </div>
+  </article>
+
+  <CtaBand title="Find Out Where Your Website Stands" text="Scan any page free, then start a 3-day free trial to monitor up to 500 URLs per domain every day." />
+</BaseLayout>

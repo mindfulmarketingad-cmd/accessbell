@@ -92,6 +92,8 @@ Export titles, descriptions and headings from your crawl and check each page:
 - **Image alt text:** informative images need alt text that describes them. It helps image search, and it is a basic accessibility requirement under [WCAG 1.1.1 Non-text Content](/blog/wcag-1-1-1-non-text-content).
 - **URLs:** short, readable and descriptive, using words rather than ID numbers where possible.
 
+Accessibility and on-page SEO overlap more than most audits acknowledge. For the research behind that, read our report on [what impact web accessibility has on SEO](/resources/web-accessibility-and-seo-impact).
+
 ## Step 5: Evaluate Content Quality
 
 This is the part of an SEO audit no tool can do for you. Google's guidance on [creating helpful, reliable, people-first content](https://developers.google.com/search/docs/fundamentals/creating-helpful-content) is a good yardstick. For each important page, ask:

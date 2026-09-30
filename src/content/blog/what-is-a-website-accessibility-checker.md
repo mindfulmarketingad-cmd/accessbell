@@ -102,4 +102,6 @@ Our [WCAG 2.2 checklist](/blog/wcag-2-2-checklist) walks through each requiremen
 
 A website accessibility checker is the fastest way to find the objective, code-level barriers on your site and to keep them from coming back. It is not a substitute for human testing or for listening to users with disabilities. Used together, they give you a site that more people can use and a clear record of the work you have done.
 
+For the wider picture, see our research report on the [present state of web accessibility in 2026](/resources/present-state-of-web-accessibility-2026).
+
 Ready to see where your site stands? [Run a free accessibility check](/#scan) and get a report mapped to WCAG in under a minute.
