@@ -26,7 +26,7 @@ faqs:
     a: 'Yes. UsableNet''s 2025 midyear report found that 64% of the companies sued in the first half of 2025 had annual revenue under $25 million. E-commerce sites are the most common target.'
 ---
 
-If you have just been **sued for violating ADA website compliance**, you are not alone and you are not out of options. Plaintiffs filed 3,117 website accessibility lawsuits in U.S. federal court in 2025, up 27% from 2024 ([Seyfarth Shaw](https://www.adatitleiii.com/2026/02/ada-title-iii-federal-lawsuit-filings-fall-slightly-to-8667-in-2025/)), and UsableNet counted more than 5,000 across federal and state courts ([UsableNet 2025 year-end report](https://info.usablenet.com/2025-year-end-report-on-web-accessibility-lawsuits)). Most were filed against online stores.
+If you have just been **sued for violating ADA website compliance**, you are not alone and you are not out of options. Plaintiffs filed 3,117 website accessibility lawsuits in U.S. federal court in 2025, up 27% from 2024 ([Seyfarth Shaw](https://www.adatitleiii.com/2026/03/federal-court-website-accessibility-lawsuit-filings-bounce-back-in-2025/)), and UsableNet counted more than 5,000 across federal and state courts ([UsableNet 2025 year-end report](https://info.usablenet.com/2025-year-end-report-on-web-accessibility-lawsuits)). Most were filed against online stores.
 
 This guide explains what happens next, using one small business's real experience, the costs large brands have paid, and what a defense attorney told other owners in the same position. It ends with how to avoid being sued again.
 

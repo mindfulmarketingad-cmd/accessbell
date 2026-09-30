@@ -59,6 +59,7 @@ export const COVER_TOPICS = {
   'wcag-2-2-checklist': { ui: 'check', label: '2.2', caption: 'WCAG 2.2 Checklist' },
   'wcag-2-aa-checklist': { ui: 'list', label: 'AA', caption: 'WCAG 2 AA Checklist' },
   'what-you-should-know-about-wcag-2-2': { ui: 'sparkle', label: '2.2', caption: 'What’s new in WCAG' },
+  'digital-accessibility-platforms': { ui: 'bell', label: 'Top 3', caption: 'Monitoring and audit platforms' },
   '5-accessibe-alternatives': { ui: 'layers', label: 'Top 5', caption: 'accessiBe alternatives' },
   'accessibe-alternative': { ui: 'shield', label: 'Fix code', caption: 'An accessiBe alternative' },
   'siteimprove-alternative': { ui: 'globe', label: 'Compare', caption: 'A Siteimprove alternative' },

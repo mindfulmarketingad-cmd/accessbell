@@ -22,6 +22,7 @@ const STATIC: Omit<RouteEntry, 'lastmod'>[] = [
   { path: '/resources/free-accessibility-icon-set', label: 'Free Accessibility Icon Set', note: '17 free SVG and PNG accessibility icons', group: 'main' },
   { path: '/resources/present-state-of-web-accessibility-2026', label: 'Present State of Web Accessibility in 2026', note: 'Research report: WebAIM Million 2026 data and what to fix first', group: 'main' },
   { path: '/resources/web-accessibility-and-seo-impact', label: 'What Impact Does Web Accessibility Have on SEO?', note: 'Research report on accessibility, traffic and rankings', group: 'main' },
+  { path: '/resources/pdf-accessibility-checker', label: 'Free PDF Accessibility Checker', note: 'Check PDFs for WCAG and PDF/UA issues in your browser', group: 'main' },
   { path: '/resources/chart-color-checker', label: 'Chart and Infographic Color Checker', note: 'Free chart color checker for color blindness and contrast', group: 'main' },
   { path: '/resources/contrast-checker', label: 'WCAG Color Contrast Checker', note: 'Free color contrast ratio checker', group: 'main' },
   { path: '/platforms', label: 'Accessibility Checkers by Platform', note: 'WordPress, Shopify, Webflow, Squarespace and Wix', group: 'main' },

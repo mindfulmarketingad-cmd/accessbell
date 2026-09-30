@@ -12,30 +12,35 @@ const BOOKMARK_PAGES = 21;
 
 export const PDF_CHECKS = {
   'pdf-untagged': {
+    label: 'Tagged for screen readers',
     title: 'PDF is not tagged',
     impact: 'critical',
     wcag: ['1.3.1', '4.1.2'],
     fix: 'Export the PDF with tags from the source file (in Word: File > Save As > PDF > Options > "Document structure tags for accessibility"), or tag it in Adobe Acrobat Pro with Accessibility > Autotag Document, then review the tags.',
   },
   'pdf-image-only': {
+    label: 'Real text, not scanned images',
     title: 'Pages are scanned images with no real text',
     impact: 'critical',
     wcag: ['1.1.1', '1.4.5'],
     fix: 'Run text recognition (OCR) on the scanned pages, for example Scan & OCR > Recognize Text in Acrobat, or replace the scan with a PDF exported from the original document.',
   },
   'pdf-figure-alt': {
+    label: 'Figures have alternative text',
     title: 'Figures have no alternative text',
     impact: 'critical',
     wcag: ['1.1.1'],
     fix: 'Add alternative text to each meaningful image in the source file before exporting, or in Acrobat with Accessibility > Set Alternate Text. Mark decorative images as artifacts.',
   },
   'pdf-encrypted': {
+    label: 'Security settings allow screen readers',
     title: 'Security settings block screen readers',
     impact: 'critical',
     wcag: ['4.1.2'],
     fix: 'In the PDF security settings, allow "Enable text access for screen reader devices for the visually impaired", or remove the password restrictions.',
   },
   'pdf-title': {
+    label: 'Has a document title',
     title: 'PDF has no document title',
     impact: 'serious',
     wcag: ['2.4.2'],
@@ -43,6 +48,7 @@ export const PDF_CHECKS = {
     autoFix: true,
   },
   'pdf-lang': {
+    label: 'Has a document language',
     title: 'PDF has no document language',
     impact: 'serious',
     wcag: ['3.1.1'],
@@ -50,12 +56,14 @@ export const PDF_CHECKS = {
     autoFix: true,
   },
   'pdf-form-labels': {
+    label: 'Form fields are labeled',
     title: 'Form fields have no accessible name',
     impact: 'serious',
     wcag: ['1.3.1', '3.3.2', '4.1.2'],
     fix: 'Give each form field a tooltip (in Acrobat: Prepare Form > field Properties > General > Tooltip) that says what to enter.',
   },
   'pdf-display-title': {
+    label: 'Viewer shows the title',
     title: 'The viewer shows the file name, not the title',
     impact: 'moderate',
     wcag: ['2.4.2'],
@@ -63,12 +71,14 @@ export const PDF_CHECKS = {
     autoFix: true,
   },
   'pdf-tab-order': {
+    label: 'Tab order follows the structure',
     title: 'Tab order does not follow the document structure',
     impact: 'moderate',
     wcag: ['2.4.3'],
     fix: 'Set each page with links or form fields to use the document structure for tab order (in Acrobat: page Properties > Tab Order > Use Document Structure).',
   },
   'pdf-bookmarks': {
+    label: 'Long document has bookmarks',
     title: 'Long PDF has no bookmarks',
     impact: 'moderate',
     wcag: ['2.4.5'],

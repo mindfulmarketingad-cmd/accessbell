@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 400" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+<rect width="960" height="400" fill="#f7f8f6"/>
+<text x="480.0" y="48" font-size="22" font-weight="800" fill="#22262f" text-anchor="middle">Which platform fits your team?</text>
+<rect x="40" y="84" width="600" height="80" rx="12" fill="#fff" stroke="#d9dde3" stroke-width="2"/>
+<text x="64" y="118" font-size="15" font-weight="500" fill="#22262f" text-anchor="start">You need continuous monitoring, fix guidance and</text>
+<text x="64" y="142" font-size="15" font-weight="500" fill="#22262f" text-anchor="start">a legal evidence trail on a small-business budget</text>
+<path d="M660 124 h60" stroke="#5b6170" stroke-width="3"/><path d="M720 116 l12 8 -12 8z" fill="#5b6170"/>
+<rect x="744" y="96" width="176" height="56" rx="12" fill="#44723f"/><text x="832" y="131" font-size="18" font-weight="800" fill="#fff" text-anchor="middle">AccessBell</text>
+<rect x="40" y="184" width="600" height="80" rx="12" fill="#fff" stroke="#d9dde3" stroke-width="2"/>
+<text x="64" y="218" font-size="15" font-weight="500" fill="#22262f" text-anchor="start">You need a managed program: expert audits,</text>
+<text x="64" y="242" font-size="15" font-weight="500" fill="#22262f" text-anchor="start">managed services and training for your teams</text>
+<path d="M660 224 h60" stroke="#5b6170" stroke-width="3"/><path d="M720 216 l12 8 -12 8z" fill="#5b6170"/>
+<rect x="744" y="196" width="176" height="56" rx="12" fill="#353a47"/><text x="832" y="231" font-size="18" font-weight="800" fill="#fff" text-anchor="middle">Level Access</text>
+<rect x="40" y="284" width="600" height="80" rx="12" fill="#fff" stroke="#d9dde3" stroke-width="2"/>
+<text x="64" y="318" font-size="15" font-weight="500" fill="#22262f" text-anchor="start">Your developers already use axe tools and you need</text>
+<text x="64" y="342" font-size="15" font-weight="500" fill="#22262f" text-anchor="start">enterprise scanning plus an expert audit team</text>
+<path d="M660 324 h60" stroke="#5b6170" stroke-width="3"/><path d="M720 316 l12 8 -12 8z" fill="#5b6170"/>
+<rect x="744" y="296" width="176" height="56" rx="12" fill="#353a47"/><text x="832" y="331" font-size="18" font-weight="800" fill="#fff" text-anchor="middle">Deque</text>
+</svg>

@@ -1,0 +1,215 @@
+---
+import CtaBand from '../../components/CtaBand.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import Faq from '../../components/Faq.astro';
+import { faqSchema, type FaqItem } from '../../lib/schema';
+import { SITE } from '../../config/site';
+import { criterionPath } from '../../lib/wcag-pages';
+import { PDF_CHECKS } from '../../../server/pdf-audit.js';
+
+const PATH = '/resources/pdf-accessibility-checker';
+
+// WCAG criteria the checks map to, so the browser script can link each one to its page.
+const wcagLinks = Object.fromEntries(
+  [...new Set(Object.values(PDF_CHECKS).flatMap((c) => c.wcag))].map((sc) => [sc, criterionPath(sc)]),
+);
+const IMPACT: Record<string, string> = { critical: 'Critical', serious: 'Serious', moderate: 'Moderate' };
+const checks = Object.entries(PDF_CHECKS).map(([id, c]) => ({ id, ...c }));
+
+const CHECKLIST = [
+  { title: 'Tagged PDF', impact: 'Critical', how: 'In Acrobat, open File > Properties > Description. "Tagged PDF: Yes" should appear under Advanced.' },
+  { title: 'Document title', impact: 'Serious', how: 'File > Properties > Description > Title is filled in, and Initial View is set to show the document title.' },
+  { title: 'Document language', impact: 'Serious', how: 'File > Properties > Advanced > Reading Options > Language is set, for example English (en-US).' },
+  { title: 'Reading order', impact: 'Serious', how: 'Open the Tags or Order panel, or read the file with a screen reader, and confirm content is read in a logical order.' },
+  { title: 'Alternative text on images', impact: 'Critical', how: 'Each meaningful image has alt text that says what it shows. Decorative images are marked as artifacts.' },
+  { title: 'Heading structure', impact: 'Serious', how: 'Headings are tagged H1, H2, H3 in order, not just styled to look bigger.' },
+  { title: 'Table headers', impact: 'Serious', how: 'Data tables use TH tags for header cells, and simple tables have no merged cells.' },
+  { title: 'Form field labels', impact: 'Serious', how: 'Every fillable field has a tooltip that says what to enter, and fields are in a logical tab order.' },
+  { title: 'Color contrast', impact: 'Serious', how: 'Text has a contrast ratio of at least 4.5:1, or 3:1 for large text. Use our contrast checker to test colors.' },
+  { title: 'Bookmarks', impact: 'Moderate', how: 'Documents with more than about 20 pages have bookmarks for each main section.' },
+  { title: 'Security settings', impact: 'Critical', how: 'If the file has a password, text access for screen readers is still allowed.' },
+  { title: 'Link text', impact: 'Moderate', how: 'Links say where they go, such as "2026 fee schedule", not "click here" or a bare web address.' },
+];
+
+const faqs: FaqItem[] = [
+  {
+    q: 'Is this PDF accessibility checker free?',
+    a: 'Yes. You can check as many PDFs as you like without an account. The check runs in your browser, so your file is never uploaded to AccessBell or anyone else.',
+  },
+  {
+    q: 'What does the PDF accessibility checker test?',
+    a: 'Ten automated checks based on the W3C PDF techniques for WCAG and the machine-checkable parts of PDF/UA: tags, scanned image-only pages, alternative text on tagged figures, security settings that block screen readers, the document title and whether viewers show it, the document language, form field labels, tab order and bookmarks. It also reports whether the file declares PDF/UA conformance.',
+  },
+  {
+    q: 'Does passing this check mean my PDF is WCAG or PDF/UA compliant?',
+    a: 'No. Automated checks cannot judge reading order, whether alt text is accurate, whether headings and tables are tagged correctly, or color contrast inside the document. Use this checker to find the common failures quickly, then review the file with a screen reader and a full PDF/UA validator such as PAC before you claim conformance.',
+  },
+  {
+    q: 'What is the difference between WCAG and PDF/UA?',
+    a: 'WCAG is the W3C standard for accessible web content, and laws such as the ADA Title II rule and Section 508 point to it. PDF/UA (ISO 14289) is the ISO standard for how an accessible PDF file must be built, covering the technical structure that lets assistive technology read it. A PDF that meets PDF/UA is a strong foundation for meeting WCAG, but you still need to check things like contrast and meaningful alt text.',
+  },
+  {
+    q: 'Can I check a scanned PDF?',
+    a: 'Yes. The checker flags pages that contain images but no text, which usually means the page is a scan. Screen readers cannot read a scan, so run text recognition (OCR) and then tag the document, or publish the content as a web page instead.',
+  },
+  {
+    q: 'How do I check every PDF on my website?',
+    a: 'AccessBell Pro finds the PDFs linked from your pages and lists them on your domain\'s Documents tab, runs the same checks on each one and can fix the title and language for you. It comes with a 3-day free trial.',
+  },
+];
+
+const schema = [
+  {
+    '@type': 'WebApplication',
+    name: 'Free PDF Accessibility Checker',
+    url: `${SITE.url}${PATH}`,
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'Any',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    publisher: { '@id': `${SITE.url}/#organization` },
+  },
+  faqSchema(faqs),
+];
+---
+<BaseLayout
+  title="Free PDF Accessibility Checker, WCAG & PDF/UA Compliance"
+  description="Free PDF accessibility checker for WCAG and PDF/UA compliance. Check tags, title, language, alt text, scanned pages and form labels in your browser. No upload."
+  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: 'PDF Accessibility Checker', href: PATH }]}
+  schema={schema}
+>
+  <section class="gen-hero" aria-labelledby="pdfc-title">
+    <div class="container">
+      <span class="gen-hero-icon"><Icon name="doc" /></span>
+      <h1 id="pdfc-title">Free PDF Accessibility Checker: <span class="accent">WCAG &amp; PDF/UA Compliance</span></h1>
+      <p class="lead">Use this free PDF accessibility checker to test any PDF against the requirements of WCAG 2.1, PDF/UA (ISO 14289) and Section 508 that software can verify. Choose a file and get results in seconds. The check runs in your browser, so your document never leaves your device.</p>
+    </div>
+  </section>
+
+  <div class="container gen-body" data-pdf-checker data-wcag={JSON.stringify(wcagLinks)}>
+    <section class="gen-main pdfc-main" aria-labelledby="pdfc-tool-title">
+      <h2 id="pdfc-tool-title" class="visually-hidden">Check a PDF</h2>
+      <div class="gen-card">
+        <div class="gen-card-head"><h3>PDF Accessibility Analysis</h3></div>
+        <div class="gen-card-body">
+          <label class="pdfc-drop" for="pdfc-file" data-drop>
+            <span class="pdfc-drop-icon"><Icon name="doc" /></span>
+            <strong>Choose a PDF to check</strong>
+            <span>or drag and drop it here. Up to 100 MB.</span>
+            <input id="pdfc-file" type="file" accept="application/pdf,.pdf" data-file />
+          </label>
+          <p class="gen-privacy"><Icon name="lock" /> Checked in your browser. Your file is not uploaded or stored.</p>
+          <details class="pdfc-what">
+            <summary>What this checker tests</summary>
+            <ul>
+              {checks.map((c) => <li>{c.label} <span class={`tag tag-${c.impact}`}>{IMPACT[c.impact]}</span></li>)}
+            </ul>
+          </details>
+        </div>
+      </div>
+
+      <p class="visually-hidden" role="status" aria-live="polite" data-status></p>
+      <div class="pdfc-results" data-results hidden tabindex="-1"></div>
+    </section>
+  </div>
+
+  <section class="cc-explain-section" aria-labelledby="pdfc-checklist-title">
+    <div class="container prose pdfc-prose">
+      <h2 id="pdfc-checklist-title">PDF Accessibility Checklist</h2>
+      <p>No PDF accessibility checker can test everything. Use this checklist to review the rest by hand. The paths are for Adobe Acrobat Pro; other editors have similar settings.</p>
+      <ul class="pdfc-checklist">
+        {CHECKLIST.map((c, i) => (
+          <li>
+            <input type="checkbox" id={`pdfc-item-${i}`} aria-describedby={`pdfc-how-${i}`} />
+            <div>
+              <label for={`pdfc-item-${i}`}><strong>{c.title}</strong></label> <span class={`tag tag-${c.impact.toLowerCase()}`}>{c.impact}</span>
+              <p id={`pdfc-how-${i}`}>{c.how}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <h2 id="pdfc-what-title">What Makes a PDF Accessible?</h2>
+      <p>An accessible PDF is a structured document, not just a picture of a page. Behind what you see, a <strong>tagged PDF</strong> contains a hidden tree of tags that says what each part is: a heading, a paragraph, a list, a table, an image or a form field. Screen readers such as NVDA, JAWS and VoiceOver read those tags to announce the content in a logical order. Without tags, a PDF is a flat layout that assistive technology has to guess at.</p>
+      <p>On top of tags, an accessible PDF has a title and a declared language, alternative text on meaningful images, real text rather than scanned images, labeled form fields, sufficient color contrast and a reading order that matches the visual layout. The W3C documents how to meet each WCAG requirement in a PDF in its <a href="https://www.w3.org/WAI/WCAG22/Techniques/#pdf" rel="noopener noreferrer">PDF Techniques for WCAG</a>.</p>
+
+      <h2 id="pdfc-standards-title">PDF Accessibility Standards: WCAG, PDF/UA and Section 508</h2>
+      <p>Three standards come up whenever you check PDF accessibility. They overlap, but they answer different questions.</p>
+      <div class="table-scroll">
+        <table>
+          <caption class="visually-hidden">WCAG, PDF/UA and Section 508 compared for PDF documents</caption>
+          <thead><tr><th scope="col">Standard</th><th scope="col">Published by</th><th scope="col">What it covers</th><th scope="col">Where it applies to PDFs</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">WCAG 2.1 / 2.2 Level AA</th><td>W3C</td><td>Whether content works for people with disabilities, in any format</td><td>The standard in the DOJ ADA Title II rule and the usual benchmark for ADA Title III</td></tr>
+            <tr><th scope="row">PDF/UA (ISO 14289)</th><td>ISO</td><td>How an accessible PDF file must be built: tags, structure and metadata</td><td>Procurement and publishing requirements; a technical route to meeting WCAG in PDFs</td></tr>
+            <tr><th scope="row">Section 508</th><td>U.S. Access Board</td><td>Federal ICT accessibility, incorporating WCAG 2.0 Level A and AA</td><td>Federal agencies and their contractors, including non-web documents</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Section 508 applies WCAG 2.0 to documents such as PDFs, except four criteria that only make sense for websites: 2.4.1 Bypass Blocks, 2.4.5 Multiple Ways, 3.2.3 Consistent Navigation and 3.2.4 Consistent Identification (<a href="https://www.section508.gov/develop/applicability-conformance/" rel="noopener noreferrer">Section508.gov</a>). PDF/UA-1 is ISO 14289-1; PDF/UA-2, ISO 14289-2, followed in 2024.</p>
+
+      <h2 id="pdfc-steps-title">How to Make a PDF Accessible in 8 Steps</h2>
+      <ol>
+        <li><strong>Start with an accessible source file.</strong> Use real heading styles, lists and table headers in Word, Google Docs or InDesign, and add alt text to images before you export.</li>
+        <li><strong>Export with tags.</strong> In Word, choose File &gt; Save As &gt; PDF, open Options and tick "Document structure tags for accessibility". Printing to PDF throws the tags away.</li>
+        <li><strong>Run this PDF accessibility checker</strong> to catch missing tags, title, language and form labels, and pages that are scanned images.</li>
+        <li><strong>Set the title and language</strong> in File &gt; Properties, and set Initial View to show the document title.</li>
+        <li><strong>Fix the tags and reading order</strong> in Acrobat Pro with the Reading Order tool and the Tags panel, if the export was not clean.</li>
+        <li><strong>Check alternative text</strong> on every meaningful image, and mark decorative images as artifacts.</li>
+        <li><strong>Label form fields</strong> with tooltips and set the tab order to follow the document structure.</li>
+        <li><strong>Test with a screen reader</strong> and a full validator such as <a href="https://pac.pdf-accessibility.org/en" rel="noopener noreferrer">PAC</a> or Acrobat's <a href="https://helpx.adobe.com/acrobat/using/create-verify-pdf-accessibility.html" rel="noopener noreferrer">Accessibility Check</a>, then publish.</li>
+      </ol>
+
+      <h2 id="pdfc-failures-title">Common PDF Accessibility Failures</h2>
+      <ul>
+        <li><strong>Untagged PDFs,</strong> usually made with "Print to PDF" or scanning, so screen readers get no structure at all.</li>
+        <li><strong>Scanned pages with no text layer,</strong> which are silent to screen readers and cannot be searched.</li>
+        <li><strong>Images without alt text,</strong> including charts and infographics that carry key information.</li>
+        <li><strong>No title or language,</strong> so the viewer shows a file name like "final-v3.pdf" and screen readers may read in the wrong language.</li>
+        <li><strong>Unlabeled form fields,</strong> which leave screen reader users guessing what to type.</li>
+        <li><strong>Wrong reading order</strong> in multi-column layouts, where text is read across columns instead of down them.</li>
+        <li><strong>Tables without header cells,</strong> so data cannot be matched to its column or row.</li>
+        <li><strong>Low contrast text,</strong> such as light gray on white. Test colors with our <a href="/resources/contrast-checker">color contrast checker</a>.</li>
+      </ul>
+
+      <h2 id="pdfc-tools-title">PDF Accessibility Checker Tools Compared</h2>
+      <div class="table-scroll">
+        <table>
+          <caption class="visually-hidden">PDF accessibility checker tools compared</caption>
+          <thead><tr><th scope="col">Tool</th><th scope="col">Cost</th><th scope="col">Runs on</th><th scope="col">Best for</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">This PDF accessibility checker</th><td>Free</td><td>Any browser</td><td>A quick check of one file, with no upload or install</td></tr>
+            <tr><th scope="row"><a href="/pricing">AccessBell Pro</a></th><td>$29/month per domain</td><td>Any browser</td><td>Finding and checking every PDF linked from your website, with title and language fixes</td></tr>
+            <tr><th scope="row"><a href="https://pac.pdf-accessibility.org/en" rel="noopener noreferrer">PAC</a></th><td>Free</td><td>Windows</td><td>Full PDF/UA validation against the machine-testable Matterhorn Protocol checkpoints, plus WCAG checks</td></tr>
+            <tr><th scope="row"><a href="https://helpx.adobe.com/acrobat/using/create-verify-pdf-accessibility.html" rel="noopener noreferrer">Adobe Acrobat Pro</a></th><td>Paid subscription</td><td>Windows and Mac</td><td>Checking and fixing tags, reading order and alt text in the same app</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="pdfc-who-title">Who Needs PDF Accessibility Compliance?</h2>
+      <ul>
+        <li><strong>State and local governments.</strong> The Department of Justice's ADA Title II rule requires web content, including PDFs and other conventional electronic documents, to meet WCAG 2.1 Level AA, with limited exceptions for archived and older documents that are no longer used (<a href="https://www.ada.gov/resources/2024-03-08-web-rule/" rel="noopener noreferrer">ADA.gov fact sheet</a>). Public universities, schools and transit agencies are included.</li>
+        <li><strong>Federal agencies and contractors.</strong> Section 508 covers electronic documents, including PDFs, as described above.</li>
+        <li><strong>Businesses open to the public.</strong> The DOJ says businesses covered by ADA Title III must make their websites accessible (<a href="https://www.ada.gov/resources/web-guidance/" rel="noopener noreferrer">ADA.gov web guidance</a>). Menus, forms, price lists and policies you publish as PDFs are part of your website.</li>
+        <li><strong>Anyone selling in the EU.</strong> The European Accessibility Act has applied to many consumer products and services since June 28, 2025.</li>
+      </ul>
+      <p>Checking web pages too? <a href="/#scan">Run a free website accessibility scan</a>, read our <a href="/blog/ada-website-compliance-guide">ADA website compliance guide</a> or see how <a href="/resources/help-center/scans-and-reports/pdf-accessibility-scanning">PDF checks work in AccessBell Pro</a>.</p>
+    </div>
+  </section>
+
+  <section class="section section-surface" aria-labelledby="pdfc-faq-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">FAQ</span>
+        <h2 id="pdfc-faq-title">PDF Accessibility Checker Questions</h2>
+        <p>Want every PDF and page on your site checked for you? <a href="/pricing">See AccessBell Pro</a>.</p>
+      </div>
+      <Faq items={faqs} />
+    </div>
+  </section>
+
+  <CtaBand title="Check Every PDF on Your Website" text="Start a 3-day free trial and AccessBell finds the PDFs linked from your pages, checks each one and fixes the title and language for you, alongside daily WCAG scans of up to 500 pages per domain." />
+</BaseLayout>
+<script>
+  import '../../scripts/pdf-checker.js';
+</script>

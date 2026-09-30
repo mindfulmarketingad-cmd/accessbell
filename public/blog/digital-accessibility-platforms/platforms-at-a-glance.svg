@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+<rect width="960" height="540" fill="#f4f8f3"/>
+<text x="480.0" y="52" font-size="22" font-weight="800" fill="#22262f" text-anchor="middle">3 digital accessibility platforms with ongoing monitoring and audits</text>
+<rect x="36" y="86" width="280" height="420" rx="18" fill="#fff" stroke="#44723f" stroke-width="3"/>
+<circle cx="76" cy="132" r="20" fill="#44723f"/><text x="76" y="139" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">1</text>
+<text x="108" y="130" font-size="22" font-weight="800" fill="#22262f" text-anchor="start">AccessBell</text>
+<text x="108" y="152" font-size="13" font-weight="600" fill="#44723f" text-anchor="start">Our pick</text>
+<text x="60" y="198" font-size="15" font-weight="700" fill="#353a47" text-anchor="start">Monitoring + legal evidence</text>
+<circle cx="70" cy="233" r="9" fill="#44723f"/><path d="M66 233l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="88" y="238" font-size="14.5" font-weight="400" fill="#22262f" text-anchor="start">Scheduled scans, 500 URLs</text>
+<circle cx="70" cy="277" r="9" fill="#44723f"/><path d="M66 277l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="88" y="282" font-size="14.5" font-weight="400" fill="#22262f" text-anchor="start">Code fix for each issue</text>
+<circle cx="70" cy="321" r="9" fill="#44723f"/><path d="M66 321l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="88" y="326" font-size="14.5" font-weight="400" fill="#22262f" text-anchor="start">Compliance Vault evidence</text>
+<circle cx="70" cy="365" r="9" fill="#44723f"/><path d="M66 365l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="88" y="370" font-size="14.5" font-weight="400" fill="#22262f" text-anchor="start">PDF checks included</text>
+<rect x="56" y="426" width="240" height="56" rx="10" fill="#e8f1e7"/>
+<text x="176.0" y="446" font-size="12" font-weight="600" fill="#5b6170" text-anchor="middle">Price per domain</text>
+<text x="176.0" y="468" font-size="16" font-weight="800" fill="#22262f" text-anchor="middle">$29/mo or $199/yr</text>
+<rect x="340" y="86" width="280" height="420" rx="18" fill="#fff" stroke="#d9dde3" stroke-width="2"/>
+<circle cx="380" cy="132" r="20" fill="#353a47"/><text x="380" y="139" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">2</text>
+<text x="412" y="130" font-size="22" font-weight="800" fill="#22262f" text-anchor="start">Level Access</text>
+<text x="412" y="152" font-size="13" font-weight="600" fill="#5b6170" text-anchor="start">Enterprise option</text>
+<text x="364" y="198" font-size="15" font-weight="700" fill="#353a47" text-anchor="start">Platform + expert services</text>
+<circle cx="374" cy="233" r="9" fill="#44723f"/><path d="M370 233l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="392" y="238" font-size="14.5" font-weight="400" fill="#22262f" text-anchor="start">Automated and manual testing</text>
+<circle cx="374" cy="277" r="9" fill="#44723f"/><path d="M370 277l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="392" y="282" font-size="14.5" font-weight="400" fill="#22262f" text-anchor="start">Ongoing site monitoring</text>
+<circle cx="374" cy="321" r="9" fill="#44723f"/><path d="M370 321l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="392" y="326" font-size="14.5" font-weight="400" fill="#22262f" text-anchor="start">Expert audits by specialists</text>
+<circle cx="374" cy="365" r="9" fill="#44723f"/><path d="M370 365l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="392" y="370" font-size="14.5" font-weight="400" fill="#22262f" text-anchor="start">Training for your teams</text>
+<rect x="360" y="426" width="240" height="56" rx="10" fill="#f7f8f6"/>
+<text x="480.0" y="446" font-size="12" font-weight="600" fill="#5b6170" text-anchor="middle">Price</text>
+<text x="480.0" y="468" font-size="16" font-weight="800" fill="#22262f" text-anchor="middle">Custom quote</text>
+<rect x="644" y="86" width="280" height="420" rx="18" fill="#fff" stroke="#d9dde3" stroke-width="2"/>
+<circle cx="684" cy="132" r="20" fill="#353a47"/><text x="684" y="139" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">3</text>
+<text x="716" y="130" font-size="22" font-weight="800" fill="#22262f" text-anchor="start">Deque</text>
+<text x="716" y="152" font-size="13" font-weight="600" fill="#5b6170" text-anchor="start">Enterprise option</text>
+<text x="668" y="198" font-size="15" font-weight="700" fill="#353a47" text-anchor="start">axe Monitor + expert audits</text>
+<circle cx="678" cy="233" r="9" fill="#44723f"/><path d="M674 233l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="696" y="238" font-size="14.5" font-weight="400" fill="#22262f" text-anchor="start">Scheduled site and PDF scans</text>
+<circle cx="678" cy="277" r="9" fill="#44723f"/><path d="M674 277l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="696" y="282" font-size="14.5" font-weight="400" fill="#22262f" text-anchor="start">Pages behind a login</text>
+<circle cx="678" cy="321" r="9" fill="#44723f"/><path d="M674 321l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="696" y="326" font-size="14.5" font-weight="400" fill="#22262f" text-anchor="start">IAAP-certified audit team</text>
+<circle cx="678" cy="365" r="9" fill="#44723f"/><path d="M674 365l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="696" y="370" font-size="14.5" font-weight="400" fill="#22262f" text-anchor="start">Jira integration</text>
+<rect x="664" y="426" width="240" height="56" rx="10" fill="#f7f8f6"/>
+<text x="784.0" y="446" font-size="12" font-weight="600" fill="#5b6170" text-anchor="middle">Price</text>
+<text x="784.0" y="468" font-size="16" font-weight="800" fill="#22262f" text-anchor="middle">Custom quote</text>
+</svg>

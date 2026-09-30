@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+<rect width="960" height="420" fill="#fff"/>
+<text x="40" y="40" font-size="21" font-weight="800" fill="#22262f" text-anchor="start">Why ongoing monitoring matters between audits</text>
+<text x="40" y="66" font-size="14" font-weight="400" fill="#5b6170" text-anchor="start">Illustration: websites keep changing, so new issues can appear after an audit is finished.</text>
+<text x="40" y="112" font-size="15" font-weight="700" fill="#22262f" text-anchor="start">One-time audit</text>
+<text x="40" y="262" font-size="15" font-weight="700" fill="#22262f" text-anchor="start">Ongoing monitoring</text>
+<line x1="90" y1="190" x2="900" y2="190" stroke="#cfd4ce" stroke-width="3"/>
+<circle cx="90.0" cy="190" r="4" fill="#cfd4ce"/>
+<text x="90.0" y="216" font-size="12" font-weight="500" fill="#5b6170" text-anchor="middle">Jan</text>
+<circle cx="163.63636363636363" cy="190" r="4" fill="#cfd4ce"/>
+<text x="163.63636363636363" y="216" font-size="12" font-weight="500" fill="#5b6170" text-anchor="middle">Feb</text>
+<circle cx="237.27272727272728" cy="190" r="4" fill="#cfd4ce"/>
+<text x="237.27272727272728" y="216" font-size="12" font-weight="500" fill="#5b6170" text-anchor="middle">Mar</text>
+<circle cx="310.90909090909093" cy="190" r="4" fill="#cfd4ce"/>
+<text x="310.90909090909093" y="216" font-size="12" font-weight="500" fill="#5b6170" text-anchor="middle">Apr</text>
+<circle cx="384.54545454545456" cy="190" r="4" fill="#cfd4ce"/>
+<text x="384.54545454545456" y="216" font-size="12" font-weight="500" fill="#5b6170" text-anchor="middle">May</text>
+<circle cx="458.1818181818182" cy="190" r="4" fill="#cfd4ce"/>
+<text x="458.1818181818182" y="216" font-size="12" font-weight="500" fill="#5b6170" text-anchor="middle">Jun</text>
+<circle cx="531.8181818181819" cy="190" r="4" fill="#cfd4ce"/>
+<text x="531.8181818181819" y="216" font-size="12" font-weight="500" fill="#5b6170" text-anchor="middle">Jul</text>
+<circle cx="605.4545454545455" cy="190" r="4" fill="#cfd4ce"/>
+<text x="605.4545454545455" y="216" font-size="12" font-weight="500" fill="#5b6170" text-anchor="middle">Aug</text>
+<circle cx="679.0909090909091" cy="190" r="4" fill="#cfd4ce"/>
+<text x="679.0909090909091" y="216" font-size="12" font-weight="500" fill="#5b6170" text-anchor="middle">Sep</text>
+<circle cx="752.7272727272727" cy="190" r="4" fill="#cfd4ce"/>
+<text x="752.7272727272727" y="216" font-size="12" font-weight="500" fill="#5b6170" text-anchor="middle">Oct</text>
+<circle cx="826.3636363636364" cy="190" r="4" fill="#cfd4ce"/>
+<text x="826.3636363636364" y="216" font-size="12" font-weight="500" fill="#5b6170" text-anchor="middle">Nov</text>
+<circle cx="900.0" cy="190" r="4" fill="#cfd4ce"/>
+<text x="900.0" y="216" font-size="12" font-weight="500" fill="#5b6170" text-anchor="middle">Dec</text>
+<line x1="90" y1="320" x2="900" y2="320" stroke="#cfd4ce" stroke-width="3"/>
+<circle cx="90.0" cy="320" r="4" fill="#cfd4ce"/>
+<text x="90.0" y="346" font-size="12" font-weight="500" fill="#5b6170" text-anchor="middle">Jan</text>
+<circle cx="163.63636363636363" cy="320" r="4" fill="#cfd4ce"/>
+<text x="163.63636363636363" y="346" font-size="12" font-weight="500" fill="#5b6170" text-anchor="middle">Feb</text>
+<circle cx="237.27272727272728" cy="320" r="4" fill="#cfd4ce"/>
+<text x="237.27272727272728" y="346" font-size="12" font-weight="500" fill="#5b6170" text-anchor="middle">Mar</text>
+<circle cx="310.90909090909093" cy="320" r="4" fill="#cfd4ce"/>
+<text x="310.90909090909093" y="346" font-size="12" font-weight="500" fill="#5b6170" text-anchor="middle">Apr</text>
+<circle cx="384.54545454545456" cy="320" r="4" fill="#cfd4ce"/>
+<text x="384.54545454545456" y="346" font-size="12" font-weight="500" fill="#5b6170" text-anchor="middle">May</text>
+<circle cx="458.1818181818182" cy="320" r="4" fill="#cfd4ce"/>
+<text x="458.1818181818182" y="346" font-size="12" font-weight="500" fill="#5b6170" text-anchor="middle">Jun</text>
+<circle cx="531.8181818181819" cy="320" r="4" fill="#cfd4ce"/>
+<text x="531.8181818181819" y="346" font-size="12" font-weight="500" fill="#5b6170" text-anchor="middle">Jul</text>
+<circle cx="605.4545454545455" cy="320" r="4" fill="#cfd4ce"/>
+<text x="605.4545454545455" y="346" font-size="12" font-weight="500" fill="#5b6170" text-anchor="middle">Aug</text>
+<circle cx="679.0909090909091" cy="320" r="4" fill="#cfd4ce"/>
+<text x="679.0909090909091" y="346" font-size="12" font-weight="500" fill="#5b6170" text-anchor="middle">Sep</text>
+<circle cx="752.7272727272727" cy="320" r="4" fill="#cfd4ce"/>
+<text x="752.7272727272727" y="346" font-size="12" font-weight="500" fill="#5b6170" text-anchor="middle">Oct</text>
+<circle cx="826.3636363636364" cy="320" r="4" fill="#cfd4ce"/>
+<text x="826.3636363636364" y="346" font-size="12" font-weight="500" fill="#5b6170" text-anchor="middle">Nov</text>
+<circle cx="900.0" cy="320" r="4" fill="#cfd4ce"/>
+<text x="900.0" y="346" font-size="12" font-weight="500" fill="#5b6170" text-anchor="middle">Dec</text>
+<rect x="76" y="174" width="28" height="32" rx="6" fill="#353a47"/><text x="90" y="196" font-size="15" font-weight="800" fill="#fff" text-anchor="middle">A</text>
+<text x="112" y="196" font-size="13" font-weight="600" fill="#353a47" text-anchor="start">Audit report</text>
+<path d="M310.90909090909093 150 l10 18 h-20z" fill="#b42318"/>
+<text x="310.90909090909093" y="144" font-size="12" font-weight="600" fill="#b42318" text-anchor="middle">New form — not checked</text>
+<path d="M531.8181818181819 150 l10 18 h-20z" fill="#b42318"/>
+<text x="531.8181818181819" y="144" font-size="12" font-weight="600" fill="#b42318" text-anchor="middle">Redesign — not checked</text>
+<path d="M752.7272727272727 150 l10 18 h-20z" fill="#b42318"/>
+<text x="752.7272727272727" y="144" font-size="12" font-weight="600" fill="#b42318" text-anchor="middle">New plugin — not checked</text>
+<circle cx="90.0" cy="320" r="9" fill="#44723f"/><path d="M86.0 320l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="163.63636363636363" cy="320" r="9" fill="#44723f"/><path d="M159.63636363636363 320l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="237.27272727272728" cy="320" r="9" fill="#44723f"/><path d="M233.27272727272728 320l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="310.90909090909093" cy="320" r="9" fill="#44723f"/><path d="M306.90909090909093 320l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="384.54545454545456" cy="320" r="9" fill="#44723f"/><path d="M380.54545454545456 320l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="458.1818181818182" cy="320" r="9" fill="#44723f"/><path d="M454.1818181818182 320l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="531.8181818181819" cy="320" r="9" fill="#44723f"/><path d="M527.8181818181819 320l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="605.4545454545455" cy="320" r="9" fill="#44723f"/><path d="M601.4545454545455 320l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="679.0909090909091" cy="320" r="9" fill="#44723f"/><path d="M675.0909090909091 320l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="752.7272727272727" cy="320" r="9" fill="#44723f"/><path d="M748.7272727272727 320l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="826.3636363636364" cy="320" r="9" fill="#44723f"/><path d="M822.3636363636364 320l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="900.0" cy="320" r="9" fill="#44723f"/><path d="M896.0 320l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M310.90909090909093 280 l10 18 h-20z" fill="#8a5a00"/>
+<text x="310.90909090909093" y="274" font-size="12" font-weight="600" fill="#365c32" text-anchor="middle">New form — flagged</text>
+<path d="M531.8181818181819 280 l10 18 h-20z" fill="#8a5a00"/>
+<text x="531.8181818181819" y="274" font-size="12" font-weight="600" fill="#365c32" text-anchor="middle">Redesign — flagged</text>
+<path d="M752.7272727272727 280 l10 18 h-20z" fill="#8a5a00"/>
+<text x="752.7272727272727" y="274" font-size="12" font-weight="600" fill="#365c32" text-anchor="middle">New plugin — flagged</text>
+<text x="40" y="395" font-size="14" font-weight="500" fill="#353a47" text-anchor="start">Many teams combine both: an expert audit for depth, and scheduled scans to catch regressions in between.</text>
+</svg>

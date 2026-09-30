@@ -12,6 +12,7 @@ import { Picture } from 'astro:assets';
 import ownerPhoto from '../assets/website-owner-at-laptop.jpg';
 import { faqSchema, softwareSchema, type FaqItem } from '../lib/schema';
 import { formatDate, readingTime } from '../lib/format';
+import { LAWSUIT_STATS } from '../data/lawsuit-stats';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
@@ -240,6 +241,28 @@ const faqs: FaqItem[] = [
       <ul class="standards-list">
         {standards.map((s) => <li><Flag code={s.flag} />{s.href ? <a href={s.href}>{s.name}</a> : s.name}</li>)}
       </ul>
+    </div>
+  </section>
+
+  <section class="section section-tight lawsuit-stats" aria-labelledby="stats2025-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">ADA website lawsuits in 2025</span>
+        <h2 id="stats2025-title">How Many Businesses Were Sued Over <span class="accent">Website Accessibility in 2025?</span></h2>
+        <p>Website accessibility lawsuits rose again in 2025, and most targeted small and mid-sized businesses. New York (1,021) and Florida (961) federal courts saw the most filings.</p>
+      </div>
+      <ul class="stat-grid">
+        {LAWSUIT_STATS.map((s) => (
+          <li class="stat-card">
+            <strong>{s.value}</strong>
+            <span>{s.text}</span>
+            <a href={s.source.url} rel="noopener" target="_blank">{s.source.label}<span class="visually-hidden"> (opens in a new tab)</span></a>
+          </li>
+        ))}
+      </ul>
+      <p class="stat-foot">
+        Figures count lawsuits, not unique companies. See <a href="/blog/what-happens-after-being-sued-for-ada-website-compliance">what happens after being sued for ADA website compliance</a> and <a href="/pricing#suits-title">what real cases cost</a>.
+      </p>
     </div>
   </section>
 
