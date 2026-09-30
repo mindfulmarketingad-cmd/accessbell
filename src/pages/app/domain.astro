@@ -26,6 +26,15 @@ import Icon from '../../components/Icon.astro';
   </header>
   <p class="progress-note" data-progress role="status" aria-live="polite"></p>
 
+  <section class="fix-promo fix-banner" data-fix-promo aria-labelledby="fix-banner-title" hidden>
+    <span class="fix-promo-icon" aria-hidden="true"><Icon name="sparkle" /></span>
+    <div>
+      <h2 id="fix-banner-title">Unlock one-click fixes with AccessBellFix</h2>
+      <p>Install our lightweight script to apply the fixes you approve, such as alt text, button names and page language, without editing your code. Review and approve every fix before it goes live. No codebase access required.</p>
+    </div>
+    <button class="btn btn-accent" type="button" data-goto-fix>Set up AccessBellFix</button>
+  </section>
+
   <div class="app-tabs" data-tabs>
     <div class="tablist" role="tablist" aria-label="Domain views">
       <button type="button" role="tab" id="tab-overview" aria-controls="panel-overview" aria-selected="true" tabindex="0"><Icon name="chart" /> Overview</button>
@@ -37,14 +46,6 @@ import Icon from '../../components/Icon.astro';
     </div>
 
     <div role="tabpanel" id="panel-overview" aria-labelledby="tab-overview" tabindex="0">
-      <div class="fix-promo" data-fix-promo hidden>
-        <span class="fix-promo-icon" aria-hidden="true"><Icon name="sparkle" /></span>
-        <div>
-          <h2>Fix issues without touching your code</h2>
-          <p>Install the AccessBellFix snippet, then apply fixes such as missing alt text and button names from here. You review and approve every fix before it goes live.</p>
-        </div>
-        <button class="btn" type="button" data-goto-fix>Set up AccessBellFix</button>
-      </div>
       <div class="ov-grid">
         <section class="box" aria-labelledby="lso-title">
           <h2 id="lso-title" class="box-title">Last scan results</h2>

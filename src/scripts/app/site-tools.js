@@ -51,6 +51,7 @@ export function mountFixInstall(box, { domainId, hostname, siteKey, headingLevel
           ? 'Connected: the code is on your home page.'
           : `Connected: the script last loaded ${fmtDate(r.seenAt, true)}.`
         : 'Not connected yet.';
+      if (r.connected) document.dispatchEvent(new CustomEvent('accessbellfix:connected', { detail: { domainId } }));
       setStatus(
         status,
         r.connected ? 'success' : 'error',

@@ -105,8 +105,25 @@ function row(d) {
   ]);
 }
 
+// AccessBellFix counts as set up once the script has loaded, or was found on the site, in the last week.
+const fixLive = (d) => d.fix_seen_at && Date.now() - new Date(d.fix_seen_at).getTime() < 7 * 86400000;
+
+function renderFixBanner(domains) {
+  const banner = $('[data-fix-banner]');
+  const missing = domains.filter((d) => !fixLive(d));
+  banner.hidden = !missing.length || !can(me, 'member');
+  if (banner.hidden) return;
+  $('[data-fix-banner-text]').textContent =
+    (missing.length === domains.length
+      ? 'Install our lightweight script to apply the fixes you approve, such as alt text, button names and page language, without editing your code.'
+      : `AccessBellFix is not set up on ${missing.map((d) => d.hostname).slice(0, 3).join(', ')}${missing.length > 3 ? ` and ${missing.length - 3} more` : ''} yet. Install it to apply the fixes you approve without editing your code.`) +
+    ' Review and approve every fix before it goes live. No codebase access required.';
+  $('[data-fix-banner-link]').setAttribute('href', `/app/domain?id=${encodeURIComponent(missing[0].id)}&setup=fix`);
+}
+
 function render() {
   const { domains } = me.domainList;
+  renderFixBanner(domains);
   $('[data-domain-count]').textContent = String(domains.length);
   openButton.hidden = !can(me, 'admin');
   $('[data-list-tools]').hidden = domains.length < 2;

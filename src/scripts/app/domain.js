@@ -537,6 +537,12 @@ function bindSettings() {
 
 // ---------- Page actions ----------
 
+function openFixSetup() {
+  selectTab('settings');
+  $('#accessbellfix').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  $('#accessbellfix').focus({ preventScroll: true });
+}
+
 function bindActions() {
   const progress = $('[data-progress]');
   const setExport = disclosure($('[data-export]'), $('#export-menu'));
@@ -549,11 +555,7 @@ function bindActions() {
     window.print();
   });
   document.querySelectorAll('[data-goto]').forEach((b) => b.addEventListener('click', () => selectTab(b.dataset.goto)));
-  $('[data-goto-fix]').addEventListener('click', () => {
-    selectTab('settings');
-    $('#accessbellfix').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    $('#accessbellfix').focus({ preventScroll: true });
-  });
+  $('[data-goto-fix]').addEventListener('click', openFixSetup);
   $('[data-range]').addEventListener('change', renderHistory);
   $('[data-cov-issues-only]').addEventListener('change', renderCoverage);
   $('[data-issue-filter]').addEventListener('change', renderRules);
@@ -627,6 +629,9 @@ async function renderSiteTools() {
   }
   const seenRecently = setup.seenAt && Date.now() - new Date(setup.seenAt).getTime() < 7 * 86400000;
   $('[data-fix-promo]').hidden = Boolean(seenRecently) || !can(me, 'member');
+  document.addEventListener('accessbellfix:connected', () => {
+    $('[data-fix-promo]').hidden = true;
+  });
   mountFixInstall(installBox, { domainId: id, hostname: data.domain.hostname, siteKey: setup.siteKey, headingLevel: 'h3' });
 
   const showStatement = async () => {
@@ -674,6 +679,7 @@ try {
   const params = new URLSearchParams(location.search);
   const tab = params.get('tab');
   if (['overview', 'issues', 'review', 'vault', 'pages', 'settings'].includes(tab)) selectTab(tab);
+  if (params.get('setup') === 'fix') openFixSetup();
   const exp = params.get('export');
   if (exp) history.replaceState(null, '', `${location.pathname}?id=${encodeURIComponent(id)}`);
   if (exp === 'csv') exportCsv();

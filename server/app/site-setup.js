@@ -73,7 +73,10 @@ export async function verifyFix(ctx, domainId, { fetcher = fetchPage } = {}) {
     } catch (err) {
       error = err?.message || 'We could not load your home page.';
     }
-    return { connected: foundInPage || Boolean(seenRecently), foundInPage, seenAt: fresh.fix_seen_at, error };
+    // Finding the snippet on the live site counts as validated, so the setup banner goes away.
+    let seenAt = fresh.fix_seen_at;
+    if (foundInPage) seenAt = (await one('update app.domains set fix_seen_at = now() where id = $1 returning fix_seen_at', [domain.id])).fix_seen_at;
+    return { connected: foundInPage || Boolean(seenRecently), foundInPage, seenAt, error };
   });
 }
 

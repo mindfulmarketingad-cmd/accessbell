@@ -15,6 +15,14 @@ import Icon from '../../components/Icon.astro';
       <input type="search" placeholder="Search domains" data-domain-search autocomplete="off" />
     </label>
   </div>
+  <section class="fix-promo fix-banner" data-fix-banner aria-labelledby="fix-list-title" hidden>
+    <span class="fix-promo-icon" aria-hidden="true"><Icon name="sparkle" /></span>
+    <div>
+      <h2 id="fix-list-title">Unlock one-click fixes with AccessBellFix</h2>
+      <p data-fix-banner-text></p>
+    </div>
+    <a class="btn btn-accent" data-fix-banner-link href="/app">Set up AccessBellFix</a>
+  </section>
   <p class="status-line" data-list-status role="status" aria-live="polite"></p>
   <div data-domains><p class="muted">Loading...</p></div>
 </AppLayout>

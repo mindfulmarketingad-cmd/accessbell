@@ -5,6 +5,7 @@ import { codeBlock } from './code-block.js';
 import { fixExample } from '../shared/fix-examples.js';
 import { affectedBy } from '../shared/affected.js';
 import { issueVisual } from '../shared/issue-visuals.js';
+import { ELEMENT_FIXES, correctedHtml } from '../shared/element-fix.js';
 import { CRITERIA } from '../../../server/wcag-criteria.js';
 
 const me = await boot();
@@ -29,6 +30,8 @@ const criterionPath = (sc) => `/resources/wcag/${sc.replace(/\./g, '-')}-${kebab
 
 const selectTab = initTabs($('[data-tabs]'));
 let data;
+/** Is AccessBellFix running on this site? Unknown (null) until checked. */
+let fixConnected = null;
 
 const stat = (label, value) => el('div', { class: 'stat-card' }, [el('h3', { text: label }), value]);
 const pills = (items) => el('ul', { class: 'pill-list' }, items.map((x) => el('li', {}, [x])));
@@ -105,34 +108,63 @@ function renderDescription() {
 // ---------- Failed and fixed elements ----------
 
 let fixSeq = 0;
-function fixForm(element, kind) {
+
+/**
+ * Fix one element: type the text once, copy the corrected code into your site,
+ * or apply it with AccessBellFix (for the fixes the script supports).
+ */
+function fixPanel(element, { kind, editable }) {
+  const rule = ELEMENT_FIXES[data.issue.id];
+  if (!rule || !element.html || data.issue.kind !== 'failed') return null;
   const id = `fx-${++fixSeq}`;
-  const status = $('[data-fix-status]');
-  const input = el('input', {
-    id,
-    type: 'text',
-    maxlength: '300',
-    autocomplete: 'off',
-    placeholder: kind === 'lang' ? 'en' : kind === 'alt' ? 'Describe the image' : 'Name the control',
+  const status = el('p', { class: 'status-line', role: 'status', 'aria-live': 'polite' });
+  const input = el('input', { id, type: 'text', maxlength: '300', autocomplete: 'off', 'aria-describedby': `${id}-hint` });
+  const code = el('code', { text: correctedHtml(data.issue.id, element.html, '') });
+  const copy = el('button', { type: 'button', class: 'btn btn-sm btn-outline' }, [icon('copy'), el('span', { text: 'Copy code' })]);
+  input.addEventListener('input', () => {
+    code.textContent = correctedHtml(data.issue.id, element.html, input.value);
   });
-  const add = el('button', { class: 'btn btn-sm', type: 'submit', text: 'Add fix' });
-  const form = el('form', { class: 'el-fix', novalidate: true }, [
-    el('label', { for: id, text: kind === 'alt' ? 'Alt text to apply' : kind === 'lang' ? 'Page language' : 'Accessible name to apply' }),
-    el('div', { class: 'el-fix-row' }, [input, add]),
+  copy.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(code.textContent);
+      setStatus(status, 'success', 'Corrected code copied. Paste it over the element in your site, then rescan.');
+    } catch {
+      setStatus(status, 'error', 'Copy is not available in this browser. Select the code and copy it.');
+    }
+  });
+  const actions = [copy];
+  if (kind && editable && element.target) {
+    const apply = el('button', { type: 'button', class: 'btn btn-sm' }, [icon('sparkle'), el('span', { text: 'Apply with AccessBellFix' })]);
+    apply.addEventListener(
+      'click',
+      busy(apply, status, async () => {
+        if (!input.value.trim()) throw new Error(`${rule.ask} first.`);
+        await api('domain/fix/add', { method: 'POST', body: { id: domainId, kind, selector: element.target, value: input.value.trim() } });
+        apply.replaceWith(el('span', { class: 'el-fix-done' }, [icon('check'), 'Added to AccessBellFix']));
+        setStatus(
+          status,
+          'success',
+          fixConnected === false
+            ? 'Fix saved. It goes live once AccessBellFix is installed on your site.'
+            : 'Fix added. AccessBellFix applies it the next time the page loads, and your next scan confirms it.',
+        );
+      }),
+    );
+    actions.push(apply);
+  }
+  return el('div', { class: 'el-fix' }, [
+    el('p', { class: 'el-fix-title' }, [icon('wrench'), 'Fix this element']),
+    el('label', { for: id, text: rule.ask }),
+    el('p', { class: 'el-fix-hint', id: `${id}-hint`, text: rule.hint }),
+    input,
+    el('p', { class: 'el-fix-label', text: 'Corrected code' }),
+    el('pre', { class: 'el-html el-html-fixed', tabindex: '0' }, [code]),
+    el('div', { class: 'el-fix-row' }, actions),
+    status,
   ]);
-  form.addEventListener(
-    'submit',
-    busy(add, status, async () => {
-      if (!input.value.trim()) throw new Error('Enter the text to apply.');
-      await api('domain/fix/add', { method: 'POST', body: { id: domainId, kind, selector: element.target, value: input.value.trim() } });
-      form.replaceChildren(el('p', { class: 'el-fix-done' }, [icon('check'), 'Fix added. AccessBellFix applies it the next time the page loads, and your next scan confirms it.']));
-      setStatus(status, 'success', 'Fix added.');
-    }),
-  );
-  return form;
 }
 
-function elementItem(e, { kind, editable }) {
+function elementItem(e, { kind, editable, fixed }) {
   const copy = e.target ? el('button', { type: 'button', class: 'copy-btn copy-sm' }, [icon('copy'), el('span', { text: 'Copy selector' })]) : null;
   copy?.addEventListener('click', async () => {
     try {
@@ -147,7 +179,7 @@ function elementItem(e, { kind, editable }) {
     el('pre', { class: 'el-html', tabindex: '0' }, [el('code', { text: e.html })]),
     e.target ? el('p', { class: 'el-target' }, [el('span', { class: 'muted', text: 'Selector: ' }), el('code', { text: e.target }), copy]) : null,
     e.fix ? el('p', { class: 'el-note' }, [el('strong', { text: 'What to fix: ' }), e.fix]) : null,
-    kind && editable && e.target ? fixForm(e, kind) : null,
+    fixed ? null : fixPanel(e, { kind, editable }),
   ]);
 }
 
@@ -166,7 +198,7 @@ function pageGroups(list, { fixed = false } = {}) {
           el('span', { class: 'tag', text: g.device === 'mobile' ? 'Mobile' : 'Desktop' }),
           el('span', { class: 'muted', text: fixed ? `${plural(g.count, 'element')} fixed ${fmtDate(g.fixedAt)}` : plural(g.count, 'element') }),
         ]),
-        el('ul', { class: 'el-list' }, g.elements.map((e) => elementItem(e, { kind, editable }))),
+        el('ul', { class: 'el-list' }, g.elements.map((e) => elementItem(e, { kind, editable, fixed }))),
         g.count > g.elements.length ? el('p', { class: 'muted', text: `Showing ${g.elements.length} of ${g.count}. Fix these, then rescan to see the rest.` }) : null,
       ]),
     ),
@@ -177,9 +209,17 @@ function renderElements() {
   const failedLabel = data.issue.kind === 'review' ? 'Elements to Check' : 'Failed Elements';
   $('[data-failed-label]').textContent = `${failedLabel} (${data.elements.toLocaleString()})`;
   $('[data-fixed-label]').textContent = `Fixed Elements (${data.fixedElements.toLocaleString()})`;
-  const canFix = FIXABLE[data.issue.id] && data.issue.kind === 'failed';
+  const failed = data.issue.kind === 'failed';
+  const inCode = failed && ELEMENT_FIXES[data.issue.id];
+  const how = !failed
+    ? ''
+    : inCode
+      ? FIXABLE[data.issue.id]
+        ? ' Type the text under any element to get its corrected code to copy into your site, or apply it with AccessBellFix.'
+        : ' Type the text under any element to get its corrected code to copy into your site.'
+      : ' Follow "What to fix" under each element, and see the correct markup on the Issue Overview tab.';
   $('[data-failed-sub]').textContent = data.failed.length
-    ? `${plural(data.elements, 'element')} on ${plural(data.pages, 'page')}, from the latest scan of each page.${canFix ? ' Add a fix under any element to apply it with AccessBellFix.' : ''}`
+    ? `${plural(data.elements, 'element')} on ${plural(data.pages, 'page')}, from the latest scan of each page.${how}`
     : 'Nothing is failing in the latest scans.';
   $('[data-failed]').replaceChildren(
     data.failed.length
@@ -201,7 +241,13 @@ try {
   $('[data-back]').setAttribute('href', `${domainUrl}&tab=${data.issue.kind === 'review' ? 'review' : 'issues'}`);
   $('[data-crumb-host]').replaceChildren(el('a', { href: domainUrl, text: data.domain.hostname }));
   $('[data-tabs]').hidden = false;
-  $('[data-fix-promo]').hidden = !(FIXABLE[data.issue.id] && data.issue.kind === 'failed' && data.failed.length && can(me, 'member'));
+  try {
+    const setup = await api(`domain/fix?id=${encodeURIComponent(domainId)}`);
+    fixConnected = Boolean(setup.seenAt && Date.now() - new Date(setup.seenAt).getTime() < 7 * 86400000);
+  } catch {
+    fixConnected = null;
+  }
+  $('[data-fix-promo]').hidden = !(ELEMENT_FIXES[data.issue.id] && data.issue.kind === 'failed' && data.failed.length);
   $('[data-goto-failed]').addEventListener('click', () => selectTab('failed'));
   renderStats();
   renderDescription();

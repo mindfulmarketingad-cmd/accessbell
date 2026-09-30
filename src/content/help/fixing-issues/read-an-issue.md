@@ -40,6 +40,15 @@ It has three tabs:
 - **Failed Elements**: every failing element from the latest scan of each page (up to 25 per rule per page), grouped by page and device, with its HTML, its CSS selector and what to fix. For missing alt text, button and link names and the page language, you can type the fix under an element and apply it with [AccessBellFix](/resources/help-center/getting-started/install-accessbellfix).
 - **Fixed Elements**: pages where this issue failed in the previous scan and passes in the latest one.
 
+## Fix Each Failed Element
+
+On the **Failed Elements** tab, many issues show a **Fix this element** box under each element: missing alt text, buttons and links with no name, unlabeled form fields, untitled frames and a missing page language. Type the text once, for example what the image shows or what the button does, and AccessBell writes the element's corrected code for you:
+
+1. Select **Copy code** and paste it over the element in your site or template, then rescan.
+2. Or select **Apply with AccessBellFix** to fix it without editing your code. See [install AccessBellFix](/resources/help-center/getting-started/install-accessbellfix). Fixes you add before the script is installed go live once it is.
+
+For issues that need a design or content change, such as color contrast, follow **What to fix** under each element and the correct markup on the **Issue Overview** tab.
+
 ## What to Fix First
 
 1. **Critical and serious issues on your key pages**: forms, checkout, sign-in and navigation.

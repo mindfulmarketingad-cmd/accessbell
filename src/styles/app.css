@@ -3405,8 +3405,51 @@ a.count-pill:hover {
 }
 .el-fix {
   display: grid;
-  gap: 4px;
-  font-size: 0.8125rem;
+  gap: 6px;
+  margin-top: 4px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--sage-50);
+  font-size: 0.875rem;
+}
+.el-fix > input {
+  min-height: 38px;
+  padding: 6px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  font: inherit;
+}
+.el-fix-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 2px;
+  color: var(--ink-900);
+  font-weight: 700;
+}
+.el-fix-title svg {
+  width: 16px;
+  height: 16px;
+  color: var(--sage-700);
+}
+.el-fix-hint,
+.el-fix-label {
+  margin: 0;
+  color: var(--ink-500);
+}
+.el-fix-label {
+  margin-top: 4px;
+  font-weight: 600;
+}
+.el-html-fixed {
+  outline: 2px solid var(--sage);
+  outline-offset: -2px;
+}
+.el-fix-row .btn svg {
+  width: 15px;
+  height: 15px;
 }
 .el-fix label {
   font-weight: 600;

@@ -187,6 +187,8 @@ export async function getPage(ctx, pageId) {
 export async function listDomains(ctx) {
   const domains = await query(
     `select d.id, d.hostname, d.base_url, d.created_at, d.settings->>'discoveredAt' as discovered_at,
+            -- Read through to_jsonb so the list still works before migration 0005 adds the column.
+            (to_jsonb(d)->>'fix_seen_at') as fix_seen_at,
             count(p.*)::int as pages,
             count(p.*) filter (where p.monitored)::int as monitored,
             round(avg(p.last_score) filter (where p.monitored and p.last_score is not null))::int as score,

@@ -792,6 +792,9 @@ test('AccessBellFix: site key, approved fixes, public rules with CORS, and conne
   const installed = await siteModule.verifyFix(ctx, domain.id, { fetcher: async () => ({ html: `<script src="https://www.accessbell.co/fix.js" data-site="${setup.body.siteKey}" async></script>` }) });
   assert.equal(installed.foundInPage, true);
   assert.equal(installed.connected, true);
+  assert.ok(installed.seenAt, 'finding the snippet on the site validates the install');
+  const listed = (await owner.get('domains')).body.domains.find((d) => d.id === domain.id);
+  assert.ok(listed.fix_seen_at, 'the domain list knows AccessBellFix is set up');
   const missing = await siteModule.verifyFix(ctx, domain.id, { fetcher: async () => ({ html: '<html></html>' }) });
   assert.equal(missing.foundInPage, false);
   assert.ok(missing.seenAt, 'the script loading the rules above counts as a recent connection');
