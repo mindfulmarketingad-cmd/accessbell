@@ -134,6 +134,8 @@ export async function boot() {
   set('[data-user-email]', me.user.email);
   set('[data-user-initials]', initials(me.user.email));
   set('[data-workspace-initial]', (me.account.name.match(/[a-z0-9]/i) || ['A'])[0].toUpperCase());
+  // The free scan log is for the site's own admins (ADMIN_EMAILS).
+  document.querySelectorAll('[data-admin-nav]').forEach((n) => (n.hidden = !me.admin));
   document.querySelector('[data-signout]')?.addEventListener('click', async () => {
     await api('auth/logout', { method: 'POST', redirectOn401: false }).catch(() => {});
     location.assign('/app/login');

@@ -8,7 +8,7 @@ import Icon from '../components/Icon.astro';
 interface Props {
   title: string;
   /** Sidebar item to highlight. */
-  section?: 'overview' | 'team' | 'billing' | 'account';
+  section?: 'overview' | 'team' | 'billing' | 'account' | 'free-scans';
 }
 const { title, section = 'overview' } = Astro.props;
 const nav = [
@@ -73,6 +73,11 @@ const nav = [
                 </button>
               </div>
               <ul class="nav-sub side-text" id="side-domains" data-side-domains></ul>
+            </li>
+            <li data-admin-nav hidden>
+              <a href="/app/free-scans" aria-current={section === 'free-scans' ? 'page' : undefined}>
+                <Icon name="scan" /><span class="side-text">Free scans</span>
+              </a>
             </li>
             {nav.map((n) => (
               <li>

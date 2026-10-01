@@ -3,7 +3,7 @@ import { checkOrigin, clientIp, readJson } from '../http.js';
 import { createRateLimiter } from '../rate-limit.js';
 import { auth } from './auth-client.js';
 import { readSession, sessionCookies, clearSessionCookies } from './session.js';
-import { ensureUserSetup, getContext, renameAccount, requireRole, isSubscribed, getOnboarding, completeTour } from './accounts.js';
+import { ensureUserSetup, getContext, renameAccount, requireRole, isSubscribed, isAdminUser, getOnboarding, completeTour } from './accounts.js';
 import { checkoutUrl, portalUrl, billingSummary } from './billing.js';
 import {
   listDomains, createDomain, updateDomainSettings, deleteDomain, addPage, setMonitored, deletePage, discoverPages, domainOverview, selectPages, addPages,
@@ -14,6 +14,7 @@ import { one } from './db.js';
 import { listMembers, inviteMember, changeRole, removeMember } from './team.js';
 import { config, missingConfig } from './config.js';
 import { resolveIssue, reopenIssue } from './resolutions.js';
+import { listFreeScans } from './free-scans.js';
 import { getFixSetup, verifyFix, addFix, updateFix, publicFixRules, getStatement, saveStatement, publicStatement, setToolbar, getToolbar } from './site-setup.js';
 import { AppError, badRequest, unauthorized } from './errors.js';
 import { addNote, vault, certificate, createRecord, getRecord, verifyRecord } from './records.js';
@@ -211,6 +212,7 @@ const routes = {
       account: { id: ctx.account.id, name: ctx.account.name, members: (await one('select count(*)::int as n from app.account_members where account_id = $1', [ctx.account.id])).n },
       role: ctx.role,
       subscribed: isSubscribed(ctx),
+      admin: isAdminUser(ctx.user),
       billing: await billingSummary(ctx),
       onboarding: await getOnboarding(ctx.user.id),
     };
@@ -297,6 +299,10 @@ const routes = {
     return { scan: await getScan(ctx, url.searchParams.get('id')) };
   },
 
+  async 'GET admin/free-scans'({ ctx, url }) {
+    const p = url.searchParams;
+    return listFreeScans(ctx, { q: p.get('q'), before: p.get('before'), days: p.get('days') });
+  },
   async 'POST domain/issue/resolve'({ ctx, body }) {
     return resolveIssue(ctx, body?.id, body);
   },

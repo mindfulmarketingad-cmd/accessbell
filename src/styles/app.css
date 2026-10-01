@@ -4211,3 +4211,68 @@ a.count-pill:hover {
   font-size: 0.8125rem;
   margin-bottom: 0;
 }
+
+/* Free scans log (site admins) */
+.fs-totals {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin: 0 0 20px;
+  padding: 0;
+  list-style: none;
+}
+.fs-totals li {
+  display: grid;
+  gap: 2px;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: #fff;
+}
+.fs-totals strong {
+  font-size: 1.75rem;
+  line-height: 1.1;
+  color: var(--ink-900);
+}
+.fs-totals span {
+  color: var(--ink-700);
+  font-size: 0.875rem;
+}
+.fs-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.fs-filters .field {
+  display: grid;
+  gap: 6px;
+  flex: 1 1 220px;
+}
+.fs-filters .field:nth-child(2) {
+  flex: 0 1 200px;
+}
+.fs-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+}
+@media (min-width: 1100px) {
+  .fs-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+.fs-grid .panel {
+  margin: 0;
+}
+.data-table .nowrap {
+  white-space: nowrap;
+}
+[data-fs-more] {
+  margin-top: 12px;
+}
+.fs-grid tbody th,
+[data-fs-list] tbody th {
+  text-align: left;
+}

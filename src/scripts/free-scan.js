@@ -254,7 +254,7 @@ for (const form of forms) {
       const res = await fetch('/api/scan', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: parsed.url, standard: form.elements.standard.value }),
+        body: JSON.stringify({ url: parsed.url, standard: form.elements.standard.value, source: location.pathname }),
         credentials: 'same-origin',
         signal: controller.signal,
       });

@@ -13,6 +13,7 @@ import { fetchPage } from '../server/fetch-page.js';
 import { UnsafeUrlError } from '../server/net-guard.js';
 import { createRateLimiter } from '../server/rate-limit.js';
 import { json, checkOrigin, clientIp, readJson, methodNotAllowed } from '../server/http.js';
+import { recordFreeScan } from '../server/app/free-scans.js';
 
 const perMinute = createRateLimiter({ limit: 5, windowMs: 60_000 });
 const perHour = createRateLimiter({ limit: 30, windowMs: 60 * 60_000 });
@@ -68,6 +69,8 @@ export async function POST(request) {
   }
   const url = body.url.trim();
   const standard = typeof body.standard === 'string' && Object.hasOwn(STANDARDS, body.standard) ? body.standard : 'wcag22';
+  // Logged for the site owner: the domain, the checker page and the result. No IP address.
+  const log = { url, standard, source: body.source, country: request.headers.get('x-vercel-ip-country') };
 
   try {
     let report;
@@ -86,8 +89,10 @@ export async function POST(request) {
     } else {
       report = await htmlAudit(url, standard);
     }
+    await recordFreeScan({ ...log, report });
     return json(200, { url: body.url, scannedAt: new Date().toISOString(), ...preview(report) });
   } catch (err) {
+    await recordFreeScan({ ...log, error: err && err.expose ? err.message : 'The scan could not be completed.' });
     if (err && err.expose) return json(err.status || 422, { error: err.message });
     console.error('scan failed', err);
     return json(500, { error: 'The scan could not be completed. Please try again.' });

@@ -128,6 +128,7 @@ before(async () => {
   await db.query(readFileSync(new URL('../supabase/migrations/0008_compliance_records.sql', import.meta.url), 'utf8'));
   await db.query(readFileSync(new URL('../supabase/migrations/0009_documents.sql', import.meta.url), 'utf8'));
   await db.query(readFileSync(new URL('../supabase/migrations/0010_issue_resolutions.sql', import.meta.url), 'utf8'));
+  await db.query(readFileSync(new URL('../supabase/migrations/0011_free_scans.sql', import.meta.url), 'utf8'));
 
   fake = await startFakeAuth(db);
   const { port } = fake.server.address();
@@ -1062,4 +1063,59 @@ test('PDF documents: found on scanned pages, checked for accessibility and fetch
   assert.equal((await owner.post('document/remove', { id: added.body.document.id })).status, 200);
   list = (await owner.get(`domain/documents?id=${domain.id}`)).body;
   assert.equal(list.documents.length, 2);
+});
+
+test('free scans from the public checkers are logged and only site admins can list them', { skip }, async () => {
+  const fs = await import('../server/app/free-scans.js');
+  await fs.recordFreeScan({
+    url: 'https://www.Ramen-Example.com/menu',
+    standard: 'ada',
+    source: '/platforms/shopify/ada-compliance-checker',
+    country: 'US',
+    report: { finalUrl: 'https://www.ramen-example.com/menu', engine: 'browser', summary: { issues: 12, critical: 2, serious: 3 } },
+  });
+  await fs.recordFreeScan({ url: 'broken.example', standard: 'wcag22', source: 'javascript:alert(1)', country: 'not-a-country', error: 'We could not find that domain.' });
+
+  // The scan endpoint logs a scan it refuses (a private address), without an IP address.
+  const { POST } = await import('../api/scan.js');
+  const res = await POST(new Request(`${ORIGIN}/api/scan`, { method: 'POST', headers: { origin: ORIGIN, 'content-type': 'application/json', 'x-real-ip': '10.9.9.9' }, body: JSON.stringify({ url: 'http://127.0.0.1/', standard: 'wcag22', source: '/' }) }));
+  assert.notEqual(res.status, 200);
+
+  const rows = (await db.query('select * from app.free_scans order by id')).rows;
+  assert.equal(rows.length, 3);
+  assert.equal(rows[0].hostname, 'ramen-example.com');
+  assert.equal(rows[0].status, 'done');
+  assert.equal(rows[0].issues, 12);
+  assert.equal(rows[0].source, '/platforms/shopify/ada-compliance-checker');
+  assert.equal(rows[1].status, 'failed');
+  assert.equal(rows[1].source, null, 'only same-site paths are kept');
+  assert.equal(rows[1].country, null);
+  assert.equal(rows[2].hostname, '127.0.0.1');
+  assert.ok(!JSON.stringify(rows).includes('10.9.9.9'), 'no IP address is stored');
+
+  const visitor = new Client('10.0.7.1');
+  await visitor.post('auth/signup', { email: 'not-admin@example.com', password: 'correct horse' });
+  await markSubscriber((await visitor.get('me')).body.account.id);
+  assert.equal((await visitor.get('me')).body.admin, false);
+  assert.equal((await visitor.get('admin/free-scans')).status, 403);
+
+  process.env.ADMIN_EMAILS = 'scan-admin@ops.test';
+  try {
+    const admin = new Client('10.0.7.2');
+    await admin.post('auth/signup', { email: 'scan-admin@ops.test', password: 'correct horse' });
+    assert.equal((await admin.get('me')).body.admin, true);
+    const list = await admin.get('admin/free-scans?days=30');
+    assert.equal(list.status, 200);
+    assert.equal(list.body.totals.day, 3);
+    assert.equal(list.body.scans[0].hostname, '127.0.0.1', 'newest first');
+    assert.ok(list.body.top.some((t) => t.hostname === 'ramen-example.com'));
+    assert.ok(list.body.pages.some((p) => p.source === '/platforms/shopify/ada-compliance-checker'));
+    const search = await admin.get('admin/free-scans?q=ramen');
+    assert.deepEqual(search.body.scans.map((s) => s.hostname), ['ramen-example.com']);
+    const bySource = await admin.get(`admin/free-scans?q=${encodeURIComponent('/platforms/shopify')}`);
+    assert.equal(bySource.body.scans.length, 1);
+    assert.equal((await admin.get('admin/free-scans?q=%25')).body.scans.length, 0, 'wildcards are literal');
+  } finally {
+    delete process.env.ADMIN_EMAILS;
+  }
 });

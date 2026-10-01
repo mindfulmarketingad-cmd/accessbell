@@ -1,0 +1,62 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+import Icon from '../../components/Icon.astro';
+---
+<AppLayout title="Free scans" section="free-scans">
+  <header class="app-head">
+    <div>
+      <h1>Free scans</h1>
+      <p>Every scan run from your public checkers: the domain entered, the checker page it came from and the result. Only you and other site admins can see this.</p>
+    </div>
+    <button class="btn btn-outline" type="button" data-fs-csv disabled><Icon name="download" /> Export CSV</button>
+  </header>
+
+  <p class="status-line" data-fs-status role="status" aria-live="polite"></p>
+
+  <div data-fs-body hidden>
+    <ul class="fs-totals" aria-label="Free scan totals">
+      <li><strong data-total="day">0</strong><span>Last 24 hours</span></li>
+      <li><strong data-total="week">0</strong><span>Last 7 days</span></li>
+      <li><strong data-total="month">0</strong><span>Last 30 days</span></li>
+      <li><strong data-total="domains">0</strong><span>Different domains, 30 days</span></li>
+    </ul>
+
+    <form class="fs-filters" data-fs-filter role="search" aria-label="Filter free scans">
+      <div class="field">
+        <label for="fs-q">Search domain, URL or checker page</label>
+        <input id="fs-q" name="q" type="search" maxlength="100" placeholder="example.com or /platforms/shopify" />
+      </div>
+      <div class="field">
+        <label for="fs-days">Time range</label>
+        <select id="fs-days" name="days">
+          <option value="1">Last 24 hours</option>
+          <option value="7">Last 7 days</option>
+          <option value="30" selected>Last 30 days</option>
+          <option value="90">Last 90 days</option>
+          <option value="365">Last 12 months</option>
+        </select>
+      </div>
+      <button class="btn" type="submit">Apply</button>
+    </form>
+
+    <div class="fs-grid">
+      <section class="panel" aria-labelledby="fs-top-title">
+        <h2 id="fs-top-title">Most checked domains</h2>
+        <div data-fs-top></div>
+      </section>
+      <section class="panel" aria-labelledby="fs-pages-title">
+        <h2 id="fs-pages-title">Scans by checker page</h2>
+        <div data-fs-pages></div>
+      </section>
+    </div>
+
+    <section class="panel" aria-labelledby="fs-list-title">
+      <h2 id="fs-list-title">Latest scans</h2>
+      <div data-fs-list></div>
+      <button class="btn btn-outline" type="button" data-fs-more hidden>Load more</button>
+    </section>
+  </div>
+</AppLayout>
+<script>
+  import '../../scripts/app/free-scans.js';
+</script>
