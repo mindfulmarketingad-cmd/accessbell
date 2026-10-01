@@ -1,0 +1,18 @@
+---
+/**
+ * A platform's logo, from the open-source Simple Icons set (see npm run logos),
+ * or its initial when the set has none. Decorative: the platform name always
+ * appears next to it. Logos are trademarks of their owners and only identify
+ * the platform.
+ */
+import { platformLogo } from '../data/platform-logos';
+interface Props {
+  slug: string;
+  name: string;
+  size?: 'sm' | 'md' | 'lg';
+}
+const { slug, name, size = 'md' } = Astro.props;
+const src = platformLogo(slug);
+const px = { sm: 22, md: 36, lg: 56 }[size];
+---
+{src ? <img class={`platform-logo platform-logo-${size}`} src={src} alt="" width={px} height={px} loading="lazy" decoding="async" /> : <span class={`platform-logo platform-logo-${size} platform-mono`} aria-hidden="true">{name.trim()[0]}</span>}

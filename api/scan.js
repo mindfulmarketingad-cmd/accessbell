@@ -1,8 +1,9 @@
-// POST /api/scan  { url, standard } -> issue counts for one public page
+// POST /api/scan  { url, standard } -> the issues found on one public page
 //
-// The free scan is a preview: it returns how many issues were found and how
-// severe they are, never which ones. Subscribers see every issue, the failing
-// code and the fix in the dashboard.
+// The free scan lists what is wrong: each issue's name, severity, WCAG
+// criteria and how many elements are affected. It never returns the failing
+// code, where on the page it is or how to fix it. Those, plus daily
+// monitoring, are what a subscription adds in the dashboard.
 //
 // Uses a real browser with axe-core when BROWSER_WS_ENDPOINT is configured,
 // and falls back to the HTML-only audit if the browser is unavailable.
@@ -21,12 +22,14 @@ async function htmlAudit(url, standard) {
   return { finalUrl: page.finalUrl, engine: 'html', ...audit(page.html, { standard }) };
 }
 
-/** Counts only: nothing that names an issue, an element or a fix. */
+const MAX_ISSUES = 30;
+
+/** Issue names, severities and counts only: nothing that shows an element, its code or a fix. */
 export function preview(report) {
   const s = report.summary || {};
   const n = (v) => (Number.isFinite(v) ? v : 0);
   return {
-    locked: true,
+    preview: true,
     finalUrl: report.finalUrl,
     engine: report.engine,
     standard: report.standard ? { id: report.standard.id, label: report.standard.label } : undefined,
@@ -39,6 +42,12 @@ export function preview(report) {
       rulesFailed: n(s.rulesFailed),
       rulesPassed: n(s.rulesPassed),
     },
+    issues: (report.issues || []).slice(0, MAX_ISSUES).map((i) => ({
+      title: String(i.title || '').slice(0, 200),
+      impact: i.impact,
+      count: n(i.count),
+      wcag: (i.wcag || []).filter((c) => c && c.sc).map((c) => ({ sc: c.sc, name: c.name, level: c.level })),
+    })),
   };
 }
 

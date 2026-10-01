@@ -70,7 +70,7 @@ The practical takeaway: use one or two automated tools to find and fix the objec
 
 ### Limitations
 
-- The free scan shows **counts only**, not which issues were found. The other tools in this guide list every issue for free.
+- The free scan lists each issue, its severity and the WCAG criterion it fails, but not the failing code or the fix. The other tools in this guide show the element for free.
 - It checks **one public page at a time**. For pages behind a login, use a browser extension below or AccessBell Pro with custom headers.
 - It reports what automated rules can detect. Pair it with the manual checks described later in this guide.
 

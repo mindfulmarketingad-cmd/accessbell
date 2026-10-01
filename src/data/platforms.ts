@@ -2,11 +2,15 @@
  * Programmatic SEO pages at /platforms/<slug>: the free scanner, framed for
  * one CMS or e-commerce platform, with platform-specific common issues.
  */
+import { MORE_PLATFORMS } from './platforms-more';
+
 export type Platform = {
   slug: string;
   name: string;
   /** Site builder or CMS (default), or a web host whose customers run many kinds of site. */
   kind?: 'builder' | 'host';
+  /** Used to group platforms on the hub page and to choose related checkers. */
+  group: 'ecommerce' | 'cms' | 'builder' | 'host';
   seoTitle: string;
   description: string;
   lead: string;
@@ -18,10 +22,11 @@ export type Platform = {
   related: string[];
 };
 
-export const PLATFORMS: Platform[] = [
+const BASE_PLATFORMS: Platform[] = [
   {
     slug: 'wordpress-accessibility-checker',
     name: 'WordPress',
+    group: 'cms',
     seoTitle: 'Free WordPress Accessibility Checker',
     description: 'Free WordPress accessibility checker. Scan your site for the plugin, theme and page-builder issues that most often break WCAG compliance.',
     lead: 'Scan any WordPress site for real WCAG failures, including the page-builder and plugin issues that generic accessibility overlays never fix.',
@@ -55,6 +60,7 @@ export const PLATFORMS: Platform[] = [
   {
     slug: 'shopify-accessibility-checker',
     name: 'Shopify',
+    group: 'ecommerce',
     seoTitle: 'Free Shopify Accessibility Checker',
     description: 'Free Shopify accessibility checker. Test your storefront for WCAG failures in themes, apps and checkout before they cost you sales or a lawsuit.',
     lead: 'Scan your Shopify storefront for real WCAG failures, including the theme, app and checkout issues that most often go unnoticed until a customer complains.',
@@ -88,6 +94,7 @@ export const PLATFORMS: Platform[] = [
   {
     slug: 'webflow-accessibility-checker',
     name: 'Webflow',
+    group: 'builder',
     seoTitle: 'Free Webflow Accessibility Checker',
     description: 'Free Webflow accessibility checker. Webflow gives you the tools to build accessible sites; scan to confirm your build actually used them correctly.',
     lead: 'Scan your published Webflow site to confirm the accessible foundation Webflow gives you was actually used correctly in your build.',
@@ -121,6 +128,7 @@ export const PLATFORMS: Platform[] = [
   {
     slug: 'squarespace-accessibility-checker',
     name: 'Squarespace',
+    group: 'builder',
     seoTitle: 'Free Squarespace Accessibility Checker',
     description: 'Free Squarespace accessibility checker. Squarespace does not guarantee WCAG compliance out of the box; scan your site to see what still needs fixing.',
     lead: 'Scan your Squarespace site to see what still needs fixing beyond the built-in templates, including the contrast, heading and link issues that show up most.',
@@ -154,6 +162,7 @@ export const PLATFORMS: Platform[] = [
   {
     slug: 'wix-accessibility-checker',
     name: 'Wix',
+    group: 'builder',
     seoTitle: 'Free Wix Accessibility Checker',
     description: 'Free Wix accessibility checker. Wix’s built-in accessibility wizard is a starting point, not a guarantee; scan your site to see what it missed.',
     lead: 'Scan your Wix site to see what its built-in accessibility wizard did not catch, from custom apps to contrast and alt text.',
@@ -187,6 +196,7 @@ export const PLATFORMS: Platform[] = [
   {
     slug: 'ionos-accessibility-checker',
     name: 'IONOS',
+    group: 'host',
     kind: 'host',
     seoTitle: 'Free IONOS Accessibility Checker',
     description: 'Free IONOS accessibility checker. Scan any site hosted on IONOS, whether built with its website builder or WordPress, for WCAG issues.',
@@ -221,6 +231,7 @@ export const PLATFORMS: Platform[] = [
   {
     slug: 'siteground-accessibility-checker',
     name: 'SiteGround',
+    group: 'host',
     kind: 'host',
     seoTitle: 'Free SiteGround Accessibility Checker',
     description: 'Free SiteGround accessibility checker. Scan WordPress and WooCommerce sites hosted on SiteGround for WCAG failures in themes, plugins and checkout.',
@@ -255,6 +266,7 @@ export const PLATFORMS: Platform[] = [
   {
     slug: 'bluehost-accessibility-checker',
     name: 'Bluehost',
+    group: 'host',
     kind: 'host',
     seoTitle: 'Free Bluehost Accessibility Checker',
     description: 'Free Bluehost accessibility checker. Scan WordPress sites hosted on Bluehost for WCAG failures in themes, plugins, forms and content.',
@@ -289,6 +301,7 @@ export const PLATFORMS: Platform[] = [
   {
     slug: 'hosting-com-accessibility-checker',
     name: 'Hosting.com',
+    group: 'host',
     kind: 'host',
     seoTitle: 'Free Hosting.com Accessibility Checker',
     description: 'Free Hosting.com accessibility checker. Scan any site hosted on Hosting.com, WordPress or custom, for WCAG failures and see how many issues it has.',
@@ -323,6 +336,7 @@ export const PLATFORMS: Platform[] = [
   {
     slug: 'godaddy-accessibility-checker',
     name: 'GoDaddy',
+    group: 'host',
     kind: 'host',
     seoTitle: 'Free GoDaddy Accessibility Checker',
     description: 'Free GoDaddy accessibility checker. Scan sites built with GoDaddy Websites + Marketing or WordPress on GoDaddy for WCAG failures.',
@@ -357,6 +371,7 @@ export const PLATFORMS: Platform[] = [
   {
     slug: 'hostgator-accessibility-checker',
     name: 'HostGator',
+    group: 'host',
     kind: 'host',
     seoTitle: 'Free HostGator Accessibility Checker',
     description: 'Free HostGator accessibility checker. Scan WordPress and other sites hosted on HostGator for WCAG failures, from contrast to forms.',
@@ -391,6 +406,7 @@ export const PLATFORMS: Platform[] = [
   {
     slug: 'dreamhost-accessibility-checker',
     name: 'DreamHost',
+    group: 'host',
     kind: 'host',
     seoTitle: 'Free DreamHost Accessibility Checker',
     description: 'Free DreamHost accessibility checker. Scan WordPress and other sites hosted on DreamHost for WCAG failures in themes, plugins and content.',
@@ -423,5 +439,7 @@ export const PLATFORMS: Platform[] = [
     related: ['wcag-1-1-1-non-text-content', 'wcag-1-3-2-meaningful-sequence', 'seo-audit'],
   },
 ];
+
+export const PLATFORMS: Platform[] = [...BASE_PLATFORMS, ...MORE_PLATFORMS];
 
 export const platformPath = (p: Platform) => `/platforms/${p.slug}`;

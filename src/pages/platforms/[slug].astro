@@ -6,6 +6,7 @@ import ScanForm from '../../components/ScanForm.astro';
 import Faq from '../../components/Faq.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import AuthorAvatar from '../../components/AuthorAvatar.astro';
+import PlatformLogo from '../../components/PlatformLogo.astro';
 import { SITE } from '../../config/site';
 import { authorPath, authorSchema } from '../../lib/authors';
 import { faqSchema } from '../../lib/schema';
@@ -22,7 +23,10 @@ const REVIEWED = new Date('2026-09-28');
 const url = `${SITE.url}${platformPath(p)}`;
 const author = await getEntry('authors', 'joseph-edwards');
 const isHost = p.kind === 'host';
-const others = PLATFORMS.filter((o) => o.slug !== p.slug && (o.kind === 'host') === isHost);
+const GROUP_LABEL = { ecommerce: 'E-commerce platform', cms: 'CMS', builder: 'Website builder', host: 'Web host' } as const;
+const rest = PLATFORMS.filter((o) => o.slug !== p.slug);
+// Same kind of platform first, then the rest, six in all. The hub lists every checker.
+const others = [...rest.filter((o) => o.group === p.group), ...rest.filter((o) => o.group !== p.group)].slice(0, 6);
 const cov = coverageFor('2.2');
 const related = (await Promise.all(p.related.map((id) => getEntry('blog', id)))).filter(Boolean);
 
@@ -60,7 +64,7 @@ const schema = [
 >
   <section class="checker-hero" id="scan" aria-labelledby="platform-title">
     <div class="container">
-      <span class="eyebrow">Free Tool</span>
+      <div class="checker-logo"><PlatformLogo slug={p.slug} name={p.name} size="lg" /></div>
       <h1 id="platform-title">{p.name} Accessibility Checker</h1>
       <p class="lead">{p.lead}</p>
       <ScanForm id="platform" buttonLabel={`Check My ${p.name} Site`} />
@@ -68,6 +72,7 @@ const schema = [
         <Icon name="check" /> Real Chrome browser scan, powered by axe-core
         <span aria-hidden="true">&middot;</span> Free, no account needed
       </p>
+      <p class="checker-seeall"><a href="/platforms">See all platform accessibility checkers</a></p>
     </div>
   </section>
 
@@ -100,22 +105,27 @@ const schema = [
         <li><strong>Enter any public page.</strong> Paste the address of a page on your {p.name} site into the scanner above. There is nothing to install{isHost ? ' on your hosting account' : ''}: no plugin, no code snippet and no login.</li>
         <li><strong>We load it in a real browser.</strong> AccessBell opens the page in headless Chrome and runs its scripts, so it tests what your visitors actually see, including content added by your {isHost ? 'theme, builder or plugins' : 'theme, apps or plugins'}.</li>
         <li><strong>We run the WCAG rules.</strong> The open-source <a href="https://github.com/dequelabs/axe-core" rel="noopener noreferrer">axe-core</a> engine checks the page against the standard you choose, and every result is mapped to the WCAG success criteria it affects.</li>
-        <li><strong>You see how many issues it has in seconds.</strong> Subscribe to see each issue with the failing HTML and how to fix it. Our <a href="/methodology">methodology</a> explains exactly what runs and what still needs a person.</li>
+        <li><strong>You see what is wrong in seconds.</strong> The free scan lists every issue it finds, ranked by severity, with the WCAG criteria each one fails. Start a free trial to get the failing code and the fix for each one. Our <a href="/methodology">methodology</a> explains exactly what runs and what still needs a person.</li>
       </ol>
     </section>
 
     <section aria-labelledby="included">
-      <h2 id="included">What's Included in Every Scan</h2>
+      <h2 id="included">What You Get From the Free Scan and the Free Trial</h2>
+      <h3>Free, with no account</h3>
       <ul class="check-list">
         <li><Icon name="check" /><span>{cov.ruleCount} automated rules for WCAG 2.2 Level AA, or presets for WCAG 2.1 AA, the ADA, Section 508 and EN 301 549</span></li>
-        <li><Icon name="check" /><span>Every issue ranked by severity, from critical to minor</span></li>
+        <li><Icon name="check" /><span>Every issue found on the page, ranked by severity from critical to minor</span></li>
         <li><Icon name="check" /><span>The WCAG success criteria each issue fails, which you can look up in our <a href="/resources/wcag">WCAG library</a></span></li>
-        <li><Icon name="check" /><span>The failing HTML, so you can find the element in your {isHost ? 'site' : p.name} editor or code</span></li>
-        <li><Icon name="check" /><span>How to fix each issue, with a link to the rule's full documentation</span></li>
-        <li><Icon name="check" /><span>A list of checks that need a person to review, so nothing is missed</span></li>
-        <li><Icon name="check" /><span>Filters by WCAG version, level, principle, success criterion and severity</span></li>
       </ul>
-      <p>The free scan checks one page at a time. <a href="/pricing">AccessBell Pro</a> scans up to 500 pages per domain every day and alerts you when something changes.</p>
+      <h3>With a 3-day free trial</h3>
+      <ul class="check-list">
+        <li><Icon name="check" /><span>The failing HTML, so you can find the element in your {isHost ? 'site' : p.name} editor or code</span></li>
+        <li><Icon name="check" /><span>How to fix each issue, with a corrected example</span></li>
+        <li><Icon name="check" /><span>Every page scanned, up to 500 per domain, with daily monitoring and an email when something breaks</span></li>
+        <li><Icon name="check" /><span>A list of checks that need a person to review, so nothing is missed</span></li>
+        <li><Icon name="check" /><span>A dated record of your scans and fixes</span></li>
+      </ul>
+      <p><a class="btn btn-accent" href="/app/signup">Start 3-day free trial</a></p>
     </section>
 
     <section aria-labelledby="fixing">
@@ -148,22 +158,23 @@ const schema = [
       <ul>
         <li><a href={p.stat.href} rel="noopener noreferrer" target="_blank">{p.stat.label}<span class="visually-hidden"> (opens in a new tab)</span></a></li>
       </ul>
-      <p class="muted">This page explains general accessibility patterns for {p.name} sites and is not legal advice. AccessBell is not affiliated with {p.name}. See our <a href="/disclaimer">disclaimer</a>.</p>
+      <p class="muted">This page explains general accessibility patterns for {p.name} sites and is not legal advice. AccessBell is not affiliated with {p.name}. {p.name} and its logo are trademarks of their owners and are used only to identify the platform. See our <a href="/disclaimer">disclaimer</a>.</p>
     </section>
   </article>
 
   <section class="section section-surface" aria-labelledby="more-platforms">
     <div class="container">
       <div class="section-head">
-        <h2 id="more-platforms">{isHost ? 'Checkers for Other Web Hosts' : 'Checkers for Other Platforms'}</h2>
-        <p>The same free scanner, framed for the {isHost ? 'host' : 'platform'} you use. See <a href="/platforms">all platform checkers</a>.</p>
+        <h2 id="more-platforms">Checkers for Other Platforms</h2>
+        <p>The same free scanner, framed for the platform you use. Browse <a href="/platforms">all {PLATFORMS.length} platform accessibility checkers</a>.</p>
       </div>
       <ul class="res-grid">
         {others.map((o) => (
           <li>
             <a class="res-card" href={platformPath(o)}>
+              <span class="res-card-logo"><PlatformLogo slug={o.slug} name={o.name} /></span>
               <span class="res-card-text">
-                <small>Free Tool</small>
+                <small>{GROUP_LABEL[o.group]}</small>
                 <strong>{o.name} Accessibility Checker</strong>
                 <span>{o.lead}</span>
               </span>

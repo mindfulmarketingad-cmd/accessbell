@@ -1,4 +1,5 @@
 import { PLATFORMS, platformPath } from '../data/platforms';
+import { platformLogo } from '../data/platform-logos';
 export const SITE = {
   name: 'AccessBell',
   domain: 'accessbell.co',
@@ -17,6 +18,8 @@ export const SITE = {
   },
 } as const;
 
+const GROUP_LABEL = { ecommerce: 'E-commerce', cms: 'CMS', builder: 'Site builder', host: 'Web host' } as const;
+
 export const HEADER_NAV = [
   { label: 'Home', href: '/' },
   { label: 'Pricing', href: '/pricing' },
@@ -27,7 +30,7 @@ export const HEADER_NAV = [
     wide: true,
     children: [
       { label: 'All platforms', href: '/platforms', note: 'Every platform checker' },
-      ...PLATFORMS.map((p) => ({ label: p.name, href: platformPath(p), note: p.kind === 'host' ? 'Web host' : 'Site builder' })),
+      ...PLATFORMS.map((p) => ({ label: p.name, href: platformPath(p), note: GROUP_LABEL[p.group], logo: platformLogo(p.slug), initial: p.name.trim()[0] })),
     ],
   },
   {

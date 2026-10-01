@@ -1,7 +1,6 @@
 // Free accessibility checker: submits a URL to /api/scan, runs the checklist
-// animation, and just before it finishes asks the visitor to subscribe to see
-// the results. The API returns counts only, so the preview shows how many
-// issues were found and how severe they are, never which ones.
+// animation, then lists the issues found. No sign-up is needed to run it. The
+// failing code, the fixes and daily monitoring are what a free trial adds.
 // All data is inserted as text, never HTML.
 import { el } from './shared/report-view.js';
 
@@ -161,17 +160,10 @@ const SEVERITIES = [
   ['minor', 'Minor'],
 ];
 
-function planCard({ name, price, unit, note, href, accent }) {
-  return el('div', { class: `scan-lock-plan${accent ? ' is-best' : ''}` }, [
-    el('p', { class: 'scan-lock-plan-name' }, [name, accent ? el('span', { class: 'scan-lock-save', text: 'Best value' }) : null]),
-    el('p', { class: 'scan-lock-plan-price' }, [el('strong', { text: price }), ` ${unit}`]),
-    el('p', { class: 'scan-lock-plan-note', text: `3-day free trial · ${note}` }),
-    el('a', { class: `btn btn-block${accent ? ' btn-accent' : ''}`, href, text: 'Start 3-day free trial' }),
-  ]);
-}
+const IMPACT_LABEL = { critical: 'Critical', serious: 'Serious', moderate: 'Moderate', minor: 'Minor' };
 
-/** The subscribe prompt, shown over the checklist on its last step. */
-function showLocked(panel, r, url) {
+/** The results list, then a prompt to start the trial for fixes and monitoring. */
+function showResults(r, url) {
   section.setAttribute('aria-busy', 'false');
   const host = (() => {
     try {
@@ -181,49 +173,57 @@ function showLocked(panel, r, url) {
     }
   })();
   const total = r.summary?.issues || 0;
+  const list = r.issues || [];
   const label = r.standard?.label || 'WCAG';
-  const heading = el('h2', { id: 'scan-lock-title', tabindex: '-1', text: total ? 'Subscribe to See Your Results' : 'Your Scan Is Almost Done' });
-  const found = total
-    ? el('p', { class: 'scan-lock-lead' }, ['We found ', el('strong', { text: plural(total, 'accessibility issue') }), ` on ${host}, tested against ${label}.`])
-    : el('p', { class: 'scan-lock-lead' }, [`Our automated checks found no issues on this page of ${host}. Automated testing covers only part of ${label}, so subscribe to scan every page and track what needs a manual check.`]);
-  const severity = total
+  const heading = el('h2', { id: 'scan-result-title', tabindex: '-1', text: total ? `${plural(total, 'issue')} found on ${host}` : `No automated issues found on ${host}` });
+  const lead = total
+    ? `${plural(list.length, 'type')} of problem, tested against ${label}. Here is what needs fixing.`
+    : `This page passed every automated check against ${label}. Automated testing covers only part of the standard, so scan the rest of your site and review the manual checks too.`;
+  const tiles = total
     ? el(
         'ul',
-        { class: 'scan-lock-sev', 'aria-label': 'Issues by severity' },
+        { class: 'scan-result-sev', 'aria-label': 'Issues by severity' },
         SEVERITIES.map(([key, name]) => el('li', { 'data-sev': key }, [el('strong', { text: String(r.summary[key] || 0) }), el('span', { text: name })])),
       )
     : null;
-  // Placeholder rows, blurred: they stand for the report without revealing anything in it.
-  const teaser = total
+  const rows = list.length
     ? el(
-        'div',
-        { class: 'scan-lock-preview', 'aria-hidden': 'true' },
-        SEVERITIES.filter(([key]) => r.summary[key] > 0)
-          .slice(0, 3)
-          .map(([key]) => el('div', { class: 'scan-lock-row', 'data-sev': key }, [el('i'), el('span'), el('b')])),
+        'ol',
+        { class: 'scan-result-list' },
+        list.map((i) =>
+          el('li', { 'data-sev': i.impact }, [
+            el('div', { class: 'scan-result-main' }, [
+              el('strong', { text: i.title }),
+              el('span', { class: 'scan-result-meta', text: `${plural(i.count, 'element')} on this page${i.wcag.length ? ' · WCAG ' + i.wcag.map((c) => `${c.sc} ${c.name}`).join(', ') : ''}` }),
+            ]),
+            el('span', { class: `tag tag-${i.impact}`, text: IMPACT_LABEL[i.impact] || i.impact }),
+          ]),
+        ),
       )
     : null;
-  const card = el('div', { class: 'scan-lock-card' }, [
-    el('span', { class: 'scan-lock-kicker', text: total ? 'Report ready' : 'Scan complete' }),
-    heading,
-    found,
-    severity,
-    teaser,
-    el('p', { text: 'Subscribe to see every issue, where it is on the page, the failing code and how to fix it. Pro also monitors up to 500 pages per domain every day and emails you when something breaks.' }),
-    el('div', { class: 'scan-lock-plans' }, [
-      planCard({ name: 'Monthly', price: '$29', unit: '/mo per domain', note: 'Cancel anytime', href: '/app/signup?plan=monthly', accent: false }),
-      planCard({ name: 'Yearly', price: '$199', unit: '/year per domain', note: 'Save 43% vs monthly', href: '/app/signup?plan=annual', accent: true }),
+  const more = r.summary.rulesFailed > list.length ? el('p', { class: 'scan-result-more', text: `Plus ${r.summary.rulesFailed - list.length} more types of issue.` }) : null;
+  const cta = el('div', { class: 'scan-cta' }, [
+    el('h3', { text: total ? 'Get the fix for every issue' : 'Keep your site compliant' }),
+    el('ul', {}, [
+      el('li', { text: 'The failing code and a corrected example for each issue' }),
+      el('li', { text: 'Every page scanned automatically, up to 500 per domain' }),
+      el('li', { text: 'Daily monitoring with an email when something breaks' }),
+      el('li', { text: 'A dated record of your fixes, in case you ever need proof' }),
     ]),
-    el('p', { class: 'scan-lock-note' }, ['Both plans start with a 3-day free trial and include every feature. Already subscribed? ', el('a', { href: '/app/login', text: 'Log in to your dashboard' }), '.']),
+    el('a', { class: 'btn btn-accent', href: '/app/signup', text: 'Start 3-day free trial' }),
+    el('p', { class: 'scan-cta-note' }, ['Already subscribed? ', el('a', { href: '/app/login', text: 'Log in to your dashboard' }), '.']),
   ]);
-  panel.classList.add('is-locked');
-  panel.append(el('div', { class: 'scan-lock', role: 'region', 'aria-labelledby': 'scan-lock-title' }, [card]));
-  // The prompt can be taller than the checklist behind it: grow the panel to fit.
-  const fit = () => panel.style.setProperty('min-height', `${card.offsetHeight + 72}px`);
-  fit();
-  window.addEventListener('resize', fit);
+  mount.replaceChildren(
+    el('div', { class: 'results-card scan-result', role: 'region', 'aria-labelledby': 'scan-result-title' }, [
+      el('div', { class: 'scan-result-head' }, [el('span', { class: 'scan-result-kicker', text: 'Free scan results' }), heading, el('p', { text: lead })]),
+      tiles,
+      rows,
+      more,
+      cta,
+    ]),
+  );
   heading.focus({ preventScroll: true });
-  card.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'center' });
+  mount.firstChild.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' });
 }
 
 for (const form of forms) {
@@ -254,7 +254,7 @@ for (const form of forms) {
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || 'The scan could not be completed. Please try again.');
       await scan.toLastStep();
-      showLocked(scan.panel, data, parsed.url);
+      showResults(data, parsed.url);
     } catch (err) {
       scan.stop();
       showFailure(err.name === 'AbortError' ? 'The page took too long to respond. Please try again later.' : err.message);

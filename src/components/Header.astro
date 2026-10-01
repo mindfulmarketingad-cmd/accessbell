@@ -32,9 +32,12 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path === href
                 <ul class={`nav-dropdown${'wide' in item && item.wide ? ' nav-dropdown-wide' : ''}`} id={`nav-dd-${item.label.toLowerCase()}`} hidden>
                   {item.children.map((child) => (
                     <li>
-                      <a href={child.href} aria-current={isCurrent(child.href) ? 'page' : undefined}>
-                        <span>{child.label}</span>
-                        {child.note && <small>{child.note}</small>}
+                      <a href={child.href} class={'initial' in child && child.initial ? 'has-mark' : undefined} aria-current={isCurrent(child.href) ? 'page' : undefined}>
+                        {'initial' in child && child.initial && ('logo' in child && child.logo ? <img class="platform-logo platform-logo-sm" src={child.logo} alt="" width="22" height="22" loading="lazy" decoding="async" /> : <span class="platform-logo platform-logo-sm platform-mono" aria-hidden="true">{child.initial}</span>)}
+                        <span class="nav-dd-text">
+                          <span>{child.label}</span>
+                          {child.note && <small>{child.note}</small>}
+                        </span>
                       </a>
                     </li>
                   ))}

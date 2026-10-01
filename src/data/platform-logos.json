@@ -1,0 +1,16 @@
+{
+  "wordpress-accessibility-checker": "siWordpress",
+  "shopify-accessibility-checker": "siShopify",
+  "webflow-accessibility-checker": "siWebflow",
+  "squarespace-accessibility-checker": "siSquarespace",
+  "wix-accessibility-checker": "siWix",
+  "ionos-accessibility-checker": "siIonos",
+  "godaddy-accessibility-checker": "siGodaddy",
+  "woocommerce-accessibility-checker": "siWoocommerce",
+  "bigcommerce-accessibility-checker": "siBigcommerce",
+  "drupal-accessibility-checker": "siDrupal",
+  "joomla-accessibility-checker": "siJoomla",
+  "hubspot-cms-accessibility-checker": "siHubspot",
+  "framer-accessibility-checker": "siFramer",
+  "ghost-accessibility-checker": "siGhost"
+}
