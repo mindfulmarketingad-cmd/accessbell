@@ -7,7 +7,9 @@ import Faq from '../../components/Faq.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import AuthorAvatar from '../../components/AuthorAvatar.astro';
 import PlatformLogo from '../../components/PlatformLogo.astro';
-import { PLATFORMS, platformAdaPath } from '../../data/platforms';
+import { PLATFORMS, platformCheckers } from '../../data/platforms';
+// Which per-platform checker matches this standard's general checker.
+const PLATFORM_TYPE: Record<string, string> = { 'wcag-2-2-aa-checker': 'wcag-2-2-checker', 'wcag-2-1-aa-checker': 'wcag-2-1-checker', 'ada-compliance-checker': 'ada-compliance-checker', 'section-508-checker': 'section-508-checker', 'en-301-549-checker': 'en-301-549-checker' };
 import { SITE } from '../../config/site';
 import { CHECKERS, checkerPath, type Checker } from '../../data/checkers';
 import { coverageFor } from '../../lib/checker-coverage';
@@ -20,6 +22,7 @@ export function getStaticPaths() {
 }
 
 const { c } = Astro.props as { c: Checker };
+const byPlatform = PLATFORMS.map((o) => ({ o, link: platformCheckers(o).find((x) => x.id === PLATFORM_TYPE[c.slug]) })).filter((x): x is { o: typeof PLATFORMS[number]; link: NonNullable<typeof x.link> } => !!x.link);
 const REVIEWED = new Date('2026-09-28');
 const url = `${SITE.url}${checkerPath(c)}`;
 const cov = coverageFor(c.version);
@@ -190,19 +193,19 @@ const schema = [
     </section>
   </article>
 
-  {c.slug === 'ada-compliance-checker' && (
-    <section class="section" aria-labelledby="ada-by-platform">
+  {byPlatform.length > 0 && (
+    <section class="section" aria-labelledby="std-by-platform">
       <div class="container">
         <div class="section-head">
-          <h2 id="ada-by-platform">ADA Compliance Checkers by Platform</h2>
-          <p>The same ADA scan with the risks and fixes specific to your platform. Or browse the <a href="/platforms">platform hub</a>.</p>
+          <h2 id="std-by-platform">{c.name.replace(/ AA/, '')}s by Platform</h2>
+          <p>The same scan with the issues and fixes specific to your platform. Or browse the <a href="/platforms">platform hub</a>.</p>
         </div>
         <ul class="platform-links">
-          {PLATFORMS.map((o) => (
+          {byPlatform.map(({ o, link }) => (
             <li>
-              <a href={platformAdaPath(o)}>
+              <a href={link.href}>
                 <PlatformLogo slug={o.slug} name={o.name} size="sm" />
-                <span>{o.name} ADA Compliance Checker</span>
+                <span>{link.label}</span>
               </a>
             </li>
           ))}

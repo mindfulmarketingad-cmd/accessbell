@@ -7536,3 +7536,87 @@ img.platform-logo-lg {
   max-width: 120px;
   object-fit: contain;
 }
+
+/* Icon tile on solution cards: a fixed-size icon, not a full-width graphic. */
+.res-card-icon {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: var(--sage-100);
+  color: var(--sage-800);
+}
+.res-card-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+/* ---------- /platforms hub: clickable logo blocks ---------- */
+.platform-tiles-heading {
+  margin: 0 0 16px;
+  font-size: 1.25rem;
+}
+.platform-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.platform-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 100%;
+  min-height: 150px;
+  padding: 20px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: #fff;
+  color: var(--ink-900);
+  text-align: center;
+  text-decoration: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.platform-tile:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow);
+}
+.platform-tile strong {
+  font-size: 1rem;
+}
+.platform-tile small {
+  color: var(--ink-700);
+}
+.platform-tile img.platform-logo-lg {
+  max-width: 100%;
+  height: 56px;
+  width: auto;
+  max-width: 120px;
+  object-fit: contain;
+}
+
+/* Standard (narrow) header dropdowns: one vertical list, not the nav's row. */
+.primary-nav .nav-dropdown:not(.nav-dropdown-wide) {
+  flex-direction: column;
+  gap: 2px;
+  width: 300px;
+}
+.primary-nav .nav-dropdown[hidden] {
+  display: none;
+}
+.primary-nav .nav-dropdown:not(.nav-dropdown-wide) li:first-child {
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4px;
+  padding-bottom: 4px;
+}
+@media (max-width: 959px) {
+  .primary-nav .nav-dropdown:not(.nav-dropdown-wide) {
+    width: auto;
+  }
+}

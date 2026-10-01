@@ -5,7 +5,7 @@ import { getCollection } from 'astro:content';
 import { SITE, absoluteUrl } from '../config/site';
 import { PLAN } from '../data/pricing';
 import { CHECKERS, checkerPath } from '../data/checkers';
-import { PLATFORMS, platformHome, platformPath, platformAdaPath } from '../data/platforms';
+import { PLATFORMS, platformHome, platformCheckers } from '../data/platforms';
 import { SOLUTIONS, solutionPath } from '../data/solutions';
 import { INDUSTRIES, industryPath } from '../data/industries';
 import { STATE_LAWS, stateLawPath } from '../data/state-laws';
@@ -64,8 +64,7 @@ export const GET: APIRoute = async () => {
         link('Accessibility checkers by industry', '/industries'),
         link('Website accessibility laws by state', '/state-accessibility-laws'),
         ...PLATFORMS.map((p) => link(`${p.name} Accessibility Checkers`, platformHome(p))),
-        ...PLATFORMS.map((p) => link(`${p.name} Accessibility Checker`, platformPath(p))),
-        ...PLATFORMS.map((p) => link(`${p.name} ADA Compliance Checker`, platformAdaPath(p))),
+        ...PLATFORMS.flatMap((p) => platformCheckers(p).map((c) => link(c.label, c.href))),
         ...INDUSTRIES.map((i) => link(`${i.name} Accessibility Checker`, industryPath(i))),
         ...STATE_LAWS.map((s) => link(`${s.name} Website Accessibility Checker`, stateLawPath(s))),
         link('Privacy Policy', '/privacy'),

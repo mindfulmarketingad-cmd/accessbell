@@ -20,7 +20,7 @@ const ada = ADA_CONTENT[platformId(p)];
 const url = `${SITE.url}${platformHome(p)}`;
 const related = (await Promise.all(p.related.map((id) => getEntry('blog', id)))).filter(Boolean);
 const title = `${p.name} Accessibility Checkers`;
-const description = `Free ${p.name} accessibility checkers: scan your ${p.name} site for WCAG issues or check it for ADA compliance, with fixes written for ${p.name}.`;
+const description = `Free ${p.name} accessibility checkers for WCAG 2.2, WCAG 2.1, ADA, Section 508 and EN 301 549. Scan your ${p.name} site and see what to fix.`;
 
 const GROUP_ORDER = ['ecommerce', 'cms', 'builder', 'framework', 'host'] as const;
 const GROUP_HEADING = { ecommerce: 'E-commerce platforms', cms: 'Content management systems', builder: 'Website and page builders', framework: 'Frameworks and developer platforms', host: 'Web hosts' } as const;
@@ -29,8 +29,8 @@ const otherGroups = [p.group, ...GROUP_ORDER.filter((g) => g !== p.group)]
   .filter((g) => g.items.length);
 
 const faqs = [
-  { q: `Which accessibility checkers are available for ${p.name}?`, a: `AccessBell has ${checkers.length} free checkers for ${p.name}: ${checkers.map((c) => c.label).join(' and ')}. Each runs the same scanner on a public page of your site and adds guidance written for ${p.name}.` },
-  { q: `Which ${p.name} checker should I use first?`, a: `Start with the ${p.name} Accessibility Checker for a full WCAG 2.2 view of a page. Use the ${p.name} ADA Compliance Checker if your main concern is an ADA website claim, since it tests against WCAG 2.1 AA, the benchmark courts and settlements cite.` },
+  { q: `Which accessibility checkers are available for ${p.name}?`, a: `AccessBell has ${checkers.length} free checkers for ${p.name}: ${checkers.slice(0, -1).map((c) => c.label).join(', ')} and ${checkers[checkers.length - 1].label}. Each runs the same scanner on a public page of your site and adds guidance written for ${p.name}.` },
+  { q: `Which ${p.name} checker should I use first?`, a: `Start with the ${p.name} Accessibility Checker for a full WCAG 2.2 view of a page. Use the ${p.name} ADA Compliance Checker if your main concern is an ADA website claim, the Section 508 Checker if you work with US federal agencies, and the EN 301 549 Checker if you sell to consumers in the EU.` },
   { q: `Do the ${p.name} checkers need an account?`, a: 'No. The scan is free and needs no sign-up. A 3-day free trial adds the failing code, fixes, monitoring of up to 500 pages per domain and a dated record of your work.' },
 ];
 

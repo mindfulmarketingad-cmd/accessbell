@@ -1,0 +1,211 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Icon from '../../../components/Icon.astro';
+import ScanForm from '../../../components/ScanForm.astro';
+import Faq from '../../../components/Faq.astro';
+import CtaBand from '../../../components/CtaBand.astro';
+import AuthorAvatar from '../../../components/AuthorAvatar.astro';
+import PlatformLogo from '../../../components/PlatformLogo.astro';
+import PlatformSiblings from '../../../components/PlatformSiblings.astro';
+import { SITE } from '../../../config/site';
+import { authorPath, authorSchema } from '../../../lib/authors';
+import { faqSchema } from '../../../lib/schema';
+import { formatDate } from '../../../lib/format';
+import { coverageFor } from '../../../lib/checker-coverage';
+import { criterionPath } from '../../../lib/wcag-pages';
+import { CRITERIA } from '../../../../server/wcag-criteria.js';
+import { PLATFORMS, platformHome, platformId, platformPath, platformAdaPath, type Platform } from '../../../data/platforms';
+import { PLATFORM_STANDARDS, fill, type PlatformStandard } from '../../../data/platforms-standards';
+import { CHECKERS, checkerPath } from '../../../data/checkers';
+import { ADA_CONTENT } from '../../../data/platforms-ada';
+
+export function getStaticPaths() {
+  return PLATFORMS.flatMap((p) => PLATFORM_STANDARDS.map((std) => ({ params: { platform: platformId(p), standard: std.id }, props: { p, std } })));
+}
+
+const { p, std } = Astro.props as { p: Platform; std: PlatformStandard };
+const f = (s: string) => fill(s, p.name);
+const REVIEWED = new Date('2026-10-01');
+const path = `${platformHome(p)}/${std.id}`;
+const url = `${SITE.url}${path}`;
+const title = `${p.name} ${std.label} Checker`;
+const description = `Free ${p.name} ${std.label} checker. Scan your ${p.name} site against ${std.label === 'Section 508' || std.label === 'EN 301 549' ? std.label : `${std.label} Level AA`} and see the issues ${p.name} sites fail most often.`;
+const author = await getEntry('authors', 'joseph-edwards');
+const cov = coverageFor(std.version);
+const general = CHECKERS.find((c) => c.slug === std.checkerSlug)!;
+const ada = ADA_CONTENT[platformId(p)];
+const scName = (sc: string) => (CRITERIA as Record<string, { name: string }>)[sc]?.name ?? sc;
+const related = (await Promise.all(p.related.map((id) => getEntry('blog', id)))).filter(Boolean);
+const faqs = std.faqs.map((x) => ({ q: f(x.q), a: f(x.a) }));
+
+const GROUP_ORDER = ['ecommerce', 'cms', 'builder', 'framework', 'host'] as const;
+const GROUP_HEADING = { ecommerce: 'E-commerce platforms', cms: 'Content management systems', builder: 'Website and page builders', framework: 'Frameworks and developer platforms', host: 'Web hosts' } as const;
+const otherGroups = [p.group, ...GROUP_ORDER.filter((g) => g !== p.group)]
+  .map((g) => ({ id: g, heading: GROUP_HEADING[g], items: PLATFORMS.filter((o) => o.group === g && o.slug !== p.slug) }))
+  .filter((g) => g.items.length);
+
+const schema = [
+  {
+    '@type': 'WebApplication',
+    '@id': `${url}#app`,
+    name: title,
+    url,
+    description,
+    applicationCategory: 'DeveloperApplication',
+    operatingSystem: 'Any',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    publisher: { '@id': `${SITE.url}/#organization` },
+  },
+  {
+    '@type': 'Article',
+    '@id': `${url}#article`,
+    headline: `${title}: Test Your ${p.name} Site`,
+    description,
+    dateModified: REVIEWED.toISOString(),
+    author: author ? { '@id': `${SITE.url}${authorPath(author)}#author` } : { '@id': `${SITE.url}/#organization` },
+    publisher: { '@id': `${SITE.url}/#organization` },
+    mainEntityOfPage: { '@id': `${url}#webpage` },
+  },
+  ...(author ? [authorSchema(author)] : []),
+  faqSchema(faqs),
+];
+---
+<BaseLayout
+  title={`Free ${title} | AccessBell`}
+  description={description}
+  breadcrumbs={[{ label: 'Platforms', href: '/platforms' }, { label: p.name, href: platformHome(p) }, { label: title, href: path }]}
+  schema={schema}
+>
+  <section class="checker-hero" id="scan" aria-labelledby="std-title">
+    <div class="container">
+      <div class="checker-logo"><PlatformLogo slug={p.slug} name={p.name} size="lg" /></div>
+      <h1 id="std-title">{title}</h1>
+      <p class="lead">{f(std.lead)}</p>
+      <ScanForm id="platform-std" standard={std.standardId} buttonLabel={`Check My ${p.name} Site`} />
+      <p class="checker-meta">
+        <Icon name="check" /> Real Chrome browser scan, powered by axe-core
+        <span aria-hidden="true">&middot;</span> Free, no account needed
+      </p>
+      <p class="checker-seeall"><a href={platformHome(p)}>All {p.name} checkers</a> <span aria-hidden="true">&middot;</span> <a href="/platforms">All platforms</a></p>
+    </div>
+  </section>
+
+  <section class="results" id="scan-results" aria-live="polite" aria-busy="false" hidden>
+    <div class="container" data-results></div>
+  </section>
+
+  <article class="container checker-body">
+    <div class="checker-byline">
+      {author && <a class="byline-person" href={authorPath(author)}><AuthorAvatar name={author.data.name} /><span><strong>{author.data.name}</strong><small>Author</small></span></a>}
+      <span>Reviewed <time datetime={REVIEWED.toISOString()}>{formatDate(REVIEWED)}</time></span>
+    </div>
+
+    <section aria-labelledby="std-what">
+      <h2 id="std-what">{std.label} for {p.name} Sites</h2>
+      {std.intro.map((para) => <p>{f(para)}</p>)}
+      <p>{f(std.groupNotes[p.group])}</p>
+      <div class="table-scroll" tabindex="0" role="region" aria-label={`${std.label} at a glance`}>
+        <table>
+          <caption class="visually-hidden">{std.label} at a glance</caption>
+          <tbody>
+            {std.facts.map(([k, v]) => <tr><th scope="row">{k}</th><td>{v}</td></tr>)}
+            <tr><th scope="row">Automated rules in this scan</th><td>{cov.ruleCount}</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section aria-labelledby="std-who">
+      <h2 id="std-who">Who Should Run the {p.name} {std.label} Checker</h2>
+      <ul class="check-list">
+        {std.who.map((w) => <li><Icon name="check" /><span>{f(w)}</span></li>)}
+      </ul>
+    </section>
+
+    <section aria-labelledby="std-key">
+      <h2 id="std-key">{f(std.keyHeading)}</h2>
+      <ul class="focus-grid">
+        {std.key.map((k) => (
+          <li>
+            <h3><a href={criterionPath(k.sc)}>{k.sc} {scName(k.sc)}</a></h3>
+            <p>{k.text}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section aria-labelledby="std-platform">
+      <h2 id="std-platform">Where {p.name} Sites Usually Fail {std.label}</h2>
+      <p>These problems come up again and again on {p.name} sites, and each one fails {std.label}. The <a href={platformPath(p)}>{p.name} accessibility checker</a> explains how to fix them in {p.name}.</p>
+      <ul class="check-list">
+        {p.commonIssues.map((i) => <li><Icon name="check" /><span><strong>{i.title}.</strong> {i.text}</span></li>)}
+      </ul>
+      {ada && <p>Worried about ADA claims as well? The <a href={platformAdaPath(p)}>{p.name} ADA compliance checker</a> covers the {p.name} risks behind most complaints.</p>}
+    </section>
+
+    <section aria-labelledby="std-manual">
+      <h2 id="std-manual">What to Test by Hand on {p.name}</h2>
+      <p>Automated testing finds many, but not all, {std.label} failures. Check these yourself after the scan:</p>
+      <ol class="steps-list">
+        {std.manual.map((m) => <li>{m}</li>)}
+        <li>Rescan after each fix. <a href="/solutions/continuous-monitoring">Continuous monitoring</a> rescans up to 500 URLs per domain daily and keeps a dated record in the <a href="/solutions/compliance-vault">Compliance Vault</a>.</li>
+      </ol>
+      <p><a class="btn btn-accent" href="/app/signup">Start 3-day free trial</a></p>
+    </section>
+
+    <section aria-labelledby="std-guides">
+      <h2 id="std-guides">Related Guides</h2>
+      <ul class="related-guides">
+        <li><a href={checkerPath(general)}>{general.name}</a><span>The {std.label} standard in full, for any website.</span></li>
+        {related.map((post) => post && <li><a href={`/blog/${post.id}`}>{post.data.title}</a><span>{post.data.description}</span></li>)}
+        <li><a href="/resources/wcag">WCAG Success Criteria Library</a><span>Look up any criterion the scan flags, in plain language.</span></li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="faq-title">
+      <h2 id="faq-title">{p.name} {std.label} Checker: Frequently Asked Questions</h2>
+      <Faq items={faqs} />
+    </section>
+
+    <section aria-labelledby="sources" class="checker-sources">
+      <h2 id="sources">Sources</h2>
+      <ul>
+        {general.sources.map((s) => <li><a href={s.href} rel="noopener noreferrer" target="_blank">{s.label}<span class="visually-hidden"> (opens in a new tab)</span></a></li>)}
+      </ul>
+      <p class="muted">This page explains general accessibility patterns for {p.name} sites and is not legal advice. AccessBell is not affiliated with {p.name}. {p.name} and its logo are trademarks of their owners and are used only to identify the platform. See our <a href="/disclaimer">disclaimer</a>.</p>
+    </section>
+  </article>
+
+  <PlatformSiblings p={p} current={std.id} />
+
+  <section class="section section-surface" aria-labelledby="more-std">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="more-std">{std.label} Checkers for Other Platforms</h2>
+        <p>The same {std.label} scan, written for each platform. Browse <a href="/platforms">all {PLATFORMS.length} platforms</a>.</p>
+      </div>
+      {otherGroups.map((g) => (
+        <div class="platform-links-group">
+          <h3>{g.heading}</h3>
+          <ul class="platform-links">
+            {g.items.map((o) => (
+              <li>
+                <a href={`${platformHome(o)}/${std.id}`}>
+                  <PlatformLogo slug={o.slug} name={o.name} size="sm" />
+                  <span>{o.name} {std.label} Checker</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+      <p class="more-link"><a class="link-arrow" href="/platforms">All platforms <Icon name="arrow" /></a></p>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>
+<script>
+  import '../../../scripts/free-scan.js';
+</script>

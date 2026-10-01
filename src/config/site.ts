@@ -1,6 +1,3 @@
-import { SOLUTIONS, solutionPath } from '../data/solutions';
-import { PLATFORMS, platformHome } from '../data/platforms';
-import { platformLogo } from '../data/platform-logos';
 export const SITE = {
   name: 'AccessBell',
   domain: 'accessbell.co',
@@ -19,39 +16,13 @@ export const SITE = {
   },
 } as const;
 
-const GROUP_LABEL = { ecommerce: 'E-commerce', cms: 'CMS', builder: 'Site builder', framework: 'Framework', host: 'Web host' } as const;
-
-const NAV_NOTE = { 'continuous-monitoring': 'Scheduled daily scans and alerts', 'url-monitoring': 'Monitor up to 500 URLs per domain', 'automated-fixes': 'AccessBellFix applies approved fixes', 'compliance-vault': 'Scan history, fix log and evidence' } as const;
-
 export const HEADER_NAV = [
   { label: 'Home', href: '/' },
   { label: 'Pricing', href: '/pricing' },
   { label: 'Blog', href: '/blog' },
-  {
-    label: 'Solutions',
-    href: '/solutions',
-    children: [
-      { label: 'All solutions', href: '/solutions', note: 'Monitor, fix and document' },
-      ...SOLUTIONS.map((x) => ({ label: x.name, href: solutionPath(x), note: NAV_NOTE[x.slug] })),
-    ],
-  },
-  {
-    label: 'Platforms',
-    href: '/platforms',
-    wide: true,
-    children: [
-      { label: 'All platforms', href: '/platforms', note: 'Every platform checker' },
-      ...PLATFORMS.map((p) => ({ label: p.name, href: platformHome(p), note: GROUP_LABEL[p.group], logo: platformLogo(p.slug), initial: p.name.trim()[0] })),
-    ],
-  },
-  {
-    label: 'Resources',
-    href: '/resources',
-    children: [
-      { label: 'Free Tools', href: '/resources', note: 'Scanner, checkers, statement generator and more' },
-      { label: 'Help Center', href: '/resources/help-center', note: 'Guides for every AccessBell feature' },
-    ],
-  },
+  { label: 'Solutions', href: '/solutions' },
+  { label: 'Platforms', href: '/platforms' },
+  { label: 'Resources', href: '/resources' },
   { label: 'About', href: '/about' },
 ] as const;
 

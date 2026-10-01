@@ -3,6 +3,7 @@
  * one CMS or e-commerce platform, with platform-specific common issues.
  */
 import { MORE_PLATFORMS } from './platforms-more';
+import { PLATFORM_STANDARDS, fill } from './platforms-standards';
 
 export type Platform = {
   slug: string;
@@ -472,4 +473,11 @@ export const platformCheckers = (p: Platform): PlatformChecker[] => [
     summary: `Check your ${p.name} site against WCAG 2.1 AA, the benchmark in ADA website claims, and see the ${p.name} ADA risks to fix first.`,
     icon: 'scale',
   },
+  ...PLATFORM_STANDARDS.map((std) => ({
+    id: std.id,
+    label: `${p.name} ${std.label} Checker`,
+    href: `${platformHome(p)}/${std.id}`,
+    summary: fill(std.summary, p.name),
+    icon: std.icon,
+  })),
 ];
