@@ -19,9 +19,9 @@ export const SITE = {
 export const HEADER_NAV = [
   { label: 'Home', href: '/' },
   { label: 'Pricing', href: '/pricing' },
-  { label: 'Blog', href: '/blog' },
   { label: 'Solutions', href: '/solutions' },
   { label: 'Platforms', href: '/platforms' },
+  { label: 'Comparisons', href: '/comparisons' },
   { label: 'Resources', href: '/resources' },
   { label: 'About', href: '/about' },
 ] as const;
@@ -32,6 +32,7 @@ export const FOOTER_NAV = [
   { label: 'Methodology', href: '/methodology' },
   { label: 'Contact', href: '/contact' },
   { label: 'Resources', href: '/resources' },
+  { label: 'Blog', href: '/blog' },
   { label: 'Solutions', href: '/solutions' },
   { label: 'Comparisons', href: '/comparisons' },
   { label: 'Platform Checkers', href: '/platforms' },

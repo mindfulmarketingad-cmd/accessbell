@@ -51,18 +51,9 @@ const schema = [
       <div class="section-head section-head-left">
         <h2 id="cmp-list">Accessibility Tool Comparisons</h2>
       </div>
-      <ul class="res-grid">
+      <ul class="cmp-links">
         {COMPARISONS.map((c) => (
-          <li>
-            <a class="res-card" href={comparisonPath(c)}>
-              <span class="res-card-text">
-                <small>{c.kind}</small>
-                <strong>{c.name} vs. AccessBell</strong>
-                <span>{c.summary}</span>
-              </span>
-              <Icon name="arrow" class="res-arrow" />
-            </a>
-          </li>
+          <li><a href={comparisonPath(c)}>{c.name} vs. AccessBell</a> <span>{c.kind}</span></li>
         ))}
       </ul>
     </div>
