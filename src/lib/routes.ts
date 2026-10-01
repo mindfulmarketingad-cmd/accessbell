@@ -1,5 +1,5 @@
 import { getCollection } from 'astro:content';
-import { isWcagGuide } from './posts';
+import { isWcagGuide, guideSc } from './posts';
 import { helpByCategory, articlePath, categoryPath } from './help';
 import { CHECKERS, checkerPath } from '../data/checkers';
 import { PLATFORMS, platformHome, platformCheckers } from '../data/platforms';
@@ -10,7 +10,8 @@ import { STATE_LAWS, stateLawPath } from '../data/state-laws';
 import { CRITERIA } from '../../server/wcag-criteria.js';
 import { criterionPath } from './wcag-pages';
 
-export type RouteEntry = { path: string; label: string; note?: string; lastmod: Date; group: 'main' | 'blog' | 'authors' | 'help' | 'company' | 'wcag' };
+/** lastmod is only set where the page has a real content date; sitemaps omit it otherwise. */
+export type RouteEntry = { path: string; label: string; note?: string; lastmod?: Date; group: 'main' | 'blog' | 'authors' | 'help' | 'company' | 'wcag' };
 
 /** Date the static pages were last meaningfully changed. Bump when editing them. */
 const STATIC_LASTMOD = new Date('2026-09-30');
@@ -52,7 +53,7 @@ export async function getRoutes(): Promise<RouteEntry[]> {
   const newestPost = posts[0]?.data.updatedDate ?? posts[0]?.data.pubDate ?? STATIC_LASTMOD;
   const authors = await getCollection('authors');
   const help = await helpByCategory();
-  const helpUpdated = (list: { data: { updatedDate: Date } }[]) => new Date(Math.max(+STATIC_LASTMOD, ...list.map((a) => +a.data.updatedDate)));
+  const helpUpdated = (list: { data: { updatedDate: Date } }[]) => new Date(Math.max(...list.map((a) => +a.data.updatedDate)));
 
   return [
     ...STATIC.map((r) => ({
@@ -60,19 +61,23 @@ export async function getRoutes(): Promise<RouteEntry[]> {
       // Home and the blog hub list the latest posts, so they change when a post is published.
       lastmod:
         r.path === '/' || r.path === '/blog' || r.path === '/authors'
-          ? new Date(Math.max(+STATIC_LASTMOD, +newestPost))
+          ? newestPost
           : r.path === '/resources/help-center'
             ? helpUpdated(help.flatMap((g) => g.articles))
-            : STATIC_LASTMOD,
+            : undefined,
     })),
-    ...CHECKERS.map((c) => ({ path: checkerPath(c), label: c.name, note: `Free WCAG ${c.version} Level ${c.level} scan`, lastmod: STATIC_LASTMOD, group: 'main' as const })),
-    ...COMPARISONS.map((c) => ({ path: comparisonPath(c), label: `${c.name} vs. AccessBell`, note: c.kind, lastmod: STATIC_LASTMOD, group: 'main' as const })),
-    ...SOLUTIONS.map((x) => ({ path: solutionPath(x), label: x.h1, note: x.summary, lastmod: STATIC_LASTMOD, group: 'main' as const })),
-    ...PLATFORMS.map((p) => ({ path: platformHome(p), label: `${p.name} Accessibility Checkers`, note: 'All free checkers for this platform', lastmod: STATIC_LASTMOD, group: 'main' as const })),
-    ...PLATFORMS.flatMap((p) => platformCheckers(p).map((c) => ({ path: c.href, label: c.label, note: `Free ${p.name} scan`, lastmod: STATIC_LASTMOD, group: 'main' as const }))),
-    ...INDUSTRIES.map((ind) => ({ path: industryPath(ind), label: `${ind.name} Accessibility Checker`, note: 'Free scan for this industry', lastmod: STATIC_LASTMOD, group: 'main' as const })),
-    ...STATE_LAWS.map((st) => ({ path: stateLawPath(st), label: `${st.name} Website Accessibility Checker`, note: 'State accessibility law and a free scan', lastmod: STATIC_LASTMOD, group: 'main' as const })),
-    ...Object.values(CRITERIA).map((c) => ({ path: criterionPath(c.sc), label: `${c.sc} ${c.name}`, note: `Level ${c.level} · WCAG ${c.version}`, lastmod: STATIC_LASTMOD, group: 'wcag' as const })),
+    ...CHECKERS.map((c) => ({ path: checkerPath(c), label: c.name, note: `Free WCAG ${c.version} Level ${c.level} scan`, group: 'main' as const })),
+    ...COMPARISONS.map((c) => ({ path: comparisonPath(c), label: `${c.name} vs. AccessBell`, note: c.kind, group: 'main' as const })),
+    ...SOLUTIONS.map((x) => ({ path: solutionPath(x), label: x.h1, note: x.summary, group: 'main' as const })),
+    ...PLATFORMS.map((p) => ({ path: platformHome(p), label: `${p.name} Accessibility Checkers`, note: 'All free checkers for this platform', group: 'main' as const })),
+    ...PLATFORMS.flatMap((p) => platformCheckers(p).map((c) => ({ path: c.href, label: c.label, note: `Free ${p.name} scan`, group: 'main' as const }))),
+    ...INDUSTRIES.map((ind) => ({ path: industryPath(ind), label: `${ind.name} Accessibility Checker`, note: 'Free scan for this industry', group: 'main' as const })),
+    ...STATE_LAWS.map((st) => ({ path: stateLawPath(st), label: `${st.name} Website Accessibility Checker`, note: 'State accessibility law and a free scan', group: 'main' as const })),
+    ...Object.values(CRITERIA).map((c) => {
+      // Criteria with a written guide take the guide's dates; the rest have no content date.
+      const guide = posts.find((p) => isWcagGuide(p) && guideSc(p.id) === c.sc);
+      return { path: criterionPath(c.sc), label: `${c.sc} ${c.name}`, note: `Level ${c.level} · WCAG ${c.version}`, lastmod: guide ? guide.data.updatedDate ?? guide.data.pubDate : undefined, group: 'wcag' as const };
+    }),
     ...help.flatMap((g) => [
       { path: categoryPath(g.id), label: g.title, note: `${g.articles.length} articles`, lastmod: helpUpdated(g.articles), group: 'help' as const },
       ...g.articles.map((a) => ({ path: articlePath(a), label: a.data.title, lastmod: a.data.updatedDate, group: 'help' as const })),
@@ -85,8 +90,8 @@ export async function getRoutes(): Promise<RouteEntry[]> {
     })),
     ...authors.map((a) => {
       const theirs = posts.filter((p) => p.data.contributors.some((c) => c.author.id === a.id));
-      const latest = theirs.reduce((d, p) => Math.max(d, +(p.data.updatedDate ?? p.data.pubDate)), +STATIC_LASTMOD);
-      return { path: `/authors/${a.id}`, label: a.data.name, note: a.data.jobTitle, lastmod: new Date(latest), group: 'authors' as const };
+      const latest = theirs.reduce((d, p) => Math.max(d, +(p.data.updatedDate ?? p.data.pubDate)), 0);
+      return { path: `/authors/${a.id}`, label: a.data.name, note: a.data.jobTitle, lastmod: latest ? new Date(latest) : undefined, group: 'authors' as const };
     }),
   ];
 }
