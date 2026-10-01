@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AccessBell demo</title>
+<style>
+@font-face { font-family: 'Inter'; src: url('../../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2') format('woff2'); font-weight: 100 900; }
+:root { --ink:#353a47; --ink9:#22262f; --ink5:#5b6170; --ink3:#a7b0be; --sage:#84b082; --sage7:#44723f; --sage8:#365c32; --sage1:#e8f1e7; --sage0:#f4f8f3; --bg:#fff; --surface:#f7f8f6; --border:#e3e6e2; --danger:#b42318; --dangerbg:#fdf0ef; --warn:#8a5a00; --warnbg:#fdf6e7; }
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1280px; height: 720px; overflow: hidden; font-family: Inter, system-ui, sans-serif; color: var(--ink9); background: #e9eee8; -webkit-font-smoothing: antialiased; }
+.frame { position: absolute; inset: 24px 24px 76px; background: var(--bg); border-radius: 14px; box-shadow: 0 2px 4px rgb(34 38 47/.05), 0 20px 50px rgb(34 38 47/.14); overflow: hidden; }
+.bar { height: 40px; display: flex; align-items: center; gap: 8px; padding: 0 16px; background: var(--surface); border-bottom: 1px solid var(--border); }
+.bar i { width: 11px; height: 11px; border-radius: 50%; background: #d9dde3; }
+.url { margin-left: 16px; flex: 1; max-width: 520px; height: 24px; border-radius: 12px; background: #fff; border: 1px solid var(--border); font-size: 12px; color: var(--ink5); display: flex; align-items: center; padding: 0 12px; }
+.app { position: absolute; top: 40px; left: 0; right: 0; bottom: 0; display: flex; }
+.side { width: 200px; border-right: 1px solid var(--border); padding: 18px 14px; background: #fbfcfb; }
+.logo { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 16px; margin-bottom: 22px; }
+.logo b { width: 26px; height: 26px; border-radius: 7px; background: var(--ink); display: grid; place-items: center; }
+.logo b::after { content: ''; width: 10px; height: 10px; border-radius: 50% 50% 2px 2px; background: var(--sage); }
+.logo .w span { color: var(--sage7); }
+.nav { display: grid; gap: 4px; font-size: 13px; color: var(--ink5); }
+.nav div { padding: 8px 10px; border-radius: 8px; }
+.nav .on { background: var(--sage1); color: var(--ink9); font-weight: 600; }
+.main { position: relative; flex: 1; }
+.scene { position: absolute; inset: 0; padding: 30px 36px; opacity: 0; }
+h2 { margin: 0 0 6px; font-size: 22px; letter-spacing: -.01em; }
+.sub { color: var(--ink5); font-size: 14px; margin: 0 0 20px; }
+.card { background: #fff; border: 1px solid var(--border); border-radius: 12px; }
+.tag { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 999px; font-size: 11.5px; font-weight: 700; }
+.t-crit { background: var(--dangerbg); color: var(--danger); }
+.t-ser { background: var(--warnbg); color: var(--warn); }
+.t-mod { background: #eef1f6; color: var(--ink); }
+.t-ok { background: var(--sage1); color: var(--sage8); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 38px; padding: 0 18px; border-radius: 9px; background: var(--ink); color: #fff; font-weight: 700; font-size: 14px; }
+.btn.green { background: var(--sage7); }
+.btn.outline { background: #fff; color: var(--ink9); border: 1px solid var(--border); }
+code, .mono { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; }
+/* intro / outro */
+.full { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; background: radial-gradient(60% 80% at 50% 0%, #eef5ed, #fff 70%); opacity: 0; z-index: 5; }
+.full h1 { font-size: 44px; margin: 0 0 12px; letter-spacing: -.02em; }
+.full p { font-size: 19px; color: var(--ink5); margin: 0; }
+.full .big-logo { display: inline-flex; align-items: center; gap: 12px; font-size: 28px; font-weight: 800; margin-bottom: 26px; }
+.full .big-logo b { width: 44px; height: 44px; border-radius: 12px; background: var(--ink); display: grid; place-items: center; }
+.full .big-logo b::after { content: ''; width: 18px; height: 18px; border-radius: 50% 50% 3px 3px; background: var(--sage); }
+.full .big-logo .w span { color: var(--sage7); }
+.full .cta { margin-top: 28px; display: flex; gap: 12px; justify-content: center; }
+.full .cta .btn { height: 48px; font-size: 16px; padding: 0 26px; }
+/* add domain */
+.modal { width: 520px; margin: 40px auto 0; padding: 26px; box-shadow: 0 20px 40px rgb(34 38 47/.12); }
+.field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+.input { height: 44px; border: 2px solid var(--sage7); border-radius: 9px; padding: 0 14px; display: flex; align-items: center; font-size: 16px; }
+.caret { width: 2px; height: 20px; background: var(--ink9); margin-left: 1px; }
+.opts { display: flex; gap: 10px; margin: 16px 0 20px; font-size: 13px; color: var(--ink5); }
+.opts span { border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; }
+.added { margin-top: 14px; font-size: 14px; color: var(--sage8); font-weight: 600; opacity: 0; }
+/* pages */
+.plist { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.prow { display: flex; align-items: center; gap: 10px; padding: 11px 14px; font-size: 14px; opacity: 0; }
+.prow .mono { flex: 1; }
+.ok { width: 20px; height: 20px; border-radius: 50%; background: var(--sage7); display: grid; place-items: center; }
+.ok::after { content: ''; width: 8px; height: 4px; border-left: 2px solid #fff; border-bottom: 2px solid #fff; transform: rotate(-45deg) translate(1px,-1px); }
+.count { font-size: 40px; font-weight: 800; color: var(--sage7); }
+/* scan */
+.progress { height: 12px; border-radius: 6px; background: var(--surface); border: 1px solid var(--border); overflow: hidden; margin: 14px 0 8px; }
+.progress i { display: block; height: 100%; background: linear-gradient(90deg, var(--sage), var(--sage7)); width: 0; }
+.slist { display: grid; gap: 8px; margin-top: 18px; }
+.srow { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; font-size: 14px; }
+/* results */
+.res { display: grid; grid-template-columns: 220px 1fr; gap: 18px; }
+.ring { width: 150px; height: 150px; margin: 6px auto 10px; }
+.tiles { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 14px; }
+.tile { padding: 12px 14px; }
+.tile b { display: block; font-size: 26px; }
+.tile span { font-size: 12.5px; color: var(--ink5); }
+.irow { display: flex; align-items: center; gap: 12px; padding: 11px 14px; margin-bottom: 8px; font-size: 14px; opacity: 0; }
+.irow strong { flex: 1; }
+.irow .meta { color: var(--ink5); font-size: 12.5px; }
+/* detail */
+.detail { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.codebox { padding: 14px; background: #f6f7f9; border: 1px solid var(--border); border-radius: 10px; font-size: 13.5px; line-height: 1.7; white-space: pre; }
+.del { color: var(--danger); }
+.add { color: var(--sage8); }
+.lbl { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--ink5); margin: 0 0 8px; }
+.fixed-banner { margin-top: 14px; padding: 12px 14px; border-radius: 10px; background: var(--sage1); color: var(--sage8); font-weight: 700; font-size: 14px; opacity: 0; }
+/* vault */
+.log { display: grid; gap: 8px; }
+.lrow { display: grid; grid-template-columns: 110px 1fr auto; gap: 12px; align-items: center; padding: 11px 14px; font-size: 13.5px; }
+.lrow .d { color: var(--ink5); }
+.toast { position: absolute; right: 36px; bottom: 30px; width: 380px; padding: 14px 16px; box-shadow: 0 14px 30px rgb(34 38 47/.15); opacity: 0; }
+.toast .mono { font-size: 12px; color: var(--ink5); }
+/* monitor */
+.week { display: grid; grid-template-columns: repeat(7,1fr); gap: 10px; margin: 16px 0 22px; }
+.day { padding: 14px 0; text-align: center; font-weight: 700; color: var(--ink5); }
+.day .ok { margin: 10px auto 0; opacity: 0; }
+.alert { width: 470px; padding: 16px 18px; border-left: 4px solid var(--danger); box-shadow: 0 14px 30px rgb(34 38 47/.12); opacity: 0; }
+.alert .from { font-size: 12px; color: var(--ink5); margin-bottom: 6px; }
+/* cursor + captions */
+.cursor { position: absolute; width: 22px; height: 22px; z-index: 9; opacity: 0; pointer-events: none; }
+.cursor svg { filter: drop-shadow(0 2px 3px rgb(0 0 0/.25)); }
+.click { position: absolute; width: 36px; height: 36px; margin: -18px 0 0 -18px; border-radius: 50%; border: 3px solid var(--sage7); opacity: 0; z-index: 8; }
+.caption { position: absolute; left: 24px; right: 24px; bottom: 14px; height: 46px; display: flex; align-items: center; gap: 14px; }
+.steps { display: flex; gap: 6px; }
+.steps i { width: 28px; height: 5px; border-radius: 3px; background: #cdd5cc; }
+.steps i.on { background: var(--sage7); }
+.captext { font-size: 17px; font-weight: 600; color: var(--ink9); }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="bar"><i></i><i></i><i></i><div class="url" id="url">accessbell.co/app</div></div>
+  <div class="app">
+    <aside class="side">
+      <div class="logo"><b></b><span class="w">Access<span>Bell</span></span></div>
+      <div class="nav"><div class="on" id="nav-dom">Domains</div><div>shop.example.com</div><div id="nav-vault">Compliance Vault</div><div>Team</div><div>Billing</div></div>
+    </aside>
+    <div class="main">
+      <!-- 1 add domain -->
+      <section class="scene" id="s-add">
+        <div class="card modal">
+          <h2>Add a domain</h2>
+          <p class="sub">AccessBell finds your pages and scans them against WCAG.</p>
+          <div class="field"><label>Website address</label><div class="input"><span id="typed-domain"></span><span class="caret" id="caret1"></span></div></div>
+          <div class="opts"><span>WCAG 2.2 · Level AA</span><span>Desktop and mobile</span><span>Scan daily</span></div>
+          <span class="btn green" id="btn-add">Add domain and scan</span>
+          <div class="added" id="added">✓ shop.example.com added</div>
+        </div>
+      </section>
+      <!-- 2 pages -->
+      <section class="scene" id="s-pages">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:18px">
+          <div><h2>Finding pages on shop.example.com</h2><p class="sub" style="margin:0">From your sitemap.xml and the links on each page</p></div>
+          <div style="text-align:right"><div class="count" id="pcount">0</div><div class="sub" style="margin:0">pages found</div></div>
+        </div>
+        <div class="plist" id="plist"></div>
+      </section>
+      <!-- 3 scan -->
+      <section class="scene" id="s-scan">
+        <h2>Scanning 42 pages</h2>
+        <p class="sub" style="margin:0">WCAG 2.2 Level AA · real Chrome browser · desktop and mobile</p>
+        <div class="progress"><i id="pbar"></i></div>
+        <div class="sub" id="ptext" style="margin:0">0%</div>
+        <div class="slist" id="slist"></div>
+      </section>
+      <!-- 4 results -->
+      <section class="scene" id="s-res">
+        <h2>Results for shop.example.com</h2>
+        <p class="sub">42 pages scanned · every issue mapped to its WCAG success criterion</p>
+        <div class="res">
+          <div class="card" style="padding:14px;text-align:center">
+            <svg class="ring" viewBox="0 0 120 120"><circle cx="60" cy="60" r="50" fill="none" stroke="#eef1ee" stroke-width="12"/><circle id="ring" cx="60" cy="60" r="50" fill="none" stroke="#c98a12" stroke-width="12" stroke-linecap="round" stroke-dasharray="314.16" stroke-dashoffset="314.16" transform="rotate(-90 60 60)"/><text id="score" x="60" y="70" text-anchor="middle" font-size="30" font-weight="800" fill="#22262f">0</text></svg>
+            <strong>Needs attention</strong><div class="sub" style="margin:4px 0 0;font-size:12.5px">Accessibility score</div>
+          </div>
+          <div>
+            <div class="tiles">
+              <div class="card tile"><b style="color:var(--danger)" id="n1">0</b><span>Critical</span></div>
+              <div class="card tile"><b style="color:var(--warn)" id="n2">0</b><span>Serious</span></div>
+              <div class="card tile"><b id="n3">0</b><span>Moderate</span></div>
+            </div>
+            <div id="ilist"></div>
+          </div>
+        </div>
+      </section>
+      <!-- 5 detail -->
+      <section class="scene" id="s-detail">
+        <div style="display:flex;justify-content:space-between;align-items:center"><h2>Image missing alt text</h2><span id="dtag"><span class="tag t-crit">Critical</span></span></div>
+        <p class="sub">WCAG 1.1.1 Non-text Content · Level A · 12 elements on 5 pages</p>
+        <div class="detail">
+          <div>
+            <p class="lbl">Failing element on /products</p>
+            <div class="codebox mono">&lt;img src="sofa-grey.jpg"&gt;</div>
+            <p class="lbl" style="margin-top:16px">Describe the image</p>
+            <div class="input" style="border-color:var(--border)"><span id="typed-alt"></span><span class="caret" id="caret2"></span></div>
+          </div>
+          <div>
+            <p class="lbl">Corrected code</p>
+            <div class="codebox mono"><span class="del">- &lt;img src="sofa-grey.jpg"&gt;</span>
+<span class="add" id="addline">+ &lt;img src="sofa-grey.jpg" alt="<span id="alt-in-code"></span>"&gt;</span></div>
+            <div style="display:flex;gap:10px;margin-top:16px"><span class="btn green" id="btn-fix">Fix now</span><span class="btn outline">Copy code</span></div>
+            <div class="fixed-banner" id="fixed">✓ Fixed by AccessBellFix · confirmed on the next scan</div>
+          </div>
+        </div>
+      </section>
+      <!-- 6 vault -->
+      <section class="scene" id="s-vault">
+        <div style="display:flex;justify-content:space-between;align-items:center"><div><h2>Compliance Vault</h2><p class="sub">Dated proof of what you tested and fixed</p></div><span class="btn" id="btn-export">Export evidence package</span></div>
+        <p class="lbl">Fix log</p>
+        <div class="log" id="log">
+          <div class="card lrow" id="newrow"><span class="d">Oct 1, 2026</span><span><strong>Fixed:</strong> Image missing alt text · 12 elements · /products</span><span class="tag t-ok">Verified</span></div>
+          <div class="card lrow"><span class="d">Sep 30, 2026</span><span><strong>Fixed:</strong> Form field has no label · /checkout</span><span class="tag t-ok">Verified</span></div>
+          <div class="card lrow"><span class="d">Sep 29, 2026</span><span><strong>Scan:</strong> 42 pages · WCAG 2.2 AA · score 72</span><span class="tag t-mod">Recorded</span></div>
+          <div class="card lrow"><span class="d">Sep 28, 2026</span><span><strong>Note:</strong> Keyboard test of checkout, passed</span><span class="tag t-mod">Recorded</span></div>
+        </div>
+        <div class="card toast" id="toast"><strong>Evidence package ready</strong><div style="font-size:13px;color:var(--ink5);margin:4px 0">Scan history, fix log and notes for Sep 1 to Oct 1</div><div class="mono">Each record carries a SHA-256 fingerprint you can verify</div></div>
+      </section>
+      <!-- 7 monitor -->
+      <section class="scene" id="s-mon">
+        <div style="display:flex;justify-content:space-between;align-items:center"><div><h2>Scheduled monitoring</h2><p class="sub">shop.example.com · rescanned every day at 06:00</p></div><span class="tag t-ok" style="font-size:13px;padding:6px 12px">Daily</span></div>
+        <div class="week" id="week"></div>
+        <div class="card alert" id="alert"><div class="from">AccessBell → you · email alert</div><strong style="font-size:16px">New issue caught on /checkout</strong><div class="sub" style="margin:4px 0 0">Button has no accessible name · WCAG 4.1.2 · fix suggested</div></div>
+      </section>
+    </div>
+  </div>
+  <div class="full" id="intro"><div><div class="big-logo"><b></b><span class="w">Access<span>Bell</span></span></div><h1>Find, fix and prove website accessibility</h1><p>A 45-second tour of the AccessBell dashboard</p></div></div>
+  <div class="full" id="outro"><div><div class="big-logo"><b></b><span class="w">Access<span>Bell</span></span></div><h1>Monitor every page. Fix the code. Keep the proof.</h1><p>$29 per domain per month, or $199 per year · 3-day free trial</p><div class="cta"><span class="btn green">Start free trial</span><span class="btn outline">accessbell.co</span></div></div></div>
+</div>
+<div class="cursor" id="cursor"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M4 2l15 9-7 1.5L8.5 20z" fill="#22262f" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+<div class="click" id="click"></div>
+<div class="caption"><div class="steps" id="steps"></div><div class="captext" id="captext"></div></div>
+<script>
+const $ = (id) => document.getElementById(id);
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const ease = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+const lerp = (a, b, x) => a + (b - a) * x;
+// Fade a block in over [a, a+.5] and out over [b-.5, b], sliding up slightly.
+function show(el, t, a, b, dy = 14) {
+  const x = Math.min(ease(seg(t, a, a + 0.5)), 1 - ease(seg(t, b - 0.5, b)));
+  el.style.opacity = x;
+  el.style.transform = `translateY(${(1 - x) * dy}px)`;
+}
+const reveal = (el, t, a, d = 0.35) => { const x = ease(seg(t, a, a + d)); el.style.opacity = x; el.style.transform = `translateY(${(1 - x) * 10}px)`; };
+
+const PAGES = ['/', '/products', '/products/sofas', '/products/chairs', '/cart', '/checkout', '/contact', '/about', '/blog', '/blog/care-guide', '/returns', '/faq'];
+const plist = $('plist');
+PAGES.forEach((p) => { const r = document.createElement('div'); r.className = 'card prow'; r.innerHTML = `<span class="mono">${p}</span><span class="ok"></span>`; plist.append(r); });
+const SCAN = ['/', '/products', '/checkout', '/contact', '/blog'];
+const slist = $('slist');
+SCAN.forEach((p) => { const r = document.createElement('div'); r.className = 'card srow'; r.innerHTML = `<span class="mono">${p}</span><span class="tag t-mod">Waiting</span>`; slist.append(r); });
+const ISSUES = [['Image missing alt text', 'WCAG 1.1.1 · 12 elements', 't-crit', 'Critical'], ['Form field has no label', 'WCAG 3.3.2 · 4 elements', 't-crit', 'Critical'], ['Low color contrast', 'WCAG 1.4.3 · 31 elements', 't-ser', 'Serious'], ['Link has no discernible text', 'WCAG 2.4.4 · 3 elements', 't-ser', 'Serious']];
+const ilist = $('ilist');
+ISSUES.forEach(([a, m, c, l]) => { const r = document.createElement('div'); r.className = 'card irow'; r.innerHTML = `<strong>${a}</strong><span class="meta">${m}</span><span class="tag ${c}">${l}</span>`; ilist.append(r); });
+const week = $('week');
+['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].forEach((d) => { const r = document.createElement('div'); r.className = 'card day'; r.innerHTML = `${d}<div class="ok"></div>`; week.append(r); });
+const STEPS = [
+  [4, 'Add your domain and choose a standard'],
+  [9, 'AccessBell finds every page on your site'],
+  [14, 'Each page is scanned in a real browser against WCAG 2.2'],
+  [19, 'Violations are ranked by severity and mapped to WCAG'],
+  [25, 'See the failing code and fix it in one click'],
+  [32, 'Every scan and fix is logged as evidence'],
+  [37, 'Daily scans catch new issues as your site changes'],
+];
+const steps = $('steps');
+STEPS.forEach(() => steps.append(document.createElement('i')));
+const DURATION = 47;
+
+function cursorAt(t, path) {
+  // path: [[time, x, y], ...]; hidden outside the first and last time
+  const c = $('cursor');
+  if (t < path[0][0] - 0.3 || t > path[path.length - 1][0] + 0.6) { c.style.opacity = 0; return; }
+  let x = path[0][1], y = path[0][2];
+  for (let i = 1; i < path.length; i++) {
+    const [t0, x0, y0] = path[i - 1], [t1, x1, y1] = path[i];
+    if (t >= t0) { const k = ease(seg(t, t0, t1)); x = lerp(x0, x1, k); y = lerp(y0, y1, k); }
+  }
+  c.style.opacity = Math.min(seg(t, path[0][0] - 0.3, path[0][0]), 1 - seg(t, path[path.length - 1][0] + 0.3, path[path.length - 1][0] + 0.6));
+  c.style.left = x + 'px'; c.style.top = y + 'px';
+}
+function clickAt(t, at, x, y) {
+  const k = seg(t, at, at + 0.45);
+  if (k <= 0 || k >= 1) return false;
+  const el = $('click'); el.style.left = x + 'px'; el.style.top = y + 'px';
+  el.style.opacity = 1 - k; el.style.transform = `scale(${0.5 + k})`;
+  return true;
+}
+const type = (text, t, a, b) => text.slice(0, Math.round(text.length * seg(t, a, b)));
+
+function render(t) {
+  // intro and outro
+  const intro = $('intro'); intro.style.opacity = 1 - ease(seg(t, 3.4, 4));
+  const outro = $('outro'); outro.style.opacity = ease(seg(t, 42.2, 42.8));
+  // url bar
+  $('url').textContent = t < 19 ? 'accessbell.co/app/domains' : t >= 32 && t < 37 ? 'accessbell.co/app/domain?site=shop.example.com&tab=vault' : 'accessbell.co/app/domain?site=shop.example.com';
+  $('nav-vault').className = t >= 32 && t < 37 ? 'on' : '';
+  $('nav-dom').className = t >= 32 && t < 37 ? '' : 'on';
+
+  // 1 add domain: 4-9
+  show($('s-add'), t, 4, 9);
+  $('typed-domain').textContent = type('shop.example.com', t, 4.8, 6.6);
+  $('caret1').style.opacity = t < 7 && Math.floor(t * 2) % 2 === 0 ? 1 : 0;
+  $('btn-add').style.background = t > 7.1 && t < 7.5 ? 'var(--sage8)' : '';
+  $('added').style.opacity = seg(t, 7.5, 7.8);
+
+  // 2 pages: 9-14
+  show($('s-pages'), t, 9, 14);
+  [...plist.children].forEach((r, i) => reveal(r, t, 9.5 + i * 0.28));
+  $('pcount').textContent = Math.round(42 * ease(seg(t, 9.5, 13)));
+
+  // 3 scan: 14-19
+  show($('s-scan'), t, 14, 19);
+  const p = ease(seg(t, 14.4, 18.2));
+  $('pbar').style.width = p * 100 + '%';
+  $('ptext').textContent = `${Math.round(p * 100)}% · ${Math.round(p * 42)} of 42 pages`;
+  [...slist.children].forEach((r, i) => {
+    reveal(r, t, 14.4 + i * 0.15);
+    const tag = r.lastChild; const s0 = 14.8 + i * 0.65;
+    const st = t < s0 ? ['t-mod', 'Waiting'] : t < s0 + 0.6 ? ['t-ser', 'Scanning'] : ['t-ok', 'Done'];
+    tag.className = 'tag ' + st[0]; tag.textContent = st[1];
+  });
+
+  // 4 results: 19-25
+  show($('s-res'), t, 19, 25);
+  const sc = ease(seg(t, 19.5, 21.5));
+  $('ring').setAttribute('stroke-dashoffset', 314.16 * (1 - 0.72 * sc));
+  $('score').textContent = Math.round(72 * sc);
+  $('n1').textContent = Math.round(16 * sc); $('n2').textContent = Math.round(34 * sc); $('n3').textContent = Math.round(9 * sc);
+  [...ilist.children].forEach((r, i) => reveal(r, t, 20.6 + i * 0.4));
+  $('s-res').querySelector('.irow').style.boxShadow = t > 23.4 ? '0 0 0 2px var(--sage7)' : '';
+
+  // 5 detail: 25-32
+  show($('s-detail'), t, 25, 32);
+  const alt = type('Grey linen sofa with oak legs', t, 26.4, 28.6);
+  $('typed-alt').textContent = alt; $('alt-in-code').textContent = alt;
+  $('caret2').style.opacity = t > 26 && t < 29.4 && Math.floor(t * 2) % 2 === 0 ? 1 : 0;
+  const fixedNow = t > 29.9;
+  $('btn-fix').style.background = t > 29.5 && t < 29.9 ? 'var(--sage8)' : '';
+  $('dtag').innerHTML = fixedNow ? '<span class="tag t-ok">✓ Fixed</span>' : '<span class="tag t-crit">Critical</span>';
+  reveal($('fixed'), t, 30);
+
+  // 6 vault: 32-37
+  show($('s-vault'), t, 32, 37);
+  const nr = $('newrow'); const k = ease(seg(t, 32.6, 33.2));
+  nr.style.opacity = k; nr.style.transform = `translateX(${(1 - k) * -30}px)`; nr.style.background = t < 34 ? 'var(--sage0)' : '#fff';
+  reveal($('toast'), t, 35.2);
+
+  // 7 monitor: 37-42.5
+  show($('s-mon'), t, 37, 42.6);
+  [...week.children].forEach((d, i) => { const ok = d.querySelector('.ok'); const x = ease(seg(t, 37.6 + i * 0.4, 37.9 + i * 0.4)); ok.style.opacity = x; ok.style.transform = `scale(${0.6 + 0.4 * x})`; d.style.borderColor = x > 0 && x < 1 ? 'var(--sage7)' : ''; });
+  reveal($('alert'), t, 40.6, 0.45);
+
+  // cursor (positions are in page pixels)
+  cursorAt(t, t < 9 ? [[6.6, 760, 560], [7.15, 600, 384]] : t < 25 ? [[22.9, 900, 560], [23.4, 700, 280]] : t < 32 ? [[29, 860, 560], [29.6, 724, 300]] : [[34.4, 1000, 420], [35, 1112, 132]]);
+  let clicked = clickAt(t, 7.15, 600, 384) || clickAt(t, 23.4, 700, 280) || clickAt(t, 29.6, 724, 300) || clickAt(t, 35, 1112, 132);
+  if (!clicked) $('click').style.opacity = 0;
+  $('btn-export').style.background = t > 35 && t < 35.4 ? '#22262f' : '';
+
+  // captions
+  let idx = -1; STEPS.forEach(([s], i) => { if (t >= s) idx = i; });
+  const cap = t < 4 ? 'See AccessBell in action' : t >= 42.4 ? 'Start your 3-day free trial at accessbell.co' : STEPS[idx][1];
+  $('captext').textContent = cap;
+  [...steps.children].forEach((s, i) => (s.className = i <= idx && t < 42.4 ? 'on' : ''));
+}
+window.render = render;
+window.DURATION = DURATION;
+render(Number(new URLSearchParams(location.search).get('t') || 0));
+</script>
+</body>
+</html>
