@@ -35,6 +35,8 @@ export type Comparison = {
   sources: { label: string; href: string }[];
   related: string[];
   checked: string;
+  /** Groups similar tools so each page links to its closest alternatives first. */
+  category: 'overlay' | 'enterprise' | 'testing';
 };
 
 /** The comparison table: groups, row labels and AccessBell's own answers. */
@@ -87,6 +89,7 @@ const OVERLAY_FACT_SHEET = { label: 'Overlay Fact Sheet', href: 'https://overlay
 export const COMPARISONS: Comparison[] = [
   {
     slug: 'audioeye-vs-accessbell',
+    category: 'overlay',
     name: 'AudioEye',
     kind: 'Automated fixes plus managed services',
     summary: 'AudioEye pairs a script that applies automatic fixes with paid expert services. AccessBell finds issues in your code, shows the fix and documents your work for a flat price.',
@@ -104,7 +107,7 @@ export const COMPARISONS: Comparison[] = [
       expert: 'On managed tiers',
     },
     differences: [
-      { h: 'Fixing in the browser vs fixing the code', text: 'Automatic fixes that run in the visitor’s browser can change some attributes, but they cannot rebuild missing structure, keyboard support or form logic, and they do not change the code other tools see. AccessBell shows the failing element and a corrected version so your team fixes it once at the source. AccessBellFix exists for quick, specific fixes you approve, such as alt text, but it is not presented as making a site compliant.' },
+      { h: 'Fixing in the browser vs fixing the code', text: 'Automatic fixes that run in the visitor’s browser, as with [accessiBe](/comparisons/accessibe-vs-accessbell) and [UserWay](/comparisons/userway-vs-accessbell), can change some attributes, but they cannot rebuild missing structure, keyboard support or form logic, and they do not change the code other tools see. AccessBell shows the failing element and a corrected version so your team fixes it once at the source. AccessBellFix exists for quick, specific fixes you approve, such as alt text, but it is not presented as making a site compliant.' },
       { h: 'Predictable pricing', text: 'AccessBell is one plan with every feature for $29 per domain per month. AudioEye sells several tiers, and the ones that include expert testing cost considerably more, so confirm the current price for the level of service you need.' },
       { h: 'Who does the work', text: 'If you want a vendor to carry out audits and remediation for you, AudioEye’s managed tiers are built for that. AccessBell is built for teams who fix their own sites and want the issues, code fixes, monitoring and evidence in one place.' },
     ],
@@ -124,6 +127,7 @@ export const COMPARISONS: Comparison[] = [
   },
   {
     slug: 'aaardvark-vs-accessbell',
+    category: 'testing',
     name: 'AAArdvark',
     kind: 'Accessibility testing and audit management',
     summary: 'AAArdvark is a testing tool with automated and manual testing and multi-site plans. AccessBell monitors 500 URLs per domain daily and adds code fixes and legal evidence.',
@@ -146,7 +150,7 @@ export const COMPARISONS: Comparison[] = [
     differences: [
       { h: 'Price per page', text: 'For one website, AccessBell includes 500 URLs for $29 a month, while AAArdvark’s one-site plan is $49 a month for 100 pages. AAArdvark’s larger plans spread pages across several sites, which can suit agencies with many small sites.' },
       { h: 'Monitoring and evidence', text: 'AccessBell rescans every monitored URL daily, emails owners and admins about new serious issues, and records each scan and confirmed fix in the Compliance Vault, which exports a verifiable evidence package.' },
-      { h: 'Manual auditing workflow', text: 'AAArdvark puts more emphasis on manual auditing, with tools to log, comment on and track issues found by hand. AccessBell gives step-by-step manual test procedures and lets you record remediation notes, but its core is automated monitoring.' },
+      { h: 'Manual auditing workflow', text: 'AAArdvark puts more emphasis on manual auditing, though not on the expert services that [Level Access](/comparisons/level-access-vs-accessbell) sells, with tools to log, comment on and track issues found by hand. AccessBell gives step-by-step manual test procedures and lets you record remediation notes, but its core is automated monitoring.' },
     ],
     chooseThem: ['You run detailed manual audits and want to log and discuss findings as a team.', 'You manage many small sites and want pages shared across sites in one plan.'],
     chooseUs: ['You want 500 URLs on one domain monitored daily for $29 a month.', 'You want a corrected code example for every issue and optional approved fixes.', 'You want PDF checks and a legal evidence package.'],
@@ -164,6 +168,7 @@ export const COMPARISONS: Comparison[] = [
   },
   {
     slug: 'accessibe-vs-accessbell',
+    category: 'overlay',
     name: 'accessiBe',
     kind: 'Overlay widget',
     summary: 'accessiBe’s accessWidget changes your page in the visitor’s browser and is priced by traffic. AccessBell finds issues in your code and documents every fix for a flat price.',
@@ -217,12 +222,13 @@ export const COMPARISONS: Comparison[] = [
   },
   {
     slug: 'userway-vs-accessbell',
+    category: 'overlay',
     name: 'UserWay',
     kind: 'Overlay widget',
     summary: 'UserWay is an AI widget, part of Level Access since 2024, with monitoring of a limited number of pages. AccessBell monitors 500 URLs per domain and fixes issues at the source.',
     description: 'UserWay vs AccessBell: an AI accessibility widget with limited page monitoring vs 500 URLs per domain, code-level fixes and legal evidence for $29 per domain.',
     intro: [
-      'UserWay sells an AI-powered accessibility widget that adjusts pages in the visitor’s browser, with a free version and paid plans that add monitoring of a set number of pages and an accessibility statement. Level Access completed its acquisition of UserWay in March 2024, and UserWay continues as its own brand. AccessBell is not a widget: it tests your pages, shows the code fix and records your work.',
+      'UserWay sells an AI-powered accessibility widget that adjusts pages in the visitor’s browser, with a free version and paid plans that add monitoring of a set number of pages and an accessibility statement. [Level Access](/comparisons/level-access-vs-accessbell) completed its acquisition of UserWay in March 2024, and UserWay continues as its own brand. AccessBell is not a widget: it tests your pages, shows the code fix and records your work.',
     ],
     short: 'UserWay is an AI widget that changes pages in the browser, with monitoring of a limited number of pages on paid plans. AccessBell fixes issues at the source, monitors up to 500 URLs per domain daily and keeps dated evidence.',
     cells: {
@@ -271,6 +277,7 @@ export const COMPARISONS: Comparison[] = [
   },
   {
     slug: 'siteimprove-vs-accessbell',
+    category: 'enterprise',
     name: 'Siteimprove',
     kind: 'Enterprise digital governance suite',
     summary: 'Siteimprove bundles accessibility with SEO, analytics and content tools for large organizations, by quote. AccessBell focuses on accessibility for a flat $29 per domain.',
@@ -289,7 +296,7 @@ export const COMPARISONS: Comparison[] = [
       suite: true,
     },
     differences: [
-      { h: 'Scope', text: 'Siteimprove suits large organizations that want one vendor for accessibility, SEO, analytics and governance across many sites and editors. AccessBell suits teams who need accessibility done well without buying a suite.' },
+      { h: 'Scope', text: 'Like [Acquia Web Governance](/comparisons/acquia-vs-accessbell), Siteimprove suits large organizations that want one vendor for accessibility, SEO, analytics and governance across many sites and editors. AccessBell suits teams who need accessibility done well without buying a suite.' },
       { h: 'Price and buying process', text: 'Siteimprove does not publish prices and sells through sales conversations. AccessBell is self-serve: run a free scan, start a 3-day trial, and pay $29 per domain per month.' },
       { h: 'Evidence for legal claims', text: 'AccessBell’s Compliance Vault is built around proving your work: dated scans, a fix log, remediation notes and an evidence package with a verifiable fingerprint.' },
     ],
@@ -317,12 +324,13 @@ export const COMPARISONS: Comparison[] = [
   },
   {
     slug: 'level-access-vs-accessbell',
+    category: 'enterprise',
     name: 'Level Access',
     kind: 'Enterprise platform with expert services',
     summary: 'Level Access combines an enterprise platform with expert audits and managed services, by quote. AccessBell is self-serve monitoring, code fixes and evidence for $29 per domain.',
     description: 'Level Access vs AccessBell: an enterprise platform with expert audits by quote vs self-serve monitoring of 500 URLs per domain, code fixes and evidence for $29.',
     intro: [
-      'Level Access is one of the largest accessibility companies. It combines the Level Access Platform with expert audits, testing and managed services, merged with eSSENTIAL Accessibility and acquired UserWay in 2024. It sells mainly to large organizations by quote. AccessBell is a self-serve platform for teams who fix their own sites: daily monitoring, code-level fixes and a legal evidence trail for a flat price.',
+      'Level Access is one of the largest accessibility companies. It combines the Level Access Platform with expert audits, testing and managed services, merged with eSSENTIAL Accessibility and acquired [UserWay](/comparisons/userway-vs-accessbell) in 2024. It sells mainly to large organizations by quote. AccessBell is a self-serve platform for teams who fix their own sites: daily monitoring, code-level fixes and a legal evidence trail for a flat price.',
     ],
     short: 'Level Access is an enterprise platform with a large team of experts, sold by quote. AccessBell is self-serve software for teams who fix their own sites: daily monitoring, code fixes and an evidence trail for $29 per domain.',
     cells: {
@@ -356,6 +364,7 @@ export const COMPARISONS: Comparison[] = [
   },
   {
     slug: 'acquia-vs-accessbell',
+    category: 'enterprise',
     name: 'Acquia',
     kind: 'Web governance suite (formerly Monsido and Acquia Optimize)',
     summary: 'Acquia Web Governance, formerly Monsido and Acquia Optimize, scans for accessibility, SEO, quality and policy issues by annual quote. AccessBell focuses on accessibility for $29 per domain.',
@@ -374,7 +383,7 @@ export const COMPARISONS: Comparison[] = [
       suite: true,
     },
     differences: [
-      { h: 'Accessibility only vs governance suite', text: 'Acquia Web Governance suits organizations, often on Acquia’s Drupal stack, that want accessibility, content quality, SEO and policy checks in one tool. AccessBell focuses on accessibility and works on any platform.' },
+      { h: 'Accessibility only vs governance suite', text: 'Like [Siteimprove](/comparisons/siteimprove-vs-accessbell), Acquia Web Governance suits organizations, often on Acquia’s Drupal stack, that want accessibility, content quality, SEO and policy checks in one tool. AccessBell focuses on accessibility and works on any platform.' },
       { h: 'Price and buying', text: 'Acquia sells annual subscriptions by quote. AccessBell is self-serve at $29 per domain per month, with a 3-day free trial.' },
       { h: 'Evidence for legal claims', text: 'AccessBell’s Compliance Vault records every scan and confirmed fix and exports an evidence package with a verifiable fingerprint, designed for demand letters and audits.' },
     ],
@@ -394,6 +403,14 @@ export const COMPARISONS: Comparison[] = [
     related: ['digital-accessibility-platforms', 'best-website-accessibility-testing-software'],
     checked: '2026-10-01',
   },
+];
+
+export const CATEGORY_LABEL = { overlay: 'overlay and automated-fix tools', enterprise: 'enterprise platforms', testing: 'testing tools' } as const;
+
+/** Other comparisons, closest alternatives first. */
+export const similarTo = (c: Comparison) => [
+  ...COMPARISONS.filter((o) => o.slug !== c.slug && o.category === c.category),
+  ...COMPARISONS.filter((o) => o.slug !== c.slug && o.category !== c.category),
 ];
 
 export const comparisonPath = (c: Comparison) => `/comparisons/${c.slug}`;

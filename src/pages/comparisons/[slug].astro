@@ -8,7 +8,7 @@ import CompareCell from '../../components/CompareCell.astro';
 import { SITE } from '../../config/site';
 import { faqSchema } from '../../lib/schema';
 import { formatDate } from '../../lib/format';
-import { COMPARISONS, ROWS, comparisonPath, type Comparison } from '../../data/comparisons';
+import { COMPARISONS, ROWS, CATEGORY_LABEL, comparisonPath, similarTo, type Comparison } from '../../data/comparisons';
 
 export function getStaticPaths() {
   return COMPARISONS.map((c) => ({ params: { slug: c.slug }, props: { c } }));
@@ -18,7 +18,11 @@ const { c } = Astro.props as { c: Comparison };
 const url = `${SITE.url}${comparisonPath(c)}`;
 const title = `${c.name} vs. AccessBell`;
 const checked = new Date(c.checked);
-const others = COMPARISONS.filter((o) => o.slug !== c.slug);
+const others = similarTo(c);
+const closest = others.filter((o) => o.category === c.category);
+// Aaardvark has no same-category peer: point it at the platforms it is most often weighed against.
+const nearby = closest.length ? closest : others.filter((o) => o.category === 'enterprise');
+const joinLinks = (list: typeof others) => list.map((o) => `<a href="${comparisonPath(o)}">${o.name} vs. AccessBell</a>`).join(list.length > 2 ? ', ' : ' and ').replace(/, (?=[^,]*$)/, ', and ');
 const related = (await Promise.all(c.related.map((id) => getEntry('blog', id)))).filter(Boolean);
 // Only rows where the competitor has a sourced answer.
 const groups = ROWS.map((g) => ({ ...g, rows: g.rows.filter((r) => r.key in c.cells) })).filter((g) => g.rows.length);
@@ -51,7 +55,7 @@ const schema = [
     <div class="container">
       <span class="cmp-eyebrow">{c.name} vs AccessBell</span>
       <h1 id="cmp-title">{c.name} vs. <span class="cmp-accent">AccessBell</span></h1>
-      <p class="cmp-lead">{c.intro[0]}</p>
+      <p class="cmp-lead" set:html={md(c.intro[0])} />
       <div class="cmp-cta">
         <a class="btn btn-accent" href="/app/signup">Start 3-day free trial <Icon name="arrow" /></a>
         <a class="btn cmp-btn-ghost" href="/#scan">Run a free scan</a>
@@ -62,6 +66,7 @@ const schema = [
   <div class="container">
     <div class="cmp-short" role="note">
       <p><strong>The short version:</strong> {c.short}</p>
+      <p class="cmp-similar">Comparing {closest.length ? `other ${CATEGORY_LABEL[c.category]}` : 'more tools'}? See <Fragment set:html={joinLinks(nearby)} />, or <a href="/comparisons">all comparisons</a>.</p>
     </div>
   </div>
 
@@ -101,8 +106,9 @@ const schema = [
         <h2 id="cmp-why">Why Teams Choose AccessBell Over {c.name}</h2>
       </div>
       <ul class="grid-3 cmp-why">
-        {c.differences.map((d) => <li><h3>{d.h}</h3><p>{d.text}</p></li>)}
+        {c.differences.map((d) => <li><h3>{d.h}</h3><p set:html={md(d.text)} /></li>)}
       </ul>
+      <p class="cmp-note">The same differences apply to other {CATEGORY_LABEL[nearby[0]?.category ?? c.category]}: compare <Fragment set:html={joinLinks(nearby)} />.</p>
     </div>
   </section>
 
@@ -155,8 +161,8 @@ const schema = [
         <li><a href="/pricing">AccessBell pricing</a><span>One plan per domain with every feature.</span></li>
       </ul>
       <h3>Other Comparisons</h3>
-      <ul class="platform-links">
-        {others.map((o) => <li><a href={comparisonPath(o)}><span>{o.name} vs. AccessBell</span></a></li>)}
+      <ul class="cmp-links">
+        {others.map((o) => <li><a href={comparisonPath(o)}>{o.name} vs. AccessBell</a> <span>{o.kind}</span></li>)}
       </ul>
       <p><a class="link-arrow" href="/comparisons">All comparisons <Icon name="arrow" /></a></p>
     </div>

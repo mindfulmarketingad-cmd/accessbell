@@ -7840,3 +7840,10 @@ img.platform-logo-lg {
 .brand {
   flex-shrink: 0;
 }
+.cmp-short .cmp-similar {
+  margin-top: 10px;
+  font-size: 0.9375rem;
+}
+.cmp-lead a {
+  color: #fff;
+}
