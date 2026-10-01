@@ -17,7 +17,6 @@ export const SITE = {
 } as const;
 
 export const HEADER_NAV = [
-  { label: 'Home', href: '/' },
   { label: 'Pricing', href: '/pricing' },
   { label: 'Solutions', href: '/solutions' },
   { label: 'Platforms', href: '/platforms' },
