@@ -7,7 +7,7 @@ import Faq from '../../components/Faq.astro';
 import PlatformLogo from '../../components/PlatformLogo.astro';
 import { SITE } from '../../config/site';
 import { faqSchema } from '../../lib/schema';
-import { PLATFORMS, platformPath } from '../../data/platforms';
+import { PLATFORMS, platformPath, platformAdaPath } from '../../data/platforms';
 import { CHECKERS, checkerPath } from '../../data/checkers';
 import { INDUSTRIES, industryPath } from '../../data/industries';
 import { STATE_LAWS, stateLawPath } from '../../data/state-laws';
@@ -36,12 +36,16 @@ const schema = [
     name: 'Accessibility Checkers by Platform',
     url,
     isPartOf: { '@id': `${SITE.url}/#website` },
-    hasPart: PLATFORMS.map((p) => ({ '@type': 'WebPage', name: `${p.name} Accessibility Checker`, url: `${SITE.url}${platformPath(p)}` })),
+    hasPart: [
+      ...PLATFORMS.map((p) => ({ '@type': 'WebPage', name: `${p.name} Accessibility Checker`, url: `${SITE.url}${platformPath(p)}` })),
+      ...PLATFORMS.map((p) => ({ '@type': 'WebPage', name: `${p.name} ADA Compliance Checker`, url: `${SITE.url}${platformAdaPath(p)}` })),
+    ],
     mainEntity: {
       '@type': 'ItemList',
       numberOfItems: PLATFORMS.length,
       itemListElement: PLATFORMS.map((p, i) => ({ '@type': 'ListItem', position: i + 1, name: `${p.name} Accessibility Checker`, url: `${SITE.url}${platformPath(p)}` })),
     },
+    significantLink: PLATFORMS.map((p) => `${SITE.url}${platformAdaPath(p)}`),
   },
   faqSchema(faqs),
 ];
@@ -94,6 +98,30 @@ const schema = [
       </div>
     </section>
   ))}
+
+  <section class="section-tight" aria-labelledby="ada-compliance-checkers" id="ada-compliance-checkers">
+    <div class="container">
+      <div class="section-head section-head-left">
+        <h2 id="ada-compliance-checkers">ADA Compliance Checkers by Platform</h2>
+        <p>Worried about ADA website claims? Each ADA compliance checker runs the scan against WCAG 2.1 AA, the benchmark courts and settlements cite, and lists the ADA risks specific to that platform. See the general <a href="/resources/ada-compliance-checker">ADA compliance checker</a> for the basics.</p>
+      </div>
+      {GROUPS.map((g) => (
+        <div class="platform-links-group">
+          <h3>{g.label === 'CMS' ? 'Content management systems' : g.label === 'Framework' ? 'Frameworks and developer platforms' : g.label + 's'}</h3>
+          <ul class="platform-links">
+            {PLATFORMS.filter((p) => p.group === g.id).map((p) => (
+              <li>
+                <a href={platformAdaPath(p)}>
+                  <PlatformLogo slug={p.slug} name={p.name} size="sm" />
+                  <span>{p.name} ADA Compliance Checker</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
 
   <section class="section-tight" aria-labelledby="platforms-why">
     <div class="container cc-prose">

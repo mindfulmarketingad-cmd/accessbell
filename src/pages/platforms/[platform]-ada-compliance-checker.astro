@@ -1,0 +1,211 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import ScanForm from '../../components/ScanForm.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import AuthorAvatar from '../../components/AuthorAvatar.astro';
+import PlatformLogo from '../../components/PlatformLogo.astro';
+import { SITE } from '../../config/site';
+import { authorPath, authorSchema } from '../../lib/authors';
+import { faqSchema } from '../../lib/schema';
+import { formatDate } from '../../lib/format';
+import { PLATFORMS, platformPath, platformId, platformAdaPath, type Platform } from '../../data/platforms';
+import { ADA_CONTENT } from '../../data/platforms-ada';
+import { LAWSUIT_STATS } from '../../data/lawsuit-stats';
+import { criterionPath } from '../../lib/wcag-pages';
+import { CRITERIA } from '../../../server/wcag-criteria.js';
+
+export function getStaticPaths() {
+  return PLATFORMS.map((p) => ({ params: { platform: platformId(p) }, props: { p } }));
+}
+
+const { p } = Astro.props as { p: Platform };
+const c = ADA_CONTENT[platformId(p)];
+if (!c) throw new Error(`No ADA content for ${p.slug}`);
+const REVIEWED = new Date('2026-10-01');
+const path = platformAdaPath(p);
+const url = `${SITE.url}${path}`;
+const title = `${p.name} ADA Compliance Checker`;
+const description = `Free ${p.name} ADA compliance checker. Scan your ${p.name} site against WCAG 2.1 AA, the benchmark in ADA website claims, and see which risks to fix first.`;
+const author = await getEntry('authors', 'joseph-edwards');
+const isHost = p.kind === 'host';
+const scName = (sc: string) => (CRITERIA as Record<string, { name: string }>)[sc]?.name ?? sc;
+
+const GROUP_ORDER = ['ecommerce', 'cms', 'builder', 'framework', 'host'] as const;
+const GROUP_HEADING = { ecommerce: 'E-commerce platforms', cms: 'Content management systems', builder: 'Website and page builders', framework: 'Frameworks and developer platforms', host: 'Web hosts' } as const;
+const otherGroups = [p.group, ...GROUP_ORDER.filter((g) => g !== p.group)]
+  .map((g) => ({ id: g, heading: GROUP_HEADING[g], items: PLATFORMS.filter((o) => o.group === g && o.slug !== p.slug) }))
+  .filter((g) => g.items.length);
+
+const faqs = [
+  ...c.faqs,
+  { q: `What standard does the ${p.name} ADA compliance check use?`, a: 'WCAG 2.1 Level AA, the technical standard the Department of Justice has adopted for state and local government websites and the one courts and settlements most often cite for businesses. The ADA itself does not name a technical standard for private business websites.' },
+];
+
+const schema = [
+  {
+    '@type': 'WebApplication',
+    '@id': `${url}#app`,
+    name: title,
+    url,
+    description,
+    applicationCategory: 'DeveloperApplication',
+    operatingSystem: 'Any',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    publisher: { '@id': `${SITE.url}/#organization` },
+  },
+  {
+    '@type': 'Article',
+    '@id': `${url}#article`,
+    headline: `${title}: ${p.name} ADA Compliance Risks and Fixes`,
+    description,
+    dateModified: REVIEWED.toISOString(),
+    author: author ? { '@id': `${SITE.url}${authorPath(author)}#author` } : { '@id': `${SITE.url}/#organization` },
+    publisher: { '@id': `${SITE.url}/#organization` },
+    mainEntityOfPage: { '@id': `${url}#webpage` },
+  },
+  ...(author ? [authorSchema(author)] : []),
+  faqSchema(faqs),
+];
+---
+<BaseLayout
+  title={`Free ${title} | AccessBell`}
+  description={description}
+  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: 'Platforms', href: '/platforms' }, { label: title, href: path }]}
+  schema={schema}
+>
+  <section class="checker-hero" id="scan" aria-labelledby="ada-title">
+    <div class="container">
+      <div class="checker-logo"><PlatformLogo slug={p.slug} name={p.name} size="lg" /></div>
+      <h1 id="ada-title">{title}</h1>
+      <p class="lead">Check your {p.name} website for ADA compliance. The scan tests every page you enter against WCAG 2.1 AA, the benchmark used in ADA website claims, and lists the barriers that most often get {p.name} sites into trouble.</p>
+      <ScanForm id="platform-ada" standard="ada" buttonLabel={`Check My ${p.name} Site for ADA`} />
+      <p class="checker-meta">
+        <Icon name="check" /> Real Chrome browser scan, powered by axe-core
+        <span aria-hidden="true">&middot;</span> Free, no account needed
+      </p>
+      <p class="checker-seeall"><a href={platformPath(p)}>{p.name} accessibility checker</a> <span aria-hidden="true">&middot;</span> <a href="/platforms">All platform checkers</a></p>
+    </div>
+  </section>
+
+  <section class="results" id="scan-results" aria-live="polite" aria-busy="false" hidden>
+    <div class="container" data-results></div>
+  </section>
+
+  <article class="container checker-body">
+    <div class="checker-byline">
+      {author && <a class="byline-person" href={authorPath(author)}><AuthorAvatar name={author.data.name} /><span><strong>{author.data.name}</strong><small>Author</small></span></a>}
+      <span>Reviewed <time datetime={REVIEWED.toISOString()}>{formatDate(REVIEWED)}</time></span>
+    </div>
+
+    <section aria-labelledby="ada-exposure">
+      <h2 id="ada-exposure">ADA Compliance for {p.name} Websites</h2>
+      <p>{c.exposure}</p>
+      <p>This {p.name} ADA compliance checker runs the same engine as the <a href={platformPath(p)}>{p.name} accessibility checker</a> with the ADA preset selected, so the results are measured against WCAG 2.1 Level AA. Paste a page address above to see the issues on your own {isHost ? 'site' : `${p.name} site`}.</p>
+    </section>
+
+    <section aria-labelledby="ada-risks">
+      <h2 id="ada-risks">{p.name} ADA Compliance Risks to Check First</h2>
+      <p>These are the barriers most often behind accessibility complaints on {p.name} sites. Each one maps to a WCAG success criterion that the scan reports.</p>
+      <ul class="focus-grid">
+        {c.risks.map((r) => (
+          <li>
+            <h3>{r.title}</h3>
+            <p>{r.text}</p>
+            <p class="muted">WCAG <a href={criterionPath(r.sc)}>{r.sc} {scName(r.sc)}</a></p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section aria-labelledby="ada-law">
+      <h2 id="ada-law">How the ADA Applies to Your {p.name} Site</h2>
+      <p>Title III of the Americans with Disabilities Act requires businesses open to the public to give people with disabilities equal access to their goods and services. The Department of Justice states that this covers a business's web content as well as its physical locations ({'{'}<a href="https://www.ada.gov/resources/web-guidance/" rel="noopener noreferrer" target="_blank">ADA.gov web guidance<span class="visually-hidden"> (opens in a new tab)</span></a>{'}'}). The law does not name a technical standard for private websites, so courts, settlements and demand letters tend to point to WCAG 2.1 Level AA, which is why this checker uses it.</p>
+      <ul class="stat-grid">
+        {LAWSUIT_STATS.map((s) => (
+          <li class="stat-card">
+            <strong>{s.value}</strong>
+            <span>{s.text}</span>
+            <small><a href={s.source.url} rel="noopener noreferrer" target="_blank">{s.source.label}<span class="visually-hidden"> (opens in a new tab)</span></a></small>
+          </li>
+        ))}
+      </ul>
+      <p>None of this depends on which platform you use: a claim names the barrier on the page, not the software behind it. Read more in our <a href="/blog/ada-website-compliance-guide">ADA website compliance guide</a> and the <a href="/resources/ada-compliance-checker">general ADA compliance checker</a>.</p>
+    </section>
+
+    <section aria-labelledby="ada-steps">
+      <h2 id="ada-steps">{p.name} ADA Compliance Steps</h2>
+      <ol class="steps-list">
+        <li><strong>Run the ADA check above</strong> on your homepage, and then on a page of each type you publish.</li>
+        {c.steps.map((s) => <li>{s}</li>)}
+        <li>Rescan to confirm each fix, and keep dated records. <a href="/pricing">AccessBell Pro</a> monitors up to 500 URLs per domain every day and emails you when something new fails.</li>
+      </ol>
+    </section>
+
+    <section aria-labelledby="ada-limits">
+      <h2 id="ada-limits">What an Automated {p.name} ADA Check Can and Cannot Do</h2>
+      <p>Automated testing finds a large share of the machine-detectable WCAG failures, such as missing alt text, unlabeled fields, low contrast and broken ARIA. It cannot judge whether alt text is accurate, whether a keyboard path makes sense or whether a screen reader user can complete a purchase. Test your key journeys by hand as well, and read our <a href="/methodology">methodology</a> for exactly what runs.</p>
+      <p>No tool, including this one, can certify that a {p.name} site is ADA compliant or protect you from a claim. Treat a scan as evidence of ongoing effort, and speak to a lawyer if you receive a demand letter.</p>
+      <h3>Free scan and 3-day free trial</h3>
+      <ul class="check-list">
+        <li><Icon name="check" /><span>Free, with no account: every issue found on the page, ranked by severity, with the WCAG criteria each one fails.</span></li>
+        <li><Icon name="check" /><span>With the trial: the failing HTML, how to fix each issue, scans of up to 500 pages per domain, daily monitoring and a dated record of your fixes.</span></li>
+      </ul>
+      <p><a class="btn btn-accent" href="/app/signup">Start 3-day free trial</a></p>
+    </section>
+
+    <section aria-labelledby="ada-statement">
+      <h2 id="ada-statement">Publishing an Accessibility Statement on {p.name}</h2>
+      <p>{c.statement} Our free <a href="/resources/statement-generator">accessibility statement generator</a> writes the text, and it should name the standard you follow, any known gaps and a way to contact you.</p>
+    </section>
+
+    <section aria-labelledby="faq-title">
+      <h2 id="faq-title">{p.name} ADA Compliance: Frequently Asked Questions</h2>
+      <Faq items={faqs} />
+    </section>
+
+    <section aria-labelledby="sources" class="checker-sources">
+      <h2 id="sources">Sources</h2>
+      <ul>
+        <li><a href="https://www.ada.gov/resources/web-guidance/" rel="noopener noreferrer" target="_blank">ADA.gov: Guidance on Web Accessibility and the ADA<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+        <li><a href="https://www.w3.org/TR/WCAG21/" rel="noopener noreferrer" target="_blank">W3C: Web Content Accessibility Guidelines (WCAG) 2.1<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+        {[...new Map(LAWSUIT_STATS.map((s) => [s.source.url, s.source])).values()].map((s) => (
+          <li><a href={s.url} rel="noopener noreferrer" target="_blank">{s.label}<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+        ))}
+      </ul>
+      <p class="muted">This page explains general ADA and accessibility patterns for {p.name} sites and is not legal advice. AccessBell is not affiliated with {p.name}. {p.name} and its logo are trademarks of their owners and are used only to identify the platform. See our <a href="/disclaimer">disclaimer</a>.</p>
+    </section>
+  </article>
+
+  <section class="section section-surface" aria-labelledby="more-ada">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="more-ada">ADA Compliance Checkers for Other Platforms</h2>
+        <p>The same ADA scan, with the risks and fixes for each platform. Browse <a href="/platforms#ada-compliance-checkers">all {PLATFORMS.length} ADA compliance checkers</a> or the <a href="/platforms">platform accessibility checker hub</a>.</p>
+      </div>
+      {otherGroups.map((g) => (
+        <div class="platform-links-group">
+          <h3>{g.heading}</h3>
+          <ul class="platform-links">
+            {g.items.map((o) => (
+              <li>
+                <a href={platformAdaPath(o)}>
+                  <PlatformLogo slug={o.slug} name={o.name} size="sm" />
+                  <span>{o.name} ADA Compliance Checker</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+      <p class="more-link"><a class="link-arrow" href={platformPath(p)}>{p.name} accessibility checker <Icon name="arrow" /></a> <a class="link-arrow" href="/platforms">All platform checkers <Icon name="arrow" /></a></p>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>
+<script>
+  import '../../scripts/free-scan.js';
+</script>

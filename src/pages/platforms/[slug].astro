@@ -11,7 +11,7 @@ import { SITE } from '../../config/site';
 import { authorPath, authorSchema } from '../../lib/authors';
 import { faqSchema } from '../../lib/schema';
 import { formatDate } from '../../lib/format';
-import { PLATFORMS, platformPath, type Platform } from '../../data/platforms';
+import { PLATFORMS, platformPath, platformAdaPath, type Platform } from '../../data/platforms';
 import { coverageFor } from '../../lib/checker-coverage';
 
 export function getStaticPaths() {
@@ -74,7 +74,7 @@ const schema = [
         <Icon name="check" /> Real Chrome browser scan, powered by axe-core
         <span aria-hidden="true">&middot;</span> Free, no account needed
       </p>
-      <p class="checker-seeall"><a href="/platforms">See all platform accessibility checkers</a></p>
+      <p class="checker-seeall"><a href={platformAdaPath(p)}>{p.name} ADA compliance checker</a> <span aria-hidden="true">&middot;</span> <a href="/platforms">See all platform accessibility checkers</a></p>
     </div>
   </section>
 
@@ -146,6 +146,7 @@ const schema = [
           <li><a href={`/blog/${post.id}`}>{post.data.title}</a><span>{post.data.description}</span></li>
         ))}
         <li><a href="/resources/wcag">WCAG Success Criteria Library</a><span>Look up any success criterion the scan flags, in plain language.</span></li>
+        <li><a href={platformAdaPath(p)}>{p.name} ADA Compliance Checker</a><span>The same scan with the ADA preset, plus the ADA risks specific to {p.name} sites.</span></li>
         <li><a href="/resources/statement-generator">Free Accessibility Statement Generator</a><span>Publish a statement once your {p.name} site's known issues are fixed.</span></li>
       </ul>
     </section>
@@ -185,7 +186,7 @@ const schema = [
           </ul>
         </div>
       ))}
-      <p class="more-link"><a class="link-arrow" href="/platforms">All platform accessibility checkers <Icon name="arrow" /></a></p>
+      <p class="more-link"><a class="link-arrow" href={platformAdaPath(p)}>{p.name} ADA compliance checker <Icon name="arrow" /></a> <a class="link-arrow" href="/platforms">All platform accessibility checkers <Icon name="arrow" /></a></p>
     </div>
   </section>
 

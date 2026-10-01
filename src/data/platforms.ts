@@ -443,3 +443,8 @@ const BASE_PLATFORMS: Platform[] = [
 export const PLATFORMS: Platform[] = [...BASE_PLATFORMS, ...MORE_PLATFORMS];
 
 export const platformPath = (p: Platform) => `/platforms/${p.slug}`;
+
+/** The platform's id without the "-accessibility-checker" suffix, e.g. "shopify". */
+export const platformId = (p: Platform) => p.slug.replace(/-accessibility-checker$/, '');
+/** "[Platform] ADA Compliance Checker" page, e.g. /platforms/shopify-ada-compliance-checker. */
+export const platformAdaPath = (p: Platform) => `/platforms/${platformId(p)}-ada-compliance-checker`;

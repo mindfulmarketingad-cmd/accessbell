@@ -6,6 +6,8 @@ import ScanForm from '../../components/ScanForm.astro';
 import Faq from '../../components/Faq.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import AuthorAvatar from '../../components/AuthorAvatar.astro';
+import PlatformLogo from '../../components/PlatformLogo.astro';
+import { PLATFORMS, platformAdaPath } from '../../data/platforms';
 import { SITE } from '../../config/site';
 import { CHECKERS, checkerPath, type Checker } from '../../data/checkers';
 import { coverageFor } from '../../lib/checker-coverage';
@@ -187,6 +189,27 @@ const schema = [
       <p class="muted">This page explains technical standards and is not legal advice. See our <a href="/disclaimer">disclaimer</a>.</p>
     </section>
   </article>
+
+  {c.slug === 'ada-compliance-checker' && (
+    <section class="section" aria-labelledby="ada-by-platform">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="ada-by-platform">ADA Compliance Checkers by Platform</h2>
+          <p>The same ADA scan with the risks and fixes specific to your platform. Or browse the <a href="/platforms#ada-compliance-checkers">platform hub</a>.</p>
+        </div>
+        <ul class="platform-links">
+          {PLATFORMS.map((o) => (
+            <li>
+              <a href={platformAdaPath(o)}>
+                <PlatformLogo slug={o.slug} name={o.name} size="sm" />
+                <span>{o.name} ADA Compliance Checker</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
 
   <section class="section section-surface" aria-labelledby="more-checkers">
     <div class="container">

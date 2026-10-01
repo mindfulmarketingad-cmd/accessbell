@@ -5,7 +5,7 @@ import { getCollection } from 'astro:content';
 import { SITE, absoluteUrl } from '../config/site';
 import { PLAN } from '../data/pricing';
 import { CHECKERS, checkerPath } from '../data/checkers';
-import { PLATFORMS, platformPath } from '../data/platforms';
+import { PLATFORMS, platformPath, platformAdaPath } from '../data/platforms';
 import { INDUSTRIES, industryPath } from '../data/industries';
 import { STATE_LAWS, stateLawPath } from '../data/state-laws';
 import { CRITERIA } from '../../server/wcag-criteria.js';
@@ -61,6 +61,7 @@ export const GET: APIRoute = async () => {
         link('Accessibility checkers by industry', '/industries'),
         link('Website accessibility laws by state', '/state-accessibility-laws'),
         ...PLATFORMS.map((p) => link(`${p.name} Accessibility Checker`, platformPath(p))),
+        ...PLATFORMS.map((p) => link(`${p.name} ADA Compliance Checker`, platformAdaPath(p))),
         ...INDUSTRIES.map((i) => link(`${i.name} Accessibility Checker`, industryPath(i))),
         ...STATE_LAWS.map((s) => link(`${s.name} Website Accessibility Checker`, stateLawPath(s))),
         link('Privacy Policy', '/privacy'),
