@@ -46,9 +46,13 @@ function contentLinks(html, pagePath) {
 }
 
 const pages = new Map();
+const titles = new Map();
 for (const file of files(DIST).filter((f) => f.endsWith('.html'))) {
   const path = clean(toPath(file));
-  pages.set(path, contentLinks(readFileSync(file, 'utf8'), path));
+  const html = readFileSync(file, 'utf8');
+  pages.set(path, contentLinks(html, path));
+  const t = (html.match(/<title>([^<]*)<\/title>/) || [])[1];
+  if (t) titles.set(path, t.replace(/&amp;/g, '&').replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>'));
 }
 
 const inbound = new Map([...indexable].map((p) => [p, new Set()]));
@@ -63,6 +67,8 @@ const rows = [...indexable].sort().map((p) => ({
   internalOut: pages.get(p)?.internal.size ?? 0,
   external: pages.get(p)?.external.size ?? 0,
 }));
+// Title tags must be 65 characters or fewer (CLAUDE.md).
+const longTitles = [...indexable].filter((p) => (titles.get(p) || '').length > 65);
 const failing = rows.filter((r) => !pages.has(r.page) || r.inbound === 0 || r.internalOut === 0 || r.external === 0);
 
 console.log(`${rows.length} indexable pages audited.`);
@@ -71,10 +77,12 @@ for (const [label, key] of [['Orphan pages (no inbound links in content)', 'inbo
   console.log(`\n${label}: ${list.length}`);
   for (const r of list) console.log(`  ${r.page}`);
 }
+console.log(`\nTitle tags over 65 characters: ${longTitles.length}`);
+for (const p of longTitles) console.log(`  ${p} (${titles.get(p).length}): ${titles.get(p)}`);
 const weak = rows.filter((r) => r.inbound === 1);
 console.log(`\nWeakly linked (1 inbound link, passes but worth strengthening): ${weak.length}`);
 for (const r of weak) console.log(`  ${r.page}`);
 const missing = rows.filter((r) => !pages.has(r.page));
 if (missing.length) console.log(`\nIn sitemap but not built: ${missing.map((r) => r.page).join(', ')}`);
 if (process.argv.includes('--verbose')) console.table(rows);
-process.exit(failing.length ? 1 : 0);
+process.exit(failing.length || longTitles.length ? 1 : 0);

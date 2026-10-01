@@ -1,5 +1,6 @@
 ---
 import { getEntries, getEntry, getCollection, render } from 'astro:content';
+import { fitTitle } from '../../../lib/titles';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Icon from '../../../components/Icon.astro';
 import CtaBand from '../../../components/CtaBand.astro';
@@ -75,7 +76,15 @@ const faqs = guide ? [...guide.data.faqs, generatedFaqs[1]] : generatedFaqs;
 
 const title = guide ? guide.data.title : `WCAG ${c.sc} ${c.name}`;
 const lead = guide ? guide.data.description : content.summary;
-const metaTitle = guide ? `${guide.data.seoTitle ?? guide.data.title} | AccessBell` : `WCAG ${c.sc} ${c.name}: What It Means and How to Test It | AccessBell`;
+const metaTitle = guide
+  ? fitTitle(`${guide.data.seoTitle ?? guide.data.title} | AccessBell`, guide.data.seoTitle ?? guide.data.title)
+  : fitTitle(
+      `WCAG ${c.sc} ${c.name}: What It Means and How to Test It | AccessBell`,
+      `WCAG ${c.sc} ${c.name}: Meaning and How to Test | AccessBell`,
+      `WCAG ${c.sc} ${c.name}: Explained | AccessBell`,
+      `WCAG ${c.sc} ${c.name} | AccessBell`,
+      `WCAG ${c.sc} ${c.name}`,
+    );
 const metaDescription = guide ? guide.data.description : `WCAG ${c.sc} ${c.name} (Level ${c.level}): ${content.summary}`;
 const minutes = guide ? readingTime(guide.body ?? '') : null;
 

@@ -1,5 +1,6 @@
 ---
 import CtaBand from '../../../../components/CtaBand.astro';
+import { fitTitle } from '../../../../lib/titles';
 import { render } from 'astro:content';
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import Icon from '../../../../components/Icon.astro';
@@ -45,7 +46,7 @@ const schema = [
 ];
 ---
 <BaseLayout
-  title={`${article.data.title} | AccessBell Help`}
+  title={fitTitle(`${article.data.title} | AccessBell Help`, `${article.data.title} | AccessBell`, article.data.title)}
   description={article.data.description}
   ogType="article"
   article={{ published: article.data.updatedDate.toISOString(), modified: article.data.updatedDate.toISOString(), section: group.title }}

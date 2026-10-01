@@ -8,7 +8,7 @@ import JsonLd from '../components/JsonLd.astro';
 import Breadcrumbs, { type Crumb } from '../components/Breadcrumbs.astro';
 
 interface Props {
-  /** Full <title>. Keep under ~60 characters. */
+  /** Full <title>. 65 characters or fewer (use fitTitle from lib/titles). */
   title: string;
   /** Meta description. Aim for 140-160 characters. */
   description: string;

@@ -1,5 +1,6 @@
 ---
 import { getCollection, getEntries, render } from 'astro:content';
+import { fitTitle } from '../../lib/titles';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
 import CtaBand from '../../components/CtaBand.astro';
@@ -70,7 +71,7 @@ const schema = [
 ];
 ---
 <BaseLayout
-  title={post.data.seoTitle && post.data.seoTitle.length > 47 ? post.data.seoTitle : `${post.data.seoTitle ?? post.data.title} | AccessBell`}
+  title={post.data.seoTitle && post.data.seoTitle.length > 47 ? post.data.seoTitle : fitTitle(`${post.data.seoTitle ?? post.data.title} | AccessBell`, post.data.seoTitle ?? post.data.title)}
   description={post.data.description}
   ogType="article"
   article={{

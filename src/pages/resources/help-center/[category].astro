@@ -1,5 +1,6 @@
 ---
 import CtaBand from '../../../components/CtaBand.astro';
+import { fitTitle } from '../../../lib/titles';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Icon from '../../../components/Icon.astro';
 import HelpSearch from '../../../components/HelpSearch.astro';
@@ -27,7 +28,7 @@ const schema = [
 ];
 ---
 <BaseLayout
-  title={`${group.title} | AccessBell Help Center`}
+  title={fitTitle(`${group.title} | AccessBell Help Center`, `${group.title} | AccessBell Help`, `${group.title} | AccessBell`, group.title)}
   description={`${group.blurb} ${group.articles.length} step-by-step guides in the AccessBell Help Center.`}
   breadcrumbs={[
     { label: 'Resources', href: '/resources' },

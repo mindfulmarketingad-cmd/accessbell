@@ -1,5 +1,6 @@
 ---
 import { getEntry } from 'astro:content';
+import { fitTitle } from '../../lib/titles';
 import { postPath } from '../../lib/posts';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
@@ -51,7 +52,7 @@ const schema = [
 ];
 ---
 <BaseLayout
-  title={`${i.seoTitle} | AccessBell`}
+  title={fitTitle(`${i.seoTitle} | AccessBell`, i.seoTitle)}
   description={i.description}
   breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: 'Industries', href: '/industries' }, { label: `${i.name} Accessibility Checker`, href: industryPath(i) }]}
   schema={schema}
