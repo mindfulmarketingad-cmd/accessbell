@@ -127,6 +127,7 @@ before(async () => {
   await db.query(readFileSync(new URL('../supabase/migrations/0007_billing_interval.sql', import.meta.url), 'utf8'));
   await db.query(readFileSync(new URL('../supabase/migrations/0008_compliance_records.sql', import.meta.url), 'utf8'));
   await db.query(readFileSync(new URL('../supabase/migrations/0009_documents.sql', import.meta.url), 'utf8'));
+  await db.query(readFileSync(new URL('../supabase/migrations/0010_issue_resolutions.sql', import.meta.url), 'utf8'));
 
   fake = await startFakeAuth(db);
   const { port } = fake.server.address();
@@ -625,6 +626,30 @@ test('scans are stored per device, update the page, and feed the overview with c
   assert.ok(!JSON.stringify(withShot.body.failed).includes('data:image/jpeg'));
   await rescan(pages[1].id, [issue]);
 
+  // Issues by page, and marking issues resolved by hand (one page, then the whole domain).
+  const byPage = (await owner.get(`domain?id=${domain.id}`)).body;
+  assert.equal(byPage.pageIssues.length, 3);
+  assert.equal(byPage.pageIssues[0].rules['button-name'], 1, 'desktop and mobile merge to one count per page');
+  assert.deepEqual(byPage.resolutions, []);
+  const onePage = await owner.post('domain/issue/resolve', { id: domain.id, rule: 'button-name', title: issue.title, pageId: pages[0].id, note: 'Fixed in the header release' });
+  assert.equal(onePage.status, 200);
+  let res = (await owner.get(`domain?id=${domain.id}`)).body.resolutions;
+  assert.equal(res.length, 1);
+  assert.equal(res[0].pageId, pages[0].id);
+  assert.equal(res[0].note, 'Fixed in the header release');
+  assert.equal((await owner.post('domain/issue/resolve', { id: domain.id, rule: 'button-name', pageId: pages[0].id })).status, 200, 'resolving twice updates the same record');
+  assert.equal((await owner.post('domain/issue/resolve', { id: domain.id, rule: 'button-name' })).status, 200);
+  res = (await owner.get(`domain?id=${domain.id}`)).body.resolutions;
+  assert.equal(res.length, 2);
+  assert.equal((await owner.post('domain/issue/resolve', { id: domain.id, rule: '<script>' })).status, 400);
+  assert.equal((await owner.post('domain/issue/resolve', { id: domain.id, rule: 'button-name', pageId: '00000000-0000-0000-0000-000000000000' })).status, 404);
+  const activity = await db.query(`select action, detail from app.activity_log where domain_id = $1 and action like 'issue.%' order by created_at`, [domain.id]);
+  assert.equal(activity.rows[0].action, 'issue.resolved');
+  assert.equal(activity.rows[0].detail.page, pages[0].url);
+  assert.equal((await owner.post('domain/issue/reopen', { id: domain.id, rule: 'button-name' })).status, 200, 'reopening the issue clears every resolution');
+  assert.deepEqual((await owner.get(`domain?id=${domain.id}`)).body.resolutions, []);
+  assert.equal((await owner.post('domain/issue/reopen', { id: domain.id, rule: 'button-name' })).status, 404);
+
   const history = await owner.get(`page?id=${pages[0].id}`);
   assert.equal(history.body.scans.length, 2);
   const scan = await owner.get(`scan?id=${history.body.scans[0].id}`);
@@ -636,6 +661,7 @@ test('scans are stored per device, update the page, and feed the overview with c
   await markSubscriber((await outsider.get('me')).body.account.id);
   assert.equal((await outsider.get(`scan?id=${history.body.scans[0].id}`)).status, 404, 'other accounts cannot read scans');
   assert.equal((await outsider.get(`domain?id=${domain.id}`)).status, 404);
+  assert.equal((await outsider.post('domain/issue/resolve', { id: domain.id, rule: 'button-name' })).status, 404, 'other accounts cannot resolve issues');
 });
 
 test('monitoring flags only new serious issues', { skip }, async () => {
@@ -806,6 +832,10 @@ test('AccessBellFix: site key, approved fixes, public rules with CORS, and conne
   const missing = await siteModule.verifyFix(ctx, domain.id, { fetcher: async () => ({ html: '<html></html>' }) });
   assert.equal(missing.foundInPage, false);
   assert.ok(missing.seenAt, 'the script loading the rules above counts as a recent connection');
+  assert.equal(missing.otherKey, null);
+  const wrongKey = await siteModule.verifyFix(ctx, domain.id, { fetcher: async () => ({ html: '<script async src="https://www.accessbell.co/fix.js" data-site="vjuAA7FtjFdqL_ubW-7f6gN_"></script>' }) });
+  assert.equal(wrongKey.foundInPage, false);
+  assert.equal(wrongKey.otherKey, 'vjuAA7FtjFdqL_ubW-7f6gN_', 'a snippet with another domain key is reported');
 
   // PageAssist toolbar: off by default, admins turn it on, and the script receives it.
   const pubUrl = `${ORIGIN}/api/app?route=fix&k=${setup.body.siteKey}`;

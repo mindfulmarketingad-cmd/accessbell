@@ -123,7 +123,7 @@ function installPrompt({ returnTo, onCopy }) {
         el('span', { class: 'install-icon', 'aria-hidden': 'true' }, [icon('sparkle')]),
         el('h2', { id: 'install-title', text: 'Install AccessBellFix for seamless, fast fixes' }),
         el('p', { id: 'install-text', text: 'Fix now applies fixes on your live site through AccessBellFix, a lightweight script you add once. After that, every fix is one click: no code changes, and nothing goes live until you approve it.' }),
-        el('ol', { class: 'install-steps' }, [
+        el('ol', { class: 'install-dialog-steps' }, [
           el('li', { text: 'Copy one line of code from your domain settings.' }),
           el('li', { text: 'Paste it before </head> on your site, or in your site builder\'s custom code settings.' }),
           el('li', { text: 'Come back and select Fix now on any issue.' }),

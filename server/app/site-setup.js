@@ -66,18 +66,32 @@ export async function verifyFix(ctx, domainId, { fetcher = fetchPage } = {}) {
     const fresh = await one('select fix_seen_at from app.domains where id = $1', [domain.id]);
     const seenRecently = fresh.fix_seen_at && Date.now() - new Date(fresh.fix_seen_at).getTime() < SEEN_WINDOW_MS;
     let foundInPage = false;
+    let otherKey = null;
     let error = null;
     try {
       const page = await fetcher(domain.base_url + '/');
-      foundInPage = String(page.html || '').includes(siteKey);
+      const html = String(page.html || '');
+      foundInPage = html.includes(siteKey);
+      // A snippet copied from another domain (or an old key) loads but never matches this domain.
+      if (!foundInPage) otherKey = installedKey(html);
     } catch (err) {
       error = err?.message || 'We could not load your home page.';
     }
     // Finding the snippet on the live site counts as validated, so the setup banner goes away.
     let seenAt = fresh.fix_seen_at;
     if (foundInPage) seenAt = (await one('update app.domains set fix_seen_at = now() where id = $1 returning fix_seen_at', [domain.id])).fix_seen_at;
-    return { connected: foundInPage || Boolean(seenRecently), foundInPage, seenAt, error };
+    return { connected: foundInPage || Boolean(seenRecently), foundInPage, otherKey, seenAt, error };
   });
+}
+
+/** The data-site key of an AccessBellFix script tag in the page, if there is one. */
+export function installedKey(html) {
+  for (const tag of String(html).match(/<script\b[^>]*>/gi) || []) {
+    if (!/\/fix\.js\b/i.test(tag)) continue;
+    const m = tag.match(/data-site\s*=\s*["']?([A-Za-z0-9_-]{16,40})/i);
+    if (m) return m[1];
+  }
+  return null;
 }
 
 function validateFix(input) {

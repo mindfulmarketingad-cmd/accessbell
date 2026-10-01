@@ -9,6 +9,7 @@ import { fetchPage } from '../fetch-page.js';
 import { VERSIONS, LEVELS } from '../wcag.js';
 import { logActivity } from './activity.js';
 import { recordDocuments, isPdfUrl } from './documents.js';
+import { listResolutions } from './resolutions.js';
 
 export const DEFAULT_SETTINGS = {
   wcagVersion: '2.2',
@@ -573,6 +574,14 @@ export async function domainOverview(ctx, domainId) {
   const impacts = { critical: 0, serious: 0, moderate: 0, minor: 0 };
   let resolved = 0;
 
+  // Issues per page (desktop and mobile merged: the larger count of each rule).
+  const byPage = new Map();
+  for (const scan of latest) {
+    const pg = byPage.get(scan.page_id) || { pageId: scan.page_id, url: urlOf.get(scan.page_id), rules: {} };
+    for (const issue of scan.issues || []) pg.rules[issue.id] = Math.max(pg.rules[issue.id] || 0, issue.count || 1);
+    byPage.set(scan.page_id, pg);
+  }
+
   for (const scan of latest) {
     const current = new Set((scan.issues || []).map((i) => i.id));
     const prev = previous.get(`${scan.page_id}|${scan.device}`);
@@ -657,6 +666,8 @@ export async function domainOverview(ctx, domainId) {
     rules: [...byRule.values()]
       .map((r) => ({ ...r, pageUrls: [...r.pages].map((id) => urlOf.get(id)).slice(0, 10), pages: r.pages.size }))
       .sort((a, b) => order[a.impact] - order[b.impact] || b.pages - a.pages || b.elements - a.elements),
+    pageIssues: [...byPage.values()].filter((p) => Object.keys(p.rules).length),
+    resolutions: await listResolutions(domain.id),
     review: [...byReview.values()].map((r) => ({ ...r, pages: r.pages.size })).sort((a, b) => b.elements - a.elements),
     criteria: [...byCriterion.values()].map((c) => ({ ...c, rules: c.rules.size })).sort((a, b) => b.elements - a.elements),
     components: [...byComponent.values()]

@@ -145,13 +145,19 @@ function domainSteps(me, { selectTab }) {
       target: '[data-domain-menu]',
       before: overview,
       title: 'More actions',
-      body: 'The ⋮ menu has exports, re-scan, Manage domain pages (choose which pages to scan), Domain settings, Add subdomain and Remove domain.',
+      body: 'The ⋮ menu has exports, re-scan, Manage domain pages (find pages and choose which to scan), Add subdomain and Remove domain.',
+    },
+    {
+      target: '[data-manage]',
+      before: overview,
+      title: 'Manage',
+      body: 'Monitored URLs (add any URL on this domain, up to 500), PDF documents, and domain settings: WCAG version and level, devices, URL rules, custom headers, AccessBellFix, the PageAssist toolbar and your accessibility statement.',
     },
     {
       target: '[role="tablist"]',
       before: overview,
-      title: 'Five views of your domain',
-      body: 'Overview, Issues, Manually Required, Pages and Settings. Next, we’ll step through each one.',
+      title: 'Four views of your domain',
+      body: 'Overview, Issues, Manually Required and Compliance Vault. Next, we’ll step through each one.',
     },
     {
       target: 'section[aria-labelledby="lso-title"]',
@@ -172,6 +178,12 @@ function domainSteps(me, { selectTab }) {
       body: 'Every success criterion in your target standard, grouped as Perceivable, Operable, Understandable and Robust, showing whether automated checks found issues or passed it, and what still needs a manual test. Tick “Only criteria with issues” to focus.',
     },
     {
+      target: 'section[aria-labelledby="risk-title"]',
+      before: overview,
+      title: 'Lawsuit risk score',
+      body: 'An estimate based on your accessibility score: the more barriers automated tools can find, the higher the risk. It is a guide for prioritizing, not legal advice.',
+    },
+    {
       target: 'section[aria-labelledby="components-title"]',
       before: overview,
       title: 'Component grouping',
@@ -182,8 +194,8 @@ function domainSteps(me, { selectTab }) {
       before: onTab('issues'),
       title: 'Issues',
       body: [
-        'Every failing rule, sorted by severity, with a filter for critical, serious, moderate or minor.',
-        'Open an issue to see what is wrong, the exact failing HTML on each page, step-by-step fix instructions and a code example you can copy.',
+        'Every failing rule, sorted by severity. View them by issue or by page, and filter for critical, serious, moderate or minor.',
+        'Open an issue to see what is wrong, the exact failing HTML on each page, step-by-step fix instructions and a code example you can copy. Mark it as resolved when it is fixed or does not apply.',
       ],
     },
     {
@@ -193,16 +205,10 @@ function domainSteps(me, { selectTab }) {
       body: 'Some checks need human judgment, such as whether alt text actually describes the image. Automated testing flags them here for a person to review. They are not counted as failures.',
     },
     {
-      target: '#tab-pages',
-      before: onTab('pages'),
-      title: 'Pages',
-      body: 'Add any URL on this domain to monitor, up to 500. Pages found by the automatic crawl and sitemap scan are listed below, so you can choose which ones to monitor.',
-    },
-    {
-      target: '#tab-settings',
-      before: onTab('settings'),
-      title: 'Scan settings',
-      body: 'Choose the WCAG version and level, test on desktop and mobile, include subdomains, wait for late-loading content, include or exclude URL patterns, and add custom headers to scan a password-protected staging site.',
+      target: '#tab-vault',
+      before: onTab('vault'),
+      title: 'Compliance Vault',
+      body: 'Your audit-ready history: scan snapshots, the fix log with notes, issues your team marked as resolved, your accessibility statement and evidence packages to download.',
     },
     {
       title: 'That’s the whole tour',

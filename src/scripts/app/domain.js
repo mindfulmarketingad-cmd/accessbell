@@ -17,7 +17,31 @@ import { mountDocuments } from './documents.js';
 const me = await boot();
 const id = qs('id');
 const $ = (s) => document.querySelector(s);
-const selectTab = initTabs($('[data-tabs]'));
+const showTab = initTabs($('[data-tabs]'));
+
+// Pages, PDF documents and settings open as full views from the Manage menu,
+// so the tabs stay focused on results: Overview, Issues, Manually Required and the Vault.
+const VIEWS = ['pages', 'documents', 'settings'];
+let lastTab = 'overview';
+function openView(name) {
+  $('[data-tabs]').hidden = true;
+  document.querySelectorAll('[data-view]').forEach((v) => (v.hidden = v.dataset.view !== name));
+  history.replaceState(null, '', `${location.pathname}${location.search}#${name}`);
+  $(`[data-view="${name}"] .view-head h2`).focus();
+}
+function closeViews() {
+  const open = document.querySelector('[data-view]:not([hidden])');
+  document.querySelectorAll('[data-view]').forEach((v) => (v.hidden = true));
+  $('[data-tabs]').hidden = false;
+  return Boolean(open);
+}
+function selectTab(name) {
+  if (VIEWS.includes(name)) return openView(name);
+  closeViews();
+  lastTab = name;
+  showTab(name);
+}
+document.querySelectorAll('[role="tab"]').forEach((t) => t.addEventListener('click', () => (lastTab = t.id.replace(/^tab-/, ''))));
 
 const IMPACT_LABEL = { critical: 'Critical', serious: 'Serious', moderate: 'Moderate', minor: 'Minor' };
 const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
@@ -30,7 +54,7 @@ const target = () => ({ version: data.domain.settings.wcagVersion || '2.2', leve
 
 function renderLso() {
   const { version, level } = target();
-  const issues = Object.values(data.impacts).reduce((a, b) => a + b, 0);
+  const issues = activeRules().reduce((n, r) => n + r.elements, 0);
   const wcagFailures = data.criteria.some((c) => c.level && c.level !== '-');
   const reviewCount = data.review.reduce((n, r) => n + r.elements, 0);
   const failedCount = data.failedPages.length;
@@ -80,6 +104,7 @@ function renderLso() {
       el('dl', { class: 'dot-list' }, [
         row('Active issues', chip(issues ? 'bad' : 'ok', 'alert', plural(issues, 'issue'))),
         row('Resolved since last scan', chip('ok', 'check', `${data.resolved} solved`)),
+        data.resolutions.length ? row('Marked resolved by your team', chip('ok', 'check', plural(resolvedRules().length, 'issue'))) : null,
         row('Scanned pages', document.createTextNode(`${data.scannedPages} of ${data.monitoredCount}`)),
         row('Last automated scan', document.createTextNode(data.lastScanAt ? relative(data.lastScanAt) : 'Never')),
         row('Next scheduled scan', document.createTextNode(monitoring ? relative(nextScheduledScan()) : 'Not scheduled')),
@@ -297,41 +322,247 @@ window.addEventListener('beforeprint', () => {
   });
 });
 
-function renderRules() {
-  const filter = $('[data-issue-filter]').value;
-  const rules = data.rules.filter((r) => !filter || r.impact === filter);
-  $('[data-count-issues]').textContent = data.rules.length ? String(data.rules.length) : '';
-  $('[data-issues-sub]').textContent = data.rules.length
-    ? `${plural(data.rules.length, 'rule')} failing across ${plural(data.scannedPages, 'page')}. Open an issue to see where it happens and how to fix it.`
-    : '';
-  const box = $('[data-rules]');
-  if (!data.rules.length) {
-    box.replaceChildren(el('div', { class: 'empty-state empty-sm' }, [el('h2', { text: data.score === null ? 'No scans yet' : 'No automated issues' }), el('p', { text: data.score === null ? 'Run a scan to see issues across the domain.' : 'Nothing failed on your monitored pages. Check the Manual Review tab next.' })]));
-    return;
-  }
-  box.replaceChildren(
-    el(
-      'div',
-      { class: 'issue-acc-list' },
-      rules.map((r) => {
-        const details = el('details', { class: 'issue-acc' }, [
-          el('summary', {}, [
-            el('span', { class: `sev-dot sev-${r.impact}`, 'aria-hidden': 'true' }),
-            el('span', { class: 'issue-acc-title', text: r.title }),
-            el('span', { class: 'issue-acc-meta' }, [
-              el('span', { class: `tag tag-${r.impact}`, text: IMPACT_LABEL[r.impact] }),
-              el('span', { class: 'tag', text: wcagLabel(r.wcag) }),
-              chip('bad', 'alert', String(r.elements)),
+// ---------- Issues: manual resolutions ----------
+
+const canResolve = () => can(me, 'member');
+const domainResolution = (rule) => data.resolutions.find((x) => x.rule === rule && !x.pageId);
+const pageResolution = (rule, pageId) => domainResolution(rule) || data.resolutions.find((x) => x.rule === rule && x.pageId === pageId);
+const pagesWith = (rule) => data.pageIssues.filter((p) => p.rules[rule]);
+
+/** A rule with its counts limited to the pages nobody has marked resolved. */
+function activeView(r) {
+  if (domainResolution(r.id)) return null;
+  const hit = pagesWith(r.id);
+  const open = hit.filter((p) => !pageResolution(r.id, p.pageId));
+  if (!open.length) return null;
+  if (open.length === hit.length) return r;
+  return { ...r, pages: open.length, elements: open.reduce((n, p) => n + p.rules[r.id], 0), pageUrls: open.map((p) => p.url) };
+}
+const activeRules = () => data.rules.map(activeView).filter(Boolean);
+const resolvedRules = () => data.rules.filter((r) => !activeView(r));
+
+async function setResolved(on, { rule, title, pageId, note }) {
+  await api(on ? 'domain/issue/resolve' : 'domain/issue/reopen', { method: 'POST', body: { id, rule, title, pageId, note } });
+  await load();
+}
+
+/** "Mark as resolved" that opens a short form for an optional note. */
+function resolveControl({ rule, title, pageId, label }) {
+  if (!canResolve()) return null;
+  const status = $('[data-issue-status]');
+  const wrap = el('div', { class: 'resolve-ctl' });
+  const open = el('button', { class: 'btn btn-outline btn-sm', type: 'button' }, [icon('check'), label]);
+  const noteId = `note-${rule}-${pageId || 'all'}`;
+  const form = el('form', { class: 'resolve-form', hidden: true }, [
+    el('label', { for: noteId, text: 'Note for your records (optional)' }),
+    el('input', { id: noteId, type: 'text', maxlength: 500, placeholder: 'For example: fixed in release 4.2, or not an issue because...' }),
+    el('div', { class: 'fix-row' }, [
+      el('button', { class: 'btn btn-sm', type: 'submit', text: 'Mark as resolved' }),
+      el('button', { class: 'btn btn-outline btn-sm', type: 'button', 'data-cancel': '', text: 'Cancel' }),
+    ]),
+  ]);
+  open.addEventListener('click', () => {
+    open.hidden = true;
+    form.hidden = false;
+    form.querySelector('input').focus();
+  });
+  form.querySelector('[data-cancel]').addEventListener('click', () => {
+    form.hidden = true;
+    open.hidden = false;
+    open.focus();
+  });
+  form.addEventListener(
+    'submit',
+    busy(form.querySelector('[type="submit"]'), status, async () => {
+      await setResolved(true, { rule, title, pageId, note: form.querySelector('input').value });
+      setStatus(status, 'success', `Marked "${title}" as resolved${pageId ? ' on that page' : ''}. It is saved in the Compliance Vault.`);
+    }),
+  );
+  wrap.append(open, form);
+  return wrap;
+}
+
+function reopenButton({ rule, title, pageId }) {
+  if (!canResolve()) return null;
+  const b = el('button', { class: 'btn btn-outline btn-sm', type: 'button' }, ['Reopen', el('span', { class: 'visually-hidden', text: ` ${title}` })]);
+  const status = $('[data-issue-status]');
+  b.addEventListener(
+    'click',
+    busy(b, status, async () => {
+      await setResolved(false, { rule, title, pageId });
+      setStatus(status, 'success', `Reopened "${title}".`);
+    }),
+  );
+  return b;
+}
+
+// ---------- Issues: by issue and by page ----------
+
+let issueView = 'issue';
+
+function issueSummary(r) {
+  return el('summary', {}, [
+    el('span', { class: `sev-dot sev-${r.impact}`, 'aria-hidden': 'true' }),
+    el('span', { class: 'issue-acc-title', text: r.title }),
+    el('span', { class: 'issue-acc-meta' }, [
+      el('span', { class: `tag tag-${r.impact}`, text: IMPACT_LABEL[r.impact] }),
+      el('span', { class: 'tag', text: wcagLabel(r.wcag) }),
+      chip('bad', 'alert', String(r.elements)),
+    ]),
+  ]);
+}
+
+function byIssueList(rules) {
+  return el(
+    'div',
+    { class: 'issue-acc-list' },
+    rules.map((r) => {
+      const details = el('details', { class: 'issue-acc' }, [issueSummary(r)]);
+      details.addEventListener('toggle', () => {
+        if (details.open && details.children.length === 1) {
+          const body = issueDetails(r);
+          const ctl = resolveControl({ rule: r.id, title: r.title, label: r.pages > 1 ? `Mark as resolved on all ${r.pages} pages` : 'Mark as resolved' });
+          if (ctl) body.append(el('div', { class: 'resolve-bar' }, [ctl]));
+          details.append(body);
+        }
+      });
+      ruleOf.set(details, r);
+      return details;
+    }),
+  );
+}
+
+function byPageList(filter) {
+  const ruleById = new Map(data.rules.map((r) => [r.id, r]));
+  const order = { critical: 0, serious: 1, moderate: 2, minor: 3 };
+  const pages = data.pageIssues
+    .map((p) => {
+      const rules = Object.entries(p.rules)
+        .map(([rid, count]) => ({ r: ruleById.get(rid), count }))
+        .filter(({ r }) => r && !pageResolution(r.id, p.pageId) && (!filter || r.impact === filter))
+        .sort((a, b) => order[a.r.impact] - order[b.r.impact] || b.count - a.count);
+      return { ...p, list: rules, total: rules.reduce((n, x) => n + x.count, 0) };
+    })
+    .filter((p) => p.list.length)
+    .sort((a, b) => b.total - a.total);
+  if (!pages.length) return el('p', { class: 'muted', text: 'No pages have active issues for this filter.' });
+  return el(
+    'div',
+    { class: 'issue-acc-list' },
+    pages.map((p) =>
+      el('details', { class: 'issue-acc page-acc' }, [
+        el('summary', {}, [
+          icon('doc'),
+          el('span', { class: 'issue-acc-title page-acc-url', text: p.url.replace(/^https?:\/\/[^/]+/, '') || '/' }),
+          el('span', { class: 'issue-acc-meta' }, [el('span', { class: 'tag', text: plural(p.list.length, 'issue') }), chip('bad', 'alert', String(p.total))]),
+        ]),
+        el(
+          'ul',
+          { class: 'page-issues' },
+          p.list.map(({ r, count }) =>
+            el('li', {}, [
+              el('div', { class: 'page-issue-main' }, [
+                el('span', { class: `tag tag-${r.impact}`, text: IMPACT_LABEL[r.impact] }),
+                el('a', { href: issueHref(r.id), text: r.title }),
+                el('span', { class: 'muted', text: ` ${plural(count, 'element')}, ${wcagLabel(r.wcag)}` }),
+              ]),
+              resolveControl({ rule: r.id, title: r.title, pageId: p.pageId, label: 'Mark resolved on this page' }),
             ]),
+          ),
+        ),
+      ]),
+    ),
+  );
+}
+
+function renderResolved() {
+  const ruleById = new Map(data.rules.map((r) => [r.id, r]));
+  const urlOf = new Map(data.pages.map((p) => [p.id, p.url]));
+  const items = data.resolutions.filter((x) => ruleById.has(x.rule));
+  $('[data-resolved-wrap]').hidden = !items.length;
+  $('[data-count-resolved]').textContent = items.length ? String(items.length) : '';
+  $('[data-resolved]').replaceChildren(
+    el(
+      'ul',
+      { class: 'review-list resolved-list' },
+      items.map((x) => {
+        const r = ruleById.get(x.rule);
+        const where = x.pageId ? `On ${urlOf.get(x.pageId) || 'one page'}` : 'On every page';
+        const who = [x.resolvedBy, fmtDate(x.resolvedAt, true)].filter(Boolean).join(', ');
+        return el('li', {}, [
+          el('div', {}, [
+            el('a', { class: 'review-title', href: issueHref(r.id) }, [el('strong', { text: r.title })]),
+            el('p', { class: 'muted', text: `${where}. Marked resolved${who ? ` by ${who}` : ''}.` }),
+            x.note ? el('p', { class: 'resolved-note', text: `Note: ${x.note}` }) : null,
           ]),
+          reopenButton({ rule: r.id, title: r.title, pageId: x.pageId }),
         ]);
-        details.addEventListener('toggle', () => {
-          if (details.open && details.children.length === 1) details.append(issueDetails(r));
-        });
-        ruleOf.set(details, r);
-        return details;
       }),
     ),
+  );
+}
+
+function renderRules() {
+  const filter = $('[data-issue-filter]').value;
+  const active = activeRules();
+  const rules = active.filter((r) => !filter || r.impact === filter);
+  $('[data-count-issues]').textContent = active.length ? String(active.length) : '';
+  $('[data-issues-sub]').textContent = active.length
+    ? `${plural(active.length, 'issue')} failing across ${plural(data.scannedPages, 'page')}. ${issueView === 'page' ? 'Open a page to see its issues.' : 'Open an issue to see where it happens and how to fix it.'}`
+    : '';
+  document.querySelectorAll('[data-issue-view]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.issueView === issueView)));
+  renderResolved();
+  const box = $('[data-rules]');
+  if (!active.length) {
+    const none = data.score === null;
+    box.replaceChildren(
+      el('div', { class: 'empty-state empty-sm' }, [
+        el('h2', { text: none ? 'No scans yet' : data.rules.length ? 'All issues marked as resolved' : 'No automated issues' }),
+        el('p', { text: none ? 'Run a scan to see issues across the domain.' : 'Nothing is left in the active list. Check the Manually Required tab next.' }),
+      ]),
+    );
+    return;
+  }
+  box.replaceChildren(issueView === 'page' ? byPageList(filter) : rules.length ? byIssueList(rules) : el('p', { class: 'muted', text: 'No issues match this filter.' }));
+}
+
+// ---------- Overview: lawsuit risk ----------
+
+// An estimate from the accessibility score: the lower the score, the more
+// barriers an automated test (like the ones plaintiffs' firms use) can find.
+const RISK_BANDS = [
+  { min: 90, label: 'Low', tone: 'ok', text: 'Few automated issues remain. Keep monitoring, complete the manual checks and publish an accessibility statement.' },
+  { min: 75, label: 'Moderate', tone: 'warn', text: 'Some barriers are easy to find with automated tools. Fix critical and serious issues first.' },
+  { min: 50, label: 'High', tone: 'bad', text: 'Many barriers are easy to find with automated tools, which is how most demand letters start. Prioritize critical and serious issues on key pages.' },
+  { min: 0, label: 'Very high', tone: 'bad', text: 'Barriers are widespread. Start with critical issues on your home page, checkout, forms and other key journeys.' },
+];
+
+function renderRisk() {
+  const box = $('[data-risk]');
+  if (data.score === null) {
+    box.replaceChildren(el('p', { class: 'muted', text: 'Run a scan to estimate your lawsuit risk.' }));
+    return;
+  }
+  const risk = Math.max(0, Math.min(100, 100 - data.score));
+  const band = RISK_BANDS.find((b) => data.score >= b.min);
+  const critical = activeRules().filter((r) => r.impact === 'critical').length;
+  const meter = el('div', { class: 'risk-meter', role: 'img', 'aria-label': `Lawsuit risk ${risk} out of 100, ${band.label}` }, [el('span', { class: 'risk-marker' })]);
+  meter.firstChild.style.setProperty('left', `${risk}%`);
+  box.replaceChildren(
+    el('div', { class: 'risk-row' }, [
+      el('div', { class: 'risk-num' }, [el('strong', { text: String(risk) }), el('span', { text: '/100' })]),
+      el('div', { class: 'risk-main' }, [
+        el('p', { class: `risk-label risk-${band.tone}`, text: `${band.label} risk` }),
+        meter,
+        el('div', { class: 'risk-scale', 'aria-hidden': 'true' }, [el('span', { text: 'Low' }), el('span', { text: 'Moderate' }), el('span', { text: 'High' }), el('span', { text: 'Very high' })]),
+      ]),
+    ]),
+    el('p', { text: band.text + (critical ? ` ${plural(critical, 'critical issue')} still open.` : '') }),
+    el('p', { class: 'muted risk-note' }, [
+      `Based on your accessibility score of ${data.score}/100 (risk = 100 minus the score). It is an estimate, not legal advice or a guarantee: lawsuits also depend on your industry, location and traffic. `,
+      el('a', { href: '/state-accessibility-laws', text: 'Accessibility laws by state' }),
+      '.',
+    ]),
   );
 }
 
@@ -367,8 +598,11 @@ function exportCsv() {
     const t = String(v ?? '');
     return /[",\n]/.test(t) ? `"${t.replace(/"/g, '""')}"` : t;
   };
-  const rows = [['Issue', 'Severity', 'WCAG', 'Elements', 'Pages', 'Affected URLs', 'How to fix']];
-  for (const r of data.rules) rows.push([r.title, IMPACT_LABEL[r.impact], wcagLabel(r.wcag), r.elements, r.pages, (r.pageUrls || []).join(' '), r.fix]);
+  const rows = [['Issue', 'Status', 'Severity', 'WCAG', 'Elements', 'Pages', 'Affected URLs', 'How to fix']];
+  for (const r of data.rules) {
+    const a = activeView(r);
+    rows.push([r.title, a ? 'Open' : 'Marked resolved', IMPACT_LABEL[r.impact], wcagLabel(r.wcag), (a || r).elements, (a || r).pages, ((a || r).pageUrls || []).join(' '), r.fix]);
+  }
   // Spreadsheet apps treat cells starting with = + - @ as formulas; prefix them.
   const safe = rows.map((row) => row.map((v) => (/^[=+\-@]/.test(String(v ?? '')) ? `'${v}` : v)));
   const blob = new Blob(['\ufeff' + safe.map((row) => row.map(cell).join(',')).join('\r\n')], { type: 'text/csv;charset=utf-8' });
@@ -560,6 +794,20 @@ function bindActions() {
   $('[data-range]').addEventListener('change', renderHistory);
   $('[data-cov-issues-only]').addEventListener('change', renderCoverage);
   $('[data-issue-filter]').addEventListener('change', renderRules);
+  document.querySelectorAll('[data-issue-view]').forEach((b) =>
+    b.addEventListener('click', () => {
+      issueView = b.dataset.issueView;
+      renderRules();
+    }),
+  );
+  const setManage = disclosure($('[data-manage]'), $('#manage-menu'));
+  document.querySelectorAll('[data-open-view]').forEach((b) =>
+    b.addEventListener('click', () => {
+      setManage(false);
+      openView(b.dataset.openView);
+    }),
+  );
+  document.querySelectorAll('[data-close-view]').forEach((b) => b.addEventListener('click', () => selectTab(lastTab)));
   const rescanAll = $('[data-rescan-all]');
   const addForm = $('[data-add-page]');
   const pageStatus = $('[data-page-status]');
@@ -605,6 +853,7 @@ async function load() {
   if (data.lastScanAt) last.lastElementChild.textContent = `Last scan: ${relative(data.lastScanAt)}`;
   $('[data-rescan-all]').hidden = !canEditPages() || !data.monitoredCount;
   renderLso();
+  renderRisk();
   renderHistory();
   renderCoverage();
   renderComponents();
@@ -683,7 +932,9 @@ try {
   });
   const params = new URLSearchParams(location.search);
   const tab = params.get('tab');
-  if (['overview', 'issues', 'review', 'vault', 'documents', 'pages', 'settings'].includes(tab)) selectTab(tab);
+  const hashView = location.hash.slice(1);
+  if (['overview', 'issues', 'review', 'vault', ...VIEWS].includes(tab)) selectTab(tab);
+  else if (VIEWS.includes(hashView)) openView(hashView);
   if (params.get('setup') === 'fix') openFixSetup();
   const exp = params.get('export');
   if (exp) history.replaceState(null, '', `${location.pathname}?id=${encodeURIComponent(id)}`);

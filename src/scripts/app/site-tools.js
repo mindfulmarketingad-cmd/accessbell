@@ -55,7 +55,13 @@ export function mountFixInstall(box, { domainId, hostname, siteKey, headingLevel
       setStatus(
         status,
         r.connected ? 'success' : 'error',
-        r.connected ? 'AccessBellFix is connected.' : r.error ? `We could not check your home page: ${r.error}` : 'We could not find the code on your home page. Check it is saved and published, then try again.',
+        r.connected
+          ? 'AccessBellFix is connected.'
+          : r.otherKey
+            ? `Your home page loads AccessBellFix with a different site key (${r.otherKey}). Replace it with the code above, publish, then validate again.`
+            : r.error
+              ? `We could not load your home page (${r.error.replace(/\.$/, '')}). If your site blocks automated visitors, open any page of your site in a browser, then validate again: the script reports in when it loads.`
+              : 'We could not find the code on your home page. Check it is saved and published, then try again.',
       );
     }),
   );
@@ -75,9 +81,8 @@ export function mountFixInstall(box, { domainId, hostname, siteKey, headingLevel
           '.',
         ]),
       ]),
-      el('li', {}, [el(H, { text: 'Validate the connection' }), el('div', { class: 'fix-row fix-row-spread' }, [result, validate])]),
+      el('li', {}, [el(H, { text: 'Validate the connection' }), el('div', { class: 'fix-row fix-row-spread' }, [result, validate]), status]),
     ]),
-    status,
   );
 }
 
