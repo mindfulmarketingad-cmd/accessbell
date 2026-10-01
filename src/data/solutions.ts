@@ -105,6 +105,7 @@ export const SOLUTIONS: Solution[] = [
       { href: '/resources/help-center/scans-and-reports/scheduled-monitoring-and-alerts', label: 'Scheduled monitoring and email alerts', note: 'When scans run and who is emailed.' },
       { href: '/resources/help-center/domains/find-and-monitor-pages', label: 'Find and monitor pages', note: 'Choose up to 500 pages per domain.' },
       { href: '/resources/help-center/scans-and-reports/scan-history', label: 'Track progress with scan history', note: 'Charts and per-page history.' },
+      { href: '/use-cases/directory-accessibility-compliance-monitoring', label: 'Use case: how a directory monitors accessibility compliance', note: '300+ issues on 22 pages, checked every 12 hours.' },
     ],
     sources: [WAI_EVAL, ADA_WEB],
     related: ['automated-vs-manual-accessibility-testing', 'digital-accessibility-platforms'],
@@ -276,6 +277,7 @@ export const SOLUTIONS: Solution[] = [
       { href: '/resources/help-center/getting-started/install-accessbellfix', label: 'Install AccessBellFix', note: 'The snippet, platform guides and validation.' },
       { href: '/resources/help-center/fixing-issues/read-an-issue', label: 'Read an issue and decide what to fix first', note: 'Failed elements, fix boxes and correct markup.' },
       { href: '/resources/help-center/troubleshooting/accessbellfix-content-security-policy', label: 'AccessBellFix and Content Security Policy', note: 'If the script is blocked.' },
+      { href: '/use-cases/directory-accessibility-compliance-monitoring', label: 'Use case: how a directory monitors accessibility compliance', note: '300+ issues on 22 pages, checked every 12 hours.' },
     ],
     sources: [
       { href: 'https://www.w3.org/TR/WCAG22/', label: 'W3C: Web Content Accessibility Guidelines (WCAG) 2.2' },

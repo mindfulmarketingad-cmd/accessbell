@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { SITE } from '../../config/site';
+import { faqSchema } from '../../lib/schema';
+import { formatDate } from '../../lib/format';
+import { USE_CASES, useCasePath, type UseCase } from '../../data/use-cases';
+
+export function getStaticPaths() {
+  return USE_CASES.map((u) => ({ params: { slug: u.slug }, props: { u } }));
+}
+
+const { u } = Astro.props as { u: UseCase };
+const url = `${SITE.url}${useCasePath(u)}`;
+const others = USE_CASES.filter((o) => o.slug !== u.slug);
+
+// Strings in the data file may contain [text](/path) links.
+const esc = (t: string) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const md = (t: string) =>
+  esc(t).replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2" rel="noopener noreferrer" target="_blank">$1<span class="visually-hidden"> (opens in a new tab)</span></a>').replace(/\[([^\]]+)\]\((\/[^)]*)\)/g, '<a href="$2">$1</a>');
+
+const schema = [
+  {
+    '@type': 'Article',
+    '@id': `${url}#article`,
+    headline: u.h1,
+    description: u.description,
+    url,
+    datePublished: u.pubDate.toISOString(),
+    publisher: { '@id': `${SITE.url}/#organization` },
+    about: { '@id': `${SITE.url}/#software` },
+    isPartOf: { '@id': `${SITE.url}/#website` },
+  },
+  faqSchema(u.faqs),
+];
+---
+<BaseLayout
+  title={u.title}
+  description={u.description}
+  breadcrumbs={[{ label: 'Use Cases', href: '/use-cases' }, { label: u.customer, href: useCasePath(u) }]}
+  schema={schema}
+>
+  <section class="page-hero uc-hero" aria-labelledby="uc-title">
+    <div class="container">
+      <span class="eyebrow">Use case <span aria-hidden="true">&middot;</span> {u.industry}</span>
+      <h1 id="uc-title">{u.h1}</h1>
+      <p class="lead" set:html={md(u.lead)} />
+      <p class="uc-meta">
+        <span>Customer: <a href={u.siteUrl} rel="noopener noreferrer" target="_blank">{u.site}<span class="visually-hidden"> (opens in a new tab)</span></a></span>
+        <span aria-hidden="true">&middot;</span>
+        <span>Published <time datetime={u.pubDate.toISOString()}>{formatDate(u.pubDate)}</time></span>
+      </p>
+      <ul class="uc-stats" aria-label="Results at a glance">
+        {u.stats.map((s) => <li><strong>{s.value}</strong><span>{s.label}</span></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <article class="container solution-body cc-prose uc-body">
+    <figure class="uc-quote">
+      <blockquote><p>{u.quote.text}</p></blockquote>
+      <figcaption><strong>{u.quote.name}</strong>, {u.quote.role}</figcaption>
+    </figure>
+
+    <section aria-labelledby="benefits-title">
+      <h2 id="benefits-title">Key Benefits of Monitoring Accessibility Compliance With AccessBell</h2>
+      <ul class="uc-benefits">
+        {u.benefits.map((b) => <li><span class="uc-benefit-icon" aria-hidden="true"><Icon name="check" /></span><div><h3>{b.title}</h3><p>{b.text}</p></div></li>)}
+      </ul>
+    </section>
+
+    {u.sections.map((sec) => (
+      <section aria-labelledby={sec.id}>
+        <h2 id={sec.id}>{sec.h2}</h2>
+        {sec.paras.map((p) => <p set:html={md(p)} />)}
+        {sec.bullets && <ul class="check-list">{sec.bullets.map((b) => <li><Icon name="check" /><span set:html={md(b)} /></li>)}</ul>}
+      </section>
+    ))}
+
+    <section aria-labelledby="steps-title">
+      <h2 id="steps-title">How To Monitor Accessibility Compliance on Your Own Site</h2>
+      <ol class="steps-list">
+        {u.steps.map((t) => <li>{t}</li>)}
+      </ol>
+      <p><a class="btn btn-accent" href="/app/signup">Start 3-day free trial <Icon name="arrow" /></a></p>
+    </section>
+
+    <section aria-labelledby="features-title">
+      <h2 id="features-title">AccessBell Features Used</h2>
+      <ul class="related-guides">
+        {u.features.map((f) => <li><a href={f.href}>{f.label}</a><span>{f.note}</span></li>)}
+        <li><a href="/pricing">AccessBell pricing</a><span>One plan with every feature, 3-day free trial.</span></li>
+        <li><a href="/use-cases">All use cases</a><span>More accessibility compliance stories from AccessBell customers.</span></li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="faq-title">
+      <h2 id="faq-title">Frequently Asked Questions</h2>
+      <Faq items={u.faqs} />
+    </section>
+
+    <section aria-labelledby="sources-title" class="checker-sources">
+      <h2 id="sources-title">Sources</h2>
+      <ul>
+        {u.sources.map((x) => <li><a href={x.href} rel="noopener noreferrer" target="_blank">{x.label}<span class="visually-hidden"> (opens in a new tab)</span></a></li>)}
+      </ul>
+    </section>
+  </article>
+
+  {others.length > 0 && (
+    <section class="section section-surface" aria-labelledby="more-uc">
+      <div class="container">
+        <div class="section-head"><h2 id="more-uc">More Use Cases</h2></div>
+        <ul class="res-grid">
+          {others.map((o) => (
+            <li><a class="res-card" href={useCasePath(o)}><span class="res-card-icon" aria-hidden="true"><Icon name={o.icon} /></span><span class="res-card-text"><small>{o.industry}</small><strong>{o.h1}</strong><span>{o.summary}</span></span><Icon name="arrow" class="res-arrow" /></a></li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <CtaBand title="Monitor Your Site’s Accessibility Compliance" text="Run a free one-page WCAG check with no sign-up, or start a 3-day free trial to monitor up to 500 pages per domain." />
+</BaseLayout>

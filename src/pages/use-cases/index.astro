@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { SITE } from '../../config/site';
+import { USE_CASES, useCasePath } from '../../data/use-cases';
+
+const PATH = '/use-cases';
+const url = `${SITE.url}${PATH}`;
+const schema = [
+  {
+    '@type': 'CollectionPage',
+    '@id': `${url}#webpage`,
+    name: 'AccessBell Use Cases',
+    url,
+    isPartOf: { '@id': `${SITE.url}/#website` },
+    hasPart: USE_CASES.map((u) => ({ '@type': 'Article', headline: u.h1, url: `${SITE.url}${useCasePath(u)}` })),
+  },
+];
+---
+<BaseLayout
+  title="Accessibility Compliance Use Cases | AccessBell"
+  description="Accessibility compliance use cases: how real websites use AccessBell to find accessibility issues, fix them with AccessBellFix and monitor their sites over time."
+  breadcrumbs={[{ label: 'Use Cases', href: PATH }]}
+  schema={schema}
+>
+  <section class="page-hero" aria-labelledby="uc-title">
+    <div class="container">
+      <span class="eyebrow">Use Cases</span>
+      <h1 id="uc-title">Accessibility Compliance Use Cases</h1>
+      <p class="lead">These accessibility compliance use cases show how real websites use AccessBell: what they found in their first scan, how they <a href="/solutions/automated-fixes">fixed issues with AccessBellFix</a>, and how they keep checking with <a href="/solutions/continuous-monitoring">continuous monitoring</a>. Every figure and quote comes from the customer.</p>
+    </div>
+  </section>
+
+  <section class="section-tight pt-0" aria-labelledby="uc-list">
+    <div class="container">
+      <div class="section-head section-head-left">
+        <h2 id="uc-list">Accessibility Compliance Use Cases by Industry</h2>
+      </div>
+      <ul class="res-grid">
+        {USE_CASES.map((u) => (
+          <li>
+            <a class="res-card" href={useCasePath(u)}>
+              <span class="res-card-icon" aria-hidden="true"><Icon name={u.icon} /></span>
+              <span class="res-card-text">
+                <small>{u.industry}</small>
+                <strong>{u.h1}</strong>
+                <span>{u.summary}</span>
+              </span>
+              <Icon name="arrow" class="res-arrow" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight section-surface" aria-labelledby="uc-how">
+    <div class="container cc-prose">
+      <h2 id="uc-how">How These Accessibility Compliance Use Cases Work</h2>
+      <p>Each use case follows the same path: a first scan to see where the site stands, fixes for what automated tests found, a review of the checks that need a person, and ongoing monitoring so new problems are caught early. AccessBell helps teams spot accessibility issues and fix them. No tool can make a website 100% compliant, which is why every use case includes the manual review.</p>
+      <p>See the <a href="/solutions">AccessBell solutions</a> behind these results, compare plans on the <a href="/pricing">pricing page</a>, or read the <a href="/resources/wcag">WCAG Library</a> to understand the success criteria each scan tests.</p>
+    </div>
+  </section>
+
+  <CtaBand title="Start Your Own Accessibility Compliance Use Case" text="Run a free one-page WCAG check with no sign-up, or start a 3-day free trial to monitor your whole domain." />
+</BaseLayout>

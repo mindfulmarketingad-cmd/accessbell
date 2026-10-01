@@ -7945,3 +7945,104 @@ img.platform-logo-lg {
   font-size: 0.875rem;
   color: var(--ink-700);
 }
+
+/* ---------- Use cases ---------- */
+.uc-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  margin: 12px 0 0;
+  color: var(--ink-500);
+  font-size: 0.9375rem;
+}
+.uc-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin: 28px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.uc-stats li {
+  display: grid;
+  gap: 4px;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: #fff;
+}
+.uc-stats strong {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  line-height: 1.1;
+  color: var(--sage-700);
+}
+.uc-stats span {
+  color: var(--ink-700);
+  font-size: 0.875rem;
+}
+.uc-quote {
+  margin: 0 0 40px;
+  padding: clamp(20px, 3vw, 28px);
+  border-left: 4px solid var(--sage-700);
+  border-radius: var(--radius-lg);
+  background: var(--sage-50);
+}
+.uc-quote blockquote {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.uc-quote blockquote p {
+  margin: 0;
+  font-size: clamp(1.0625rem, 2vw, 1.25rem);
+  line-height: 1.6;
+  color: var(--ink-900);
+}
+.uc-quote figcaption {
+  margin-top: 12px;
+  color: var(--ink-700);
+  font-size: 0.9375rem;
+}
+.uc-body h2 {
+  font-size: clamp(1.5rem, 3vw, 1.875rem);
+  line-height: 1.25;
+}
+.uc-body > section + section {
+  margin-top: clamp(36px, 5vw, 52px);
+}
+.uc-benefits {
+  display: grid;
+  gap: 12px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.uc-benefits li {
+  display: flex;
+  gap: 14px;
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: #fff;
+}
+.uc-benefits h3 {
+  margin: 0 0 4px;
+  font-size: 1.0625rem;
+}
+.uc-benefits p {
+  margin: 0;
+}
+.uc-benefit-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--sage-50);
+  color: var(--sage-700);
+}
+.uc-benefit-icon svg {
+  width: 18px;
+  height: 18px;
+}

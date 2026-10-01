@@ -5,6 +5,7 @@ import { CHECKERS, checkerPath } from '../data/checkers';
 import { PLATFORMS, platformHome, platformCheckers } from '../data/platforms';
 import { SOLUTIONS, solutionPath } from '../data/solutions';
 import { COMPARISONS, comparisonPath } from '../data/comparisons';
+import { USE_CASES, useCasePath } from '../data/use-cases';
 import { INDUSTRIES, industryPath } from '../data/industries';
 import { STATE_LAWS, stateLawPath } from '../data/state-laws';
 import { CRITERIA } from '../../server/wcag-criteria.js';
@@ -21,6 +22,7 @@ const STATIC: Omit<RouteEntry, 'lastmod'>[] = [
   { path: '/pricing', label: 'Pricing', note: 'Pro plan and features', group: 'main' },
   { path: '/blog', label: 'Blog', note: 'Accessibility guides and compliance insights', group: 'main' },
   { path: '/comparisons', label: 'Comparisons', note: 'AccessBell compared with other accessibility tools', group: 'main' },
+  { path: '/use-cases', label: 'Use Cases', note: 'How customers use AccessBell to monitor accessibility compliance', group: 'main' },
   { path: '/solutions', label: 'Solutions', note: 'Continuous monitoring, automated fixes and the Compliance Vault', group: 'main' },
   { path: '/resources', label: 'Resources', note: 'Free tools and guides', group: 'main' },
   { path: '/resources/statement-generator', label: 'Accessibility Statement Generator', note: 'Free custom accessibility statement', group: 'main' },
@@ -62,12 +64,15 @@ export async function getRoutes(): Promise<RouteEntry[]> {
       lastmod:
         r.path === '/' || r.path === '/blog' || r.path === '/authors'
           ? newestPost
+          : r.path === '/use-cases'
+            ? new Date(Math.max(...USE_CASES.map((x) => +x.pubDate)))
           : r.path === '/resources/help-center'
             ? helpUpdated(help.flatMap((g) => g.articles))
             : undefined,
     })),
     ...CHECKERS.map((c) => ({ path: checkerPath(c), label: c.name, note: `Free WCAG ${c.version} Level ${c.level} scan`, group: 'main' as const })),
     ...COMPARISONS.map((c) => ({ path: comparisonPath(c), label: `${c.name} vs. AccessBell`, note: c.kind, group: 'main' as const })),
+    ...USE_CASES.map((x) => ({ path: useCasePath(x), label: x.h1, note: x.summary, lastmod: x.pubDate, group: 'main' as const })),
     ...SOLUTIONS.map((x) => ({ path: solutionPath(x), label: x.h1, note: x.summary, group: 'main' as const })),
     ...PLATFORMS.map((p) => ({ path: platformHome(p), label: `${p.name} Accessibility Checkers`, note: 'All free checkers for this platform', group: 'main' as const })),
     ...PLATFORMS.flatMap((p) => platformCheckers(p).map((c) => ({ path: c.href, label: c.label, note: `Free ${p.name} scan`, group: 'main' as const }))),

@@ -33,6 +33,7 @@ export const FOOTER_GROUPS = [
       { label: 'Pricing', href: '/pricing' },
       { label: 'Solutions', href: '/solutions' },
       { label: 'Comparisons', href: '/comparisons' },
+      { label: 'Use Cases', href: '/use-cases' },
       { label: 'Platform Checkers', href: '/platforms' },
     ],
   },
