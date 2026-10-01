@@ -7372,3 +7372,51 @@ img.platform-logo-lg {
     margin-right: 14px;
   }
 }
+
+/* ---------- Links to every platform checker ---------- */
+.platform-links-group + .platform-links-group {
+  margin-top: 28px;
+}
+.platform-links-group h3 {
+  margin: 0 0 12px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sage-700);
+}
+.platform-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.platform-links a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--ink-900);
+  font-weight: 600;
+  text-decoration: none;
+}
+.platform-links a:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-sm);
+  text-decoration: underline;
+}
+.platform-links img.platform-logo-sm {
+  width: 36px;
+  height: 22px;
+  max-width: none;
+  object-position: left center;
+}
+.platform-links .platform-mono {
+  margin-right: 14px;
+}

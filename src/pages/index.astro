@@ -14,6 +14,8 @@ import { faqSchema, softwareSchema, type FaqItem } from '../lib/schema';
 import { formatDate, readingTime } from '../lib/format';
 import { LAWSUIT_STATS } from '../data/lawsuit-stats';
 import DemoVideo from '../components/DemoVideo.astro';
+import PlatformLogo from '../components/PlatformLogo.astro';
+import { PLATFORMS, platformPath } from '../data/platforms';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
@@ -669,6 +671,27 @@ const challenges = [
         </ul>
         <a class="btn" href="/pricing">See pricing <Icon name="arrow" /></a>
       </div>
+    </div>
+  </section>
+
+  <section class="section section-surface" aria-labelledby="platforms-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Works with your platform</span>
+        <h2 id="platforms-title">Accessibility Checkers for <span class="accent">Your Platform</span></h2>
+        <p>AccessBell tests the live page in a real browser, so it works on any site. Pick your platform to see the issues it causes most often and how to fix them.</p>
+      </div>
+      <ul class="platform-links">
+        {PLATFORMS.map((p) => (
+          <li>
+            <a href={platformPath(p)}>
+              <PlatformLogo slug={p.slug} name={p.name} size="sm" />
+              <span>{p.name} Accessibility Checker</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="more-link"><a class="link-arrow" href="/platforms">All platform accessibility checkers <Icon name="arrow" /></a></p>
     </div>
   </section>
 

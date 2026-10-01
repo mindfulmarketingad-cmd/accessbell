@@ -23,10 +23,12 @@ const REVIEWED = new Date('2026-09-28');
 const url = `${SITE.url}${platformPath(p)}`;
 const author = await getEntry('authors', 'joseph-edwards');
 const isHost = p.kind === 'host';
-const GROUP_LABEL = { ecommerce: 'E-commerce platform', cms: 'CMS', builder: 'Website builder', host: 'Web host' } as const;
-const rest = PLATFORMS.filter((o) => o.slug !== p.slug);
-// Same kind of platform first, then the rest, six in all. The hub lists every checker.
-const others = [...rest.filter((o) => o.group === p.group), ...rest.filter((o) => o.group !== p.group)].slice(0, 6);
+// Every other platform checker, grouped by type with this platform's own type first.
+const GROUP_ORDER = ['ecommerce', 'cms', 'builder', 'host'] as const;
+const GROUP_HEADING = { ecommerce: 'E-commerce platforms', cms: 'Content management systems', builder: 'Website builders', host: 'Web hosts' } as const;
+const otherGroups = [p.group, ...GROUP_ORDER.filter((g) => g !== p.group)]
+  .map((g) => ({ id: g, heading: GROUP_HEADING[g], items: PLATFORMS.filter((o) => o.group === g && o.slug !== p.slug) }))
+  .filter((g) => g.items.length);
 const cov = coverageFor('2.2');
 const related = (await Promise.all(p.related.map((id) => getEntry('blog', id)))).filter(Boolean);
 
@@ -168,21 +170,22 @@ const schema = [
         <h2 id="more-platforms">Checkers for Other Platforms</h2>
         <p>The same free scanner, framed for the platform you use. Browse <a href="/platforms">all {PLATFORMS.length} platform accessibility checkers</a>.</p>
       </div>
-      <ul class="res-grid">
-        {others.map((o) => (
-          <li>
-            <a class="res-card" href={platformPath(o)}>
-              <span class="res-card-logo"><PlatformLogo slug={o.slug} name={o.name} /></span>
-              <span class="res-card-text">
-                <small>{GROUP_LABEL[o.group]}</small>
-                <strong>{o.name} Accessibility Checker</strong>
-                <span>{o.lead}</span>
-              </span>
-              <Icon name="arrow" class="res-arrow" />
-            </a>
-          </li>
-        ))}
-      </ul>
+      {otherGroups.map((g) => (
+        <div class="platform-links-group">
+          <h3>{g.heading}</h3>
+          <ul class="platform-links">
+            {g.items.map((o) => (
+              <li>
+                <a href={platformPath(o)}>
+                  <PlatformLogo slug={o.slug} name={o.name} size="sm" />
+                  <span>{o.name} Accessibility Checker</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+      <p class="more-link"><a class="link-arrow" href="/platforms">All platform accessibility checkers <Icon name="arrow" /></a></p>
     </div>
   </section>
 

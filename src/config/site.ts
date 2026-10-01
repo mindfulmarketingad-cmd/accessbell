@@ -51,6 +51,7 @@ export const FOOTER_NAV = [
   { label: 'Methodology', href: '/methodology' },
   { label: 'Contact', href: '/contact' },
   { label: 'Resources', href: '/resources' },
+  { label: 'Platform Checkers', href: '/platforms' },
   { label: 'Help Center', href: '/resources/help-center' },
   { label: 'Disclaimer', href: '/disclaimer' },
   { label: 'Privacy', href: '/privacy' },
