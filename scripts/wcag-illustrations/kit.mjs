@@ -108,7 +108,7 @@ export function code(x, y, w, rows, { size = 13, lh = 20, pad = 14 } = {}) {
     box(x, y, w, h, { fill: C.code, stroke: C.code, r: 10 }) +
     rows
       .map((r, i) => {
-        const [s, col] = Array.isArray(r) ? r : [r, C.codeText];
+        const [s, col = C.codeText] = Array.isArray(r) ? r : [r];
         return text(x + pad, y + pad + 10 + i * lh, s, { size, fill: col, mono: true });
       })
       .join('')
