@@ -268,7 +268,7 @@ const challenges = [
       <div class="hero-copy">
         <h1 id="hero-title">
           <span class="h1-kicker">Website Accessibility Checker</span>
-          Make Your Website ADA Compliant <span class="accent">and Keep It That Way</span>
+          Find ADA and WCAG Issues on Your Website <span class="accent">and Get Help Fixing Them</span>
         </h1>
         <p class="lead">
           AccessBell scans every page against WCAG 2.2, flags the kinds of barriers named in ADA website lawsuits, shows the exact code fix, and rescans on a schedule so new issues are caught early. Run a free scan to see how many issues your site has.
@@ -276,7 +276,7 @@ const challenges = [
         <ScanForm id="hero" />
         <DemoVideo class="demo-cta-hero" />
         <div class="compliance-row">
-          <span id="compliance-label">Checks for compliance with:</span>
+          <span id="compliance-label">Tests your site against:</span>
           <ul aria-labelledby="compliance-label">
             {compliance.map((s) => <li><Flag code={s.flag} eager />{s.href ? <a href={s.href}>{s.name}</a> : s.name}</li>)}
           </ul>

@@ -61,7 +61,7 @@ export const COVER_TOPICS = {
   'wcag-2-aa-checklist': { ui: 'list', label: 'AA', caption: 'WCAG 2 AA Checklist' },
   'what-you-should-know-about-wcag-2-2': { ui: 'sparkle', label: '2.2', caption: 'What’s new in WCAG' },
   'european-accessibility-act-technical-compliance': { ui: 'globe', label: 'EAA', caption: 'Technical aspects of compliance' },
-  'ada-website-accessibility': { a11y: 'universal-access', label: 'ADA', caption: 'Avoid website lawsuits' },
+  'ada-website-accessibility': { a11y: 'universal-access', label: 'ADA', caption: 'Reduce lawsuit risk' },
   'best-ada-compliance-software-for-small-businesses': { ui: 'scale', label: 'Top 5', caption: 'ADA software for small business' },
   'best-website-accessibility-testing-software': { ui: 'scan', label: 'Top 5', caption: 'Accessibility testing software' },
   'digital-accessibility-platforms': { ui: 'bell', label: 'Top 3', caption: 'Monitoring and audit platforms' },

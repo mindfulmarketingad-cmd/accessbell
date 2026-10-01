@@ -203,7 +203,7 @@ function showResults(r, url) {
     : null;
   const more = r.summary.rulesFailed > list.length ? el('p', { class: 'scan-result-more', text: `Plus ${r.summary.rulesFailed - list.length} more types of issue.` }) : null;
   const cta = el('div', { class: 'scan-cta' }, [
-    el('h3', { text: total ? 'Get the fix for every issue' : 'Keep your site compliant' }),
+    el('h3', { text: total ? 'Get the fix for every issue' : 'Keep monitoring your site' }),
     el('ul', {}, [
       el('li', { text: 'The failing code and a corrected example for each issue' }),
       el('li', { text: 'Every page scanned automatically, up to 500 per domain' }),

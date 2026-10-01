@@ -31,7 +31,7 @@ import Icon from '../../components/Icon.astro';
       el('article', { class: 'cert', 'aria-labelledby': 'cert-title' }, [
         el('p', { class: 'cert-brand', text: 'AccessBell' }),
         el('h1', { id: 'cert-title', text: 'Certificate of Accessibility Testing' }),
-        el('p', { class: 'cert-lead', text: 'This certifies that' }),
+        el('p', { class: 'cert-lead', text: 'This confirms that' }),
         el('p', { class: 'cert-site', text: c.hostname }),
         el('p', { class: 'cert-body', text: `passed every automated ${c.standard} check run by AccessBell on all ${c.pages} scanned page${c.pages === 1 ? '' : 's'} (${c.devices.join(' and ')}) in the latest scans, completed ${day(c.lastScanAt)}.` }),
         el('p', { class: 'cert-score' }, [el('strong', { text: '100/100' }), el('span', { text: 'Accessibility score' })]),

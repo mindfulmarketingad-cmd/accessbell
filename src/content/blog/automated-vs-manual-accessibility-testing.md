@@ -1,7 +1,7 @@
 ---
 title: 'Automated vs Manual Accessibility Testing: Where Each Fits'
 seoTitle: 'Automated vs Manual Accessibility Testing'
-description: 'What automated accessibility testing catches, what needs a human, and how to combine both into a repeatable process that keeps your website WCAG compliant.'
+description: 'What automated accessibility testing catches, what needs a human, and how to combine both into a repeatable process for finding and fixing WCAG issues.'
 pubDate: 2026-09-26
 category: 'Guides'
 contributors:

@@ -1,7 +1,7 @@
 ---
-title: 'ADA Website Accessibility – How to Use AccessBell To Avoid Lawsuits'
-seoTitle: 'ADA Website Accessibility: Avoid Lawsuits'
-description: 'ADA website accessibility explained: who the ADA covers, whether websites count, the WCAG standard, and how to use AccessBell to avoid accessibility lawsuits.'
+title: 'ADA Website Accessibility – How to Use AccessBell to Help Avoid Lawsuits'
+seoTitle: 'ADA Website Accessibility: Reduce Lawsuit Risk'
+description: 'ADA website accessibility explained: who the ADA covers, whether websites count, the WCAG standard, and how AccessBell helps you find and fix issues behind lawsuits.'
 pubDate: 2026-10-01
 category: 'Compliance'
 contributors:
@@ -84,7 +84,7 @@ Website accessibility complaints usually describe the same handful of barriers, 
 
 Almost all of these can be found by automated testing and fixed in your code. That is what AccessBell is built to do.
 
-## How to Use AccessBell To Avoid ADA Website Accessibility Lawsuits
+## How to Use AccessBell to Help Avoid ADA Website Accessibility Lawsuits
 
 <figure>
   <img src="/blog/ada-website-accessibility/accessbell-workflow.svg" width="960" height="460" alt="The AccessBell workflow for ADA website accessibility in six steps: 1, scan your site against WCAG 2.1 or 2.2 AA. 2, fix critical issues first using the code shown for each one. 3, apply quick fixes with AccessBellFix. 4, check your PDFs. 5, monitor every day with email alerts. 6, keep proof in the Compliance Vault.">

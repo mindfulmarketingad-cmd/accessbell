@@ -117,6 +117,6 @@ Eligible small businesses, generally those with 30 or fewer full-time employees 
 
 Start with the pages customers use most. [Run a free WCAG scan](/#scan) of your homepage, a product or service page and your contact or booking form, then work through the fixes. To keep your site accessible as it changes, AccessBell Pro monitors up to 500 pages per domain every day; [start a 3-day free trial](/app/signup).
 
-For a step-by-step workflow, see [ADA website accessibility: how to use AccessBell to avoid lawsuits](/blog/ada-website-accessibility).
+For a step-by-step workflow, see [ADA website accessibility: how to use AccessBell to help avoid lawsuits](/blog/ada-website-accessibility).
 
 Selling online? Our [Shopify accessibility checker](/platforms/shopify/accessibility-checker), [WooCommerce accessibility checker](/platforms/woocommerce/accessibility-checker) and [BigCommerce accessibility checker](/platforms/bigcommerce/accessibility-checker) checkers show the store issues behind many Title III claims.
