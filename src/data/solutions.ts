@@ -1,10 +1,10 @@
 /**
- * /solutions hub and its three pages: what AccessBell does after the first
+ * /solutions hub and its pages: what AccessBell does after the first
  * scan. Every claim here is a feature that exists in the product; see the
  * linked help articles for the exact behavior.
  */
 export type Solution = {
-  slug: 'continuous-monitoring' | 'automated-fixes' | 'compliance-vault';
+  slug: 'continuous-monitoring' | 'url-monitoring' | 'automated-fixes' | 'compliance-vault';
   /** Short name used in nav, cards and breadcrumbs. */
   name: string;
   /** Exact H1. */
@@ -71,7 +71,7 @@ export const SOLUTIONS: Solution[] = [
           'Scheduled monitoring runs on your monitored pages without anyone starting it. Each run uses the domain’s current settings, including devices, the standard and any custom headers needed to reach staging or protected pages. A domain’s overview always shows the next scheduled scan.',
         ],
         bullets: [
-          'Pages are found from your XML sitemap, robots.txt and the links on your home page, and you can add pages by hand or exclude sections with URL rules.',
+          'Pages are found from your XML sitemap, robots.txt and the links on your home page, and you can add pages by hand or exclude sections with URL rules. See [URL monitoring](/solutions/url-monitoring) for how to choose up to 500 URLs per domain.',
           'Staging and password-protected sites can be scanned with custom HTTP headers, so you can test before launch.',
           'PDFs linked from your pages are listed on a Documents tab and checked separately.',
           'Monitoring pauses if the subscription is not active, and restarts on the next daily run when it is.',
@@ -107,6 +107,102 @@ export const SOLUTIONS: Solution[] = [
       { href: '/resources/help-center/scans-and-reports/scan-history', label: 'Track progress with scan history', note: 'Charts and per-page history.' },
     ],
     sources: [WAI_EVAL, ADA_WEB],
+    related: ['automated-vs-manual-accessibility-testing', 'digital-accessibility-platforms'],
+  },
+  {
+    slug: 'url-monitoring',
+    name: 'URL Monitoring',
+    h1: 'URL Monitoring: Monitor Up to 500 URLs Under One Domain',
+    title: 'URL Monitoring: Up to 500 URLs Per Domain',
+    description: 'Accessibility URL monitoring with AccessBell: find pages automatically, choose up to 500 URLs under one domain and rescan them every day for WCAG issues.',
+    icon: 'list',
+    eyebrow: 'Up to 500 URLs per domain',
+    lead: 'With AccessBell’s URL monitoring, you can monitor up to 500 URLs under one domain for accessibility issues. AccessBell finds the pages on your site, you choose which URLs to monitor, and every one of them is rescanned each day against the WCAG standard you pick. This page explains how URL monitoring works, how to choose the right 500 URLs and how to keep large sites under control.',
+    summary: 'Find pages automatically, choose up to 500 URLs under one domain and rescan them every day.',
+    highlights: [
+      { title: '500 URLs under one domain', text: 'Each domain you add can monitor up to 500 URLs, with its own settings, history and issues.' },
+      { title: 'Automatic page discovery', text: 'AccessBell reads your XML sitemap and follows links from your home page, then keeps up to 2,000 discovered pages for you to choose from.' },
+      { title: 'You choose the URLs', text: 'Tick the pages that matter on the Found Pages screen, search the list and add any missing URL by hand.' },
+      { title: 'Rules for large sites', text: 'Include or exclude whole sections with plain text or a * wildcard, such as /docs/* or ?s=, and decide whether subdomains are included.' },
+    ],
+    steps: [
+      'Add your domain, then open Manage domain pages. AccessBell reads your sitemap and the links on your home page to find pages.',
+      'Tick up to 500 URLs on the Found Pages screen. Use search to find pages, and Add Pages to include any URL that was not found.',
+      'Select Start Scan. Each URL is scanned in a real Chrome browser on the devices you chose.',
+      'From then on, every monitored URL is rescanned daily. Each one gets its own score, issues and scan history.',
+    ],
+    sections: [
+      {
+        id: 'what-is-url-monitoring',
+        h2: 'What URL Monitoring Means for Accessibility',
+        paras: [
+          'Accessibility URL monitoring is the practice of testing a defined list of page addresses, again and again, so that you know when any of them stops meeting your standard. A one-off scan tells you about one page on one day. Monitoring a set of URLs tells you about your site, and about how it changes.',
+          'In AccessBell, each unique page address that you monitor counts as one URL. A domain can monitor up to 500 of them. Links to files such as PDFs and images are not counted as pages; PDFs are listed separately on the Documents tab, where they are [checked for accessibility](/resources/help-center/scans-and-reports/pdf-accessibility-scanning).',
+        ],
+      },
+      {
+        id: 'monitor-500-urls',
+        h2: 'How to Monitor Up to 500 URLs Under One Domain',
+        paras: [
+          'The first time you open Found Pages, AccessBell crawls your site. It reads the XML sitemap you entered, the ones listed in robots.txt and /sitemap.xml (including sitemap index files), and follows the links on your home page. It keeps up to 2,000 discovered pages per domain, only on the same domain unless you turn on subdomains.',
+          'You then choose which of those to monitor. Tick up to 500 pages, use Search pages to find a specific one, and select Start Scan. The pages you select become the domain’s monitored URLs. Pages you untick stop being monitored, but their scan history is kept.',
+        ],
+        bullets: [
+          'Missing a page? Select Add Pages and enter one address per line, as a full address or a path such as /pricing.',
+          'Sitemap not found? Enter it under XML sitemap in the domain settings.',
+          'Pages behind a login or on a staging site? Add custom headers in the settings to reach them.',
+        ],
+      },
+      {
+        id: 'choose-your-urls',
+        h2: 'Choosing the Right 500 URLs to Monitor',
+        paras: [
+          'Many sites have more than 500 pages, and most have far fewer templates than pages. Because pages built from the same template share the same markup, a barrier in one product page usually exists in all of them. Choose URLs that cover your templates and your most important journeys first:',
+        ],
+        bullets: [
+          'The home page and your main landing pages.',
+          'Every page with a form: sign-up, contact, checkout and account pages.',
+          'One example of each template, such as a product page, a blog post and a category page.',
+          'Pages that change often, such as promotions, events and news.',
+        ],
+      },
+      {
+        id: 'url-rules',
+        h2: 'Control Which URLs Are Monitored With Rules and Subdomains',
+        paras: [
+          'URL rules decide which pages AccessBell keeps when it discovers them. Set them in the domain settings, one rule per line. Plain text matches anywhere in the address, and * matches any characters.',
+        ],
+        bullets: [
+          'Only include /docs/* to focus on one section of a large site.',
+          'Exclude /blog/tag/* and /blog/author/* to skip archive pages.',
+          'Exclude ?s= to skip search result pages, or /fr/* to skip a language version.',
+          'Turn on Include subdomains to monitor pages such as shop.example.com under example.com. Otherwise, a subdomain counts as its own domain.',
+        ],
+      },
+      {
+        id: 'what-happens-next',
+        h2: 'What Happens to Your Monitored URLs',
+        paras: [
+          'Monitored URLs are rescanned automatically every day as part of [continuous website accessibility monitoring](/solutions/continuous-monitoring), and you can scan at any time with Scan now. Owners and admins are emailed when a new critical or serious issue appears. Every URL keeps its own scan history, which feeds the [Compliance Vault](/solutions/compliance-vault).',
+          'Each domain has its own 500 URLs. If you manage several sites, add each as a domain and see them side by side in Your Domains. The [component grouping](/resources/help-center/fixing-issues/component-grouping) view then shows which issues come from shared components, so you can fix a header or form once instead of on hundreds of URLs.',
+        ],
+      },
+    ],
+    limits: 'A domain monitors up to 500 URLs. The free scan tests one page at a time, and PDFs and other files are checked separately rather than counted as URLs. Monitoring a sample of your pages cannot prove that every page is accessible, and automated scans detect many, but not all, WCAG failures, so test your key journeys by hand as well.',
+    faqs: [
+      { q: 'How many URLs can I monitor with AccessBell?', a: 'Up to 500 URLs under each domain. Every domain in your plan has its own 500, along with its own settings, history and issues.' },
+      { q: 'What counts as one URL?', a: 'Each unique page address that you monitor counts as one. Links to files such as PDFs and images are not added as pages; PDFs are listed on the Documents tab and checked separately.' },
+      { q: 'How does AccessBell find the URLs on my site?', a: 'It reads your XML sitemap, the sitemaps listed in robots.txt and /sitemap.xml, and the links on your home page, and keeps up to 2,000 pages for you to choose from. You can also add pages by hand.' },
+      { q: 'My site has more than 500 pages. What should I monitor?', a: 'Start with your home page, pages with forms and one example of each template. Pages built from the same template share the same code, so an issue found on one usually appears on all of them, and fixing the template fixes them all.' },
+      { q: 'Are subdomains included in the 500 URLs?', a: 'Only if you turn on Include subdomains for the domain. Otherwise a subdomain such as shop.example.com is treated as its own domain with its own 500 URLs.' },
+      { q: 'Can I exclude parts of my site?', a: 'Yes. Use include and exclude URL rules, with plain text or the * wildcard, to leave out sections such as tag archives, search results or other languages.' },
+    ],
+    help: [
+      { href: '/resources/help-center/domains/find-and-monitor-pages', label: 'Find and monitor pages', note: 'Choose up to 500 pages per domain.' },
+      { href: '/resources/help-center/domains/include-and-exclude-url-rules', label: 'Include and exclude URL rules', note: 'Focus on the sections that matter.' },
+      { href: '/resources/help-center/domains/manage-multiple-domains', label: 'Manage multiple domains', note: 'Each domain has its own 500 URLs.' },
+    ],
+    sources: [WAI_EVAL, { href: 'https://www.sitemaps.org/protocol.html', label: 'sitemaps.org: Sitemap protocol' }],
     related: ['automated-vs-manual-accessibility-testing', 'digital-accessibility-platforms'],
   },
   {

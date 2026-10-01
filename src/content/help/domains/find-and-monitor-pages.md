@@ -48,3 +48,5 @@ Members, Admins and the Owner can choose pages and start scans. Viewers can see 
 ## PDFs on Your Pages
 
 Links to PDF files are not added as pages. AccessBell lists them on the **Documents** tab instead, where you can [check and fix PDF accessibility](/resources/help-center/scans-and-reports/pdf-accessibility-scanning).
+
+For an overview of choosing and monitoring up to 500 URLs under one domain, see [URL monitoring](/solutions/url-monitoring).

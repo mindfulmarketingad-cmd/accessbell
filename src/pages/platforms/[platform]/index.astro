@@ -9,7 +9,6 @@ import { SITE } from '../../../config/site';
 import { faqSchema } from '../../../lib/schema';
 import { PLATFORMS, platformHome, platformId, platformPath, platformAdaPath, platformCheckers, type Platform } from '../../../data/platforms';
 import { ADA_CONTENT } from '../../../data/platforms-ada';
-import { SOLUTIONS, solutionPath } from '../../../data/solutions';
 
 export function getStaticPaths() {
   return PLATFORMS.map((p) => ({ params: { platform: platformId(p) }, props: { p } }));
@@ -108,7 +107,7 @@ const schema = [
   <section class="section-tight" aria-labelledby="solutions-title">
     <div class="container cc-prose">
       <h2 id="solutions-title">Monitor, Fix and Document Your {p.name} Site</h2>
-      <p>A scan shows where your {p.name} site stands today. To keep it that way, AccessBell offers <a href={solutionPath(SOLUTIONS[0])}>continuous website accessibility monitoring</a> that rescans up to 500 pages every day, <a href={solutionPath(SOLUTIONS[1])}>automated fixes</a> with AccessBellFix for issues like missing alt text, and a <a href={solutionPath(SOLUTIONS[2])}>Compliance Vault</a> that documents accessibility issues and fixes. See all <a href="/solutions">AccessBell solutions</a> or <a href="/pricing">pricing</a>.</p>
+      <p>A scan shows where your {p.name} site stands today. To keep it that way, AccessBell offers <a href="/solutions/continuous-monitoring">continuous website accessibility monitoring</a> that rescans up to 500 URLs per domain every day, <a href="/solutions/automated-fixes">automated fixes</a> with AccessBellFix for issues like missing alt text, and a <a href="/solutions/compliance-vault">Compliance Vault</a> that documents accessibility issues and fixes. See all <a href="/solutions">AccessBell solutions</a> or <a href="/pricing">pricing</a>.</p>
       <ul class="related-guides">
         {related.map((post) => post && <li><a href={`/blog/${post.id}`}>{post.data.title}</a><span>{post.data.description}</span></li>)}
         <li><a href="/resources/wcag">WCAG Success Criteria Library</a><span>Look up any success criterion the scan flags, in plain language.</span></li>

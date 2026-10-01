@@ -21,7 +21,7 @@ export const SITE = {
 
 const GROUP_LABEL = { ecommerce: 'E-commerce', cms: 'CMS', builder: 'Site builder', framework: 'Framework', host: 'Web host' } as const;
 
-const NAV_NOTE = { 'continuous-monitoring': 'Scheduled daily scans and alerts', 'automated-fixes': 'AccessBellFix applies approved fixes', 'compliance-vault': 'Scan history, fix log and evidence' } as const;
+const NAV_NOTE = { 'continuous-monitoring': 'Scheduled daily scans and alerts', 'url-monitoring': 'Monitor up to 500 URLs per domain', 'automated-fixes': 'AccessBellFix applies approved fixes', 'compliance-vault': 'Scan history, fix log and evidence' } as const;
 
 export const HEADER_NAV = [
   { label: 'Home', href: '/' },
