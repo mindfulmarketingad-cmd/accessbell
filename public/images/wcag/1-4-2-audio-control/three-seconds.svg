@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 230" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+<rect width="800" height="230" fill="#fff"/>
+<text x="24" y="40" font-size="20" font-weight="800" fill="#1f2430" text-anchor="start">The 3-second rule</text><path d="M24 120H776" stroke="#c7ccd4" stroke-width="2"/><rect x="24" y="96" width="120" height="48" rx="8" fill="#f4f8f3" stroke="#44723f" stroke-width="2"/><text x="84" y="126" font-size="14" font-weight="800" fill="#365c32" text-anchor="middle">≤ 3 s: OK</text><rect x="156" y="96" width="620" height="48" rx="8" fill="#fdf0ef" stroke="#d64545" stroke-width="2"/><text x="466" y="126" font-size="14" font-weight="800" fill="#b42318" text-anchor="middle">Over 3 seconds: needs pause, stop or its own volume control</text><text x="400" y="190" font-size="14" font-weight="400" fill="#5b6270" text-anchor="middle">Best practice: never autoplay sound. Let people press play, which also avoids the problem</text>
+<text x="400" y="209" font-size="14" font-weight="400" fill="#5b6270" text-anchor="middle">entirely.</text>
+</svg>

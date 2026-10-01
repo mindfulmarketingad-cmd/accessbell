@@ -23,6 +23,31 @@
   },
   "redirects": [
     {
+      "source": "/blog/wcag-1-2-1-audio-only-and-video-only-prerecorded",
+      "destination": "/resources/wcag/1-2-1-audio-only-and-video-only-prerecorded",
+      "permanent": true
+    },
+    {
+      "source": "/blog/wcag-1-2-2-captions-prerecorded",
+      "destination": "/resources/wcag/1-2-2-captions-prerecorded",
+      "permanent": true
+    },
+    {
+      "source": "/blog/wcag-1-2-3-audio-description-or-media-alternative-prerecorded",
+      "destination": "/resources/wcag/1-2-3-audio-description-or-media-alternative-prerecorded",
+      "permanent": true
+    },
+    {
+      "source": "/blog/wcag-1-3-3-sensory-characteristics",
+      "destination": "/resources/wcag/1-3-3-sensory-characteristics",
+      "permanent": true
+    },
+    {
+      "source": "/blog/wcag-1-4-2-audio-control",
+      "destination": "/resources/wcag/1-4-2-audio-control",
+      "permanent": true
+    },
+    {
       "source": "/blog/wcag-2-1-2-no-keyboard-trap",
       "destination": "/resources/wcag/2-1-2-no-keyboard-trap",
       "permanent": true

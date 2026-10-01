@@ -17,7 +17,7 @@ export const svg = (w, h, body) =>
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" font-family="${FONT}">\n<rect width="${w}" height="${h}" fill="#fff"/>\n${body}\n</svg>\n`;
 
 export const text = (x, y, s, { size = 14, weight = 400, fill = C.ink, anchor = 'start', mono = false } = {}) =>
-  `<text x="${x}" y="${y}" font-size="${size}" font-weight="${weight}" fill="${fill}" text-anchor="${anchor}"${mono ? ` font-family="${MONO}"` : ''}>${esc(s)}</text>`;
+  `<text x="${x}" y="${y}" font-size="${size}" font-weight="${weight}" fill="${fill}" text-anchor="${anchor}"${mono ? ` font-family="${MONO}" xml:space="preserve"` : ''}>${esc(s)}</text>`;
 
 /** Wrap text to lines of about `chars` characters. */
 export function wrap(s, chars) {
