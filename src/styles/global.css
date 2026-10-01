@@ -450,6 +450,21 @@ a:hover {
 .nav-dropdown a:hover {
   background: var(--surface);
 }
+.primary-nav .nav-dropdown-wide {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(200px, 1fr));
+  gap: 2px 8px;
+  min-width: 480px;
+}
+.primary-nav .nav-dropdown-wide[hidden] {
+  display: none;
+}
+.nav-dropdown-wide li:first-child {
+  grid-column: 1 / -1;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4px;
+  padding-bottom: 4px;
+}
 .nav-dropdown a small {
   color: var(--ink-500);
   font-size: 0.8125rem;
@@ -543,6 +558,18 @@ a:hover {
   }
   .nav-dropdown a {
     padding: 10px 12px 10px 24px;
+  }
+  .primary-nav .nav-dropdown-wide {
+    display: block;
+    min-width: 0;
+  }
+  .primary-nav .nav-dropdown-wide[hidden] {
+    display: none;
+  }
+  .nav-dropdown-wide li:first-child {
+    border-bottom: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
   }
 }
 @media (max-width: 560px) {

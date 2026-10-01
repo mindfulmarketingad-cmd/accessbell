@@ -29,7 +29,7 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path === href
                   {item.label}
                   <Icon name="chevron" />
                 </button>
-                <ul class="nav-dropdown" id={`nav-dd-${item.label.toLowerCase()}`} hidden>
+                <ul class={`nav-dropdown${'wide' in item && item.wide ? ' nav-dropdown-wide' : ''}`} id={`nav-dd-${item.label.toLowerCase()}`} hidden>
                   {item.children.map((child) => (
                     <li>
                       <a href={child.href} aria-current={isCurrent(child.href) ? 'page' : undefined}>

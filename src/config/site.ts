@@ -1,3 +1,4 @@
+import { PLATFORMS, platformPath } from '../data/platforms';
 export const SITE = {
   name: 'AccessBell',
   domain: 'accessbell.co',
@@ -20,6 +21,15 @@ export const HEADER_NAV = [
   { label: 'Home', href: '/' },
   { label: 'Pricing', href: '/pricing' },
   { label: 'Blog', href: '/blog' },
+  {
+    label: 'Platforms',
+    href: '/platforms',
+    wide: true,
+    children: [
+      { label: 'All platforms', href: '/platforms', note: 'Every platform checker' },
+      ...PLATFORMS.map((p) => ({ label: p.name, href: platformPath(p), note: p.kind === 'host' ? 'Web host' : 'Site builder' })),
+    ],
+  },
   {
     label: 'Resources',
     href: '/resources',
