@@ -122,3 +122,5 @@ Then [run a free WCAG 2.2 scan](/resources/wcag-2-2-aa-checker) to find undersiz
 - [2.5.1 Pointer Gestures](/resources/wcag/2-5-1-pointer-gestures): complex gestures need a simple single-pointer alternative.
 - [2.5.2 Pointer Cancellation](/resources/wcag/2-5-2-pointer-cancellation): people can back out of an accidental press.
 - [2.5.7 Dragging Movements](/resources/wcag/2-5-7-dragging-movements): dragging needs a single-pointer alternative, also new in WCAG 2.2.
+
+Another new WCAG 2.2 rule, explained the same way: [2.4.12 Focus Not Obscured (Enhanced)](/blog/wcag-2-4-12-focus-not-obscured-enhanced).

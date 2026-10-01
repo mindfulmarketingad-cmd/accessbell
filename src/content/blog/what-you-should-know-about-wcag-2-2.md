@@ -120,3 +120,5 @@ No single tool checks everything WCAG 2.2 covers. The most reliable results come
 Whichever approach you start with, an accurate picture of where you stand today is the necessary first step. [Run a free scan](/#scan) to see how many WCAG 2.2 issues your page has in under a minute, no account required.
 
 Selling in the EU? EN 301 549 version 4.1.1 now uses WCAG 2.2. See [the European Accessibility Act: technical aspects of compliance](/blog/european-accessibility-act-technical-compliance).
+
+For a closer look at one of the new criteria, read [2.4.12 Focus Not Obscured (Enhanced) explained in plain English](/blog/wcag-2-4-12-focus-not-obscured-enhanced).

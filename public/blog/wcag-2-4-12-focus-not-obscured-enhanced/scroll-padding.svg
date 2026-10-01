@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 380" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+<rect width="900" height="380" fill="#fff"/>
+<text x="24" y="28" font-size="17" font-weight="800" fill="#22262f" text-anchor="start">Before: no scroll-padding</text>
+<rect x="24" y="40" width="412" height="290" rx="14" fill="#f7f8f6" stroke="#d9dde3" stroke-width="2"/>
+<text x="54" y="66" font-size="13" font-weight="700" fill="#353a47" text-anchor="start">Email</text>
+<rect x="54" y="72" width="300" height="42" rx="8" fill="#fff" stroke="#353a47" stroke-width="2"/>
+<rect x="50" y="68" width="308" height="50" rx="11" fill="none" stroke="#c98a12" stroke-width="4"/>
+<rect x="54" y="142" width="320" height="8" rx="4" fill="#dde2dc"/>
+<rect x="54" y="162" width="280" height="8" rx="4" fill="#dde2dc"/>
+<rect x="54" y="182" width="340" height="8" rx="4" fill="#dde2dc"/>
+<rect x="54" y="202" width="250" height="8" rx="4" fill="#dde2dc"/>
+<path d="M24 128v-74a14 14 0 0 1 14-14h384a14 14 0 0 1 14 14v74z" fill="#353a47" fill-opacity="0.97"/>
+<text x="48" y="90" font-size="15" font-weight="700" fill="#fff" text-anchor="start">Sticky header (88px)</text>
+<rect x="24" y="342" width="412" height="30" rx="15" fill="#fdf0ef"/>
+<text x="230.0" y="362" font-size="14" font-weight="700" fill="#b42318" text-anchor="middle">Focused field hidden under the header</text>
+<text x="464" y="28" font-size="17" font-weight="800" fill="#22262f" text-anchor="start">After: scroll-padding-top: 88px</text>
+<rect x="464" y="40" width="412" height="290" rx="14" fill="#f7f8f6" stroke="#d9dde3" stroke-width="2"/>
+<text x="494" y="156" font-size="13" font-weight="700" fill="#353a47" text-anchor="start">Email</text>
+<rect x="494" y="162" width="300" height="42" rx="8" fill="#fff" stroke="#353a47" stroke-width="2"/>
+<rect x="490" y="158" width="308" height="50" rx="11" fill="none" stroke="#c98a12" stroke-width="4"/>
+<rect x="494" y="232" width="320" height="8" rx="4" fill="#dde2dc"/>
+<rect x="494" y="252" width="280" height="8" rx="4" fill="#dde2dc"/>
+<rect x="494" y="272" width="340" height="8" rx="4" fill="#dde2dc"/>
+<rect x="494" y="292" width="250" height="8" rx="4" fill="#dde2dc"/>
+<path d="M464 128v-74a14 14 0 0 1 14-14h384a14 14 0 0 1 14 14v74z" fill="#353a47" fill-opacity="0.97"/>
+<text x="488" y="90" font-size="15" font-weight="700" fill="#fff" text-anchor="start">Sticky header (88px)</text>
+<rect x="464" y="342" width="412" height="30" rx="15" fill="#e8f1e7"/>
+<text x="670.0" y="362" font-size="14" font-weight="700" fill="#44723f" text-anchor="middle">Focused field fully visible</text>
+</svg>

@@ -48,6 +48,7 @@ export const COVER_TOPICS = {
   'wcag-1-4-8-visual-presentation': { a11y: 'text-resize', label: '1.4.8', caption: 'Visual Presentation' },
   'wcag-2-2-2-pause-stop-hide': { a11y: 'cognitive', label: '2.2.2', caption: 'Pause, Stop, Hide' },
   'wcag-2-2-3-no-timing': { ui: 'clock', label: '2.2.3', caption: 'No Timing' },
+  'wcag-2-4-12-focus-not-obscured-enhanced': { a11y: 'keyboard', label: '2.4.12', caption: 'Focus Not Obscured (Enhanced)' },
   'wcag-2-5-8-target-size-minimum': { ui: 'plus', label: '2.5.8', caption: 'Target Size (Minimum)' },
   'wcag-3-2-2-on-input': { ui: 'gear', label: '3.2.2', caption: 'On Input' },
   'wcag-3-3-2-labels-or-instructions': { ui: 'doc', label: '3.3.2', caption: 'Labels or Instructions' },
