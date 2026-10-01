@@ -125,7 +125,7 @@ const schema = [
         {others.map((o) => (
           <li>
             <a class="res-card" href={solutionPath(o)}>
-              <span class="res-card-logo"><Icon name={o.icon} /></span>
+              <span class="res-card-icon" aria-hidden="true"><Icon name={o.icon} /></span>
               <span class="res-card-text">
                 <small>{o.eyebrow}</small>
                 <strong>{o.h1}</strong>

@@ -183,4 +183,4 @@ Our [keyboard accessibility testing guide](/blog/keyboard-accessibility-testing)
 
 Want to find the issues software *can* catch while you test status messages by hand? [Run a free WCAG scan](/#scan) of any page.
 
-Single-page apps update content without a page load. See what to check in [React accessibility checker](/platforms/react-accessibility-checker) and [Next.js accessibility checker](/platforms/nextjs-accessibility-checker) sites.
+Single-page apps update content without a page load. See what to check in [React accessibility checker](/platforms/react/accessibility-checker) and [Next.js accessibility checker](/platforms/nextjs/accessibility-checker) sites.

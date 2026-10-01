@@ -1,7 +1,7 @@
 import { getCollection } from 'astro:content';
 import { helpByCategory, articlePath, categoryPath } from './help';
 import { CHECKERS, checkerPath } from '../data/checkers';
-import { PLATFORMS, platformPath, platformAdaPath } from '../data/platforms';
+import { PLATFORMS, platformHome, platformPath, platformAdaPath } from '../data/platforms';
 import { SOLUTIONS, solutionPath } from '../data/solutions';
 import { INDUSTRIES, industryPath } from '../data/industries';
 import { STATE_LAWS, stateLawPath } from '../data/state-laws';
@@ -64,6 +64,7 @@ export async function getRoutes(): Promise<RouteEntry[]> {
     })),
     ...CHECKERS.map((c) => ({ path: checkerPath(c), label: c.name, note: `Free WCAG ${c.version} Level ${c.level} scan`, lastmod: STATIC_LASTMOD, group: 'main' as const })),
     ...SOLUTIONS.map((x) => ({ path: solutionPath(x), label: x.h1, note: x.summary, lastmod: STATIC_LASTMOD, group: 'main' as const })),
+    ...PLATFORMS.map((p) => ({ path: platformHome(p), label: `${p.name} Accessibility Checkers`, note: 'All free checkers for this platform', lastmod: STATIC_LASTMOD, group: 'main' as const })),
     ...PLATFORMS.map((p) => ({ path: platformPath(p), label: `${p.name} Accessibility Checker`, note: 'Free scan for this platform', lastmod: STATIC_LASTMOD, group: 'main' as const })),
     ...PLATFORMS.map((p) => ({ path: platformAdaPath(p), label: `${p.name} ADA Compliance Checker`, note: 'Free ADA scan for this platform', lastmod: STATIC_LASTMOD, group: 'main' as const })),
     ...INDUSTRIES.map((ind) => ({ path: industryPath(ind), label: `${ind.name} Accessibility Checker`, note: 'Free scan for this industry', lastmod: STATIC_LASTMOD, group: 'main' as const })),

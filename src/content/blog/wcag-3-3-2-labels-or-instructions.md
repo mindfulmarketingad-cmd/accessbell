@@ -153,4 +153,4 @@ For a quick reference, see our [3.3.2 Labels or Instructions page](/resources/wc
 
 Want to find form fields with no label in the code? [Run a free WCAG scan](/#scan) of any page, then check your labels and instructions by hand.
 
-Form builders often hide labels. See what to check in [WooCommerce accessibility checker](/platforms/woocommerce-accessibility-checker), [HubSpot CMS accessibility checker](/platforms/hubspot-cms-accessibility-checker) and [Elementor accessibility checker](/platforms/elementor-accessibility-checker) forms.
+Form builders often hide labels. See what to check in [WooCommerce accessibility checker](/platforms/woocommerce/accessibility-checker), [HubSpot CMS accessibility checker](/platforms/hubspot-cms/accessibility-checker) and [Elementor accessibility checker](/platforms/elementor/accessibility-checker) forms.

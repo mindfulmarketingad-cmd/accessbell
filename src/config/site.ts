@@ -1,5 +1,5 @@
 import { SOLUTIONS, solutionPath } from '../data/solutions';
-import { PLATFORMS, platformPath } from '../data/platforms';
+import { PLATFORMS, platformHome } from '../data/platforms';
 import { platformLogo } from '../data/platform-logos';
 export const SITE = {
   name: 'AccessBell',
@@ -41,7 +41,7 @@ export const HEADER_NAV = [
     wide: true,
     children: [
       { label: 'All platforms', href: '/platforms', note: 'Every platform checker' },
-      ...PLATFORMS.map((p) => ({ label: p.name, href: platformPath(p), note: GROUP_LABEL[p.group], logo: platformLogo(p.slug), initial: p.name.trim()[0] })),
+      ...PLATFORMS.map((p) => ({ label: p.name, href: platformHome(p), note: GROUP_LABEL[p.group], logo: platformLogo(p.slug), initial: p.name.trim()[0] })),
     ],
   },
   {

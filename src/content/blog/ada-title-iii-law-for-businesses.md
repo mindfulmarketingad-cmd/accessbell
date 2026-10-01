@@ -119,4 +119,4 @@ Start with the pages customers use most. [Run a free WCAG scan](/#scan) of your 
 
 For a step-by-step workflow, see [ADA website accessibility: how to use AccessBell to avoid lawsuits](/blog/ada-website-accessibility).
 
-Selling online? Our [Shopify accessibility checker](/platforms/shopify-accessibility-checker), [WooCommerce accessibility checker](/platforms/woocommerce-accessibility-checker) and [BigCommerce accessibility checker](/platforms/bigcommerce-accessibility-checker) checkers show the store issues behind many Title III claims.
+Selling online? Our [Shopify accessibility checker](/platforms/shopify/accessibility-checker), [WooCommerce accessibility checker](/platforms/woocommerce/accessibility-checker) and [BigCommerce accessibility checker](/platforms/bigcommerce/accessibility-checker) checkers show the store issues behind many Title III claims.

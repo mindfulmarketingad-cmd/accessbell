@@ -115,7 +115,7 @@ export const SOLUTIONS: Solution[] = [
     h1: 'Automatically Fix Website Accessibility Issues',
     title: 'Automatically Fix Website Accessibility Issues',
     description: 'Automatically fix website accessibility issues with AccessBellFix: apply approved alt text, button name and page language fixes with one script and no code edits.',
-    icon: 'wrench',
+    icon: 'sparkle',
     eyebrow: 'AccessBellFix',
     lead: 'You can automatically fix website accessibility issues like missing alt text, unnamed buttons and a missing page language with AccessBellFix. Add one line of code to your site, approve a fix in AccessBell, and it is applied on every page load. It is not an overlay: every fix is one you wrote or approved, tied to a specific element, and your next scan checks whether it worked.',
     summary: 'AccessBellFix applies the alt text, button names and page language fixes you approve, without editing your theme or code.',

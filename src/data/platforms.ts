@@ -442,9 +442,34 @@ const BASE_PLATFORMS: Platform[] = [
 
 export const PLATFORMS: Platform[] = [...BASE_PLATFORMS, ...MORE_PLATFORMS];
 
-export const platformPath = (p: Platform) => `/platforms/${p.slug}`;
-
 /** The platform's id without the "-accessibility-checker" suffix, e.g. "shopify". */
 export const platformId = (p: Platform) => p.slug.replace(/-accessibility-checker$/, '');
-/** "[Platform] ADA Compliance Checker" page, e.g. /platforms/shopify-ada-compliance-checker. */
-export const platformAdaPath = (p: Platform) => `/platforms/${platformId(p)}-ada-compliance-checker`;
+
+/**
+ * URL structure: /platforms (hub of logos) > /platforms/<id> (one platform) >
+ * /platforms/<id>/<checker type> (a checker for that platform).
+ */
+export const platformHome = (p: Platform) => `/platforms/${platformId(p)}`;
+/** "[Platform] Accessibility Checker", e.g. /platforms/shopify/accessibility-checker. */
+export const platformPath = (p: Platform) => `${platformHome(p)}/accessibility-checker`;
+/** "[Platform] ADA Compliance Checker", e.g. /platforms/shopify/ada-compliance-checker. */
+export const platformAdaPath = (p: Platform) => `${platformHome(p)}/ada-compliance-checker`;
+
+/** Every checker type available for a platform. Add a type here and it appears on the platform page. */
+export type PlatformChecker = { id: string; label: string; href: string; summary: string; icon: string };
+export const platformCheckers = (p: Platform): PlatformChecker[] => [
+  {
+    id: 'accessibility-checker',
+    label: `${p.name} Accessibility Checker`,
+    href: platformPath(p),
+    summary: `Scan any ${p.name} page against WCAG 2.2 and see the issues ${p.name} sites hit most, with fixes written for ${p.name}.`,
+    icon: 'scan',
+  },
+  {
+    id: 'ada-compliance-checker',
+    label: `${p.name} ADA Compliance Checker`,
+    href: platformAdaPath(p),
+    summary: `Check your ${p.name} site against WCAG 2.1 AA, the benchmark in ADA website claims, and see the ${p.name} ADA risks to fix first.`,
+    icon: 'scale',
+  },
+];

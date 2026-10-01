@@ -1,0 +1,152 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Icon from '../../../components/Icon.astro';
+import Faq from '../../../components/Faq.astro';
+import CtaBand from '../../../components/CtaBand.astro';
+import PlatformLogo from '../../../components/PlatformLogo.astro';
+import { SITE } from '../../../config/site';
+import { faqSchema } from '../../../lib/schema';
+import { PLATFORMS, platformHome, platformId, platformPath, platformAdaPath, platformCheckers, type Platform } from '../../../data/platforms';
+import { ADA_CONTENT } from '../../../data/platforms-ada';
+import { SOLUTIONS, solutionPath } from '../../../data/solutions';
+
+export function getStaticPaths() {
+  return PLATFORMS.map((p) => ({ params: { platform: platformId(p) }, props: { p } }));
+}
+
+const { p } = Astro.props as { p: Platform };
+const checkers = platformCheckers(p);
+const ada = ADA_CONTENT[platformId(p)];
+const url = `${SITE.url}${platformHome(p)}`;
+const related = (await Promise.all(p.related.map((id) => getEntry('blog', id)))).filter(Boolean);
+const title = `${p.name} Accessibility Checkers`;
+const description = `Free ${p.name} accessibility checkers: scan your ${p.name} site for WCAG issues or check it for ADA compliance, with fixes written for ${p.name}.`;
+
+const GROUP_ORDER = ['ecommerce', 'cms', 'builder', 'framework', 'host'] as const;
+const GROUP_HEADING = { ecommerce: 'E-commerce platforms', cms: 'Content management systems', builder: 'Website and page builders', framework: 'Frameworks and developer platforms', host: 'Web hosts' } as const;
+const otherGroups = [p.group, ...GROUP_ORDER.filter((g) => g !== p.group)]
+  .map((g) => ({ id: g, heading: GROUP_HEADING[g], items: PLATFORMS.filter((o) => o.group === g && o.slug !== p.slug) }))
+  .filter((g) => g.items.length);
+
+const faqs = [
+  { q: `Which accessibility checkers are available for ${p.name}?`, a: `AccessBell has ${checkers.length} free checkers for ${p.name}: ${checkers.map((c) => c.label).join(' and ')}. Each runs the same scanner on a public page of your site and adds guidance written for ${p.name}.` },
+  { q: `Which ${p.name} checker should I use first?`, a: `Start with the ${p.name} Accessibility Checker for a full WCAG 2.2 view of a page. Use the ${p.name} ADA Compliance Checker if your main concern is an ADA website claim, since it tests against WCAG 2.1 AA, the benchmark courts and settlements cite.` },
+  { q: `Do the ${p.name} checkers need an account?`, a: 'No. The scan is free and needs no sign-up. A 3-day free trial adds the failing code, fixes, monitoring of up to 500 pages per domain and a dated record of your work.' },
+];
+
+const schema = [
+  {
+    '@type': 'CollectionPage',
+    '@id': `${url}#webpage`,
+    name: title,
+    url,
+    description,
+    isPartOf: { '@id': `${SITE.url}/#website` },
+    hasPart: checkers.map((c) => ({ '@type': 'WebPage', name: c.label, url: `${SITE.url}${c.href}` })),
+  },
+  faqSchema(faqs),
+];
+---
+<BaseLayout
+  title={`${title} | AccessBell`}
+  description={description}
+  breadcrumbs={[{ label: 'Platforms', href: '/platforms' }, { label: p.name, href: platformHome(p) }]}
+  schema={schema}
+>
+  <section class="page-hero page-hero-center" aria-labelledby="platform-home-title">
+    <div class="container">
+      <div class="checker-logo"><PlatformLogo slug={p.slug} name={p.name} size="lg" /></div>
+      <h1 id="platform-home-title">{title}</h1>
+      <p class="lead">Free {p.name} accessibility checkers from AccessBell. {p.lead}</p>
+    </div>
+  </section>
+
+  <section class="section-tight pt-0" aria-labelledby="checkers-title">
+    <div class="container">
+      <div class="section-head section-head-left">
+        <h2 id="checkers-title">Free Accessibility Checkers for {p.name}</h2>
+        <p>Pick the checker that matches your goal. Each one scans a public page of your {p.name} site in a real browser, with no account.</p>
+      </div>
+      <ul class="res-grid">
+        {checkers.map((c) => (
+          <li>
+            <a class="res-card" href={c.href}>
+              <span class="res-card-logo"><PlatformLogo slug={p.slug} name={p.name} /></span>
+              <span class="res-card-text">
+                <small>{p.name} checker</small>
+                <strong>{c.label}</strong>
+                <span>{c.summary}</span>
+              </span>
+              <Icon name="arrow" class="res-arrow" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight section-surface" aria-labelledby="problems-title">
+    <div class="container cc-prose">
+      <h2 id="problems-title">Where {p.name} Accessibility Problems Come From</h2>
+      <p>On {p.name}, accessibility issues usually trace back to a few places. The <a href={platformPath(p)}>{p.name} Accessibility Checker</a> explains each one in detail:</p>
+      <ul class="check-list">
+        {p.commonIssues.map((i) => <li><Icon name="check" /><span><a href={`${platformPath(p)}#common-issues`}>{i.title}</a></span></li>)}
+      </ul>
+      <p>For context, see <a href={p.stat.href} rel="noopener noreferrer" target="_blank">{p.stat.label}<span class="visually-hidden"> (opens in a new tab)</span></a>.</p>
+      {ada && (
+        <>
+          <p>If you are worried about ADA website claims, these are the {p.name} risks to check first, covered in the <a href={platformAdaPath(p)}>{p.name} ADA Compliance Checker</a>:</p>
+          <ul class="check-list">
+            {ada.risks.map((r) => <li><Icon name="check" /><span><a href={`${platformAdaPath(p)}#ada-risks`}>{r.title}</a></span></li>)}
+          </ul>
+        </>
+      )}
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="solutions-title">
+    <div class="container cc-prose">
+      <h2 id="solutions-title">Monitor, Fix and Document Your {p.name} Site</h2>
+      <p>A scan shows where your {p.name} site stands today. To keep it that way, AccessBell offers <a href={solutionPath(SOLUTIONS[0])}>continuous website accessibility monitoring</a> that rescans up to 500 pages every day, <a href={solutionPath(SOLUTIONS[1])}>automated fixes</a> with AccessBellFix for issues like missing alt text, and a <a href={solutionPath(SOLUTIONS[2])}>Compliance Vault</a> that documents accessibility issues and fixes. See all <a href="/solutions">AccessBell solutions</a> or <a href="/pricing">pricing</a>.</p>
+      <ul class="related-guides">
+        {related.map((post) => post && <li><a href={`/blog/${post.id}`}>{post.data.title}</a><span>{post.data.description}</span></li>)}
+        <li><a href="/resources/wcag">WCAG Success Criteria Library</a><span>Look up any success criterion the scan flags, in plain language.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="faq-title">
+    <div class="container cc-prose">
+      <h2 id="faq-title">{p.name} Accessibility Checkers: Frequently Asked Questions</h2>
+      <Faq items={faqs} />
+      <p class="muted">AccessBell is not affiliated with {p.name}. {p.name} and its logo are trademarks of their owners and are used only to identify the platform. This page is not legal advice; see our <a href="/disclaimer">disclaimer</a>.</p>
+    </div>
+  </section>
+
+  <section class="section section-surface" aria-labelledby="other-platforms">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="other-platforms">Checkers for Other Platforms</h2>
+        <p>Using something else? Browse <a href="/platforms">all {PLATFORMS.length} platforms</a>.</p>
+      </div>
+      {otherGroups.map((g) => (
+        <div class="platform-links-group">
+          <h3>{g.heading}</h3>
+          <ul class="platform-links">
+            {g.items.map((o) => (
+              <li>
+                <a href={platformHome(o)}>
+                  <PlatformLogo slug={o.slug} name={o.name} size="sm" />
+                  <span>{o.name} checkers</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>

@@ -182,4 +182,4 @@ If you want the fastest answer to "is my site accessible?" with nothing to insta
 
 Ready for more than free tools? Compare the [best website accessibility testing software](/blog/best-website-accessibility-testing-software).
 
-AccessBell's free checkers also come in versions for your platform, including [WordPress accessibility checker](/platforms/wordpress-accessibility-checker), [Shopify accessibility checker](/platforms/shopify-accessibility-checker), [Webflow accessibility checker](/platforms/webflow-accessibility-checker) and [Drupal accessibility checker](/platforms/drupal-accessibility-checker). See [all platform checkers](/platforms).
+AccessBell's free checkers also come in versions for your platform, including [WordPress accessibility checker](/platforms/wordpress/accessibility-checker), [Shopify accessibility checker](/platforms/shopify/accessibility-checker), [Webflow accessibility checker](/platforms/webflow/accessibility-checker) and [Drupal accessibility checker](/platforms/drupal/accessibility-checker). See [all platform checkers](/platforms).

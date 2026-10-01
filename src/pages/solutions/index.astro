@@ -60,7 +60,7 @@ const schema = [
         {SOLUTIONS.map((s) => (
           <li>
             <a class="res-card" href={solutionPath(s)}>
-              <span class="res-card-logo"><Icon name={s.icon} /></span>
+              <span class="res-card-icon" aria-hidden="true"><Icon name={s.icon} /></span>
               <span class="res-card-text">
                 <small>{s.eyebrow}</small>
                 <strong>{s.h1}</strong>

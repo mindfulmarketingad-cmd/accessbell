@@ -95,4 +95,4 @@ Either way, the fix always lives in your own code: a corrected CSS rule, an ARIA
 
 Keyboard testing takes a person, but it does not take long once it is part of your routine, and it catches issues that no automated tool, and no overlay, ever will. [Run a free scan](/#scan) to catch the automatable issues first, then work through this checklist for the rest.
 
-Keyboard problems often come from themes and builders. See the [WordPress accessibility checker](/platforms/wordpress-accessibility-checker), [Shopify accessibility checker](/platforms/shopify-accessibility-checker) and [Elementor accessibility checker](/platforms/elementor-accessibility-checker) checkers for the usual culprits.
+Keyboard problems often come from themes and builders. See the [WordPress accessibility checker](/platforms/wordpress/accessibility-checker), [Shopify accessibility checker](/platforms/shopify/accessibility-checker) and [Elementor accessibility checker](/platforms/elementor/accessibility-checker) checkers for the usual culprits.

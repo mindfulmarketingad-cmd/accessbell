@@ -95,4 +95,4 @@ Want to see how the engines compare on identical code? We ran [10 accessibility 
 
 Need expert audits as well as scanning? See [3 digital accessibility platforms with ongoing monitoring and audits](/blog/digital-accessibility-platforms).
 
-If you want guidance written for your platform, start with the [WordPress accessibility checker](/platforms/wordpress-accessibility-checker), [Shopify accessibility checker](/platforms/shopify-accessibility-checker) or [Webflow accessibility checker](/platforms/webflow-accessibility-checker) checker, or browse [all platform accessibility checkers](/platforms).
+If you want guidance written for your platform, start with the [WordPress accessibility checker](/platforms/wordpress/accessibility-checker), [Shopify accessibility checker](/platforms/shopify/accessibility-checker) or [Webflow accessibility checker](/platforms/webflow/accessibility-checker) checker, or browse [all platform accessibility checkers](/platforms).

@@ -23,6 +23,326 @@
   },
   "redirects": [
     {
+      "source": "/platforms/wordpress-accessibility-checker",
+      "destination": "/platforms/wordpress/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/wordpress-ada-compliance-checker",
+      "destination": "/platforms/wordpress/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/shopify-accessibility-checker",
+      "destination": "/platforms/shopify/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/shopify-ada-compliance-checker",
+      "destination": "/platforms/shopify/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/webflow-accessibility-checker",
+      "destination": "/platforms/webflow/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/webflow-ada-compliance-checker",
+      "destination": "/platforms/webflow/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/squarespace-accessibility-checker",
+      "destination": "/platforms/squarespace/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/squarespace-ada-compliance-checker",
+      "destination": "/platforms/squarespace/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/wix-accessibility-checker",
+      "destination": "/platforms/wix/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/wix-ada-compliance-checker",
+      "destination": "/platforms/wix/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/ionos-accessibility-checker",
+      "destination": "/platforms/ionos/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/ionos-ada-compliance-checker",
+      "destination": "/platforms/ionos/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/siteground-accessibility-checker",
+      "destination": "/platforms/siteground/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/siteground-ada-compliance-checker",
+      "destination": "/platforms/siteground/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/bluehost-accessibility-checker",
+      "destination": "/platforms/bluehost/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/bluehost-ada-compliance-checker",
+      "destination": "/platforms/bluehost/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/hosting-com-accessibility-checker",
+      "destination": "/platforms/hosting-com/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/hosting-com-ada-compliance-checker",
+      "destination": "/platforms/hosting-com/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/godaddy-accessibility-checker",
+      "destination": "/platforms/godaddy/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/godaddy-ada-compliance-checker",
+      "destination": "/platforms/godaddy/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/hostgator-accessibility-checker",
+      "destination": "/platforms/hostgator/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/hostgator-ada-compliance-checker",
+      "destination": "/platforms/hostgator/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/dreamhost-accessibility-checker",
+      "destination": "/platforms/dreamhost/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/dreamhost-ada-compliance-checker",
+      "destination": "/platforms/dreamhost/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/woocommerce-accessibility-checker",
+      "destination": "/platforms/woocommerce/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/woocommerce-ada-compliance-checker",
+      "destination": "/platforms/woocommerce/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/bigcommerce-accessibility-checker",
+      "destination": "/platforms/bigcommerce/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/bigcommerce-ada-compliance-checker",
+      "destination": "/platforms/bigcommerce/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/magento-accessibility-checker",
+      "destination": "/platforms/magento/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/magento-ada-compliance-checker",
+      "destination": "/platforms/magento/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/adobe-commerce-accessibility-checker",
+      "destination": "/platforms/adobe-commerce/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/adobe-commerce-ada-compliance-checker",
+      "destination": "/platforms/adobe-commerce/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/drupal-accessibility-checker",
+      "destination": "/platforms/drupal/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/drupal-ada-compliance-checker",
+      "destination": "/platforms/drupal/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/joomla-accessibility-checker",
+      "destination": "/platforms/joomla/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/joomla-ada-compliance-checker",
+      "destination": "/platforms/joomla/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/duda-accessibility-checker",
+      "destination": "/platforms/duda/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/duda-ada-compliance-checker",
+      "destination": "/platforms/duda/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/weebly-accessibility-checker",
+      "destination": "/platforms/weebly/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/weebly-ada-compliance-checker",
+      "destination": "/platforms/weebly/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/hubspot-cms-accessibility-checker",
+      "destination": "/platforms/hubspot-cms/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/hubspot-cms-ada-compliance-checker",
+      "destination": "/platforms/hubspot-cms/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/framer-accessibility-checker",
+      "destination": "/platforms/framer/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/framer-ada-compliance-checker",
+      "destination": "/platforms/framer/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/ghost-accessibility-checker",
+      "destination": "/platforms/ghost/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/ghost-ada-compliance-checker",
+      "destination": "/platforms/ghost/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/kajabi-accessibility-checker",
+      "destination": "/platforms/kajabi/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/kajabi-ada-compliance-checker",
+      "destination": "/platforms/kajabi/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/elementor-accessibility-checker",
+      "destination": "/platforms/elementor/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/elementor-ada-compliance-checker",
+      "destination": "/platforms/elementor/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/divi-accessibility-checker",
+      "destination": "/platforms/divi/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/divi-ada-compliance-checker",
+      "destination": "/platforms/divi/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/prestashop-accessibility-checker",
+      "destination": "/platforms/prestashop/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/prestashop-ada-compliance-checker",
+      "destination": "/platforms/prestashop/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/nextjs-accessibility-checker",
+      "destination": "/platforms/nextjs/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/nextjs-ada-compliance-checker",
+      "destination": "/platforms/nextjs/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/react-accessibility-checker",
+      "destination": "/platforms/react/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/react-ada-compliance-checker",
+      "destination": "/platforms/react/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/hostinger-accessibility-checker",
+      "destination": "/platforms/hostinger/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/hostinger-ada-compliance-checker",
+      "destination": "/platforms/hostinger/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/wp-engine-accessibility-checker",
+      "destination": "/platforms/wp-engine/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/wp-engine-ada-compliance-checker",
+      "destination": "/platforms/wp-engine/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/teachable-accessibility-checker",
+      "destination": "/platforms/teachable/accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/teachable-ada-compliance-checker",
+      "destination": "/platforms/teachable/ada-compliance-checker",
+      "permanent": true
+    },
+    {
       "source": "/reviews",
       "destination": "/",
       "permanent": true

@@ -173,4 +173,4 @@ Unlike some criteria, a lot of 4.1.2 can be checked automatically. Combine tools
 
 Want to find missing names and roles across your whole site? [Run a free WCAG scan](/#scan) of any page, or [start a 3-day free trial](/app/signup) to monitor up to 500 URLs per domain every day.
 
-Custom components are where names and roles go missing. See what to check in a [React accessibility checker](/platforms/react-accessibility-checker) or [Next.js accessibility checker](/platforms/nextjs-accessibility-checker) app.
+Custom components are where names and roles go missing. See what to check in a [React accessibility checker](/platforms/react/accessibility-checker) or [Next.js accessibility checker](/platforms/nextjs/accessibility-checker) app.

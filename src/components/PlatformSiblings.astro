@@ -1,0 +1,42 @@
+---
+/**
+ * "More [Platform] checkers": the other checkers available for the same
+ * platform, plus links up to the platform page and the hub. Shown on every
+ * checker page so all of a platform's checkers link to each other.
+ */
+import Icon from './Icon.astro';
+import PlatformLogo from './PlatformLogo.astro';
+import { platformCheckers, platformHome, type Platform } from '../data/platforms';
+
+interface Props {
+  p: Platform;
+  /** The checker type being viewed, so it is left out of the list. */
+  current: string;
+}
+const { p, current } = Astro.props;
+const siblings = platformCheckers(p).filter((c) => c.id !== current);
+---
+<section class="section-tight" aria-labelledby="same-platform">
+  <div class="container">
+    <div class="section-head section-head-left">
+      <h2 id="same-platform">More {p.name} Checkers</h2>
+      <p>Every checker available for {p.name}, all in one place on the <a href={platformHome(p)}>{p.name} checkers page</a>.</p>
+    </div>
+    <ul class="res-grid">
+      {siblings.map((c) => (
+        <li>
+          <a class="res-card" href={c.href}>
+            <span class="res-card-logo"><PlatformLogo slug={p.slug} name={p.name} /></span>
+            <span class="res-card-text">
+              <small>{p.name} checker</small>
+              <strong>{c.label}</strong>
+              <span>{c.summary}</span>
+            </span>
+            <Icon name="arrow" class="res-arrow" />
+          </a>
+        </li>
+      ))}
+    </ul>
+    <p class="more-link"><a class="link-arrow" href={platformHome(p)}>All {p.name} checkers <Icon name="arrow" /></a> <a class="link-arrow" href="/platforms">All platforms <Icon name="arrow" /></a></p>
+  </div>
+</section>

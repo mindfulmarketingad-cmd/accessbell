@@ -1,33 +1,19 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Icon from '../../components/Icon.astro';
-import ScanForm from '../../components/ScanForm.astro';
 import CtaBand from '../../components/CtaBand.astro';
-import Faq from '../../components/Faq.astro';
 import PlatformLogo from '../../components/PlatformLogo.astro';
 import { SITE } from '../../config/site';
-import { faqSchema } from '../../lib/schema';
-import { PLATFORMS, platformPath, platformAdaPath } from '../../data/platforms';
-import { CHECKERS, checkerPath } from '../../data/checkers';
-import { INDUSTRIES, industryPath } from '../../data/industries';
-import { STATE_LAWS, stateLawPath } from '../../data/state-laws';
+import { PLATFORMS, platformHome, platformCheckers } from '../../data/platforms';
 
 const PATH = '/platforms';
 const GROUPS = [
-  { id: 'ecommerce', heading: 'Accessibility Checkers for E-commerce Platforms', intro: 'Product pages, carts and checkouts are where an accessibility barrier costs a sale. Pick your store platform.', label: 'E-commerce platform' },
-  { id: 'cms', heading: 'Accessibility Checkers for Content Management Systems', intro: 'Themes, modules, editors and plugins decide what a CMS site outputs. Each checker covers the ones that matter on that CMS.', label: 'CMS' },
-  { id: 'builder', heading: 'Accessibility Checkers for Website and Page Builders', intro: 'Drag-and-drop builders put the layout in your hands. These checkers show what to set in each editor.', label: 'Website builder' },
-  { id: 'framework', heading: 'Accessibility Checkers for Frameworks and Developer Platforms', intro: 'Pages rendered by JavaScript need to be tested after they render. These checkers cover what build tools and linters cannot see.', label: 'Framework' },
-  { id: 'host', heading: 'Accessibility Checkers for Web Hosts', intro: 'Hosted with one of these providers? Scan your site and see the issues most common on the kinds of sites they host.', label: 'Web host' },
+  { id: 'ecommerce', heading: 'E-commerce Platforms' },
+  { id: 'cms', heading: 'Content Management Systems' },
+  { id: 'builder', heading: 'Website and Page Builders' },
+  { id: 'framework', heading: 'Frameworks and Developer Platforms' },
+  { id: 'host', heading: 'Web Hosts' },
 ] as const;
-const faqs = [
-  { q: 'What is a platform accessibility checker?', a: 'The same automated WCAG scan, with guidance written for one platform. It tests the page in a real browser and then points to the themes, plugins, apps, editors and settings of that platform that most often cause the issues it finds.' },
-  { q: 'Do I need a different checker for each platform?', a: 'No. Every checker runs the same scanner, so any of them will test any public page. Pick the page for your platform to get fixes written for it, such as which theme setting, plugin or editor field to change.' },
-  { q: 'Does my platform make my site accessible?', a: 'Platforms provide the controls and sometimes accessible defaults, but the result depends on your theme, apps or plugins, and content. Two sites on the same platform can pass and fail, so every site needs to be tested.' },
-  { q: 'Can I scan a staging site, or pages behind a login?', a: 'The free scan tests public pages. AccessBell Pro can scan staging and pre-launch sites, including ones protected by custom HTTP headers, so you can find issues before a release.' },
-  { q: 'How often should I scan my site?', a: 'After every theme, plugin, app or content change, and regularly in between. AccessBell Pro rescans up to 500 pages per domain every day and emails you when something new fails.' },
-  { q: 'Which platform is the most accessible?', a: 'There is no reliable ranking. Each platform can produce an accessible or an inaccessible site, depending on how it is built and maintained. A scan of your own site tells you more than a comparison of platforms.' },
-];
+const n = platformCheckers(PLATFORMS[0]).length;
 const url = `${SITE.url}${PATH}`;
 const schema = [
   {
@@ -36,61 +22,39 @@ const schema = [
     name: 'Accessibility Checkers by Platform',
     url,
     isPartOf: { '@id': `${SITE.url}/#website` },
-    hasPart: [
-      ...PLATFORMS.map((p) => ({ '@type': 'WebPage', name: `${p.name} Accessibility Checker`, url: `${SITE.url}${platformPath(p)}` })),
-      ...PLATFORMS.map((p) => ({ '@type': 'WebPage', name: `${p.name} ADA Compliance Checker`, url: `${SITE.url}${platformAdaPath(p)}` })),
-    ],
+    hasPart: PLATFORMS.map((p) => ({ '@type': 'WebPage', name: `${p.name} Accessibility Checkers`, url: `${SITE.url}${platformHome(p)}` })),
     mainEntity: {
       '@type': 'ItemList',
       numberOfItems: PLATFORMS.length,
-      itemListElement: PLATFORMS.map((p, i) => ({ '@type': 'ListItem', position: i + 1, name: `${p.name} Accessibility Checker`, url: `${SITE.url}${platformPath(p)}` })),
+      itemListElement: PLATFORMS.map((p, i) => ({ '@type': 'ListItem', position: i + 1, name: `${p.name} Accessibility Checkers`, url: `${SITE.url}${platformHome(p)}` })),
     },
-    significantLink: PLATFORMS.map((p) => `${SITE.url}${platformAdaPath(p)}`),
   },
-  faqSchema(faqs),
 ];
 ---
 <BaseLayout
-  title="Platform Accessibility Checkers: Builders and Hosts | AccessBell"
-  description="Free platform accessibility checkers for WordPress, Shopify, WooCommerce, Wix, Drupal and more, plus web hosts like GoDaddy. Scan any page for WCAG issues."
-  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: 'Platforms', href: PATH }]}
+  title="Platform Accessibility Checkers | AccessBell"
+  description="Pick your platform to find free accessibility checkers for WordPress, Shopify, WooCommerce, Wix, Drupal and more, including WCAG and ADA compliance checkers."
+  breadcrumbs={[{ label: 'Platforms', href: PATH }]}
   schema={schema}
 >
-  <section class="checker-hero" id="scan" aria-labelledby="platforms-title">
+  <section class="page-hero page-hero-center" aria-labelledby="platforms-title">
     <div class="container">
-      <span class="eyebrow">Free Tools</span>
       <h1 id="platforms-title">Accessibility Checkers by Platform</h1>
-      <p class="lead">Free platform accessibility checkers for the e-commerce platforms, CMSs, site builders and web hosts most websites run on. Scan any public page below, or pick your platform to see the WCAG issues it causes most often and how to fix them in your theme, plugins or apps.</p>
-      <ScanForm id="platforms" buttonLabel="Check my site" />
-      <p class="checker-meta">
-        <Icon name="check" /> Real Chrome browser scan, powered by axe-core
-        <span aria-hidden="true">&middot;</span> Free, no account needed
-      </p>
+      <p class="lead">Choose your platform to see the free accessibility checkers available for it, including WCAG and ADA compliance checkers.</p>
     </div>
   </section>
 
-  <section class="results" id="scan-results" aria-live="polite" aria-busy="false" hidden>
-    <div class="container" data-results></div>
-  </section>
-
   {GROUPS.map((g) => (
-    <section class="section-tight" aria-labelledby={`platforms-${g.id}`}>
+    <section class="section-tight pt-0" aria-labelledby={`platforms-${g.id}`}>
       <div class="container">
-        <div class="section-head section-head-left">
-          <h2 id={`platforms-${g.id}`}>{g.heading}</h2>
-          <p>{g.intro}</p>
-        </div>
-        <ul class="res-grid">
+        <h2 id={`platforms-${g.id}`} class="platform-tiles-heading">{g.heading}</h2>
+        <ul class="platform-tiles">
           {PLATFORMS.filter((p) => p.group === g.id).map((p) => (
             <li>
-              <a class="res-card" href={platformPath(p)}>
-                <span class="res-card-logo"><PlatformLogo slug={p.slug} name={p.name} /></span>
-                <span class="res-card-text">
-                  <small>{g.label}</small>
-                  <strong>{p.name} Accessibility Checker</strong>
-                  <span>{p.lead}</span>
-                </span>
-                <Icon name="arrow" class="res-arrow" />
+              <a class="platform-tile" href={platformHome(p)}>
+                <PlatformLogo slug={p.slug} name={p.name} size="lg" />
+                <strong>{p.name}</strong>
+                <small>{n} checkers</small>
               </a>
             </li>
           ))}
@@ -99,157 +63,12 @@ const schema = [
     </section>
   ))}
 
-  <section class="section-tight" aria-labelledby="ada-compliance-checkers" id="ada-compliance-checkers">
-    <div class="container">
-      <div class="section-head section-head-left">
-        <h2 id="ada-compliance-checkers">ADA Compliance Checkers by Platform</h2>
-        <p>Worried about ADA website claims? Each ADA compliance checker runs the scan against WCAG 2.1 AA, the benchmark courts and settlements cite, and lists the ADA risks specific to that platform. See the general <a href="/resources/ada-compliance-checker">ADA compliance checker</a> for the basics.</p>
-      </div>
-      {GROUPS.map((g) => (
-        <div class="platform-links-group">
-          <h3>{g.label === 'CMS' ? 'Content management systems' : g.label === 'Framework' ? 'Frameworks and developer platforms' : g.label + 's'}</h3>
-          <ul class="platform-links">
-            {PLATFORMS.filter((p) => p.group === g.id).map((p) => (
-              <li>
-                <a href={platformAdaPath(p)}>
-                  <PlatformLogo slug={p.slug} name={p.name} size="sm" />
-                  <span>{p.name} ADA Compliance Checker</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <section class="section-tight" aria-labelledby="platforms-why">
+  <section class="section-tight" aria-labelledby="platforms-note">
     <div class="container cc-prose">
-      <h2 id="platforms-why">Why Use a Platform Accessibility Checker?</h2>
-      <p>Most accessibility problems on a website do not come from the platform itself. They come from what is added on top: the theme, page-builder blocks, plugins, apps, embedded widgets and the content people publish. A platform accessibility checker points you at the parts you can actually change on your platform, such as a theme setting, a plugin or an app, rather than just the failing HTML.</p>
-      <p class="logo-note">{PLATFORMS.length} platforms covered. Platform names and logos are trademarks of their owners and are used only to identify each platform. AccessBell is not affiliated with any of them.</p>
-      <p>Every checker tests your pages against the W3C's <a href="https://www.w3.org/TR/WCAG22/" rel="noopener noreferrer">Web Content Accessibility Guidelines (WCAG) 2.2</a>. Automated scans find many, but not all, accessibility problems, so each checker also lists what to test by hand. The W3C's <a href="https://www.w3.org/WAI/test-evaluate/" rel="noopener noreferrer">evaluating web accessibility overview</a> explains how automated and manual testing fit together, and our guide to <a href="/blog/automated-vs-manual-accessibility-testing">automated vs manual accessibility testing</a> covers the same ground in plain English.</p>
-    </div>
-  </section>
-
-  <section class="section-tight" aria-labelledby="platforms-types">
-    <div class="container prose">
-      <div class="cc-prose">
-      <h2 id="platforms-types">Where Accessibility Problems Come From, by Type of Platform</h2>
-      <p>The kind of platform you use decides who controls the code and so where to look first. Use this table to find the right starting point, then open your platform's checker for specifics.</p>
-      </div>
-      <div class="table-scroll" tabindex="0" role="region" aria-label="Platform types compared">
-        <table>
-          <caption class="visually-hidden">Platform types compared by where accessibility problems come from</caption>
-          <thead>
-            <tr><th scope="col">Type of platform</th><th scope="col">Examples</th><th scope="col">Who controls the code</th><th scope="col">Where problems usually come from</th><th scope="col">Check first</th></tr>
-          </thead>
-          <tbody>
-            <tr><th scope="row">E-commerce platforms</th><td>Shopify, WooCommerce, BigCommerce, Magento, Adobe Commerce, PrestaShop</td><td>You, through the theme and apps</td><td>Product options, filters, carts, checkout and payment embeds</td><td>The path from product page to payment</td></tr>
-            <tr><th scope="row">CMSs</th><td>WordPress, Drupal, Joomla, HubSpot CMS, Ghost</td><td>You or a developer, through themes, modules and plugins</td><td>Themes, plugins and editor content</td><td>Forms, headings and images in new content</td></tr>
-            <tr><th scope="row">Website and page builders</th><td>Wix, Squarespace, Webflow, Duda, Weebly, Framer, Elementor, Divi, Kajabi, Teachable</td><td>The builder, plus your choices in its editor</td><td>Templates, animation and how widgets are used</td><td>Headings, alt text, contrast and moving content</td></tr>
-            <tr><th scope="row">Frameworks and developer platforms</th><td>React, Next.js</td><td>Your developers</td><td>Custom components, client-side routing and focus</td><td>The page after it renders in a browser</td></tr>
-            <tr><th scope="row">Web hosts</th><td>GoDaddy, IONOS, Bluehost, SiteGround, Hostinger, WP Engine and others</td><td>Whatever you run on the host</td><td>The theme, builder or code you put on it, not the host</td><td>The site you host, as visitors see it</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="cc-prose">
-      <p>Whichever you use, a scan finds the same kinds of failures the W3C's WCAG rules describe, and our <a href="/resources/wcag">WCAG success criteria library</a> explains each one in plain language.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section-tight" aria-labelledby="platforms-standards">
-    <div class="container">
-      <div class="section-head section-head-left">
-        <h2 id="platforms-standards">Accessibility Checkers by Standard</h2>
-        <p>Need to meet a specific standard? These checkers preset the scan to the WCAG version and level each standard requires.</p>
-      </div>
-      <ul class="res-grid">
-        {CHECKERS.map((c) => (
-          <li>
-            <a class="res-card" href={checkerPath(c)}>
-              <span class="res-card-text">
-                <small>WCAG {c.version} Level {c.level}</small>
-                <strong>{c.name}</strong>
-                <span>{c.lead.split('. ')[0]}.</span>
-              </span>
-              <Icon name="arrow" class="res-arrow" />
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </section>
-
-  <section class="section-tight" aria-labelledby="platforms-more">
-    <div class="container">
-      <div class="section-head section-head-left">
-        <h2 id="platforms-more">More Accessibility Scanners</h2>
-        <p>Checkers framed for your industry and your state's accessibility laws, plus free color tools.</p>
-      </div>
-      <ul class="res-grid">
-        {INDUSTRIES.map((i) => (
-          <li>
-            <a class="res-card" href={industryPath(i)}>
-              <span class="res-card-text">
-                <small>Industry checker</small>
-                <strong>{i.name} Accessibility Checker</strong>
-                <span>{i.lead}</span>
-              </span>
-              <Icon name="arrow" class="res-arrow" />
-            </a>
-          </li>
-        ))}
-        {STATE_LAWS.map((s) => (
-          <li>
-            <a class="res-card" href={stateLawPath(s)}>
-              <span class="res-card-text">
-                <small>State law checker</small>
-                <strong>{s.name} Website Accessibility Checker</strong>
-                <span>{s.lead}</span>
-              </span>
-              <Icon name="arrow" class="res-arrow" />
-            </a>
-          </li>
-        ))}
-        <li>
-          <a class="res-card" href="/resources/contrast-checker">
-            <span class="res-card-text">
-              <small>Free tool</small>
-              <strong>WCAG Color Contrast Checker</strong>
-              <span>Check any text and background colors against WCAG AA and AAA.</span>
-            </span>
-            <Icon name="arrow" class="res-arrow" />
-          </a>
-        </li>
-        <li>
-          <a class="res-card" href="/resources/chart-color-checker">
-            <span class="res-card-text">
-              <small>Free tool</small>
-              <strong>Chart Color Checker</strong>
-              <span>Test chart colors for contrast and color blindness.</span>
-            </span>
-            <Icon name="arrow" class="res-arrow" />
-          </a>
-        </li>
-      </ul>
-      <p class="more-link"><a class="link-arrow" href="/resources">All free tools and resources <Icon name="arrow" /></a></p>
-    </div>
-  </section>
-
-  <section class="section section-surface" aria-labelledby="platforms-faq">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow">FAQ</span>
-        <h2 id="platforms-faq">Platform Accessibility Checker Questions</h2>
-      </div>
-      <Faq items={faqs} />
+      <h2 id="platforms-note" class="visually-hidden">About these checkers</h2>
+      <p class="logo-note">Every checker runs the same free scan on a public page, with no account. Platform names and logos are trademarks of their owners and are used only to identify each platform. AccessBell is not affiliated with any of them. Every checker tests against the W3C’s <a href="https://www.w3.org/TR/WCAG22/" rel="noopener noreferrer" target="_blank">Web Content Accessibility Guidelines<span class="visually-hidden"> (opens in a new tab)</span></a>. Not sure which to pick? Start with the <a href="/#scan">free website accessibility scan</a> or read about our <a href="/solutions">accessibility solutions</a>.</p>
     </div>
   </section>
 
   <CtaBand />
 </BaseLayout>
-<script>
-  import '../../scripts/free-scan.js';
-</script>

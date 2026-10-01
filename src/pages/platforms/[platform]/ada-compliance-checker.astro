@@ -1,21 +1,22 @@
 ---
 import { getEntry } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import Icon from '../../components/Icon.astro';
-import ScanForm from '../../components/ScanForm.astro';
-import Faq from '../../components/Faq.astro';
-import CtaBand from '../../components/CtaBand.astro';
-import AuthorAvatar from '../../components/AuthorAvatar.astro';
-import PlatformLogo from '../../components/PlatformLogo.astro';
-import { SITE } from '../../config/site';
-import { authorPath, authorSchema } from '../../lib/authors';
-import { faqSchema } from '../../lib/schema';
-import { formatDate } from '../../lib/format';
-import { PLATFORMS, platformPath, platformId, platformAdaPath, type Platform } from '../../data/platforms';
-import { ADA_CONTENT } from '../../data/platforms-ada';
-import { LAWSUIT_STATS } from '../../data/lawsuit-stats';
-import { criterionPath } from '../../lib/wcag-pages';
-import { CRITERIA } from '../../../server/wcag-criteria.js';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Icon from '../../../components/Icon.astro';
+import ScanForm from '../../../components/ScanForm.astro';
+import Faq from '../../../components/Faq.astro';
+import CtaBand from '../../../components/CtaBand.astro';
+import AuthorAvatar from '../../../components/AuthorAvatar.astro';
+import PlatformLogo from '../../../components/PlatformLogo.astro';
+import PlatformSiblings from '../../../components/PlatformSiblings.astro';
+import { SITE } from '../../../config/site';
+import { authorPath, authorSchema } from '../../../lib/authors';
+import { faqSchema } from '../../../lib/schema';
+import { formatDate } from '../../../lib/format';
+import { PLATFORMS, platformPath, platformId, platformAdaPath, platformHome, type Platform } from '../../../data/platforms';
+import { ADA_CONTENT } from '../../../data/platforms-ada';
+import { LAWSUIT_STATS } from '../../../data/lawsuit-stats';
+import { criterionPath } from '../../../lib/wcag-pages';
+import { CRITERIA } from '../../../../server/wcag-criteria.js';
 
 export function getStaticPaths() {
   return PLATFORMS.map((p) => ({ params: { platform: platformId(p) }, props: { p } }));
@@ -73,7 +74,7 @@ const schema = [
 <BaseLayout
   title={`Free ${title} | AccessBell`}
   description={description}
-  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: 'Platforms', href: '/platforms' }, { label: title, href: path }]}
+  breadcrumbs={[{ label: 'Platforms', href: '/platforms' }, { label: p.name, href: platformHome(p) }, { label: title, href: path }]}
   schema={schema}
 >
   <section class="checker-hero" id="scan" aria-labelledby="ada-title">
@@ -86,7 +87,7 @@ const schema = [
         <Icon name="check" /> Real Chrome browser scan, powered by axe-core
         <span aria-hidden="true">&middot;</span> Free, no account needed
       </p>
-      <p class="checker-seeall"><a href={platformPath(p)}>{p.name} accessibility checker</a> <span aria-hidden="true">&middot;</span> <a href="/platforms">All platform checkers</a></p>
+      <p class="checker-seeall"><a href={platformHome(p)}>All {p.name} checkers</a> <span aria-hidden="true">&middot;</span> <a href="/platforms">All platforms</a></p>
     </div>
   </section>
 
@@ -179,11 +180,13 @@ const schema = [
     </section>
   </article>
 
+  <PlatformSiblings p={p} current="ada-compliance-checker" />
+
   <section class="section section-surface" aria-labelledby="more-ada">
     <div class="container">
       <div class="section-head">
         <h2 id="more-ada">ADA Compliance Checkers for Other Platforms</h2>
-        <p>The same ADA scan, with the risks and fixes for each platform. Browse <a href="/platforms#ada-compliance-checkers">all {PLATFORMS.length} ADA compliance checkers</a> or the <a href="/platforms">platform accessibility checker hub</a>.</p>
+        <p>The same ADA scan, with the risks and fixes for each platform. Browse <a href="/platforms">all {PLATFORMS.length} platforms</a>.</p>
       </div>
       {otherGroups.map((g) => (
         <div class="platform-links-group">
@@ -200,12 +203,12 @@ const schema = [
           </ul>
         </div>
       ))}
-      <p class="more-link"><a class="link-arrow" href={platformPath(p)}>{p.name} accessibility checker <Icon name="arrow" /></a> <a class="link-arrow" href="/platforms">All platform checkers <Icon name="arrow" /></a></p>
+      <p class="more-link"><a class="link-arrow" href="/platforms">All platforms <Icon name="arrow" /></a></p>
     </div>
   </section>
 
   <CtaBand />
 </BaseLayout>
 <script>
-  import '../../scripts/free-scan.js';
+  import '../../../scripts/free-scan.js';
 </script>

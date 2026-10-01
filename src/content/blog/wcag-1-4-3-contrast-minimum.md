@@ -150,4 +150,4 @@ For a quick reference, see our [1.4.3 Contrast (Minimum) page](/resources/wcag/1
 
 Want to find low-contrast text across a page in seconds? [Run a free WCAG scan](/#scan), then check text on images by hand.
 
-Builders put colors in global settings, so one fix can correct a whole site. See the [Elementor accessibility checker](/platforms/elementor-accessibility-checker), [Divi accessibility checker](/platforms/divi-accessibility-checker), [Wix accessibility checker](/platforms/wix-accessibility-checker) and [Squarespace accessibility checker](/platforms/squarespace-accessibility-checker) checkers.
+Builders put colors in global settings, so one fix can correct a whole site. See the [Elementor accessibility checker](/platforms/elementor/accessibility-checker), [Divi accessibility checker](/platforms/divi/accessibility-checker), [Wix accessibility checker](/platforms/wix/accessibility-checker) and [Squarespace accessibility checker](/platforms/squarespace/accessibility-checker) checkers.

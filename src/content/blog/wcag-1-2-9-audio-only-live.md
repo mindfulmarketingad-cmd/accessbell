@@ -102,4 +102,4 @@ For a quick reference, see our [1.2.9 Audio-only (Live) page](/resources/wcag/1-
 
 Want to find the accessibility issues software *can* catch around your media, such as unlabeled players and controls? [Run a free WCAG scan](/#scan).
 
-Course creators: see the [Kajabi accessibility checker](/platforms/kajabi-accessibility-checker) and [Teachable accessibility checker](/platforms/teachable-accessibility-checker) checkers for what to caption and transcribe.
+Course creators: see the [Kajabi accessibility checker](/platforms/kajabi/accessibility-checker) and [Teachable accessibility checker](/platforms/teachable/accessibility-checker) checkers for what to caption and transcribe.

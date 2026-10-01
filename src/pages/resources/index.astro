@@ -8,7 +8,7 @@ import { SITE } from '../../config/site';
 import { formatDate } from '../../lib/format';
 import { helpByCategory } from '../../lib/help';
 import { CHECKERS, checkerPath } from '../../data/checkers';
-import { PLATFORMS, platformPath } from '../../data/platforms';
+import { PLATFORMS, platformHome } from '../../data/platforms';
 import { INDUSTRIES, industryPath } from '../../data/industries';
 import { STATE_LAWS, stateLawPath } from '../../data/state-laws';
 
@@ -110,10 +110,10 @@ const schema = [
       <ul class="res-grid">
         {PLATFORMS.map((p) => (
           <li>
-            <a class="res-card" href={platformPath(p)}>
+            <a class="res-card" href={platformHome(p)}>
               <span class="res-card-text">
-                <small>Free Tool</small>
-                <strong>{p.name} Accessibility Checker</strong>
+                <small>Platform</small>
+                <strong>{p.name} Accessibility Checkers</strong>
                 <span>{p.lead}</span>
               </span>
               <Icon name="arrow" class="res-arrow" />

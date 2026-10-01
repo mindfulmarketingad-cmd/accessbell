@@ -177,4 +177,4 @@ For a quick reference, see our [2.2.2 Pause, Stop, Hide page](/resources/wcag/2-
 
 Want to find the issues software *can* catch while you check moving content by hand? [Run a free WCAG scan](/#scan) of any page.
 
-Sliders and animated effects are common in builders. See the [Elementor accessibility checker](/platforms/elementor-accessibility-checker), [Divi accessibility checker](/platforms/divi-accessibility-checker) and [Framer accessibility checker](/platforms/framer-accessibility-checker) checkers for where to turn autoplay off.
+Sliders and animated effects are common in builders. See the [Elementor accessibility checker](/platforms/elementor/accessibility-checker), [Divi accessibility checker](/platforms/divi/accessibility-checker) and [Framer accessibility checker](/platforms/framer/accessibility-checker) checkers for where to turn autoplay off.
