@@ -161,6 +161,7 @@ const SEVERITIES = [
 ];
 
 const IMPACT_LABEL = { critical: 'Critical', serious: 'Serious', moderate: 'Moderate', minor: 'Minor' };
+const URGENT = new Set(['critical', 'serious']);
 
 /** The results list, then a prompt to start the trial for fixes and monitoring. */
 function showResults(r, url) {
@@ -196,7 +197,13 @@ function showResults(r, url) {
               el('strong', { text: i.title }),
               el('span', { class: 'scan-result-meta', text: `${plural(i.count, 'element')} on this page${i.wcag.length ? ' · WCAG ' + i.wcag.map((c) => `${c.sc} ${c.name}`).join(', ') : ''}` }),
             ]),
-            el('span', { class: `tag tag-${i.impact}`, text: IMPACT_LABEL[i.impact] || i.impact }),
+            el('div', { class: 'scan-result-side' }, [
+              el('span', { class: `tag tag-${i.impact}`, text: IMPACT_LABEL[i.impact] || i.impact }),
+              // The most urgent problems get a direct route to a plan that fixes them.
+              URGENT.has(i.impact)
+                ? el('a', { class: 'btn btn-sm btn-resolve', href: '/pricing' }, ['Resolve immediately', el('span', { class: 'visually-hidden', text: `: ${i.title}` })])
+                : null,
+            ]),
           ]),
         ),
       )

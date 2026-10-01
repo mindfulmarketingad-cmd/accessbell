@@ -6766,6 +6766,30 @@ h2[tabindex='-1']:focus {
 .scan-result-list .tag {
   flex: none;
 }
+.scan-result-side {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+.btn-resolve {
+  --btn-bg: var(--danger);
+  --btn-border: var(--danger);
+  min-height: 36px;
+  padding: 6px 14px;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+@media (max-width: 560px) {
+  .scan-result-list li {
+    flex-direction: column;
+  }
+  .scan-result-side {
+    flex-direction: row;
+    align-items: center;
+  }
+}
 .scan-result-more {
   margin: 0;
   color: var(--ink-500);
