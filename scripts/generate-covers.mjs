@@ -2,7 +2,7 @@
 //   public/blog/covers/<slug>.webp  1200x630 illustration shown on the post and blog cards
 //   public/blog/og/<slug>.png       1200x630 social share image with the title
 // Illustrations use the site's own icon artwork. Usage: npm run covers
-import { mkdirSync, readdirSync, readFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, unlinkSync } from 'node:fs';
 import { resolve } from 'node:path';
 import sharp from 'sharp';
 import { ICONS } from '../src/lib/icons.js';
@@ -107,14 +107,17 @@ if (missing.length) {
   process.exit(1);
 }
 
+// `npm run covers -- <slug> ...` regenerates only those posts.
+const only = new Set(process.argv.slice(2));
 for (const [i, slug] of slugs.entries()) {
+  if (only.size && !only.has(slug)) continue;
   const meta = frontmatter(readFileSync(resolve(blogDir, `${slug}.md`), 'utf8'));
   const topic = COVER_TOPICS[slug];
   const theme = CATEGORY_THEMES[meta.category] || CATEGORY_THEMES.Guides;
   await sharp(Buffer.from(coverSvg(slug, meta, topic, theme, i + 1))).webp({ quality: 82 }).toFile(resolve(coverDir, `${slug}.webp`));
   await sharp(Buffer.from(ogSvg(slug, meta, topic, theme, i + 1))).png({ compressionLevel: 9, palette: true }).toFile(resolve(ogDir, `${slug}.png`));
 }
-console.log(`Wrote ${slugs.length} covers and social images.`);
+console.log(`Wrote ${only.size || slugs.length} covers and social images.`);
 
 // WCAG library pages without a guide post get a featured image too:
 //   public/images/wcag/covers/<sc-slug>.webp and public/images/wcag/og/<sc-slug>.png
@@ -125,6 +128,7 @@ mkdirSync(wcagOgDir, { recursive: true });
 const guided = new Set(slugs.map((s) => (s.match(/^wcag-(\d+)-(\d+)-(\d+)-/) || []).slice(1).join('.')).filter(Boolean));
 let n = 0;
 for (const [i, c] of Object.values(CRITERIA).entries()) {
+  if (only.size) break;
   const slug = wcagCoverSlug(c.sc, c.name);
   if (guided.has(c.sc)) continue;
   const topic = { ...WCAG_GUIDELINE_ICONS[c.sc.split('.').slice(0, 2).join('.')], label: c.sc, caption: c.name.replace(/\s*\(.*\)$/, '') };
@@ -133,5 +137,10 @@ for (const [i, c] of Object.values(CRITERIA).entries()) {
   await sharp(Buffer.from(coverSvg(slug, meta, topic, theme, i + 7))).webp({ quality: 82 }).toFile(resolve(wcagCoverDir, `${slug}.webp`));
   await sharp(Buffer.from(ogSvg(slug, meta, topic, theme, i + 7))).png({ compressionLevel: 9, palette: true }).toFile(resolve(wcagOgDir, `${slug}.png`));
   n++;
+}
+// Remove library covers for criteria that now have a guide (the guide has its own cover).
+for (const c of Object.values(CRITERIA)) {
+  if (!guided.has(c.sc)) continue;
+  for (const f of [resolve(wcagCoverDir, `${wcagCoverSlug(c.sc, c.name)}.webp`), resolve(wcagOgDir, `${wcagCoverSlug(c.sc, c.name)}.png`)]) if (existsSync(f)) unlinkSync(f);
 }
 console.log(`Wrote ${n} WCAG library covers.`);
