@@ -7420,3 +7420,55 @@ img.platform-logo-lg {
 .platform-links .platform-mono {
   margin-right: 14px;
 }
+
+/* ---------- Solutions pages ---------- */
+.solution-hero .grid-2 {
+  align-items: center;
+}
+.solution-hero-copy .lead {
+  max-width: 62ch;
+}
+.solution-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+.solution-note {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 14px;
+  font-size: 0.9375rem;
+  color: var(--ink-700);
+}
+.solution-note svg {
+  width: 18px;
+  height: 18px;
+  color: var(--sage-700, currentColor);
+}
+.solution-body {
+  padding-block: clamp(32px, 5vw, 56px);
+}
+.demo-player {
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+.demo-player-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  background: #e9eee8;
+}
+.demo-player figcaption {
+  padding: 4px 16px 12px;
+}
+.demo-player .demo-desc {
+  padding: 8px 0 0;
+}

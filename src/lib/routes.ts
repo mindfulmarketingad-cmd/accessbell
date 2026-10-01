@@ -2,6 +2,7 @@ import { getCollection } from 'astro:content';
 import { helpByCategory, articlePath, categoryPath } from './help';
 import { CHECKERS, checkerPath } from '../data/checkers';
 import { PLATFORMS, platformPath, platformAdaPath } from '../data/platforms';
+import { SOLUTIONS, solutionPath } from '../data/solutions';
 import { INDUSTRIES, industryPath } from '../data/industries';
 import { STATE_LAWS, stateLawPath } from '../data/state-laws';
 import { CRITERIA } from '../../server/wcag-criteria.js';
@@ -16,7 +17,7 @@ const STATIC: Omit<RouteEntry, 'lastmod'>[] = [
   { path: '/', label: 'Home', note: 'Free website accessibility checker', group: 'main' },
   { path: '/pricing', label: 'Pricing', note: 'Pro plan and features', group: 'main' },
   { path: '/blog', label: 'Blog', note: 'Accessibility guides and compliance insights', group: 'main' },
-  { path: '/reviews', label: 'Reviews', note: 'Verified customer reviews', group: 'main' },
+  { path: '/solutions', label: 'Solutions', note: 'Continuous monitoring, automated fixes and the Compliance Vault', group: 'main' },
   { path: '/resources', label: 'Resources', note: 'Free tools and guides', group: 'main' },
   { path: '/resources/statement-generator', label: 'Accessibility Statement Generator', note: 'Free custom accessibility statement', group: 'main' },
   { path: '/resources/free-accessibility-icon-set', label: 'Free Accessibility Icon Set', note: '17 free SVG and PNG accessibility icons', group: 'main' },
@@ -62,6 +63,7 @@ export async function getRoutes(): Promise<RouteEntry[]> {
             : STATIC_LASTMOD,
     })),
     ...CHECKERS.map((c) => ({ path: checkerPath(c), label: c.name, note: `Free WCAG ${c.version} Level ${c.level} scan`, lastmod: STATIC_LASTMOD, group: 'main' as const })),
+    ...SOLUTIONS.map((x) => ({ path: solutionPath(x), label: x.h1, note: x.summary, lastmod: STATIC_LASTMOD, group: 'main' as const })),
     ...PLATFORMS.map((p) => ({ path: platformPath(p), label: `${p.name} Accessibility Checker`, note: 'Free scan for this platform', lastmod: STATIC_LASTMOD, group: 'main' as const })),
     ...PLATFORMS.map((p) => ({ path: platformAdaPath(p), label: `${p.name} ADA Compliance Checker`, note: 'Free ADA scan for this platform', lastmod: STATIC_LASTMOD, group: 'main' as const })),
     ...INDUSTRIES.map((ind) => ({ path: industryPath(ind), label: `${ind.name} Accessibility Checker`, note: 'Free scan for this industry', lastmod: STATIC_LASTMOD, group: 'main' as const })),

@@ -79,3 +79,5 @@ The fix applies the next time a page loads. Turn a fix off, or delete it, at any
 ## Who Can Do This
 
 Members, Admins and the Owner can add and change fixes. AccessBellFix only serves fixes while your subscription or trial is active.
+
+For an overview of what AccessBellFix is for, see [automatically fix website accessibility issues](/solutions/automated-fixes).

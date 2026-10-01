@@ -23,6 +23,21 @@
   },
   "redirects": [
     {
+      "source": "/reviews",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/solutions/Continuous-monitoring",
+      "destination": "/solutions/continuous-monitoring",
+      "permanent": true
+    },
+    {
+      "source": "/solutions/Compliance-vault",
+      "destination": "/solutions/compliance-vault",
+      "permanent": true
+    },
+    {
       "source": "/Blog",
       "destination": "/blog",
       "permanent": true

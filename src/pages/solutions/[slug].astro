@@ -1,0 +1,143 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import DemoPlayer from '../../components/DemoPlayer.astro';
+import { SITE } from '../../config/site';
+import { faqSchema } from '../../lib/schema';
+import { SOLUTIONS, solutionPath, type Solution } from '../../data/solutions';
+
+export function getStaticPaths() {
+  return SOLUTIONS.map((s) => ({ params: { slug: s.slug }, props: { s } }));
+}
+
+const { s } = Astro.props as { s: Solution };
+const url = `${SITE.url}${solutionPath(s)}`;
+const others = SOLUTIONS.filter((o) => o.slug !== s.slug);
+const related = (await Promise.all(s.related.map((id) => getEntry('blog', id)))).filter(Boolean);
+
+// Strings in the data file may contain [text](/path) links.
+const esc = (t: string) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const md = (t: string) =>
+  esc(t).replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2" rel="noopener noreferrer" target="_blank">$1<span class="visually-hidden"> (opens in a new tab)</span></a>').replace(/\[([^\]]+)\]\((\/[^)]*)\)/g, '<a href="$2">$1</a>');
+
+const schema = [
+  {
+    '@type': 'WebPage',
+    '@id': `${url}#webpage`,
+    name: s.h1,
+    url,
+    description: s.description,
+    isPartOf: { '@id': `${SITE.url}/#website` },
+    about: { '@id': `${SITE.url}/#software` },
+  },
+  faqSchema(s.faqs),
+];
+---
+<BaseLayout
+  title={`${s.title} | AccessBell`}
+  description={s.description}
+  breadcrumbs={[{ label: 'Solutions', href: '/solutions' }, { label: s.name, href: solutionPath(s) }]}
+  schema={schema}
+>
+  <section class="page-hero solution-hero" aria-labelledby="solution-title">
+    <div class="container grid-2">
+      <div class="solution-hero-copy">
+        <span class="eyebrow">{s.eyebrow}</span>
+        <h1 id="solution-title">{s.h1}</h1>
+        <p class="lead" set:html={md(s.lead)} />
+        <div class="solution-cta">
+          <a class="btn btn-accent" href="/app/signup">Start 3-day free trial <Icon name="arrow" /></a>
+          <a class="btn btn-outline" href="/#scan">Run a free scan</a>
+        </div>
+        <p class="solution-note"><Icon name="check" /> 3-day free trial <span aria-hidden="true">&middot;</span> Free one-page scan, no account needed</p>
+      </div>
+      <DemoPlayer />
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="highlights-title">
+    <div class="container">
+      <div class="section-head section-head-left">
+        <h2 id="highlights-title">{s.name} Features in AccessBell</h2>
+      </div>
+      <ul class="focus-grid">
+        {s.highlights.map((h) => <li><h3>{h.title}</h3><p>{h.text}</p></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight section-surface" aria-labelledby="steps-title">
+    <div class="container cc-prose">
+      <h2 id="steps-title">How {s.name} Works, Step by Step</h2>
+      <ol class="steps-list">
+        {s.steps.map((t) => <li>{t}</li>)}
+      </ol>
+    </div>
+  </section>
+
+  <article class="container solution-body cc-prose">
+    {s.sections.map((sec) => (
+      <section aria-labelledby={sec.id}>
+        <h2 id={sec.id}>{sec.h2}</h2>
+        {sec.paras.map((p) => <p set:html={md(p)} />)}
+        {sec.bullets && <ul class="check-list">{sec.bullets.map((b) => <li><Icon name="check" /><span set:html={md(b)} /></li>)}</ul>}
+      </section>
+    ))}
+
+    <section aria-labelledby="limits-title">
+      <h2 id="limits-title">What {s.name} Can and Cannot Do</h2>
+      <p>{s.limits} See our <a href="/methodology">methodology</a> and <a href="/disclaimer">disclaimer</a>.</p>
+    </section>
+
+    <section aria-labelledby="learn-title">
+      <h2 id="learn-title">Learn More About {s.name}</h2>
+      <ul class="related-guides">
+        {s.help.map((h) => <li><a href={h.href}>{h.label}</a><span>{h.note}</span></li>)}
+        {related.map((post) => post && <li><a href={`/blog/${post.id}`}>{post.data.title}</a><span>{post.data.description}</span></li>)}
+        <li><a href="/platforms">Accessibility Checkers by Platform</a><span>Free scans written for WordPress, Shopify, Wix and many more platforms.</span></li>
+        <li><a href="/pricing">AccessBell pricing</a><span>One plan with every feature, 3-day free trial.</span></li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="faq-title">
+      <h2 id="faq-title">{s.name}: Frequently Asked Questions</h2>
+      <Faq items={s.faqs} />
+    </section>
+
+    <section aria-labelledby="sources-title" class="checker-sources">
+      <h2 id="sources-title">Sources</h2>
+      <ul>
+        {s.sources.map((x) => <li><a href={x.href} rel="noopener noreferrer" target="_blank">{x.label}<span class="visually-hidden"> (opens in a new tab)</span></a></li>)}
+      </ul>
+    </section>
+  </article>
+
+  <section class="section section-surface" aria-labelledby="more-solutions">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="more-solutions">More AccessBell Solutions</h2>
+        <p>Monitor, fix and document work together. Browse <a href="/solutions">all solutions</a>.</p>
+      </div>
+      <ul class="res-grid">
+        {others.map((o) => (
+          <li>
+            <a class="res-card" href={solutionPath(o)}>
+              <span class="res-card-logo"><Icon name={o.icon} /></span>
+              <span class="res-card-text">
+                <small>{o.eyebrow}</small>
+                <strong>{o.h1}</strong>
+                <span>{o.summary}</span>
+              </span>
+              <Icon name="arrow" class="res-arrow" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand title="See How AccessBell Works on Your Site" text="Start a 3-day free trial to monitor every page on your domain, or run a free one-page WCAG check first with no sign-up." />
+</BaseLayout>

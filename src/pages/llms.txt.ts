@@ -6,6 +6,7 @@ import { SITE, absoluteUrl } from '../config/site';
 import { PLAN } from '../data/pricing';
 import { CHECKERS, checkerPath } from '../data/checkers';
 import { PLATFORMS, platformPath, platformAdaPath } from '../data/platforms';
+import { SOLUTIONS, solutionPath } from '../data/solutions';
 import { INDUSTRIES, industryPath } from '../data/industries';
 import { STATE_LAWS, stateLawPath } from '../data/state-laws';
 import { CRITERIA } from '../../server/wcag-criteria.js';
@@ -57,6 +58,8 @@ export const GET: APIRoute = async () => {
       'Optional',
       [
         ...Object.values(CRITERIA).map((c) => link(`WCAG ${c.sc} ${c.name}`, criterionPath(c.sc), `Level ${c.level}, added in WCAG ${c.version}.`)),
+        link('Solutions: monitoring, automated fixes and the Compliance Vault', '/solutions'),
+        ...SOLUTIONS.map((x) => link(x.h1, solutionPath(x))),
         link('Accessibility checkers by platform', '/platforms'),
         link('Accessibility checkers by industry', '/industries'),
         link('Website accessibility laws by state', '/state-accessibility-laws'),

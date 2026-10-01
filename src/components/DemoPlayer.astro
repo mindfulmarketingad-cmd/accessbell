@@ -1,0 +1,44 @@
+---
+/**
+ * The product demo, already open on the page and playing as soon as it loads.
+ * The video is silent, so browsers allow autoplay. It has controls (pause,
+ * WCAG 2.2.2) and does not autoplay for visitors who prefer reduced motion.
+ */
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+const steps = [
+  'Add your domain and choose a standard, such as WCAG 2.2 Level AA.',
+  'AccessBell finds the pages on your site and scans each one in a real browser.',
+  'Violations are ranked by severity and mapped to WCAG success criteria.',
+  'Open an issue to see the failing code and fix it with AccessBellFix.',
+  'Every scan and fix is logged in the Compliance Vault.',
+  'Daily scans catch new issues and send you an email alert.',
+];
+---
+<figure class={`demo-player ${className ?? ''}`} data-demo-player>
+  <video class="demo-player-video" controls autoplay muted playsinline preload="auto" poster="/demo/accessbell-demo-poster.jpg" width="1920" height="1080" aria-label="AccessBell product demo">
+    <source src="/demo/accessbell-demo.webm" type="video/webm" />
+    <source src="/demo/accessbell-demo.mp4" type="video/mp4" />
+    <a href="/demo/accessbell-demo.mp4">Download the AccessBell demo video (MP4)</a>.
+  </video>
+  <figcaption>
+    <details class="demo-desc">
+      <summary>What the demo shows (text description)</summary>
+      <ol>{steps.map((s) => <li>{s}</li>)}</ol>
+      <p>The site in the demo is an example store with example results.</p>
+    </details>
+  </figcaption>
+</figure>
+
+<script>
+  // Visitors who ask for reduced motion get the poster and press play themselves.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    for (const v of document.querySelectorAll<HTMLVideoElement>('[data-demo-player] video')) {
+      v.removeAttribute('autoplay');
+      v.pause();
+      v.currentTime = 0;
+    }
+  }
+</script>

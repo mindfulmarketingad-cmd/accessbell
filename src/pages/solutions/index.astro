@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import DemoPlayer from '../../components/DemoPlayer.astro';
+import { SITE } from '../../config/site';
+import { faqSchema } from '../../lib/schema';
+import { SOLUTIONS, solutionPath } from '../../data/solutions';
+
+const PATH = '/solutions';
+const url = `${SITE.url}${PATH}`;
+const faqs = [
+  { q: 'What does AccessBell do after the first scan?', a: 'Three things. It monitors your pages every day and emails you about new serious issues, it helps you fix issues with corrected code and AccessBellFix, and it records every scan and fix in the Compliance Vault so you can show your work.' },
+  { q: 'Do I need all three solutions?', a: 'They are all included in one plan and work best together. Monitoring finds problems, fixes close them and the vault proves it. You can use whichever parts you need.' },
+  { q: 'Can I try these before paying?', a: 'Yes. Run a free one-page scan with no account, or start a 3-day free trial to monitor your whole domain.' },
+  { q: 'Is AccessBell an accessibility overlay?', a: 'No. AccessBell finds issues in your code so they can be fixed at the source. The optional AccessBellFix script only applies fixes you approve for specific elements, and neither it nor any other tool can guarantee legal compliance.' },
+];
+const schema = [
+  {
+    '@type': 'CollectionPage',
+    '@id': `${url}#webpage`,
+    name: 'Website Accessibility Solutions',
+    url,
+    isPartOf: { '@id': `${SITE.url}/#website` },
+    hasPart: SOLUTIONS.map((s) => ({ '@type': 'WebPage', name: s.h1, url: `${SITE.url}${solutionPath(s)}` })),
+  },
+  faqSchema(faqs),
+];
+---
+<BaseLayout
+  title="Website Accessibility Solutions | AccessBell"
+  description="AccessBell website accessibility solutions: continuous monitoring, automated fixes with AccessBellFix and a Compliance Vault that documents every issue and fix."
+  breadcrumbs={[{ label: 'Solutions', href: PATH }]}
+  schema={schema}
+>
+  <section class="page-hero solution-hero" aria-labelledby="solutions-title">
+    <div class="container grid-2">
+      <div class="solution-hero-copy">
+        <span class="eyebrow">Solutions</span>
+        <h1 id="solutions-title">Website Accessibility Solutions</h1>
+        <p class="lead">Find accessibility issues, fix them and prove it. AccessBell’s website accessibility solutions combine <a href="/solutions/continuous-monitoring">continuous monitoring</a>, <a href="/solutions/automated-fixes">automated fixes with AccessBellFix</a> and a <a href="/solutions/compliance-vault">Compliance Vault</a> that documents every issue and fix.</p>
+        <div class="solution-cta">
+          <a class="btn btn-accent" href="/app/signup">Start 3-day free trial <Icon name="arrow" /></a>
+          <a class="btn btn-outline" href="/#scan">Run a free scan</a>
+        </div>
+        <p class="solution-note"><Icon name="check" /> 3-day free trial <span aria-hidden="true">&middot;</span> Free one-page scan, no account needed</p>
+      </div>
+      <DemoPlayer />
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="solutions-list">
+    <div class="container">
+      <div class="section-head section-head-left">
+        <h2 id="solutions-list">AccessBell Accessibility Solutions</h2>
+        <p>Each solution has its own page with the features, the workflow and what it cannot do.</p>
+      </div>
+      <ul class="res-grid">
+        {SOLUTIONS.map((s) => (
+          <li>
+            <a class="res-card" href={solutionPath(s)}>
+              <span class="res-card-logo"><Icon name={s.icon} /></span>
+              <span class="res-card-text">
+                <small>{s.eyebrow}</small>
+                <strong>{s.h1}</strong>
+                <span>{s.summary}</span>
+              </span>
+              <Icon name="arrow" class="res-arrow" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight section-surface" aria-labelledby="together-title">
+    <div class="container cc-prose">
+      <h2 id="together-title">How the Accessibility Solutions Work Together</h2>
+      <ol class="steps-list">
+        <li><strong>Monitor.</strong> <a href="/solutions/continuous-monitoring">Continuous website accessibility monitoring</a> scans up to 500 pages per domain every day and emails you when a new critical or serious issue appears.</li>
+        <li><strong>Fix.</strong> Each issue comes with the failing code and how to fix it. You can <a href="/solutions/automated-fixes">automatically fix website accessibility issues</a> like missing alt text and button names with AccessBellFix.</li>
+        <li><strong>Document.</strong> Every scan and every confirmed fix goes into the <a href="/solutions/compliance-vault">Compliance Vault</a>, where you can document accessibility issues and fixes and export an evidence package.</li>
+      </ol>
+      <p>Not sure where your site stands? Start with a free <a href="/#scan">website accessibility scan</a>, or pick the free checker for your platform in our <a href="/platforms">platform hub</a>, your <a href="/industries">industry</a> or your <a href="/state-accessibility-laws">state’s accessibility law</a>. For background, see the W3C’s <a href="https://www.w3.org/WAI/test-evaluate/" rel="noopener noreferrer" target="_blank">overview of evaluating web accessibility<span class="visually-hidden"> (opens in a new tab)</span></a> and the Department of Justice’s <a href="https://www.ada.gov/resources/web-guidance/" rel="noopener noreferrer" target="_blank">ADA web guidance<span class="visually-hidden"> (opens in a new tab)</span></a>. The <a href="/resources/help-center">Help Center</a> explains every feature, and <a href="/pricing">pricing</a> is one plan with everything included.</p>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="faq-title">
+    <div class="container cc-prose">
+      <h2 id="faq-title">Website Accessibility Solutions: Frequently Asked Questions</h2>
+      <Faq items={faqs} />
+    </div>
+  </section>
+
+  <CtaBand title="Try AccessBell on Your Own Site" text="Start a 3-day free trial to monitor every page on your domain, or run a free one-page WCAG check first with no sign-up." />
+</BaseLayout>

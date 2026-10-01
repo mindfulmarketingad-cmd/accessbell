@@ -1,3 +1,4 @@
+import { SOLUTIONS, solutionPath } from '../data/solutions';
 import { PLATFORMS, platformPath } from '../data/platforms';
 import { platformLogo } from '../data/platform-logos';
 export const SITE = {
@@ -20,10 +21,20 @@ export const SITE = {
 
 const GROUP_LABEL = { ecommerce: 'E-commerce', cms: 'CMS', builder: 'Site builder', framework: 'Framework', host: 'Web host' } as const;
 
+const NAV_NOTE = { 'continuous-monitoring': 'Scheduled daily scans and alerts', 'automated-fixes': 'AccessBellFix applies approved fixes', 'compliance-vault': 'Scan history, fix log and evidence' } as const;
+
 export const HEADER_NAV = [
   { label: 'Home', href: '/' },
   { label: 'Pricing', href: '/pricing' },
   { label: 'Blog', href: '/blog' },
+  {
+    label: 'Solutions',
+    href: '/solutions',
+    children: [
+      { label: 'All solutions', href: '/solutions', note: 'Monitor, fix and document' },
+      ...SOLUTIONS.map((x) => ({ label: x.name, href: solutionPath(x), note: NAV_NOTE[x.slug] })),
+    ],
+  },
   {
     label: 'Platforms',
     href: '/platforms',
@@ -41,7 +52,6 @@ export const HEADER_NAV = [
       { label: 'Help Center', href: '/resources/help-center', note: 'Guides for every AccessBell feature' },
     ],
   },
-  { label: 'Reviews', href: '/reviews' },
   { label: 'About', href: '/about' },
 ] as const;
 
@@ -51,6 +61,7 @@ export const FOOTER_NAV = [
   { label: 'Methodology', href: '/methodology' },
   { label: 'Contact', href: '/contact' },
   { label: 'Resources', href: '/resources' },
+  { label: 'Solutions', href: '/solutions' },
   { label: 'Platform Checkers', href: '/platforms' },
   { label: 'Help Center', href: '/resources/help-center' },
   { label: 'Disclaimer', href: '/disclaimer' },

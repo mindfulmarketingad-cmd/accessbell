@@ -35,7 +35,6 @@ server/              Checker engine and security helpers
 src/
   config/site.ts     Name, URL, nav, footer, social links
   data/pricing.ts    Plans, prices, comparison table
-  data/reviews.ts    Verified reviews (empty until you add real ones)
   content/blog/      Blog posts (Markdown)
   lib/routes.ts      Single list of URLs feeding /sitemap and /sitemap.xml
   pages/             Routes
@@ -79,7 +78,7 @@ How it fits together: a user signs up (Supabase Auth, session kept in httpOnly c
 
 - Main keyword **website accessibility checker** in the homepage title, H1, meta description, intro, FAQ and as internal anchor text from every blog post.
 - One H1 per page, titles under 60 characters, descriptions 138-160 characters, self-referencing canonicals, clean lowercase URLs without trailing slashes (`/Blog` 308-redirects to `/blog`).
-- Structured data (`@graph`): Organization, WebSite, WebPage and BreadcrumbList on every page, plus SoftwareApplication with offers (home, pricing), FAQPage (home, pricing), Blog, BlogPosting, AboutPage and ContactPage. Review markup is only emitted once `src/data/reviews.ts` contains real reviews.
+- Structured data (`@graph`): Organization, WebSite, WebPage and BreadcrumbList on every page, plus SoftwareApplication with offers (home, pricing), FAQPage (home, pricing), Blog, BlogPosting, AboutPage and ContactPage.
 - `/sitemap.xml` with `lastmod`, `/robots.txt`, `/rss.xml`, HTML sitemap at `/sitemap`, Open Graph and Twitter cards with a 1200x630 image, web manifest and full favicon set.
 - Accessibility: every page passes axe-core (WCAG 2.2 AA plus best practices) at desktop and mobile widths.
 
@@ -92,7 +91,7 @@ Home (/)
 │   └── /blog/[slug]              each post links up to Blog and Home (breadcrumbs),
 │                                 to Home with "website accessibility checker" anchor text,
 │                                 to Pricing, and sideways to 2 related posts
-├── Reviews (/reviews)
+├── Solutions (/solutions)        hub: continuous monitoring, automated fixes, compliance vault
 ├── About (/about)                links to Home, Pricing, Blog and two cornerstone posts
 └── Contact, Disclaimer, Privacy, Terms, Sitemap (footer on every page)
 ```

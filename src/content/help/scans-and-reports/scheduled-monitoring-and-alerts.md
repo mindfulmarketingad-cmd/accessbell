@@ -28,3 +28,5 @@ To receive alerts, ask the Owner to give you the Admin role. See [Invite teammat
 - The page is no longer monitored.
 
 Monitoring restarts on the next daily run once the subscription is active again.
+
+For the bigger picture, see [continuous website accessibility monitoring](/solutions/continuous-monitoring) and how it feeds the [Compliance Vault](/solutions/compliance-vault).

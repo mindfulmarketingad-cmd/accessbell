@@ -145,3 +145,5 @@ Do not ignore it, and do not panic. Talk to a lawyer, run a full scan so you kno
 ADA website accessibility is ongoing work, not a one-time project. [Start your 3-day free trial](/app/signup) and let AccessBell find, track and document the fixes for you, or compare your options in our list of the [best ADA compliance software for small businesses](/blog/best-ada-compliance-software-for-small-businesses).
 
 Checking a specific platform? Use the ADA compliance checkers for [Shopify](/platforms/shopify-ada-compliance-checker), [WordPress](/platforms/wordpress-ada-compliance-checker), [WooCommerce](/platforms/woocommerce-ada-compliance-checker), [Wix](/platforms/wix-ada-compliance-checker), [Squarespace](/platforms/squarespace-ada-compliance-checker) and [Webflow](/platforms/webflow-ada-compliance-checker), or see [all ADA compliance checkers by platform](/platforms#ada-compliance-checkers).
+
+To put this into practice, see how AccessBell handles [continuous monitoring](/solutions/continuous-monitoring), [automated fixes](/solutions/automated-fixes) and the [Compliance Vault](/solutions/compliance-vault) for documenting issues and fixes.

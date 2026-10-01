@@ -65,3 +65,5 @@ If your goal is a website that is actually easier to use for people with disabil
 4. **Turn on monitoring** so new issues are caught before they reach production, not after a complaint or a lawsuit.
 
 For the general case against overlays, and what to do instead, see our guide on [automated vs. manual accessibility testing](/blog/automated-vs-manual-accessibility-testing).
+
+Compare that with how AccessBell [fixes issues with AccessBellFix](/solutions/automated-fixes) and keeps [documentation in the Compliance Vault](/solutions/compliance-vault).
