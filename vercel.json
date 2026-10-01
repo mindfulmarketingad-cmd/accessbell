@@ -23,6 +23,31 @@
   },
   "redirects": [
     {
+      "source": "/blog/wcag-2-1-4-character-key-shortcuts",
+      "destination": "/resources/wcag/2-1-4-character-key-shortcuts",
+      "permanent": true
+    },
+    {
+      "source": "/blog/wcag-2-2-1-timing-adjustable",
+      "destination": "/resources/wcag/2-2-1-timing-adjustable",
+      "permanent": true
+    },
+    {
+      "source": "/blog/wcag-2-3-1-three-flashes-or-below-threshold",
+      "destination": "/resources/wcag/2-3-1-three-flashes-or-below-threshold",
+      "permanent": true
+    },
+    {
+      "source": "/blog/wcag-2-5-1-pointer-gestures",
+      "destination": "/resources/wcag/2-5-1-pointer-gestures",
+      "permanent": true
+    },
+    {
+      "source": "/blog/wcag-2-5-2-pointer-cancellation",
+      "destination": "/resources/wcag/2-5-2-pointer-cancellation",
+      "permanent": true
+    },
+    {
       "source": "/blog/wcag-1-2-1-audio-only-and-video-only-prerecorded",
       "destination": "/resources/wcag/1-2-1-audio-only-and-video-only-prerecorded",
       "permanent": true
