@@ -179,7 +179,7 @@ export const CHECKERS: Checker[] = [
     facts: [
       ['Law', 'Americans with Disabilities Act of 1990, Titles II and III'],
       ['Technical benchmark', 'WCAG 2.1 Level AA'],
-      ['Title II rule compliance dates', 'April 24, 2026 (50,000+ residents), April 26, 2027 (smaller entities)'],
+      ['Title II rule compliance dates', 'April 26, 2027 (50,000+ residents), April 26, 2028 (smaller entities), after a one-year extension in April 2026'],
       ['Title III', 'No web regulation; courts and settlements reference WCAG 2.1 AA'],
       ['Enforced by', 'Department of Justice and private lawsuits'],
     ],

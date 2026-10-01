@@ -6172,6 +6172,14 @@ h2[tabindex='-1']:focus {
   border-radius: var(--radius-lg);
   background: #fff;
 }
+.prose figure video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: #e9eee8;
+}
 .prose .video-embed {
   margin: 28px 0;
   aspect-ratio: 16 / 9;

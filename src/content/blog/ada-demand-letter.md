@@ -71,3 +71,5 @@ Once the immediate matter is resolved, the goal shifts to not receiving another 
 4. **Keep a record.** Scan reports, fix commits and monitoring history are exactly what your attorney wants to show if this ever comes up again.
 
 None of this is legal advice, and nothing here replaces talking to an attorney about your specific letter. It is the practical, concrete part: knowing what is actually broken on your site, and having a documented plan to fix it, is what makes every other step in this process go faster and cost less.
+
+To reduce the chance of another letter, follow our [ADA website accessibility](/blog/ada-website-accessibility) workflow.

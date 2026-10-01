@@ -116,3 +116,5 @@ Eligible small businesses, generally those with 30 or fewer full-time employees 
 ## Check Your Website Against ADA Title III Expectations
 
 Start with the pages customers use most. [Run a free WCAG scan](/#scan) of your homepage, a product or service page and your contact or booking form, then work through the fixes. To keep your site accessible as it changes, AccessBell Pro monitors up to 500 pages per domain every day; [start a 3-day free trial](/app/signup).
+
+For a step-by-step workflow, see [ADA website accessibility: how to use AccessBell to avoid lawsuits](/blog/ada-website-accessibility).

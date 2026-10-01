@@ -24,10 +24,10 @@ This guide explains how the ADA applies to websites, what "compliance" means in 
 
 ## The Title II Rule and Its Deadlines
 
-As published, the [Title II rule](https://www.ada.gov/resources/2024-03-08-web-rule/) gives public entities two compliance dates based on population:
+The [Title II rule](https://www.ada.gov/resources/2024-03-08-web-rule/) gives public entities two compliance dates based on population. In April 2026 the DOJ pushed both back by one year in an [interim final rule](https://www.federalregister.gov/documents/2026/04/20/2026-07663/extension-of-compliance-dates-for-nondiscrimination-on-the-basis-of-disability-accessibility-of-web), without changing the WCAG 2.1 AA requirement:
 
-- **April 24, 2026** for entities serving a total population of 50,000 or more
-- **April 26, 2027** for entities serving fewer than 50,000 people, and for special district governments
+- **April 26, 2027** for entities serving a total population of 50,000 or more (originally April 24, 2026)
+- **April 26, 2028** for entities serving fewer than 50,000 people, and for special district governments (originally April 26, 2027)
 
 The rule includes limited exceptions, such as certain archived content and some preexisting documents, but these are narrow. Deadlines and enforcement policy can change, so confirm the current status on ADA.gov before planning around a date.
 
@@ -87,3 +87,5 @@ The ADA applies to websites of businesses open to the public and of state and lo
 [Run a free ADA compliance check](/resources/ada-compliance-checker) to see where your site stands against WCAG 2.1 AA, work through the [WCAG 2 AA checklist](/blog/wcag-2-aa-checklist) for manual testing, or [talk to our team](/contact) about monitoring your domains.
 
 Choosing a tool? Compare the [5 best ADA compliance software for small businesses](/blog/best-ada-compliance-software-for-small-businesses).
+
+Want the hands-on version? Read [ADA website accessibility: how to use AccessBell to avoid lawsuits](/blog/ada-website-accessibility).
