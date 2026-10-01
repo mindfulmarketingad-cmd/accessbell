@@ -7420,3 +7420,66 @@ img.platform-logo-lg {
 .platform-links .platform-mono {
   margin-right: 14px;
 }
+
+/* ---------- Platform picker (platforms hub) ---------- */
+.platform-picker {
+  max-width: 760px;
+  margin: 26px auto 0;
+  text-align: left;
+}
+.platform-picker[hidden] {
+  display: none;
+}
+.platform-picker label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--ink-700);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-align: center;
+}
+.platform-picker-row {
+  display: grid;
+  gap: 8px;
+  padding: 8px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+@media (min-width: 560px) {
+  .platform-picker-row {
+    grid-template-columns: 1fr auto;
+  }
+}
+.platform-picker select {
+  width: 100%;
+  min-height: 52px;
+  padding: 12px 36px 12px 14px;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%235b6170'%3E%3Cpath d='M5.3 7.3a1 1 0 0 1 1.4 0L10 10.6l3.3-3.3a1 1 0 1 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 0-1.4z'/%3E%3C/svg%3E") no-repeat right 12px center / 18px;
+  appearance: none;
+  -webkit-appearance: none;
+  color: var(--ink-900);
+  font: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.platform-picker select:focus {
+  outline: none;
+  border-color: var(--sage-700);
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgb(68 114 63 / 0.2);
+}
+.platform-picker select[aria-invalid='true'] {
+  border-color: var(--danger);
+}
+.platform-picker .btn {
+  min-height: 52px;
+  border-radius: var(--radius);
+}
+.platform-picker .scan-error {
+  margin: 8px 0 0;
+  text-align: center;
+}

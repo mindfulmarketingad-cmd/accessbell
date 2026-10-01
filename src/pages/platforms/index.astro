@@ -12,10 +12,10 @@ import { STATE_LAWS, stateLawPath } from '../../data/state-laws';
 
 const PATH = '/platforms';
 const GROUPS = [
-  { id: 'ecommerce', heading: 'Accessibility Checkers for E-commerce Platforms', intro: 'Product pages, carts and checkouts are where an accessibility barrier costs a sale. Pick your store platform.', label: 'E-commerce platform' },
-  { id: 'cms', heading: 'Accessibility Checkers for Content Management Systems', intro: 'Themes, modules, editors and plugins decide what a CMS site outputs. Each checker covers the ones that matter on that CMS.', label: 'CMS' },
-  { id: 'builder', heading: 'Accessibility Checkers for Website Builders', intro: 'Drag-and-drop builders put the layout in your hands. These checkers show what to set in each editor.', label: 'Website builder' },
-  { id: 'host', heading: 'Accessibility Checkers for Web Hosts', intro: 'Hosted with one of these providers? Scan your site and see the issues most common on the kinds of sites they host.', label: 'Web host' },
+  { id: 'ecommerce', optgroup: 'E-commerce platforms', heading: 'Accessibility Checkers for E-commerce Platforms', intro: 'Product pages, carts and checkouts are where an accessibility barrier costs a sale. Pick your store platform.', label: 'E-commerce platform' },
+  { id: 'cms', optgroup: 'Content management systems', heading: 'Accessibility Checkers for Content Management Systems', intro: 'Themes, modules, editors and plugins decide what a CMS site outputs. Each checker covers the ones that matter on that CMS.', label: 'CMS' },
+  { id: 'builder', optgroup: 'Website builders', heading: 'Accessibility Checkers for Website Builders', intro: 'Drag-and-drop builders put the layout in your hands. These checkers show what to set in each editor.', label: 'Website builder' },
+  { id: 'host', optgroup: 'Web hosts', heading: 'Accessibility Checkers for Web Hosts', intro: 'Hosted with one of these providers? Scan your site and see the issues most common on the kinds of sites they host.', label: 'Web host' },
 ] as const;
 const url = `${SITE.url}${PATH}`;
 const schema = [
@@ -45,6 +45,21 @@ const schema = [
         <Icon name="check" /> Real Chrome browser scan, powered by axe-core
         <span aria-hidden="true">&middot;</span> Free, no account needed
       </p>
+      <form class="platform-picker" data-platform-picker novalidate hidden aria-describedby="platform-picker-error">
+        <label for="platform-picker-select">Or choose your platform to go straight to its checker</label>
+        <div class="platform-picker-row">
+          <select id="platform-picker-select" name="platform" required>
+            <option value="">Choose your platform</option>
+            {GROUPS.map((g) => (
+              <optgroup label={g.optgroup}>
+                {PLATFORMS.filter((p) => p.group === g.id).map((p) => <option value={platformPath(p)}>{p.name}</option>)}
+              </optgroup>
+            ))}
+          </select>
+          <button class="btn btn-accent" type="submit">View checker <Icon name="arrow" /></button>
+        </div>
+        <p class="scan-error" id="platform-picker-error" role="alert" hidden></p>
+      </form>
     </div>
   </section>
 
@@ -170,4 +185,43 @@ const schema = [
 </BaseLayout>
 <script>
   import '../../scripts/free-scan.js';
+
+  // Platform picker: choosing a platform goes straight to its checker. The label says so up
+  // front, as WCAG 3.2.2 (On Input) requires. Moving through the options with the arrow keys
+  // does not navigate, so keyboard users can browse; they confirm with Enter or the button.
+  const picker = document.querySelector<HTMLFormElement>('[data-platform-picker]');
+  if (picker) {
+    picker.hidden = false;
+    const select = picker.elements.namedItem('platform') as HTMLSelectElement;
+    const error = picker.querySelector<HTMLElement>('.scan-error')!;
+    const BROWSING = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Home', 'End', 'PageUp', 'PageDown'];
+    let browsing = false;
+    const go = () => {
+      if (!select.value) {
+        select.setAttribute('aria-invalid', 'true');
+        error.textContent = 'Choose your platform from the list first.';
+        error.hidden = false;
+        select.focus();
+        return;
+      }
+      window.location.assign(select.value);
+    };
+    select.addEventListener('keydown', (e) => {
+      if (BROWSING.includes(e.key)) browsing = true;
+      else if (e.key === 'Enter' && select.value) {
+        e.preventDefault();
+        go();
+      }
+    });
+    select.addEventListener('change', () => {
+      select.removeAttribute('aria-invalid');
+      error.hidden = true;
+      if (browsing) browsing = false;
+      else if (select.value) go();
+    });
+    picker.addEventListener('submit', (e) => {
+      e.preventDefault();
+      go();
+    });
+  }
 </script>
