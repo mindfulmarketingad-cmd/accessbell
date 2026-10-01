@@ -23,27 +23,49 @@ export const HEADER_NAV = [
   { label: 'Comparisons', href: '/comparisons' },
   { label: 'WCAG Library', href: '/resources/wcag' },
   { label: 'Resources', href: '/resources' },
-  { label: 'About', href: '/about' },
 ] as const;
 
-export const FOOTER_NAV = [
-  { label: 'Home', href: '/' },
-  { label: 'About', href: '/about' },
-  { label: 'Methodology', href: '/methodology' },
-  { label: 'Contact', href: '/contact' },
-  { label: 'Resources', href: '/resources' },
-  { label: 'Blog', href: '/blog' },
-  { label: 'Solutions', href: '/solutions' },
-  { label: 'Comparisons', href: '/comparisons' },
-  { label: 'Platform Checkers', href: '/platforms' },
-  { label: 'WCAG Library', href: '/resources/wcag' },
-  { label: 'Help Center', href: '/resources/help-center' },
-  { label: 'Disclaimer', href: '/disclaimer' },
-  { label: 'Privacy', href: '/privacy' },
-  { label: 'Terms', href: '/terms' },
-  { label: 'Sitemap', href: '/sitemap' },
-  { label: 'Pricing', href: '/pricing' },
+/** Footer links, grouped into columns. */
+export const FOOTER_GROUPS = [
+  {
+    title: 'Product',
+    links: [
+      { label: 'Pricing', href: '/pricing' },
+      { label: 'Solutions', href: '/solutions' },
+      { label: 'Comparisons', href: '/comparisons' },
+      { label: 'Platform Checkers', href: '/platforms' },
+    ],
+  },
+  {
+    title: 'Resources',
+    links: [
+      { label: 'Free Tools', href: '/resources' },
+      { label: 'WCAG Library', href: '/resources/wcag' },
+      { label: 'Blog', href: '/blog' },
+      { label: 'Help Center', href: '/resources/help-center' },
+    ],
+  },
+  {
+    title: 'Company',
+    links: [
+      { label: 'About', href: '/about' },
+      { label: 'Methodology', href: '/methodology' },
+      { label: 'Contact', href: '/contact' },
+      { label: 'Accessibility Statement', href: '/statement' },
+    ],
+  },
+  {
+    title: 'Legal',
+    links: [
+      { label: 'Terms', href: '/terms' },
+      { label: 'Privacy', href: '/privacy' },
+      { label: 'Disclaimer', href: '/disclaimer' },
+      { label: 'Sitemap', href: '/sitemap' },
+    ],
+  },
 ] as const;
+
+export const FOOTER_NAV = FOOTER_GROUPS.flatMap((g) => g.links);
 
 export const STANDARDS = [
   { id: 'wcag22', label: 'WCAG 2.2 AA' },

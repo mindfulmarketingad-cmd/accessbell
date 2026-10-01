@@ -25,6 +25,14 @@ const all = Object.values(CRITERIA)
 const groups = Object.values(PRINCIPLES).map((p) => ({ principle: p, criteria: all.filter((c) => c.principle === p) }));
 const automated = all.filter((c) => c.ruleCount > 0).length;
 
+// POUR: the four WCAG principles, in the W3C's order.
+const POUR = [
+  { name: 'Perceivable', text: 'People must be able to perceive the information and interface, whatever senses they use: text alternatives for images, captions for video, enough contrast and content that adapts.', example: '1.1.1' },
+  { name: 'Operable', text: 'People must be able to use every control and navigate the page, including with a keyboard alone, with enough time and without content that can cause seizures.', example: '2.1.1' },
+  { name: 'Understandable', text: 'Content and controls must be clear and predictable: readable text, consistent navigation, and forms that help people avoid and fix mistakes.', example: '3.3.2' },
+  { name: 'Robust', text: 'Content must work reliably with browsers and assistive technologies, now and as they change, which mostly means correct names, roles and states in the code.', example: '4.1.2' },
+];
+
 const url = `${SITE.url}/resources/wcag`;
 const schema = [
   {
@@ -40,8 +48,8 @@ const schema = [
 ---
 <BaseLayout
   title="WCAG Success Criteria Library: Every Criterion Explained | AccessBell"
-  description="All 87 WCAG success criteria in one library. Plain-language explanations, how to test each one, common failures, and which ones AccessBell's checker automates."
-  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: 'WCAG Success Criteria', href: '/resources/wcag' }]}
+  description="Every WCAG success criterion explained, grouped by the four POUR principles: what each requires, how to test it, common failures and what AccessBell automates."
+  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: 'WCAG Library', href: '/resources/wcag' }]}
   schema={schema}
 >
   <section class="page-hero" aria-labelledby="wcag-title">
@@ -54,8 +62,26 @@ const schema = [
   <article class="container checker-body">
     <section aria-labelledby="wcag-intro">
       <h2 id="wcag-intro" class="visually-hidden">About this library</h2>
-      <p>The <a href="https://www.w3.org/TR/WCAG22/" rel="noopener noreferrer">W3C's WCAG 2.2</a> groups its 87 success criteria under four principles &mdash; Perceivable, Operable, Understandable and Robust &mdash; and three conformance levels, A, AA and AAA. Most legal standards, including the ADA, Section 508 and the European Accessibility Act, point to Level AA. {automated} of the 87 criteria have at least one <a href="https://github.com/dequelabs/axe-core" rel="noopener noreferrer">axe-core</a> rule that can catch a failure automatically; the rest need a person to judge, and every page here says which is which.</p>
+      <p>The <a href="https://www.w3.org/TR/WCAG22/" rel="noopener noreferrer">W3C's WCAG 2.2</a> has {all.length} success criteria (87 counting 4.1.1 Parsing, which WCAG 2.2 removed). They are grouped under four principles, known by the acronym <strong>POUR</strong>: Perceivable, Operable, Understandable and Robust, and three conformance levels, A, AA and AAA. Most legal standards, including the ADA, Section 508 and the European Accessibility Act, point to Level AA. {automated} of the {all.length} criteria have at least one <a href="https://github.com/dequelabs/axe-core" rel="noopener noreferrer">axe-core</a> rule that can catch a failure automatically; the rest need a person to judge, and every page here says which is which.</p>
       <p>Looking for a scan instead of a reference page? Run the free checker built for the standard you need: {CHECKERS.map((c, i) => <>{i > 0 && ', '}<a href={checkerPath(c)}>{c.name}</a></>)}.</p>
+    </section>
+
+    <section aria-labelledby="pour-title" class="pour-section">
+      <h2 id="pour-title">The POUR Principles of WCAG</h2>
+      <p>POUR stands for the four principles every WCAG success criterion sits under. If content fails any one of them, some people cannot use it at all. The W3C explains them in its <a href="https://www.w3.org/WAI/fundamentals/accessibility-principles/" rel="noopener noreferrer">accessibility principles</a> overview.</p>
+      <ol class="pour-grid">
+        {POUR.map((p) => {
+          const g = groups.find((x) => x.principle === p.name)!;
+          return (
+            <li>
+              <span class="pour-letter" aria-hidden="true">{p.name[0]}</span>
+              <h3><a href={`#principle-${p.name.toLowerCase()}`}>{p.name}</a></h3>
+              <p>{p.text}</p>
+              <p class="pour-meta">{g.criteria.length} criteria &middot; for example <a href={criterionPath(p.example)}>{p.example} {CRITERIA[p.example].name}</a></p>
+            </li>
+          );
+        })}
+      </ol>
     </section>
 
     {guides.length > 0 && (
@@ -71,7 +97,7 @@ const schema = [
     <section aria-labelledby="wcag-groups">
       <h2 id="wcag-groups" class="visually-hidden">Success criteria by principle</h2>
       {groups.map((g, i) => (
-        <details class="cov-group" open={i === 0}>
+        <details class="cov-group" open={i === 0} id={`principle-${g.principle.toLowerCase()}`}>
           <summary>{g.principle} <span>{g.criteria.length} criteria, {g.criteria.filter((c) => c.ruleCount > 0).length} automated</span></summary>
           <div class="table-scroll" role="region" aria-label={`${g.principle} success criteria`} tabindex="0">
             <table class="cov-list">

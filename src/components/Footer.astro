@@ -1,5 +1,5 @@
 ---
-import { FOOTER_NAV, SITE } from '../config/site';
+import { FOOTER_GROUPS, SITE } from '../config/site';
 import LogoMark from './LogoMark.astro';
 
 const year = new Date().getFullYear();
@@ -24,19 +24,23 @@ const socials = [
 <footer class="site-footer">
   <div class="container">
     <div class="footer-top">
-      <div>
+      <div class="footer-brand">
         <a class="brand" href="/" aria-label="AccessBell home">
           <LogoMark />
           <span>Access<span class="brand-bell">Bell</span></span>
         </a>
-        <p class="footer-tagline">The website accessibility checker for teams that take WCAG, ADA and global compliance seriously.</p>
+        <p class="footer-tagline">Website accessibility monitoring that helps you find WCAG and ADA issues and fix them.</p>
+        <a class="btn btn-accent footer-cta" href="/app/signup">Start 3-day free trial</a>
       </div>
       <nav class="footer-nav" aria-label="Footer">
-        <ul>
-          {FOOTER_NAV.map((item) => (
-            <li><a href={item.href}>{item.label}</a></li>
-          ))}
-        </ul>
+        {FOOTER_GROUPS.map((g) => (
+          <div class="footer-col">
+            <p class="footer-heading" id={`footer-${g.title.toLowerCase()}`}>{g.title}</p>
+            <ul aria-labelledby={`footer-${g.title.toLowerCase()}`}>
+              {g.links.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+            </ul>
+          </div>
+        ))}
       </nav>
     </div>
     <div class="footer-bottom">
