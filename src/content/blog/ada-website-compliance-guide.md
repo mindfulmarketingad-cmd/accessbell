@@ -91,3 +91,5 @@ Choosing a tool? Compare the [5 best ADA compliance software for small businesse
 Want the hands-on version? Read [ADA website accessibility: how to use AccessBell to avoid lawsuits](/blog/ada-website-accessibility).
 
 For EU requirements, read [the European Accessibility Act: technical aspects of compliance](/blog/european-accessibility-act-technical-compliance).
+
+Running your site on a specific platform? Use the [Shopify accessibility checker](/platforms/shopify-accessibility-checker), [WooCommerce accessibility checker](/platforms/woocommerce-accessibility-checker), [WordPress accessibility checker](/platforms/wordpress-accessibility-checker) or [Wix accessibility checker](/platforms/wix-accessibility-checker) checker for fixes written for it, or browse [all platform accessibility checkers](/platforms).

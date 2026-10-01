@@ -162,3 +162,5 @@ accessiBe's accessWidget is the best-known accessibility overlay. It uses AI to 
 5. **Check the price at your size.** Traffic-based pricing can climb as you grow; per-domain pricing stays predictable.
 
 Need expert audits as well? See our comparison of [digital accessibility platforms with ongoing monitoring and audits](/blog/digital-accessibility-platforms), or compare the [best website accessibility testing software](/blog/best-website-accessibility-testing-software) for development teams.
+
+Not sure where to start? Scan your site with the [Shopify accessibility checker](/platforms/shopify-accessibility-checker), [WooCommerce accessibility checker](/platforms/woocommerce-accessibility-checker), [Wix accessibility checker](/platforms/wix-accessibility-checker) or [Squarespace accessibility checker](/platforms/squarespace-accessibility-checker) checker, or see [every platform checker](/platforms).

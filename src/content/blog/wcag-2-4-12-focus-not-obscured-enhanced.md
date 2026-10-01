@@ -138,3 +138,5 @@ Our [keyboard accessibility testing guide](/blog/keyboard-accessibility-testing)
 - [1.4.10 Reflow](/resources/wcag/1-4-10-reflow): content works at 400% zoom without scrolling in two directions.
 
 For the rest of the new WCAG 2.2 requirements, see [what you should know about WCAG 2.2](/blog/what-you-should-know-about-wcag-2-2) and [2.5.8 Target Size (Minimum)](/blog/wcag-2-5-8-target-size-minimum).
+
+Sticky headers and banners are common in storefronts and apps. See the [PrestaShop accessibility checker](/platforms/prestashop-accessibility-checker), [Shopify accessibility checker](/platforms/shopify-accessibility-checker) and [Next.js accessibility checker](/platforms/nextjs-accessibility-checker) checkers.

@@ -12,5 +12,11 @@
   "joomla-accessibility-checker": "siJoomla",
   "hubspot-cms-accessibility-checker": "siHubspot",
   "framer-accessibility-checker": "siFramer",
-  "ghost-accessibility-checker": "siGhost"
+  "ghost-accessibility-checker": "siGhost",
+  "elementor-accessibility-checker": "siElementor",
+  "prestashop-accessibility-checker": "siPrestashop",
+  "nextjs-accessibility-checker": "siNextdotjs",
+  "react-accessibility-checker": "siReact",
+  "hostinger-accessibility-checker": "siHostinger",
+  "wp-engine-accessibility-checker": "siWpengine"
 }

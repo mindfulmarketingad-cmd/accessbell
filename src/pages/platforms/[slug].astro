@@ -24,8 +24,8 @@ const url = `${SITE.url}${platformPath(p)}`;
 const author = await getEntry('authors', 'joseph-edwards');
 const isHost = p.kind === 'host';
 // Every other platform checker, grouped by type with this platform's own type first.
-const GROUP_ORDER = ['ecommerce', 'cms', 'builder', 'host'] as const;
-const GROUP_HEADING = { ecommerce: 'E-commerce platforms', cms: 'Content management systems', builder: 'Website builders', host: 'Web hosts' } as const;
+const GROUP_ORDER = ['ecommerce', 'cms', 'builder', 'framework', 'host'] as const;
+const GROUP_HEADING = { ecommerce: 'E-commerce platforms', cms: 'Content management systems', builder: 'Website and page builders', framework: 'Frameworks and developer platforms', host: 'Web hosts' } as const;
 const otherGroups = [p.group, ...GROUP_ORDER.filter((g) => g !== p.group)]
   .map((g) => ({ id: g, heading: GROUP_HEADING[g], items: PLATFORMS.filter((o) => o.group === g && o.slug !== p.slug) }))
   .filter((g) => g.items.length);

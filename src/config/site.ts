@@ -18,7 +18,7 @@ export const SITE = {
   },
 } as const;
 
-const GROUP_LABEL = { ecommerce: 'E-commerce', cms: 'CMS', builder: 'Site builder', host: 'Web host' } as const;
+const GROUP_LABEL = { ecommerce: 'E-commerce', cms: 'CMS', builder: 'Site builder', framework: 'Framework', host: 'Web host' } as const;
 
 export const HEADER_NAV = [
   { label: 'Home', href: '/' },

@@ -10,7 +10,7 @@ export type Platform = {
   /** Site builder or CMS (default), or a web host whose customers run many kinds of site. */
   kind?: 'builder' | 'host';
   /** Used to group platforms on the hub page and to choose related checkers. */
-  group: 'ecommerce' | 'cms' | 'builder' | 'host';
+  group: 'ecommerce' | 'cms' | 'builder' | 'framework' | 'host';
   seoTitle: string;
   description: string;
   lead: string;

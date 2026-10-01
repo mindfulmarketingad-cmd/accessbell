@@ -157,3 +157,5 @@ The best results come from combining tools, each where it is strongest:
 4. **By hand:** test key tasks with a keyboard and a screen reader. Our guide to [automated vs manual accessibility testing](/blog/automated-vs-manual-accessibility-testing) and the [keyboard accessibility testing](/blog/keyboard-accessibility-testing) walkthrough show how.
 
 We also ran [10 accessibility checker tools against the same test website](/blog/we-tested-10-accessibility-checker-tools) and published every result. If you are a small business buying for compliance, see the [best ADA compliance software for small businesses](/blog/best-ada-compliance-software-for-small-businesses). Or [scan your site free](/#scan) and see what AccessBell finds in under a minute.
+
+Building with a framework? See how to test a [React accessibility checker](/platforms/react-accessibility-checker) or [Next.js accessibility checker](/platforms/nextjs-accessibility-checker) app after it renders, or find your CMS in our [platform accessibility checkers](/platforms).

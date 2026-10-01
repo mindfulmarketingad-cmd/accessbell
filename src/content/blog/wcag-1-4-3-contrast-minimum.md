@@ -149,3 +149,5 @@ For a quick reference, see our [1.4.3 Contrast (Minimum) page](/resources/wcag/1
 - [1.4.8 Visual Presentation](/blog/wcag-1-4-8-visual-presentation): people can choose their own text and background colors.
 
 Want to find low-contrast text across a page in seconds? [Run a free WCAG scan](/#scan), then check text on images by hand.
+
+Builders put colors in global settings, so one fix can correct a whole site. See the [Elementor accessibility checker](/platforms/elementor-accessibility-checker), [Divi accessibility checker](/platforms/divi-accessibility-checker), [Wix accessibility checker](/platforms/wix-accessibility-checker) and [Squarespace accessibility checker](/platforms/squarespace-accessibility-checker) checkers.

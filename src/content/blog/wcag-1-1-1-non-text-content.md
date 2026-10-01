@@ -166,3 +166,5 @@ For a quick reference, see our [1.1.1 Non-text Content page](/resources/wcag/1-1
 - [4.1.2 Name, Role, Value](/resources/wcag/4-1-2-name-role-value): every control has a name that assistive technology can read.
 
 Want to find missing alt text across a page in seconds? [Run a free WCAG scan](/#scan), then review the results by hand.
+
+Fixing alt text on a platform? See where to add it in [WordPress accessibility checker](/platforms/wordpress-accessibility-checker), [Shopify accessibility checker](/platforms/shopify-accessibility-checker), [Wix accessibility checker](/platforms/wix-accessibility-checker) and [Squarespace accessibility checker](/platforms/squarespace-accessibility-checker), or pick yours from [all platform checkers](/platforms).
