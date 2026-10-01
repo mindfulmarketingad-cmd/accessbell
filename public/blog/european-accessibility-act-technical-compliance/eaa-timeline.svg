@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 330" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+<rect width="960" height="330" fill="#f4f8f3"/>
+<text x="480.0" y="48" font-size="22" font-weight="800" fill="#22262f" text-anchor="middle">European Accessibility Act: key dates</text>
+<line x1="90" y1="190" x2="870" y2="190" stroke="#cfd4ce" stroke-width="4" stroke-linecap="round"/>
+<circle cx="90.0" cy="190" r="10" fill="#fff" stroke="#44723f" stroke-width="4"/>
+<text x="90.0" y="98" font-size="15" font-weight="800" fill="#22262f" text-anchor="middle">Apr 2019</text>
+<text x="90.0" y="120" font-size="13.5" font-weight="500" fill="#353a47" text-anchor="middle">Directive</text>
+<text x="90.0" y="138" font-size="13.5" font-weight="500" fill="#353a47" text-anchor="middle">2019/882 adopted</text>
+<circle cx="246.0" cy="190" r="10" fill="#fff" stroke="#44723f" stroke-width="4"/>
+<text x="246.0" y="238" font-size="15" font-weight="800" fill="#22262f" text-anchor="middle">Jun 28, 2022</text>
+<text x="246.0" y="260" font-size="13.5" font-weight="500" fill="#353a47" text-anchor="middle">Deadline for</text>
+<text x="246.0" y="278" font-size="13.5" font-weight="500" fill="#353a47" text-anchor="middle">national laws</text>
+<circle cx="402.0" cy="190" r="13" fill="#44723f" stroke="#44723f" stroke-width="4"/>
+<text x="402.0" y="98" font-size="15" font-weight="800" fill="#44723f" text-anchor="middle">Jun 28, 2025</text>
+<text x="402.0" y="120" font-size="13.5" font-weight="500" fill="#353a47" text-anchor="middle">EAA applies to</text>
+<text x="402.0" y="138" font-size="13.5" font-weight="500" fill="#353a47" text-anchor="middle">new products, services</text>
+<circle cx="558.0" cy="190" r="13" fill="#44723f" stroke="#44723f" stroke-width="4"/>
+<text x="558.0" y="238" font-size="15" font-weight="800" fill="#44723f" text-anchor="middle">Sep 2, 2026</text>
+<text x="558.0" y="260" font-size="13.5" font-weight="500" fill="#353a47" text-anchor="middle">EN 301 549 V4.1.1</text>
+<text x="558.0" y="278" font-size="13.5" font-weight="500" fill="#353a47" text-anchor="middle">published (WCAG 2.2)</text>
+<circle cx="714.0" cy="190" r="10" fill="#fff" stroke="#44723f" stroke-width="4"/>
+<text x="714.0" y="98" font-size="15" font-weight="800" fill="#22262f" text-anchor="middle">End of 2026</text>
+<text x="714.0" y="120" font-size="13.5" font-weight="500" fill="#353a47" text-anchor="middle">V4.1.1 expected in</text>
+<text x="714.0" y="138" font-size="13.5" font-weight="500" fill="#353a47" text-anchor="middle">the Official Journal</text>
+<circle cx="870.0" cy="190" r="10" fill="#fff" stroke="#44723f" stroke-width="4"/>
+<text x="870.0" y="238" font-size="15" font-weight="800" fill="#22262f" text-anchor="middle">Jun 28, 2030</text>
+<text x="870.0" y="260" font-size="13.5" font-weight="500" fill="#353a47" text-anchor="middle">Main transition</text>
+<text x="870.0" y="278" font-size="13.5" font-weight="500" fill="#353a47" text-anchor="middle">period ends</text>
+</svg>

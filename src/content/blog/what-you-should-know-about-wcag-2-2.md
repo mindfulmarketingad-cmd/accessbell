@@ -118,3 +118,5 @@ No single tool checks everything WCAG 2.2 covers. The most reliable results come
 **Manual review** is necessary for the criteria that require human judgment, including several of the criteria new to 2.2: whether a focus indicator is actually obscured in your specific layout, whether a dragging interaction has a usable alternative, and whether your login flow genuinely avoids memory-dependent steps. Our guide to [automated vs. manual accessibility testing](/blog/automated-vs-manual-accessibility-testing) breaks down exactly which checks fall into each category, and involving people who actually use assistive technology in your testing, where possible, surfaces barriers a checklist alone will miss.
 
 Whichever approach you start with, an accurate picture of where you stand today is the necessary first step. [Run a free scan](/#scan) to see how many WCAG 2.2 issues your page has in under a minute, no account required.
+
+Selling in the EU? EN 301 549 version 4.1.1 now uses WCAG 2.2. See [the European Accessibility Act: technical aspects of compliance](/blog/european-accessibility-act-technical-compliance).

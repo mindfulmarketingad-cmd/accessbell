@@ -89,3 +89,5 @@ The ADA applies to websites of businesses open to the public and of state and lo
 Choosing a tool? Compare the [5 best ADA compliance software for small businesses](/blog/best-ada-compliance-software-for-small-businesses).
 
 Want the hands-on version? Read [ADA website accessibility: how to use AccessBell to avoid lawsuits](/blog/ada-website-accessibility).
+
+For EU requirements, read [the European Accessibility Act: technical aspects of compliance](/blog/european-accessibility-act-technical-compliance).

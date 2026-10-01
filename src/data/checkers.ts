@@ -303,14 +303,15 @@ export const CHECKERS: Checker[] = [
     whatIs: {
       heading: 'What Is EN 301 549?',
       paragraphs: [
-        'EN 301 549 is the European standard for the accessibility of information and communication technology. It is published jointly by the European standards bodies ETSI, CEN and CENELEC, and the current version, 3.2.1, dates from 2021.',
+        'EN 301 549 is the European standard for the accessibility of information and communication technology. It is published jointly by the European standards bodies ETSI, CEN and CENELEC. The version cited in the Official Journal of the EU is 3.2.1, from 2021. Version 4.1.1, published on September 2, 2026, is the first written for the European Accessibility Act and moves the web requirements to WCAG 2.2 Level A and AA; it is expected to be cited around the end of 2026.',
         'The standard covers far more than websites, including software, documents, hardware and two-way voice communication. For web content, Clause 9 reproduces the WCAG 2.1 Level A and AA success criteria, so a web page that meets WCAG 2.1 AA meets the web requirements of EN 301 549. That is why this checker runs the WCAG 2.1 AA rules when you choose EN 301 549.',
-        'EN 301 549 is the harmonised standard for the EU Web Accessibility Directive, which covers public sector websites and apps. It is also the reference point for the European Accessibility Act (EAA), which applies to many consumer products and services, including e-commerce, banking, transport and e-books, from June 28, 2025. A new version of the standard is being prepared to support the EAA.',
+        'EN 301 549 is the harmonised standard for the EU Web Accessibility Directive, which covers public sector websites and apps. It is also the reference point for the European Accessibility Act (EAA), which applies to many consumer products and services, including e-commerce, banking, transport and e-books, from June 28, 2025. Version 4.1.1 was written to support the EAA.',
       ],
     },
     facts: [
       ['Published by', 'ETSI, CEN and CENELEC'],
-      ['Current version', '3.2.1 (2021)'],
+      ['Cited version', '3.2.1 (2021), WCAG 2.1 for the web'],
+      ['Latest version', '4.1.1 (September 2026), WCAG 2.2 for the web'],
       ['Web requirements', 'Clause 9: WCAG 2.1 Level A and AA'],
       ['Used for', 'EU Web Accessibility Directive and the European Accessibility Act'],
       ['EAA applies from', 'June 28, 2025'],
@@ -347,11 +348,12 @@ export const CHECKERS: Checker[] = [
     faqs: [
       { q: 'Is EN 301 549 the same as WCAG 2.1?', a: 'For web content, yes: Clause 9 reproduces the WCAG 2.1 Level A and AA success criteria. The full standard also covers documents, software, hardware, functional performance and support, so it is broader than WCAG.' },
       { q: 'Does the European Accessibility Act apply to companies outside the EU?', a: 'Yes, if they sell covered products or services to consumers in the EU. Microenterprises providing services, with fewer than 10 employees and annual turnover or balance sheet of no more than 2 million euros, are exempt from the service requirements.' },
-      { q: 'Will EN 301 549 move to WCAG 2.2?', a: 'A new version of EN 301 549 is being prepared to support the European Accessibility Act, and it is expected to reference a newer version of WCAG. Testing against WCAG 2.2 AA now covers WCAG 2.1 AA as well, so you are prepared either way.' },
+      { q: 'Will EN 301 549 move to WCAG 2.2?', a: 'Yes. Version 4.1.1, published on September 2, 2026, adds the six WCAG 2.2 Level A and AA success criteria. It gives a presumption of conformity once it is cited in the Official Journal, expected around the end of 2026. Choose WCAG 2.2 AA in AccessBell to test against it now; that also covers WCAG 2.1 AA.' },
       { q: 'Can I claim EN 301 549 conformance from a scan?', a: 'An automated scan covers part of Clause 9. A conformance claim also needs manual testing of the web criteria that tools cannot judge, plus any other clauses that apply to your product.' },
     ],
     sources: [
       { label: 'ETSI: EN 301 549 V3.2.1 (2021-03)', href: 'https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf' },
+      { label: 'National Disability Authority (Ireland): EN 301 549 V4.1.1 published', href: 'https://nda.ie/news/en301549-published' },
       { label: 'EUR-Lex: Directive (EU) 2019/882, the European Accessibility Act', href: 'https://eur-lex.europa.eu/eli/dir/2019/882/oj' },
       { label: 'EUR-Lex: Directive (EU) 2016/2102, the Web Accessibility Directive', href: 'https://eur-lex.europa.eu/eli/dir/2016/2102/oj' },
     ],
