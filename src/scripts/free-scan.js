@@ -201,7 +201,7 @@ function showResults(r, url) {
               el('span', { class: `tag tag-${i.impact}`, text: IMPACT_LABEL[i.impact] || i.impact }),
               // The most urgent problems get a direct route to a plan that fixes them.
               URGENT.has(i.impact)
-                ? el('a', { class: 'btn btn-sm btn-resolve', href: '/pricing' }, ['Resolve immediately', el('span', { class: 'visually-hidden', text: `: ${i.title}` })])
+                ? el('a', { class: 'btn btn-sm btn-resolve', href: '/pricing' }, ['Resolve Now', el('span', { class: 'visually-hidden', text: `: ${i.title}` })])
                 : null,
             ]),
           ]),

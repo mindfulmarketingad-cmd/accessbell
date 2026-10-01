@@ -6769,25 +6769,25 @@ h2[tabindex='-1']:focus {
 .scan-result-side {
   display: flex;
   flex: none;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 8px;
+  align-items: center;
+  gap: 10px;
 }
 .btn-resolve {
-  --btn-bg: var(--danger);
-  --btn-border: var(--danger);
+  --btn-bg: var(--sage-700);
+  --btn-fg: #fff;
+  --btn-border: var(--sage-700);
   min-height: 36px;
   padding: 6px 14px;
   font-size: 0.875rem;
   white-space: nowrap;
 }
+.btn-resolve:hover {
+  --btn-bg: var(--sage-800);
+  --btn-border: var(--sage-800);
+}
 @media (max-width: 560px) {
   .scan-result-list li {
     flex-direction: column;
-  }
-  .scan-result-side {
-    flex-direction: row;
-    align-items: center;
   }
 }
 .scan-result-more {
