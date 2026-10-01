@@ -524,7 +524,7 @@ a:hover {
   width: 20px;
   height: 20px;
 }
-@media (max-width: 1099px) {
+@media (max-width: 1199px) {
   .nav-toggle {
     display: inline-flex;
   }
@@ -7808,7 +7808,7 @@ img.platform-logo-lg {
 }
 
 /* Mid-width desktops: keep the full header on one line. */
-@media (min-width: 1100px) and (max-width: 1199px) {
+@media (min-width: 1200px) {
   .primary-nav ul {
     gap: 0;
   }
@@ -7846,4 +7846,7 @@ img.platform-logo-lg {
 }
 .cmp-lead a {
   color: #fff;
+}
+.primary-nav a {
+  white-space: nowrap;
 }

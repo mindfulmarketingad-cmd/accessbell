@@ -31,7 +31,7 @@ faqs:
 4.1.2 Name, Role, Value is a Level A requirement under the **Robust** principle. It applies to user interface components: links, buttons, form fields, menus, tabs, sliders and any custom widget you build. For each one, three things must be available to assistive technology through the code:
 
 <figure>
-  <img src="/blog/wcag-4-1-2-name-role-value/name-role-value.svg" width="800" height="410" loading="lazy" alt="A Mute button that is switched on. A screen reader reads: Mute, toggle button, pressed. Three cards explain the parts: Name, what the control is called; Role, what kind of control it is; and Value or state, what it is set to right now.">
+  <img src="/images/wcag/4-1-2-name-role-value/name-role-value.svg" width="800" height="410" loading="lazy" alt="A Mute button that is switched on. A screen reader reads: Mute, toggle button, pressed. Three cards explain the parts: Name, what the control is called; Role, what kind of control it is; and Value or state, what it is set to right now.">
   <figcaption>Name, role and value: the three things a screen reader needs to describe a control.</figcaption>
 </figure>
 
@@ -68,7 +68,7 @@ Failures of 4.1.2 Name, Role, Value cause real problems:
 The W3C's first rule of ARIA is to use a native element if one does the job. A real `<button>` comes with a role, a name from its text, keyboard support and the right states. A `<div>` styled to look like a button has none of those.
 
 <figure>
-  <img src="/blog/wcag-4-1-2-name-role-value/div-vs-button.svg" width="800" height="404" loading="lazy" alt="Two identical green Save buttons. The styled div has no role, is skipped by the Tab key and does nothing on Enter or Space. The native button has the name Save, the role button, can be reached with Tab and is activated with Enter or Space.">
+  <img src="/images/wcag/4-1-2-name-role-value/div-vs-button.svg" width="800" height="404" loading="lazy" alt="Two identical green Save buttons. The styled div has no role, is skipped by the Tab key and does nothing on Enter or Space. The native button has the name Save, the role button, can be reached with Tab and is activated with Enter or Space.">
   <figcaption>The two buttons look alike. Only the native one works for everyone.</figcaption>
 </figure>
 
@@ -99,7 +99,7 @@ Every interactive control needs an accessible name. In order of preference:
 <button type="button" aria-label="Close dialog"><svg aria-hidden="true">...</svg></button>
 ```
 
-Keep the name in step with the visible text. If a button shows "Search" but its `aria-label` says "Find", people using speech recognition who say "click Search" get no result. That is the point of [2.5.3 Label in Name](/resources/wcag/2-5-3-label-in-name). For form fields, see our guide to [3.3.2 Labels or Instructions](/blog/wcag-3-3-2-labels-or-instructions).
+Keep the name in step with the visible text. If a button shows "Search" but its `aria-label` says "Find", people using speech recognition who say "click Search" get no result. That is the point of [2.5.3 Label in Name](/resources/wcag/2-5-3-label-in-name). For form fields, see our guide to [3.3.2 Labels or Instructions](/resources/wcag/3-3-2-labels-or-instructions).
 
 ### Set the right role, and only when needed
 
@@ -127,7 +127,7 @@ Controls that change need their state exposed and updated. Common attributes:
 Native controls update these on their own: a real checkbox tracks `checked`, and a real `<details>` tracks whether it is open. For custom widgets, change the attribute in the same code that changes the interface:
 
 <figure>
-  <img src="/blog/wcag-4-1-2-name-role-value/state-in-sync.svg" width="800" height="388" loading="lazy" alt="Two versions of a Menu button. Closed: aria-expanded is false and a screen reader says Menu, button, collapsed. Open: two menu items show, aria-expanded is true and a screen reader says Menu, button, expanded.">
+  <img src="/images/wcag/4-1-2-name-role-value/state-in-sync.svg" width="800" height="388" loading="lazy" alt="Two versions of a Menu button. Closed: aria-expanded is false and a screen reader says Menu, button, collapsed. Open: two menu items show, aria-expanded is true and a screen reader says Menu, button, expanded.">
   <figcaption>When the menu opens, the code has to say so as well.</figcaption>
 </figure>
 
@@ -139,7 +139,7 @@ button.addEventListener('click', () => {
 });
 ```
 
-Short updates that are not tied to a control, such as "Saved", fall under [4.1.3 Status Messages](/blog/wcag-4-1-3-status-messages) instead.
+Short updates that are not tied to a control, such as "Saved", fall under [4.1.3 Status Messages](/resources/wcag/4-1-3-status-messages) instead.
 
 ### Common failures to watch for
 
@@ -169,7 +169,7 @@ Unlike some criteria, a lot of 4.1.2 can be checked automatically. Combine tools
 - [1.3.1 Info and Relationships](/resources/wcag/1-3-1-info-and-relationships): structure and labels are available in the code.
 - [2.1.1 Keyboard](/resources/wcag/2-1-1-keyboard): everything works from the keyboard.
 - [2.5.3 Label in Name](/resources/wcag/2-5-3-label-in-name): the accessible name contains the visible label.
-- [4.1.3 Status Messages](/blog/wcag-4-1-3-status-messages): updates are announced without moving focus.
+- [4.1.3 Status Messages](/resources/wcag/4-1-3-status-messages): updates are announced without moving focus.
 
 Want to find missing names and roles across your whole site? [Run a free WCAG scan](/#scan) of any page, or [start a 3-day free trial](/app/signup) to monitor up to 500 URLs per domain every day.
 

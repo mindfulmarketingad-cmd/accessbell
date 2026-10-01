@@ -33,10 +33,10 @@ faqs:
 - **Live:** broadcast as it happens, not recorded and published later
 - **Audio-only:** there is sound but no video, like a radio stream or an audio-only event
 
-For that content, you provide a [text alternative](/blog/wcag-1-1-1-non-text-content) with equivalent information, while the audio is live. That usually means **real-time captions** or, when the speaker reads from a script, a **transcript** of that script. A good text alternative includes who is speaking and meaningful sounds, such as [applause] or [music].
+For that content, you provide a [text alternative](/resources/wcag/1-1-1-non-text-content) with equivalent information, while the audio is live. That usually means **real-time captions** or, when the speaker reads from a script, a **transcript** of that script. A good text alternative includes who is speaking and meaningful sounds, such as [applause] or [music].
 
 <figure>
-  <img src="/blog/wcag-1-2-9-audio-only-live/live-captions.svg" width="800" height="330" loading="lazy" alt="A live audio player for Trail Talk Radio with a waveform and pause button. Beside it, a live captions panel shows the conversation as text with speaker labels, Host Sam and Guest Ana, and the sound cue [laughter].">
+  <img src="/images/wcag/1-2-9-audio-only-live/live-captions.svg" width="800" height="330" loading="lazy" alt="A live audio player for Trail Talk Radio with a waveform and pause button. Beside it, a live captions panel shows the conversation as text with speaker labels, Host Sam and Guest Ana, and the sound cue [laughter].">
   <figcaption>Live captions next to an audio stream, with speaker names and sounds, meet 1.2.9 Audio-only (Live).</figcaption>
 </figure>
 
@@ -77,7 +77,7 @@ Automatic captions are improving and are better than nothing, but they often mis
 If the live audio is a prepared statement read word for word, a transcript of that script can be the text alternative. This is the W3C technique [G151, providing a link to a text transcript of a prepared statement or script](https://www.w3.org/WAI/WCAG22/Techniques/general/G151).
 
 <figure>
-  <img src="/blog/wcag-1-2-9-audio-only-live/transcript-link.svg" width="800" height="330" loading="lazy" alt="A live audio player for a City Council statement. Beside it, a panel titled Prepared statement explains that the statement is read word for word, with a prominent Read the transcript button.">
+  <img src="/images/wcag/1-2-9-audio-only-live/transcript-link.svg" width="800" height="330" loading="lazy" alt="A live audio player for a City Council statement. Beside it, a panel titled Prepared statement explains that the statement is read word for word, with a prominent Read the transcript button.">
   <figcaption>For a scripted live broadcast, a clearly linked transcript of the script can meet 1.2.9 Audio-only (Live).</figcaption>
 </figure>
 

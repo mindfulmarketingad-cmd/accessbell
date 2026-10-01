@@ -33,7 +33,7 @@ faqs:
 4.1.3 Status Messages is a Level AA requirement under the **Robust** principle. It was added in WCAG 2.1. It says that when a status message appears, it must be coded with an ARIA role or property, so assistive technology can announce it **without moving focus** to it.
 
 <figure>
-  <img src="/blog/wcag-4-1-3-status-messages/added-to-cart.svg" width="800" height="440" loading="lazy" alt="Two versions of a product card for a Day Pack 22L with an Add to cart button and the message Added to cart. 2 items in cart. In the failing version the message is a plain div and the screen reader stays silent. In the passing version the message has role=status and the screen reader says Added to cart. 2 items in cart.">
+  <img src="/images/wcag/4-1-3-status-messages/added-to-cart.svg" width="800" height="440" loading="lazy" alt="Two versions of a product card for a Day Pack 22L with an Add to cart button and the message Added to cart. 2 items in cart. In the failing version the message is a plain div and the screen reader stays silent. In the passing version the message has role=status and the screen reader says Added to cart. 2 items in cart.">
   <figcaption>The message looks the same on screen. Only the coded version reaches screen reader users.</figcaption>
 </figure>
 
@@ -42,7 +42,7 @@ faqs:
 WCAG defines a status message as a change in content that is **not a change of context** and that tells people about one of these:
 
 <figure>
-  <img src="/blog/wcag-4-1-3-status-messages/what-counts.svg" width="800" height="300" loading="lazy" alt="Four kinds of status message. Success after an action: Your changes were saved. Results of a search or filter: 12 results found. Progress of a slow task: Uploading 60 percent, with a progress bar. Errors after submitting a form: 3 fields need attention.">
+  <img src="/images/wcag/4-1-3-status-messages/what-counts.svg" width="800" height="300" loading="lazy" alt="Four kinds of status message. Success after an action: Your changes were saved. Results of a search or filter: 12 results found. Progress of a slow task: Uploading 60 percent, with a progress bar. Errors after submitting a form: 3 fields need attention.">
   <figcaption>Success, results, progress and errors are the four kinds of status message WCAG describes.</figcaption>
 </figure>
 
@@ -97,7 +97,7 @@ Two details matter:
 ### Use role="alert" only for urgent messages
 
 <figure>
-  <img src="/blog/wcag-4-1-3-status-messages/status-vs-alert.svg" width="800" height="400" loading="lazy" alt="Two ways to announce a message. role=status is polite and waits its turn: the screen reader finishes saying Shipping address, then says Your changes were saved. role=alert is assertive and speaks immediately: it cuts off Shipping address to say Card number is invalid.">
+  <img src="/images/wcag/4-1-3-status-messages/status-vs-alert.svg" width="800" height="400" loading="lazy" alt="Two ways to announce a message. role=status is polite and waits its turn: the screen reader finishes saying Shipping address, then says Your changes were saved. role=alert is assertive and speaks immediately: it cuts off Shipping address to say Card number is invalid.">
   <figcaption>role="status" waits for a pause. role="alert" interrupts, so keep it for messages that cannot wait.</figcaption>
 </figure>
 
@@ -119,7 +119,7 @@ For a task that takes a while, such as an upload or a multi-step import, `role="
 Update `aria-valuenow` as the task moves along. A progress bar is not a live region, though, and screen readers do not all speak every change to its value. So do both: keep the visual bar accurate, and also write milestones such as "Uploading, 50 percent" and "Upload complete" into your `role="status"` container.
 
 <figure>
-  <img src="/blog/wcag-4-1-3-status-messages/progress-announcements.svg" width="800" height="410" loading="lazy" alt="An upload of report.pdf at 60 percent, coded as a progressbar with aria-valuenow 60. Below it, four milestone announcements a screen reader might make through a status region: Uploading 25 percent, 50 percent, 75 percent and Upload complete.">
+  <img src="/images/wcag/4-1-3-status-messages/progress-announcements.svg" width="800" height="410" loading="lazy" alt="An upload of report.pdf at 60 percent, coded as a progressbar with aria-valuenow 60. Below it, four milestone announcements a screen reader might make through a status region: Uploading 25 percent, 50 percent, 75 percent and Upload complete.">
   <figcaption>Show every step on screen, and announce the milestones.</figcaption>
 </figure>
 
@@ -153,7 +153,7 @@ A validation error is a status message when it appears without moving focus. Giv
 `aria-describedby` has strong support. The newer `aria-errormessage` attribute was designed for exactly this job, but support is still uneven across browsers and assistive technology, so `aria-describedby` is the safer choice today. Without either one, a person who fills in a form and presses Submit may hear nothing and assume it worked. See [3.3.1 Error Identification](/resources/wcag/3-3-1-error-identification) for the wording requirements.
 
 <figure>
-  <img src="/blog/wcag-4-1-3-status-messages/error-message-link.svg" width="800" height="412" loading="lazy" alt="An email field with a red outline holds sam@example and shows the error Enter an email address like name@example.com. The input has aria-invalid true and aria-describedby email-error, which matches the id of the error paragraph, so a screen reader reads the error with the field.">
+  <img src="/images/wcag/4-1-3-status-messages/error-message-link.svg" width="800" height="412" loading="lazy" alt="An email field with a red outline holds sam@example and shows the error Enter an email address like name@example.com. The input has aria-invalid true and aria-describedby email-error, which matches the id of the error paragraph, so a screen reader reads the error with the field.">
   <figcaption>The matching id ties the error to the field.</figcaption>
 </figure>
 
@@ -179,7 +179,7 @@ Our [keyboard accessibility testing guide](/blog/keyboard-accessibility-testing)
 
 - [4.1.2 Name, Role, Value](/resources/wcag/4-1-2-name-role-value): controls expose their name, role and state to assistive technology.
 - [3.3.1 Error Identification](/resources/wcag/3-3-1-error-identification): input errors are identified and described in text.
-- [3.2.2 On Input](/blog/wcag-3-2-2-on-input): changing a setting does not cause an unexpected change of context.
+- [3.2.2 On Input](/resources/wcag/3-2-2-on-input): changing a setting does not cause an unexpected change of context.
 
 Want to find the issues software *can* catch while you test status messages by hand? [Run a free WCAG scan](/#scan) of any page.
 

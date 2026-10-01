@@ -89,7 +89,7 @@ Export titles, descriptions and headings from your crawl and check each page:
 - **Title tags:** every page needs a unique, descriptive title that says what the page is about. Google's guide to [title links](https://developers.google.com/search/docs/appearance/title-link) explains how titles appear in results.
 - **Meta descriptions:** a unique summary of the page that could persuade someone to click. Missing or duplicated descriptions are easy wins.
 - **Headings:** one clear H1 per page, with H2s and H3s that reflect the structure of the content. A logical heading structure also helps screen reader users move around the page.
-- **Image alt text:** informative images need alt text that describes them. It helps image search, and it is a basic accessibility requirement under [WCAG 1.1.1 Non-text Content](/blog/wcag-1-1-1-non-text-content).
+- **Image alt text:** informative images need alt text that describes them. It helps image search, and it is a basic accessibility requirement under [WCAG 1.1.1 Non-text Content](/resources/wcag/1-1-1-non-text-content).
 - **URLs:** short, readable and descriptive, using words rather than ID numbers where possible.
 
 Accessibility and on-page SEO overlap more than most audits acknowledge. For the research behind that, read our report on [what impact web accessibility has on SEO](/resources/web-accessibility-and-seo-impact).

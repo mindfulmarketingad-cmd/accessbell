@@ -36,7 +36,7 @@ faqs:
 Visual design and code order can differ. With CSS, a designer can put any element anywhere on the screen. Someone who looks at the page sees the layout. Someone using a screen reader hears the HTML order. If the two tell different stories, the page fails 1.3.2 Meaningful Sequence.
 
 <figure>
-  <img src="/blog/wcag-1-3-2-meaningful-sequence/css-order.svg" width="800" height="440" loading="lazy" alt="Two versions of a list titled How to Pitch a Tent. What you see: steps 1 to 4 in order, lay out the ground sheet, spread the tent on top, clip in the poles, stake out the corners. What a screen reader reads, following the HTML order: step 3, step 1, step 4, then step 2.">
+  <img src="/images/wcag/1-3-2-meaningful-sequence/css-order.svg" width="800" height="440" loading="lazy" alt="Two versions of a list titled How to Pitch a Tent. What you see: steps 1 to 4 in order, lay out the ground sheet, spread the tent on top, clip in the poles, stake out the corners. What a screen reader reads, following the HTML order: step 3, step 1, step 4, then step 2.">
   <figcaption>CSS can show steps in the right order while the HTML keeps them in the wrong one. A screen reader follows the HTML.</figcaption>
 </figure>
 
@@ -63,7 +63,7 @@ People who do not see the visual layout rely completely on the code order:
 1.3.2 Meaningful Sequence only applies where the sequence changes the meaning. Many parts of a page can come in more than one sensible order. A sidebar of related links can be read before or after the main article, and both make sense. What cannot happen is the sidebar landing in the middle of the article.
 
 <figure>
-  <img src="/blog/wcag-1-3-2-meaningful-sequence/correct-orders.svg" width="800" height="400" loading="lazy" alt="Three reading orders for a page with an article and a related links sidebar. Order A, article then sidebar, passes. Order B, sidebar then article, passes. Broken, article part 1, then related links, then article part 2, fails because the sidebar splits the article.">
+  <img src="/images/wcag/1-3-2-meaningful-sequence/correct-orders.svg" width="800" height="400" loading="lazy" alt="Three reading orders for a page with an article and a related links sidebar. Order A, article then sidebar, passes. Order B, sidebar then article, passes. Broken, article part 1, then related links, then article part 2, fails because the sidebar splits the article.">
   <figcaption>More than one order can be correct. An order that splits content that belongs together is not.</figcaption>
 </figure>
 
@@ -92,7 +92,7 @@ Flexbox `order`, `flex-direction: row-reverse`, CSS grid placement, floats and a
 Screen readers read tables across each row, left to right, then move to the next row. If a table is used to lay out two columns of text, the columns get woven together. This is failure [F49, using an HTML layout table that does not make sense when linearized](https://www.w3.org/WAI/WCAG22/Techniques/failures/F49).
 
 <figure>
-  <img src="/blog/wcag-1-3-2-meaningful-sequence/layout-table.svg" width="800" height="460" loading="lazy" alt="A layout table holding two stories side by side, a trail report and a gear sale, each split across four table rows. Read row by row, the lines alternate between the stories: Trail report, Gear sale, The north loop, Tents and, is open again, sleeping bags, after the floods, are 30% off.">
+  <img src="/images/wcag/1-3-2-meaningful-sequence/layout-table.svg" width="800" height="460" loading="lazy" alt="A layout table holding two stories side by side, a trail report and a gear sale, each split across four table rows. Read row by row, the lines alternate between the stories: Trail report, Gear sale, The north loop, Tents and, is open again, sleeping bags, after the floods, are 30% off.">
   <figcaption>A layout table read row by row mixes two unrelated stories together.</figcaption>
 </figure>
 
@@ -101,7 +101,7 @@ Screen readers read tables across each row, left to right, then move to the next
 Typing spaces between letters to space out a heading, such as `S A L E`, turns one word into four letters. Many screen readers read it letter by letter. The W3C lists this as failure [F32, using white space characters to control spacing within a word](https://www.w3.org/WAI/WCAG22/Techniques/failures/F32). The same problem appears when spaces or tabs are used to line up columns in plain text.
 
 <figure>
-  <img src="/blog/wcag-1-3-2-meaningful-sequence/spaced-letters.svg" width="800" height="360" loading="lazy" alt="Two headings that both look like SALE with wide letter spacing. The failing one is coded as S space A space L space E, and a screen reader reads S. A. L. E. The passing one is coded as the word Sale with a CSS class, and a screen reader reads Sale.">
+  <img src="/images/wcag/1-3-2-meaningful-sequence/spaced-letters.svg" width="800" height="360" loading="lazy" alt="Two headings that both look like SALE with wide letter spacing. The failing one is coded as S space A space L space E, and a screen reader reads S. A. L. E. The passing one is coded as the word Sale with a CSS class, and a screen reader reads Sale.">
   <figcaption>Spaces inside a word change what a screen reader says. CSS letter-spacing gives the same look without changing the word.</figcaption>
 </figure>
 

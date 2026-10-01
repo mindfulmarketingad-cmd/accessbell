@@ -40,7 +40,7 @@ A change of context is a big change that can disorient someone. The W3C lists fo
 Small changes of *content* are fine. Showing an extra field when someone picks "Other", updating a price when they change quantity, or displaying a hint are all allowed under 3.2.2 On Input.
 
 <figure>
-  <img src="/blog/wcag-3-2-2-on-input/auto-advance.svg" width="800" height="460" loading="lazy" alt="A checkout form where the phone number field is full and focus has jumped to the empty ZIP code field. A warning reads: Focus jumped to the next field before the typo in the phone number was fixed. Beside it, a Backspace key with a red X, which now deletes in the empty ZIP code field.">
+  <img src="/images/wcag/3-2-2-on-input/auto-advance.svg" width="800" height="460" loading="lazy" alt="A checkout form where the phone number field is full and focus has jumped to the empty ZIP code field. A warning reads: Focus jumped to the next field before the typo in the phone number was fixed. Beside it, a Backspace key with a red X, which now deletes in the empty ZIP code field.">
   <figcaption>Auto-advancing focus fails 3.2.2 On Input: the moment the phone number is full, focus jumps away, so Backspace no longer fixes the typo.</figcaption>
 </figure>
 
@@ -68,7 +68,7 @@ Unexpected changes are annoying for everyone. For some people they make a form i
 The simplest fix is to let people choose, then confirm. A dropdown that switches the site's language should do nothing until the visitor presses a button.
 
 <figure>
-  <img src="/blog/wcag-3-2-2-on-input/select-vs-button.svg" width="800" height="440" loading="lazy" alt="Two side-by-side examples. On the left, labelled Fails 3.2.2, a language dropdown is open with Español highlighted, and a note says the page reloads instantly: arrowing past Español switches the whole site mid-choice. On the right, labelled Passes 3.2.2, the same dropdown shows Español with an Apply button, and a note says nothing changes until the visitor presses Apply.">
+  <img src="/images/wcag/3-2-2-on-input/select-vs-button.svg" width="800" height="440" loading="lazy" alt="Two side-by-side examples. On the left, labelled Fails 3.2.2, a language dropdown is open with Español highlighted, and a note says the page reloads instantly: arrowing past Español switches the whole site mid-choice. On the right, labelled Passes 3.2.2, the same dropdown shows Español with an Apply button, and a note says nothing changes until the visitor presses Apply.">
   <figcaption>On the left, choosing an option reloads the page. On the right, the change waits for an explicit Apply button.</figcaption>
 </figure>
 
@@ -100,7 +100,7 @@ This follows the W3C technique [G80, providing a submit button to initiate a cha
 If a control really does need to act immediately, say so before people use it, and connect the instruction to the control with `aria-describedby` so screen readers announce it.
 
 <figure>
-  <img src="/blog/wcag-3-2-2-on-input/advance-notice.svg" width="800" height="300" loading="lazy" alt="A country selector with an information icon and the text: Choosing a country opens that country's store in this tab. A callout says the visitor is told in advance, so there is no surprise.">
+  <img src="/images/wcag/3-2-2-on-input/advance-notice.svg" width="800" height="300" loading="lazy" alt="A country selector with an information icon and the text: Choosing a country opens that country's store in this tab. A callout says the visitor is told in advance, so there is no surprise.">
   <figcaption>Telling people what will happen, before they use the control, meets 3.2.2 On Input.</figcaption>
 </figure>
 
@@ -123,7 +123,7 @@ Moving focus to the next field once a field is full, as in the phone number exam
 
 ## How to Test for 3.2.2 On Input
 
-Automated tools cannot reliably catch 3.2.2 On Input failures, because they depend on what happens when you *use* the page. In [our test of 10 accessibility checker tools](/blog/we-tested-10-accessibility-checker-tools), every tool missed the barriers that depend on behavior, such as a keyboard trap and an [auto-advancing carousel](/blog/wcag-2-2-2-pause-stop-hide). Test it by hand:
+Automated tools cannot reliably catch 3.2.2 On Input failures, because they depend on what happens when you *use* the page. In [our test of 10 accessibility checker tools](/blog/we-tested-10-accessibility-checker-tools), every tool missed the barriers that depend on behavior, such as a keyboard trap and an [auto-advancing carousel](/resources/wcag/2-2-2-pause-stop-hide). Test it by hand:
 
 1. Use only the keyboard. Tab to each text field, dropdown, radio button and checkbox.
 2. Type into each field and change each value, including with the arrow keys in dropdowns.

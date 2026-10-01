@@ -33,7 +33,7 @@ faqs:
 A **cognitive function test** is any task that asks people to remember, transcribe or work something out. Remembering a password, typing characters from a distorted image, solving a sum and copying a code from one device to another are all cognitive function tests.
 
 <figure>
-  <img src="/blog/wcag-3-3-8-accessible-authentication-minimum/cognitive-tests.svg" width="800" height="420" loading="lazy" alt="Cognitive function tests that need an alternative or help: remember a password, type distorted letters, solve a puzzle such as 14 times 3, and copy a code by hand from a phone. Allowed at Level AA without an alternative: recognize objects, such as picking the photos with bikes, and identify your own photo, such as picking the photo you uploaded.">
+  <img src="/images/wcag/3-3-8-accessible-authentication-minimum/cognitive-tests.svg" width="800" height="420" loading="lazy" alt="Cognitive function tests that need an alternative or help: remember a password, type distorted letters, solve a puzzle such as 14 times 3, and copy a code by hand from a phone. Allowed at Level AA without an alternative: recognize objects, such as picking the photos with bikes, and identify your own photo, such as picking the photo you uploaded.">
   <figcaption>Memory, transcription and puzzles are cognitive function tests. Recognizing objects or your own content is allowed at Level AA.</figcaption>
 </figure>
 
@@ -70,7 +70,7 @@ Locked-out users cannot reach their bank, their health records, their benefits o
 The simplest fix for a password login is not to get in the way. Password managers fill in the email and password, so nobody has to remember them. Mark up the fields with the right [`autocomplete` values](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill) and do not block paste:
 
 <figure>
-  <img src="/blog/wcag-3-3-8-accessible-authentication-minimum/password-manager.svg" width="800" height="400" loading="lazy" alt="Two login forms. The failing one has an empty password field, a message saying pasting is disabled on this field, and the code autocomplete=off onpaste=return false, so people must remember and retype. The passing one has a password filled in by a password manager, a Hide password button and the code autocomplete=current-password, so autofill, paste and show password all work.">
+  <img src="/images/wcag/3-3-8-accessible-authentication-minimum/password-manager.svg" width="800" height="400" loading="lazy" alt="Two login forms. The failing one has an empty password field, a message saying pasting is disabled on this field, and the code autocomplete=off onpaste=return false, so people must remember and retype. The passing one has a password filled in by a password manager, a Hide password button and the code autocomplete=current-password, so autofill, paste and show password all work.">
   <figcaption>Blocking paste and autofill forces people to remember and retype. Allowing them meets 3.3.8.</figcaption>
 </figure>
 
@@ -97,7 +97,7 @@ The simplest fix for a password login is not to get in the way. Password manager
 Giving people a way in that needs no memory at all is the most inclusive option:
 
 <figure>
-  <img src="/blog/wcag-3-3-8-accessible-authentication-minimum/sign-in-options.svg" width="800" height="420" loading="lazy" alt="A Sign in to Trail Supply screen with three options that need no memory test: sign in with a passkey using face, fingerprint or device PIN; email me a sign-in link, one click from your inbox; and continue with your work account, single sign-on you already use. Below them, or use email and password, which is still allowed with help.">
+  <img src="/images/wcag/3-3-8-accessible-authentication-minimum/sign-in-options.svg" width="800" height="420" loading="lazy" alt="A Sign in to Trail Supply screen with three options that need no memory test: sign in with a passkey using face, fingerprint or device PIN; email me a sign-in link, one click from your inbox; and continue with your work account, single sign-on you already use. Below them, or use email and password, which is still allowed with help.">
   <figcaption>Passkeys, email links and single sign-on remove the memory test. A password can stay as one option.</figcaption>
 </figure>
 
@@ -110,7 +110,7 @@ Giving people a way in that needs no memory at all is the most inclusive option:
 Two-step verification is fine, but typing a code from a text message by hand is a transcription task. Let the device fill it in, and let people paste it:
 
 <figure>
-  <img src="/blog/wcag-3-3-8-accessible-authentication-minimum/one-time-code.svg" width="800" height="400" loading="lazy" alt="Two ways to enter a code sent by text message. The failing one has six separate boxes where paste only fills the first box, so people must read the code on one screen and retype it digit by digit. The passing one has a single field with autocomplete=one-time-code, where the device suggests the code from Messages and pasting works too.">
+  <img src="/images/wcag/3-3-8-accessible-authentication-minimum/one-time-code.svg" width="800" height="400" loading="lazy" alt="Two ways to enter a code sent by text message. The failing one has six separate boxes where paste only fills the first box, so people must read the code on one screen and retype it digit by digit. The passing one has a single field with autocomplete=one-time-code, where the device suggests the code from Messages and pasting works too.">
   <figcaption>A single field with autocomplete="one-time-code" lets the device fill in the code, and paste works too.</figcaption>
 </figure>
 
@@ -150,6 +150,6 @@ For a quick reference, see our [3.3.8 Accessible Authentication (Minimum) page](
 - [3.3.9 Accessible Authentication (Enhanced)](/resources/wcag/3-3-9-accessible-authentication-enhanced): the Level AAA version, without the object and personal content exceptions.
 - [3.3.7 Redundant Entry](/resources/wcag/3-3-7-redundant-entry): people do not have to re-enter information they already gave in the same process.
 - [1.3.5 Identify Input Purpose](/resources/wcag/1-3-5-identify-input-purpose): form fields use `autocomplete` so browsers can fill them in.
-- [4.1.3 Status Messages](/blog/wcag-4-1-3-status-messages): messages such as "Code sent" are announced to screen reader users.
+- [4.1.3 Status Messages](/resources/wcag/4-1-3-status-messages): messages such as "Code sent" are announced to screen reader users.
 
 Want to find the issues software *can* catch on your login page? [Run a free WCAG scan](/#scan), then test the sign-in flow by hand.

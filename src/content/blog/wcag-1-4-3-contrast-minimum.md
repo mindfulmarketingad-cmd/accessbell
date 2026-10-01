@@ -33,7 +33,7 @@ faqs:
 The **contrast ratio** runs from 1:1 (no difference, such as white on white) to 21:1 (black on white). WCAG sets two minimums:
 
 <figure>
-  <img src="/blog/wcag-1-4-3-contrast-minimum/contrast-ratios.svg" width="800" height="360" loading="lazy" alt="Four gray text samples on white with their contrast ratios. Hex AAAAAA at 2.3 to 1 fails for all text. Hex 949494 at 3.0 to 1 passes for large text only. Hex 767676 at 4.5 to 1 passes Level AA for all text. Hex 595959 at 7.0 to 1 also passes the stricter Level AAA.">
+  <img src="/images/wcag/1-4-3-contrast-minimum/contrast-ratios.svg" width="800" height="360" loading="lazy" alt="Four gray text samples on white with their contrast ratios. Hex AAAAAA at 2.3 to 1 fails for all text. Hex 949494 at 3.0 to 1 passes for large text only. Hex 767676 at 4.5 to 1 passes Level AA for all text. Hex 595959 at 7.0 to 1 also passes the stricter Level AAA.">
   <figcaption>The same gray text gets easier to read as the contrast ratio rises. 4.5:1 is the Level AA minimum for normal text.</figcaption>
 </figure>
 
@@ -43,7 +43,7 @@ The **contrast ratio** runs from 1:1 (no difference, such as white on white) to 
 **Large text** means at least 18 point, which is about 24 CSS pixels, or at least 14 point bold, which is about 18.66 CSS pixels in bold. Most body text at 16 pixels is normal text and needs 4.5:1.
 
 <figure>
-  <img src="/blog/wcag-1-4-3-contrast-minimum/text-sizes.svg" width="800" height="320" loading="lazy" alt="The same gray color, hex 949494 on white, with a contrast ratio of 3.0 to 1, used at two sizes. As a 24 pixel heading, it is large text and passes the 3 to 1 minimum. As 16 pixel body text, it is normal text and fails, because body text needs 4.5 to 1.">
+  <img src="/images/wcag/1-4-3-contrast-minimum/text-sizes.svg" width="800" height="320" loading="lazy" alt="The same gray color, hex 949494 on white, with a contrast ratio of 3.0 to 1, used at two sizes. As a 24 pixel heading, it is large text and passes the 3 to 1 minimum. As 16 pixel body text, it is normal text and fails, because body text needs 4.5 to 1.">
   <figcaption>One color can pass as a large heading and fail as body text.</figcaption>
 </figure>
 
@@ -99,7 +99,7 @@ If you set a text color but leave the background to the browser, someone whose d
 Text over a photo or video is only as readable as the lightest or darkest part behind it. The W3C lists low contrast from a background image as failure [F83](https://www.w3.org/WAI/WCAG22/Techniques/failures/F83).
 
 <figure>
-  <img src="/blog/wcag-1-4-3-contrast-minimum/text-on-image.svg" width="800" height="340" loading="lazy" alt="Two hero banners with the headline Spring Trail Sale in white over a pale sky photo. In the failing one, the white text blends into the light sky. In the passing one, a dark semi-transparent overlay behind the text raises the contrast from 1.3 to 1 to 6.3 to 1.">
+  <img src="/images/wcag/1-4-3-contrast-minimum/text-on-image.svg" width="800" height="340" loading="lazy" alt="Two hero banners with the headline Spring Trail Sale in white over a pale sky photo. In the failing one, the white text blends into the light sky. In the passing one, a dark semi-transparent overlay behind the text raises the contrast from 1.3 to 1 to 6.3 to 1.">
   <figcaption>A dark overlay or solid panel behind the text keeps it readable whatever the photo does.</figcaption>
 </figure>
 
@@ -116,7 +116,7 @@ Check the contrast against the lightest part of the image behind the text, not a
 ### Know what is exempt
 
 <figure>
-  <img src="/blog/wcag-1-4-3-contrast-minimum/exceptions.svg" width="800" height="320" loading="lazy" alt="Four examples. Exempt: a logo with pale lettering, a disabled Submit button, and a street sign inside a photo of a busy street. Not exempt: light gray placeholder text reading Your email inside a form field, at only 1.8 to 1, which must still meet 4.5 to 1.">
+  <img src="/images/wcag/1-4-3-contrast-minimum/exceptions.svg" width="800" height="320" loading="lazy" alt="Four examples. Exempt: a logo with pale lettering, a disabled Submit button, and a street sign inside a photo of a busy street. Not exempt: light gray placeholder text reading Your email inside a form field, at only 1.8 to 1, which must still meet 4.5 to 1.">
   <figcaption>Logos, disabled controls and text inside photos are exempt. Placeholder text is not.</figcaption>
 </figure>
 
@@ -145,8 +145,8 @@ For a quick reference, see our [1.4.3 Contrast (Minimum) page](/resources/wcag/1
 
 - [1.4.6 Contrast (Enhanced)](/resources/wcag/1-4-6-contrast-enhanced): the Level AAA version, at 7:1 for normal text and 4.5:1 for large text.
 - [1.4.11 Non-text Contrast](/resources/wcag/1-4-11-non-text-contrast): icons, controls and graphics need 3:1.
-- [1.4.1 Use of Color](/blog/wcag-1-4-1-use-of-color): color is never the only way information is shown.
-- [1.4.8 Visual Presentation](/blog/wcag-1-4-8-visual-presentation): people can choose their own text and background colors.
+- [1.4.1 Use of Color](/resources/wcag/1-4-1-use-of-color): color is never the only way information is shown.
+- [1.4.8 Visual Presentation](/resources/wcag/1-4-8-visual-presentation): people can choose their own text and background colors.
 
 Want to find low-contrast text across a page in seconds? [Run a free WCAG scan](/#scan), then check text on images by hand.
 

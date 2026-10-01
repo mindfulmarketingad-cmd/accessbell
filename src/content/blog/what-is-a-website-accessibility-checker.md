@@ -24,7 +24,7 @@ That definition sounds simple, but the details matter. Checkers differ in what t
 
 Roughly one in four adults in the United States lives with some form of disability, according to the CDC. Many of them use assistive technology to browse: screen readers that turn text into speech, switch devices and voice control that replace a mouse, magnifiers and high-contrast modes that change how a page looks.
 
-Those tools depend on the page being built correctly. A screen reader cannot describe an image that has no [text alternative](/blog/wcag-1-1-1-non-text-content). A keyboard user cannot reach a menu that only opens on mouse hover. A voice user cannot say "click Submit" if the button's accessible name is empty.
+Those tools depend on the page being built correctly. A screen reader cannot describe an image that has no [text alternative](/resources/wcag/1-1-1-non-text-content). A keyboard user cannot reach a menu that only opens on mouse hover. A voice user cannot say "click Submit" if the button's accessible name is empty.
 
 Finding these problems by hand, across hundreds or thousands of pages, is slow. A checker automates the repetitive part so people can spend their time on the judgment calls.
 
@@ -35,7 +35,7 @@ Most checkers load a page, build its document tree and run a set of rules agains
 - **Text alternatives (WCAG 1.1.1).** Every meaningful image needs an `alt` attribute. Decorative images need an empty one so screen readers skip them.
 - **Page language (3.1.1).** The `<html>` element should declare a language so assistive technology uses the right pronunciation.
 - **Page title (2.4.2).** Each page needs a unique, descriptive `<title>`.
-- **[Form labels](/blog/wcag-3-3-2-labels-or-instructions) (1.3.1 and 4.1.2).** Inputs need a programmatic label, not just placeholder text.
+- **[Form labels](/resources/wcag/3-3-2-labels-or-instructions) (1.3.1 and 4.1.2).** Inputs need a programmatic label, not just placeholder text.
 - **Accessible names for links and buttons (2.4.4 and 4.1.2).** Icon-only controls need a text name.
 - **Heading structure (1.3.1).** Headings should form a logical outline without empty headings.
 - **Zoom (1.4.4).** The viewport must not disable pinch zoom.

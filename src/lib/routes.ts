@@ -1,4 +1,5 @@
 import { getCollection } from 'astro:content';
+import { isWcagGuide } from './posts';
 import { helpByCategory, articlePath, categoryPath } from './help';
 import { CHECKERS, checkerPath } from '../data/checkers';
 import { PLATFORMS, platformHome, platformCheckers } from '../data/platforms';
@@ -76,7 +77,7 @@ export async function getRoutes(): Promise<RouteEntry[]> {
       { path: categoryPath(g.id), label: g.title, note: `${g.articles.length} articles`, lastmod: helpUpdated(g.articles), group: 'help' as const },
       ...g.articles.map((a) => ({ path: articlePath(a), label: a.data.title, lastmod: a.data.updatedDate, group: 'help' as const })),
     ]),
-    ...posts.map((p) => ({
+    ...posts.filter((p) => !isWcagGuide(p)).map((p) => ({
       path: `/blog/${p.id}`,
       label: p.data.title,
       lastmod: p.data.updatedDate ?? p.data.pubDate,

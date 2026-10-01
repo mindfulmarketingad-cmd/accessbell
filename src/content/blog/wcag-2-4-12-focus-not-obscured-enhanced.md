@@ -42,7 +42,7 @@ WCAG 2.2 has two versions of this rule:
 - **[2.4.12 Focus Not Obscured (Enhanced)](/resources/wcag/2-4-12-focus-not-obscured-enhanced), Level AAA:** **no part** of the focused element may be hidden.
 
 <figure>
-  <img src="/blog/wcag-2-4-12-focus-not-obscured-enhanced/minimum-vs-enhanced.svg" width="900" height="380" loading="lazy" alt="Three examples of a focused Contact us button near a sticky footer. Fully visible: passes both 2.4.11 and 2.4.12. Partly covered by the footer: passes 2.4.11 Minimum but fails 2.4.12 Enhanced. Completely covered by the footer: fails both.">
+  <img src="/images/wcag/2-4-12-focus-not-obscured-enhanced/minimum-vs-enhanced.svg" width="900" height="380" loading="lazy" alt="Three examples of a focused Contact us button near a sticky footer. Fully visible: passes both 2.4.11 and 2.4.12. Partly covered by the footer: passes 2.4.11 Minimum but fails 2.4.12 Enhanced. Completely covered by the footer: fails both.">
   <figcaption>A partly covered focused button passes the Level AA minimum but fails 2.4.12 Focus Not Obscured (Enhanced).</figcaption>
 </figure>
 
@@ -81,7 +81,7 @@ html {
 ```
 
 <figure>
-  <img src="/blog/wcag-2-4-12-focus-not-obscured-enhanced/scroll-padding.svg" width="900" height="380" loading="lazy" alt="Before and after scroll-padding. Before: the browser scrolls a focused Email field to the very top of the window, where an 88 pixel sticky header covers it. After: with scroll-padding-top set to 88 pixels, the browser stops the field just below the header, fully visible.">
+  <img src="/images/wcag/2-4-12-focus-not-obscured-enhanced/scroll-padding.svg" width="900" height="380" loading="lazy" alt="Before and after scroll-padding. Before: the browser scrolls a focused Email field to the very top of the window, where an 88 pixel sticky header covers it. After: with scroll-padding-top set to 88 pixels, the browser stops the field just below the header, fully visible.">
   <figcaption>scroll-padding tells the browser to keep focused elements clear of sticky content.</figcaption>
 </figure>
 
@@ -137,6 +137,6 @@ Our [keyboard accessibility testing guide](/blog/keyboard-accessibility-testing)
 - [2.1.1 Keyboard](/resources/wcag/2-1-1-keyboard): everything can be used with a keyboard.
 - [1.4.10 Reflow](/resources/wcag/1-4-10-reflow): content works at 400% zoom without scrolling in two directions.
 
-For the rest of the new WCAG 2.2 requirements, see [what you should know about WCAG 2.2](/blog/what-you-should-know-about-wcag-2-2) and [2.5.8 Target Size (Minimum)](/blog/wcag-2-5-8-target-size-minimum).
+For the rest of the new WCAG 2.2 requirements, see [what you should know about WCAG 2.2](/blog/what-you-should-know-about-wcag-2-2) and [2.5.8 Target Size (Minimum)](/resources/wcag/2-5-8-target-size-minimum).
 
 Sticky headers and banners are common in storefronts and apps. See the [PrestaShop accessibility checker](/platforms/prestashop/accessibility-checker), [Shopify accessibility checker](/platforms/shopify/accessibility-checker) and [Next.js accessibility checker](/platforms/nextjs/accessibility-checker) checkers.

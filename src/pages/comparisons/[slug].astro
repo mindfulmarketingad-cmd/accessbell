@@ -1,5 +1,6 @@
 ---
 import { getEntry } from 'astro:content';
+import { postPath } from '../../lib/posts';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
 import Faq from '../../components/Faq.astro';
@@ -156,7 +157,7 @@ const schema = [
     <div class="container cc-prose">
       <h2 id="cmp-more">Related Reading</h2>
       <ul class="related-guides">
-        {related.map((post) => post && <li><a href={`/blog/${post.id}`}>{post.data.title}</a><span>{post.data.description}</span></li>)}
+        {related.map((post) => post && <li><a href={postPath(post)}>{post.data.title}</a><span>{post.data.description}</span></li>)}
         <li><a href="/solutions">AccessBell solutions</a><span>Continuous monitoring, URL monitoring, automated fixes and the Compliance Vault.</span></li>
         <li><a href="/pricing">AccessBell pricing</a><span>One plan per domain with every feature.</span></li>
       </ul>

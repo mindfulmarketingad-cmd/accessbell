@@ -26,6 +26,8 @@ const ICON_NAMES = {
   mail: 'an envelope icon',
   scale: 'the scales of justice',
   'check-circle': 'a check mark icon',
+  alert: 'a warning icon',
+  refresh: 'a refresh icon',
   code: 'a code icon',
   star: 'a star icon',
   wrench: 'a wrench icon',
@@ -92,6 +94,33 @@ export const CATEGORY_THEMES = {
   Guides: { bg: '#f7f1e7', soft: '#efe3cf', accent: '#8a5a1f', ink: '#1f2430', muted: '#6b5335', line: '#e6d4b5' },
   Comparisons: { bg: '#f1eef7', soft: '#e3ddf0', accent: '#5b4a86', ink: '#1f2430', muted: '#574d70', line: '#d6cde8' },
 };
+
+/** Icon for each WCAG guideline, used on criterion pages that have no guide post. */
+export const WCAG_GUIDELINE_ICONS = {
+  '1.1': { a11y: 'screen-reader' },
+  '1.2': { a11y: 'closed-captions' },
+  '1.3': { ui: 'list' },
+  '1.4': { a11y: 'high-contrast' },
+  '2.1': { a11y: 'keyboard' },
+  '2.2': { ui: 'clock' },
+  '2.3': { ui: 'alert' },
+  '2.4': { ui: 'layers' },
+  '2.5': { a11y: 'universal-access' },
+  '3.1': { ui: 'globe' },
+  '3.2': { ui: 'refresh' },
+  '3.3': { ui: 'doc' },
+  '4.1': { ui: 'code' },
+};
+
+/** "1.4.3", "Contrast (Minimum)" -> "1-4-3-contrast-minimum" (same as the page slug). */
+export const wcagCoverSlug = (sc, name) =>
+  `${sc.replace(/\./g, '-')}-${name.toLowerCase().replace(/[()]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
+
+/** Alt text for a WCAG criterion page's cover. */
+export function wcagCoverAlt(sc, name) {
+  const icon = WCAG_GUIDELINE_ICONS[sc.split('.').slice(0, 2).join('.')];
+  return `Illustration: ${ICON_NAMES[icon?.a11y || icon?.ui] || 'an icon'}, with WCAG ${sc} and ${name.replace(/\s*\(.*\)$/, '')}`;
+}
 
 /** Alt text for a post's cover illustration. */
 export function coverAlt(slug) {

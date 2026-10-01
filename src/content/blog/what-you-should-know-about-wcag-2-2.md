@@ -113,7 +113,7 @@ This is the part without a single clean answer, because different laws currently
 
 No single tool checks everything WCAG 2.2 covers. The most reliable results come from combining two approaches:
 
-**Automated scanning** catches a meaningful share of failures quickly and consistently, things like missing [alt text](/blog/wcag-1-1-1-non-text-content), insufficient [color contrast](/resources/contrast-checker), unlabeled form fields and missing page language. [Run a free WCAG 2.2 scan](/resources/wcag-2-2-aa-checker) to see where your site stands in under a minute.
+**Automated scanning** catches a meaningful share of failures quickly and consistently, things like missing [alt text](/resources/wcag/1-1-1-non-text-content), insufficient [color contrast](/resources/contrast-checker), unlabeled form fields and missing page language. [Run a free WCAG 2.2 scan](/resources/wcag-2-2-aa-checker) to see where your site stands in under a minute.
 
 **Manual review** is necessary for the criteria that require human judgment, including several of the criteria new to 2.2: whether a focus indicator is actually obscured in your specific layout, whether a dragging interaction has a usable alternative, and whether your login flow genuinely avoids memory-dependent steps. Our guide to [automated vs. manual accessibility testing](/blog/automated-vs-manual-accessibility-testing) breaks down exactly which checks fall into each category, and involving people who actually use assistive technology in your testing, where possible, surfaces barriers a checklist alone will miss.
 
@@ -121,4 +121,4 @@ Whichever approach you start with, an accurate picture of where you stand today 
 
 Selling in the EU? EN 301 549 version 4.1.1 now uses WCAG 2.2. See [the European Accessibility Act: technical aspects of compliance](/blog/european-accessibility-act-technical-compliance).
 
-For a closer look at one of the new criteria, read [2.4.12 Focus Not Obscured (Enhanced) explained in plain English](/blog/wcag-2-4-12-focus-not-obscured-enhanced).
+For a closer look at one of the new criteria, read [2.4.12 Focus Not Obscured (Enhanced) explained in plain English](/resources/wcag/2-4-12-focus-not-obscured-enhanced).

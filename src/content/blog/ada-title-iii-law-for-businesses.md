@@ -79,9 +79,9 @@ Most website accessibility complaints involve a familiar set of problems:
   <figcaption>The same handful of barriers appears again and again in website accessibility complaints.</figcaption>
 </figure>
 
-- **Images without text alternatives**, so screen reader users miss products, menus and offers. See [WCAG 1.1.1 Non-text Content](/blog/wcag-1-1-1-non-text-content).
-- **Low-contrast text** that people with low vision cannot read. See [WCAG 1.4.3 Contrast (Minimum)](/blog/wcag-1-4-3-contrast-minimum).
-- **Forms without labels**, such as booking, contact and checkout forms. See [WCAG 3.3.2 Labels or Instructions](/blog/wcag-3-3-2-labels-or-instructions).
+- **Images without text alternatives**, so screen reader users miss products, menus and offers. See [WCAG 1.1.1 Non-text Content](/resources/wcag/1-1-1-non-text-content).
+- **Low-contrast text** that people with low vision cannot read. See [WCAG 1.4.3 Contrast (Minimum)](/resources/wcag/1-4-3-contrast-minimum).
+- **Forms without labels**, such as booking, contact and checkout forms. See [WCAG 3.3.2 Labels or Instructions](/resources/wcag/3-3-2-labels-or-instructions).
 - **Menus, buttons and pop-ups that need a mouse**, which block keyboard and screen reader users. Our [keyboard accessibility testing guide](/blog/keyboard-accessibility-testing) shows how to check.
 - **Videos without captions**, which leave out people who are deaf or hard of hearing.
 

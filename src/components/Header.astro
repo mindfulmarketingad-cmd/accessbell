@@ -4,7 +4,10 @@ import LogoMark from './LogoMark.astro';
 import Icon from './Icon.astro';
 
 const path = normalizePath(Astro.url.pathname);
-const isCurrent = (href: string) => (href === '/' ? path === '/' : path === href || path.startsWith(href + '/'));
+const matches = (href: string) => (href === '/' ? path === '/' : path === href || path.startsWith(href + '/'));
+// Only the most specific match is current, so /resources/wcag marks "WCAG Library", not "Resources" too.
+const best = HEADER_NAV.map((i) => i.href).filter(matches).sort((a, b) => b.length - a.length)[0];
+const isCurrent = (href: string) => href === best;
 ---
 <header class="site-header">
   <div class="container">

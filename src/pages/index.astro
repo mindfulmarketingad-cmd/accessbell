@@ -1,5 +1,6 @@
 ---
 import { coverFor } from '../lib/covers';
+import { postPath } from '../lib/posts';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HeroDemo from '../components/HeroDemo.astro';
@@ -578,7 +579,7 @@ const challenges = [
               ? <img class="post-card-img" src={coverFor(post.id)!.src} width="1200" height="630" alt="" loading="lazy" decoding="async" />
               : <div class="post-cover" aria-hidden="true"><span>{post.data.category}</span></div>}
             <div class="post-card-body">
-              <h3><a href={`/blog/${post.id}`}>{post.data.title}</a></h3>
+              <h3><a href={postPath(post)}>{post.data.title}</a></h3>
               <p>{post.data.description}</p>
               <div class="post-meta">
                 <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>

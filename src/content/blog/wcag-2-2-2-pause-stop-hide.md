@@ -31,7 +31,7 @@ faqs:
 2.2.2 Pause, Stop, Hide is a Level A requirement under the **Operable** principle, in the guideline "Enough Time". It covers four kinds of content:
 
 <figure>
-  <img src="/blog/wcag-2-2-2-pause-stop-hide/what-it-covers.svg" width="800" height="300" loading="lazy" alt="Four examples of content covered by 2.2.2 Pause, Stop, Hide. Moving: auto-rotating slides. Blinking: a flashing sale badge. Scrolling: a news ticker. Auto-updating: a live score feed.">
+  <img src="/images/wcag/2-2-2-pause-stop-hide/what-it-covers.svg" width="800" height="300" loading="lazy" alt="Four examples of content covered by 2.2.2 Pause, Stop, Hide. Moving: auto-rotating slides. Blinking: a flashing sale badge. Scrolling: a news ticker. Auto-updating: a live score feed.">
   <figcaption>Moving, blinking, scrolling and auto-updating content all fall under 2.2.2 Pause, Stop, Hide.</figcaption>
 </figure>
 
@@ -49,7 +49,7 @@ For moving, blinking and scrolling content, the rule applies when all three of t
 For auto-updating content, there is no 5-second limit. If it starts automatically and appears alongside other content, people need a way to pause, stop or hide it, or to control how often it updates.
 
 <figure>
-  <img src="/blog/wcag-2-2-2-pause-stop-hide/five-second-rule.svg" width="800" height="380" loading="lazy" alt="A timeline from 0 to 10 seconds with a marker at 5 seconds. A logo animation that stops at 3 seconds needs no control. A hero slideshow that runs past 5 seconds needs a way to pause, stop or hide it.">
+  <img src="/images/wcag/2-2-2-pause-stop-hide/five-second-rule.svg" width="800" height="380" loading="lazy" alt="A timeline from 0 to 10 seconds with a marker at 5 seconds. A logo animation that stops at 3 seconds needs no control. A hero slideshow that runs past 5 seconds needs a way to pause, stop or hide it.">
   <figcaption>Moving content that stops by itself within 5 seconds is fine. Anything that keeps going needs a control.</figcaption>
 </figure>
 
@@ -80,7 +80,7 @@ WCAG treats this criterion as so important that it must be met by everything on 
 The auto-rotating homepage carousel is the most common failure of 2.2.2 Pause, Stop, Hide. The simplest fix is not to auto-rotate at all. If you do, add a clearly labelled pause button, plus Previous and Next buttons so people can move at their own pace.
 
 <figure>
-  <img src="/blog/wcag-2-2-2-pause-stop-hide/carousel-pause.svg" width="800" height="400" loading="lazy" alt="Two versions of a Spring Pack Sale carousel. The failing one changes slides every 3 seconds forever with no pause button. The passing one has a visible Pause button, plus Previous and Next controls.">
+  <img src="/images/wcag/2-2-2-pause-stop-hide/carousel-pause.svg" width="800" height="400" loading="lazy" alt="Two versions of a Spring Pack Sale carousel. The failing one changes slides every 3 seconds forever with no pause button. The passing one has a visible Pause button, plus Previous and Next controls.">
   <figcaption>An auto-rotating carousel needs a way to pause it. Previous and Next buttons let people move at their own pace.</figcaption>
 </figure>
 
@@ -146,11 +146,11 @@ A scrolling ticker needs a pause or stop button, or a way to show the same conte
 For live feeds, scores and dashboards, give people control. Pause updates, let them choose how often content refreshes, or hold new items until they ask to see them:
 
 <figure>
-  <img src="/blog/wcag-2-2-2-pause-stop-hide/live-feed.svg" width="800" height="420" loading="lazy" alt="Two versions of a park updates feed. In the failing one, a new update about a bridge closure appears at the top and pushes the item you were reading down. In the passing one, updates are switched off and a Show 2 new button lets you load new items when you choose.">
+  <img src="/images/wcag/2-2-2-pause-stop-hide/live-feed.svg" width="800" height="420" loading="lazy" alt="Two versions of a park updates feed. In the failing one, a new update about a bridge closure appears at the top and pushes the item you were reading down. In the passing one, updates are switched off and a Show 2 new button lets you load new items when you choose.">
   <figcaption>Holding new items until someone asks for them keeps the content still while people read.</figcaption>
 </figure>
 
-This matches the W3C technique [G186, using a control in the web page that stops moving, blinking, or auto-updating content](https://www.w3.org/WAI/WCAG22/Techniques/general/G186). If the updates are important, pair the "Show new" button with a [status message](/blog/wcag-4-1-3-status-messages) so screen reader users know they are waiting.
+This matches the W3C technique [G186, using a control in the web page that stops moving, blinking, or auto-updating content](https://www.w3.org/WAI/WCAG22/Techniques/general/G186). If the updates are important, pair the "Show new" button with a [status message](/resources/wcag/4-1-3-status-messages) so screen reader users know they are waiting.
 
 ### Know the "essential" exception
 
@@ -171,7 +171,7 @@ For a quick reference, see our [2.2.2 Pause, Stop, Hide page](/resources/wcag/2-
 ## Related Success Criteria
 
 - [2.2.1 Timing Adjustable](/resources/wcag/2-2-1-timing-adjustable): time limits can be turned off, adjusted or extended.
-- [2.2.3 No Timing](/blog/wcag-2-2-3-no-timing): the Level AAA rule that tasks have no time limit at all.
+- [2.2.3 No Timing](/resources/wcag/2-2-3-no-timing): the Level AAA rule that tasks have no time limit at all.
 - [1.4.2 Audio Control](/resources/wcag/1-4-2-audio-control): audio that plays automatically for more than 3 seconds can be paused or stopped.
 - [2.3.1 Three Flashes or Below Threshold](/resources/wcag/2-3-1-three-flashes-or-below-threshold): nothing flashes more than three times a second.
 

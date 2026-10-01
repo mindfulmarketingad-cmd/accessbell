@@ -62,7 +62,7 @@ A form without clear labels and instructions turns into a guessing game:
 Every input needs a label people can see, that stays visible while they type. The W3C technique [G131, providing descriptive labels](https://www.w3.org/WAI/WCAG22/Techniques/general/G131), covers the wording: short and specific, such as "Email" or "Postcode", not "Field 1" or "Details".
 
 <figure>
-  <img src="/blog/wcag-3-3-2-labels-or-instructions/placeholder-vs-label.svg" width="800" height="400" loading="lazy" alt="Two sign-in forms. The failing one uses placeholder text Email as the only label; after typing, the fields show sam@example and Tr41l-Mix and the hints are gone, so you cannot tell which field was which. The passing one has visible labels Email and Password with hints We will send your receipt here and At least 8 characters, which stay visible while people type.">
+  <img src="/images/wcag/3-3-2-labels-or-instructions/placeholder-vs-label.svg" width="800" height="400" loading="lazy" alt="Two sign-in forms. The failing one uses placeholder text Email as the only label; after typing, the fields show sam@example and Tr41l-Mix and the hints are gone, so you cannot tell which field was which. The passing one has visible labels Email and Password with hints We will send your receipt here and At least 8 characters, which stay visible while people type.">
   <figcaption>Placeholder text disappears when people type. A visible label and hint stay put.</figcaption>
 </figure>
 
@@ -81,7 +81,7 @@ Do not rely on `placeholder` as the label. If you use it, use it only for an exa
 If an answer must follow a format, say so before people type. The W3C technique [G89, providing expected data format and example](https://www.w3.org/WAI/WCAG22/Techniques/general/G89), describes this:
 
 <figure>
-  <img src="/blog/wcag-3-3-2-labels-or-instructions/format-instructions.svg" width="800" height="360" loading="lazy" alt="Two date of birth fields. The failing one gives no format; someone types 3/5/90 and gets the error Invalid date, so people have to guess the format and fix it after an error. The passing one says Use DD/MM/YYYY, for example 05/03/1990, and the entry 05/03/1990 is right the first time.">
+  <img src="/images/wcag/3-3-2-labels-or-instructions/format-instructions.svg" width="800" height="360" loading="lazy" alt="Two date of birth fields. The failing one gives no format; someone types 3/5/90 and gets the error Invalid date, so people have to guess the format and fix it after an error. The passing one says Use DD/MM/YYYY, for example 05/03/1990, and the entry 05/03/1990 is right the first time.">
   <figcaption>Stating the format and giving an example prevents the error in the first place.</figcaption>
 </figure>
 
@@ -95,14 +95,14 @@ Do the same for password rules, file size limits, character limits and anything 
 
 ### Mark required and optional fields in text
 
-Tell people which fields they must fill in, in words. Either mark each required field "(required)", or say at the top "All fields are required unless marked optional" and mark the optional ones. An asterisk works if you explain what it means at the start of the form. Do not use color alone to show required fields, which also fails [1.4.1 Use of Color](/blog/wcag-1-4-1-use-of-color).
+Tell people which fields they must fill in, in words. Either mark each required field "(required)", or say at the top "All fields are required unless marked optional" and mark the optional ones. An asterisk works if you explain what it means at the start of the form. Do not use color alone to show required fields, which also fails [1.4.1 Use of Color](/resources/wcag/1-4-1-use-of-color).
 
 ### Label groups and every part of a group
 
 Radio buttons, checkboxes and fields that belong together need a label for the group and a label for each part:
 
 <figure>
-  <img src="/blog/wcag-3-3-2-labels-or-instructions/grouped-fields.svg" width="800" height="380" loading="lazy" alt="Two forms with grouped fields. The failing one has a Phone label over three unlabeled boxes, and a Size label over radio buttons S, M and L, leaving people asking what goes in each box and size of what. The passing one has a Phone number group with parts labelled Area code, First 3 and Last 4, and a Tent size group with options Small, 2 people, and Large, 4 people.">
+  <img src="/images/wcag/3-3-2-labels-or-instructions/grouped-fields.svg" width="800" height="380" loading="lazy" alt="Two forms with grouped fields. The failing one has a Phone label over three unlabeled boxes, and a Size label over radio buttons S, M and L, leaving people asking what goes in each box and size of what. The passing one has a Phone number group with parts labelled Area code, First 3 and Last 4, and a Tent size group with options Small, 2 people, and Large, 4 people.">
   <figcaption>Name the group, then label each part, so every field makes sense on its own.</figcaption>
 </figure>
 
@@ -125,7 +125,7 @@ A phone number split into several boxes with no label on each part is failure [F
 Put each label right above or right beside its field, so the pairing is obvious. Labels far away from their fields, such as in a wide two-column layout, are easy to mismatch, and at high zoom the two may not be on screen together.
 
 <figure>
-  <img src="/blog/wcag-3-3-2-labels-or-instructions/label-position.svg" width="800" height="340" loading="lazy" alt="Two form layouts. The failing one puts the labels First name and Town on the far left with the fields on the far right, so at high zoom the label and field may not be on screen together. The passing one puts each label directly above its field, so the pairing is obvious.">
+  <img src="/images/wcag/3-3-2-labels-or-instructions/label-position.svg" width="800" height="340" loading="lazy" alt="Two form layouts. The failing one puts the labels First name and Town on the far left with the fields on the far right, so at high zoom the label and field may not be on screen together. The passing one puts each label directly above its field, so the pairing is obvious.">
   <figcaption>Labels right above their fields are easy to match at any zoom level.</figcaption>
 </figure>
 
@@ -149,7 +149,7 @@ For a quick reference, see our [3.3.2 Labels or Instructions page](/resources/wc
 - [1.3.1 Info and Relationships](/resources/wcag/1-3-1-info-and-relationships): labels are connected to their fields in the code.
 - [2.4.6 Headings and Labels](/resources/wcag/2-4-6-headings-and-labels): headings and labels describe their topic or purpose.
 - [2.5.3 Label in Name](/resources/wcag/2-5-3-label-in-name): the visible label is part of the control's accessible name.
-- [3.3.8 Accessible Authentication (Minimum)](/blog/wcag-3-3-8-accessible-authentication-minimum): sign-in forms work with password managers and paste.
+- [3.3.8 Accessible Authentication (Minimum)](/resources/wcag/3-3-8-accessible-authentication-minimum): sign-in forms work with password managers and paste.
 
 Want to find form fields with no label in the code? [Run a free WCAG scan](/#scan) of any page, then check your labels and instructions by hand.
 

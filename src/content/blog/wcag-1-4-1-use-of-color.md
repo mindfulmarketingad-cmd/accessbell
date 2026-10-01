@@ -38,7 +38,7 @@ faqs:
 The fix is always the same: keep the color, and add a second cue that does not depend on seeing color, such as text, an icon, a pattern, a shape or an underline.
 
 <figure>
-  <img src="/blog/wcag-1-4-1-use-of-color/status-colors.svg" width="800" height="440" loading="lazy" alt="A service status list shown in color and without color. With color alone, a green dot for Checkout service and a red dot for Search service look identical in grayscale, so you cannot tell which one is down. With a check or cross icon and the words Online and Down, the status is still clear without color.">
+  <img src="/images/wcag/1-4-1-use-of-color/status-colors.svg" width="800" height="440" loading="lazy" alt="A service status list shown in color and without color. With color alone, a green dot for Checkout service and a red dot for Search service look identical in grayscale, so you cannot tell which one is down. With a check or cross icon and the words Online and Down, the status is still clear without color.">
   <figcaption>Dots that differ only by color become identical without color. An icon and a word keep the meaning.</figcaption>
 </figure>
 
@@ -69,7 +69,7 @@ If meaning lives only in color, all of these people miss it. They cannot tell wh
 Saying "fields in red are required", or showing an error only with a red border, fails 1.4.1 Use of Color. The W3C lists this as failure [F81, identifying required or error fields using color differences only](https://www.w3.org/WAI/WCAG22/Techniques/failures/F81).
 
 <figure>
-  <img src="/blog/wcag-1-4-1-use-of-color/form-fields.svg" width="800" height="420" loading="lazy" alt="Two versions of a form with Name, Email and Company fields. The failing one shows required fields with red labels and an error with a red border only. The passing one marks fields as required or optional in words, and shows the email error with an alert icon and the message Enter an email like sam@example.com.">
+  <img src="/images/wcag/1-4-1-use-of-color/form-fields.svg" width="800" height="420" loading="lazy" alt="Two versions of a form with Name, Email and Company fields. The failing one shows required fields with red labels and an error with a red border only. The passing one marks fields as required or optional in words, and shows the email error with an alert icon and the message Enter an email like sam@example.com.">
   <figcaption>Words and an icon carry the meaning. Color becomes a helpful extra, not the only cue.</figcaption>
 </figure>
 
@@ -89,7 +89,7 @@ This follows the W3C technique [G14, ensuring that information conveyed by color
 A link inside a paragraph that differs from the text around it only by color fails 1.4.1 Use of Color. The W3C lists this as failure [F73, creating links that are not visually evident without color vision](https://www.w3.org/WAI/WCAG22/Techniques/failures/F73).
 
 <figure>
-  <img src="/blog/wcag-1-4-1-use-of-color/links-in-text.svg" width="800" height="300" loading="lazy" alt="Two versions of a sentence about pitching a tent with a link reading fire rules. In the failing one the link is only a slightly different shade of text. In the passing one the link is underlined, so it shows it is a link whatever colors people see.">
+  <img src="/images/wcag/1-4-1-use-of-color/links-in-text.svg" width="800" height="300" loading="lazy" alt="Two versions of a sentence about pitching a tent with a link reading fire rules. In the failing one the link is only a slightly different shade of text. In the passing one the link is underlined, so it shows it is a link whatever colors people see.">
   <figcaption>An underline shows a link is a link, whatever colors people see.</figcaption>
 </figure>
 
@@ -108,7 +108,7 @@ If your design removes underlines, the W3C technique [G183, using a 3:1 contrast
 Charts and maps that tell lines, bars or areas apart only by color fail for many readers. Add a second cue:
 
 <figure>
-  <img src="/blog/wcag-1-4-1-use-of-color/chart-patterns.svg" width="800" height="400" loading="lazy" alt="Two bar charts comparing tent and pack sales for January to March. The failing one uses a green and red legend only. The passing one fills the pack bars with diagonal stripes, labels the bars Tents and Packs directly, and names the patterns in the legend: Tents solid and Packs striped.">
+  <img src="/images/wcag/1-4-1-use-of-color/chart-patterns.svg" width="800" height="400" loading="lazy" alt="Two bar charts comparing tent and pack sales for January to March. The failing one uses a green and red legend only. The passing one fills the pack bars with diagonal stripes, labels the bars Tents and Packs directly, and names the patterns in the legend: Tents solid and Packs striped.">
   <figcaption>Patterns and direct labels make the chart readable without telling colors apart.</figcaption>
 </figure>
 
@@ -116,7 +116,7 @@ Charts and maps that tell lines, bars or areas apart only by color fail for many
 - Use **different marker shapes** on line charts, such as circles, squares and triangles.
 - **Label data directly** on the chart, rather than relying only on a color legend.
 - Test your palette with our free [chart color checker](/resources/chart-color-checker), which shows how the colors look with color blindness.
-- Offer the **data as a table** as well, which also helps meet [1.1.1 Non-text Content](/blog/wcag-1-1-1-non-text-content).
+- Offer the **data as a table** as well, which also helps meet [1.1.1 Non-text Content](/resources/wcag/1-1-1-non-text-content).
 
 ### Pair status colors with icons and words
 

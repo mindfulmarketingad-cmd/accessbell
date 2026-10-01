@@ -12,10 +12,12 @@ import { faqSchema } from '../../lib/schema';
 import { inlineMarkdown, stripMarkdown } from '../../lib/inline-markdown';
 import { getWcagGuides, WCAG_GUIDES_CATEGORY } from '../../lib/wcag-guides';
 import { coverFor } from '../../lib/covers';
+import { isWcagGuide, postPath } from '../../lib/posts';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
-  return posts.map((post) => ({ params: { slug: post.id }, props: { post, all: posts } }));
+  // WCAG Codes Explained guides are published at /resources/wcag instead.
+  return posts.filter((p) => !isWcagGuide(p)).map((post) => ({ params: { slug: post.id }, props: { post, all: posts } }));
 }
 
 const { post, all } = Astro.props;
@@ -204,7 +206,7 @@ const schema = [
               {coverFor(p.id) && <img class="post-card-img" src={coverFor(p.id)!.src} width="1200" height="630" alt="" loading="lazy" decoding="async" />}
               <div class="post-card-body">
                 <span class="eyebrow">{p.data.category}</span>
-                <h3><a href={`/blog/${p.id}`}>{p.data.title}</a></h3>
+                <h3><a href={postPath(p)}>{p.data.title}</a></h3>
                 <p>{p.data.description}</p>
                 <div class="post-meta">
                   <time datetime={p.data.pubDate.toISOString()}>{formatDate(p.data.pubDate)}</time>

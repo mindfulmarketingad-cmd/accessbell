@@ -1,6 +1,7 @@
 // /llms.txt: a Markdown map of the site for AI assistants and LLM crawlers (https://llmstxt.org).
 // Generated at build time, so new posts, help articles and tools are listed automatically.
 import type { APIRoute } from 'astro';
+import { postPath } from '../lib/posts';
 import { getCollection } from 'astro:content';
 import { SITE, absoluteUrl } from '../config/site';
 import { PLAN } from '../data/pricing';
@@ -43,7 +44,7 @@ export const GET: APIRoute = async () => {
         link('Free Accessibility Icon Set', '/resources/free-accessibility-icon-set', 'Free SVG and PNG accessibility icons, licensed CC BY 4.0.'),
       ],
     ],
-    ['Guides', posts.map((p) => link(p.data.title, `/blog/${p.id}`, p.data.description))],
+    ['Guides', posts.map((p) => link(p.data.title, postPath(p), p.data.description))],
     [
       'WCAG Success Criteria',
       [link('WCAG Success Criteria Library', '/resources/wcag', 'Every WCAG 2.0, 2.1 and 2.2 success criterion explained, with how to test it.')],

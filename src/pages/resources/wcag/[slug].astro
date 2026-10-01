@@ -1,18 +1,23 @@
 ---
-import { getEntry, getCollection } from 'astro:content';
+import { getEntries, getEntry, getCollection, render } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Icon from '../../../components/Icon.astro';
 import CtaBand from '../../../components/CtaBand.astro';
 import AuthorAvatar from '../../../components/AuthorAvatar.astro';
-import Faq from '../../../components/Faq.astro';
+import TableOfContents from '../../../components/TableOfContents.astro';
 import { SITE } from '../../../config/site';
-import { formatDate } from '../../../lib/format';
+import { formatDate, readingTime } from '../../../lib/format';
 import { authorPath, authorSchema } from '../../../lib/authors';
 import { faqSchema } from '../../../lib/schema';
+import { inlineMarkdown, stripMarkdown } from '../../../lib/inline-markdown';
+import { coverFor } from '../../../lib/covers';
+import { getWcagGuides } from '../../../lib/wcag-guides';
+import { guideSc } from '../../../lib/posts';
 import { CRITERIA, GUIDELINES } from '../../../../server/wcag-criteria.js';
 import { criterionSlug, criterionPath, understandingUrl, rulesForCriterion, checkersForCriterion } from '../../../lib/wcag-pages';
 import { checkerPath } from '../../../data/checkers';
 import { WCAG_CONTENT } from '../../../data/wcag-content';
+import { wcagCoverAlt } from '../../../data/blog-covers.js';
 import { fixExample } from '../../../scripts/shared/fix-examples.js';
 
 export function getStaticPaths() {
@@ -24,10 +29,21 @@ const content = WCAG_CONTENT[c.sc];
 const REVIEWED = new Date('2026-09-28');
 const path = criterionPath(c.sc);
 const url = `${SITE.url}${path}`;
-const author = await getEntry('authors', 'anton-stewart');
 
-// A plain-English "WCAG Codes Explained" blog post for this criterion, if we have one (slug wcag-1-2-3-...).
-const guide = (await getCollection('blog', ({ id, data }) => !data.draft && id.startsWith(`wcag-${c.sc.replaceAll('.', '-')}-`)))[0];
+// The plain-English "WCAG Codes Explained" guide for this criterion, if one has been written.
+const guide = (await getCollection('blog', ({ id, data }) => !data.draft && guideSc(id) === c.sc))[0];
+const rendered = guide ? await render(guide) : null;
+const Content = rendered?.Content;
+
+const contributors = guide
+  ? (await getEntries(guide.data.contributors.map((x) => x.author))).map((a, i) => ({ role: guide.data.contributors[i].role, author: a }))
+  : [{ role: 'Author', author: (await getEntry('authors', 'anton-stewart'))! }].filter((x) => x.author);
+
+// Featured image: the guide's cover, or the criterion card from npm run covers.
+const slug = criterionSlug(c.sc);
+const cover = guide
+  ? coverFor(guide.id)
+  : { src: `/images/wcag/covers/${slug}.webp`, og: `/images/wcag/og/${slug}.png`, alt: wcagCoverAlt(c.sc, c.name), width: 1200, height: 630 };
 
 const rules = rulesForCriterion(c.sc);
 const checkers = checkersForCriterion(c.sc);
@@ -37,140 +53,227 @@ const guidelineKey = c.sc.split('.').slice(0, 2).join('.');
 const related = Object.values(CRITERIA)
   .filter((x) => x.sc !== c.sc && x.sc.split('.').slice(0, 2).join('.') === guidelineKey)
   .sort((a, b) => Number(a.sc.split('.')[2]) - Number(b.sc.split('.')[2]));
+// Guides already end with their own related-criteria section.
+const guideHasRelated = !!rendered?.headings.some((h) => h.depth === 2 && /related/i.test(h.text));
+const series = (await getWcagGuides()).filter((g) => g.sc.join('.') !== c.sc);
 
 const checkerNames = checkers.map((x) => x.name).join(', ');
 const automatedAnswer = rules.length
-  ? `Yes. AccessBell runs ${rules.length} automated ${rules.length === 1 ? 'rule' : 'rules'} that can catch failures of this criterion${checkers.length ? `, including in our ${checkerNames}` : ''}.`
+  ? `Yes. AccessBell runs ${rules.length} automated ${rules.length === 1 ? 'rule' : 'rules'} that can catch failures of this criterion${checkers.length ? `, including in our ${checkerNames}` : ''}. A person still needs to check what automation cannot judge.`
   : `Not fully. This criterion needs a person to judge, so AccessBell's report lists it for manual review rather than marking it pass or fail on its own.`;
 let levelAnswer = `Level ${c.level}, added in WCAG ${c.version}.`;
-if (c.level === 'AA') levelAnswer += ' Level AA is required to meet WCAG AA, the level referenced by the ADA, Section 508 and most accessibility laws.';
+if (c.level === 'AA') levelAnswer += ' Level AA is the level referenced by the ADA, Section 508 and most accessibility laws.';
 else if (c.level === 'AAA') levelAnswer += ' Level AAA is the highest, most demanding conformance level in WCAG.';
 
-const faqs = [
+const generatedFaqs = [
   { q: `What does WCAG ${c.sc} require?`, a: content.summary },
   { q: `Can AccessBell test WCAG ${c.sc} automatically?`, a: automatedAnswer },
   { q: `What level is WCAG ${c.sc}?`, a: levelAnswer },
+];
+// Guides bring their own FAQs; add the automation question, which they do not cover.
+const faqs = guide ? [...guide.data.faqs, generatedFaqs[1]] : generatedFaqs;
+
+const title = guide ? guide.data.title : `WCAG ${c.sc} ${c.name}`;
+const lead = guide ? guide.data.description : content.summary;
+const metaTitle = guide ? `${guide.data.seoTitle ?? guide.data.title} | AccessBell` : `WCAG ${c.sc} ${c.name}: What It Means and How to Test It | AccessBell`;
+const metaDescription = guide ? guide.data.description : `WCAG ${c.sc} ${c.name} (Level ${c.level}): ${content.summary}`;
+const minutes = guide ? readingTime(guide.body ?? '') : null;
+
+const toc = [
+  ...(rendered ? rendered.headings.filter((h) => h.depth === 2) : [
+    { depth: 2, slug: 'requires', text: `What WCAG ${c.sc} Requires` },
+    { depth: 2, slug: 'how-to-test', text: 'How to Test It by Hand' },
+    { depth: 2, slug: 'failures', text: 'Common Failures' },
+  ]),
+  { depth: 2, slug: 'automated', text: `Testing WCAG ${c.sc} With AccessBell` },
+  ...(example ? [{ depth: 2, slug: 'fix', text: 'Example Fix' }] : []),
+  ...(related.length && !guideHasRelated ? [{ depth: 2, slug: 'related-sc', text: `Related Criteria in ${GUIDELINES[guidelineKey]}` }] : []),
+  { depth: 2, slug: 'faq', text: 'Frequently Asked Questions' },
 ];
 
 const schema = [
   {
     '@type': 'TechArticle',
     '@id': `${url}#article`,
-    headline: `${c.sc} ${c.name}`,
-    description: content.summary,
-    dateModified: REVIEWED.toISOString(),
-    author: author ? { '@id': `${SITE.url}${authorPath(author)}#author` } : { '@id': `${SITE.url}/#organization` },
+    headline: title,
+    description: metaDescription,
+    ...(guide ? { datePublished: guide.data.pubDate.toISOString() } : {}),
+    dateModified: (guide ? guide.data.updatedDate ?? guide.data.pubDate : REVIEWED).toISOString(),
+    image: cover?.og ? `${SITE.url}${cover.og}` : undefined,
+    author: contributors.filter((x) => x.role === 'Author').map((x) => ({ '@id': `${SITE.url}${authorPath(x.author)}#author` })),
     publisher: { '@id': `${SITE.url}/#organization` },
     mainEntityOfPage: { '@id': `${url}#webpage` },
     about: { '@type': 'Thing', name: `WCAG ${c.sc} ${c.name}` },
     isPartOf: { '@id': `${SITE.url}/resources/wcag#webpage` },
   },
-  ...(author ? [authorSchema(author)] : []),
-  faqSchema(faqs),
+  ...contributors.map((x) => authorSchema(x.author)),
+  faqSchema(faqs.map((f) => ({ q: f.q, a: stripMarkdown(f.a) }))),
 ];
 ---
 <BaseLayout
-  title={`WCAG ${c.sc} ${c.name}: What It Means and How to Test It | AccessBell`}
-  description={`WCAG ${c.sc} ${c.name} (Level ${c.level}): ${content.summary}`}
-  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: 'WCAG Success Criteria', href: '/resources/wcag' }, { label: `${c.sc} ${c.name}`, href: path }]}
+  title={metaTitle}
+  description={metaDescription}
+  ogType="article"
+  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: 'WCAG Library', href: '/resources/wcag' }, { label: `${c.sc} ${c.name}`, href: path }]}
   schema={schema}
+  image={cover?.og ?? undefined}
+  imageAlt={cover?.og ? title : undefined}
 >
-  <section class="page-hero" aria-labelledby="sc-title">
-    <div class="container">
+  <article>
+    <header class="container article-head">
       <span class="eyebrow">{c.principle} &middot; {GUIDELINES[guidelineKey]}</span>
-      <h1 id="sc-title"><span class="sc-no sc-no-lg">{c.sc}</span> {c.name}</h1>
-      <p class="lead">{content.summary}</p>
-      <p class="checker-meta">
-        <Icon name="check" /> Level {c.level}
+      <h1>{title}</h1>
+      <p class="lead">{lead}</p>
+      <p class="checker-meta wcag-meta">
+        <span class="sc-no">{c.sc}</span> Level {c.level}
         <span aria-hidden="true">&middot;</span> Added in WCAG {c.version}
         <span aria-hidden="true">&middot;</span> {rules.length > 0 ? `${rules.length} automated ${rules.length === 1 ? 'rule' : 'rules'}` : 'Needs manual review'}
       </p>
-    </div>
-  </section>
-
-  <article class="container checker-body">
-    <div class="checker-byline">
-      {author && <a class="byline-person" href={authorPath(author)}><AuthorAvatar name={author.data.name} /><span><strong>{author.data.name}</strong><small>Author</small></span></a>}
-      <span>Reviewed <time datetime={REVIEWED.toISOString()}>{formatDate(REVIEWED)}</time> against the <a href={understandingUrl(c.sc)} rel="noopener noreferrer" target="_blank">W3C Understanding document<span class="visually-hidden"> (opens in a new tab)</span></a></span>
-    </div>
-
-    <section aria-labelledby="requires">
-      <h2 id="requires">What WCAG {c.sc} Requires</h2>
-      <p>{content.summary}</p>
-      {guide && <p>New to this criterion? Read our plain-English guide, <a href={`/blog/${guide.id}`}>{guide.data.title}</a>, with examples and code.</p>}
-      {c.sc === '4.1.1' && <p>Because it is obsolete, WCAG {c.sc} is not counted in our WCAG 2.2 checkers, but it still applies to WCAG 2.0 and 2.1 targets and is worth keeping in mind.</p>}
-    </section>
-
-    <section aria-labelledby="automated">
-      <h2 id="automated">Can AccessBell Test This Automatically?</h2>
-      {rules.length > 0 ? (
-        <>
-          <p>Yes. AccessBell's scanner runs axe-core, which includes {rules.length} {rules.length === 1 ? 'rule' : 'rules'} that catch code-level failures of this criterion:</p>
-          <ul class="check-list">
-            {rules.map((r) => (
-              <li><Icon name="check" /><span><code>{r.id}</code> &mdash; {r.description}{r.helpUrl && <> (<a href={r.helpUrl} rel="noopener noreferrer" target="_blank">details<span class="visually-hidden"> (opens in a new tab)</span></a>)</>}</span></li>
-            ))}
-          </ul>
-          {checkers.length > 0 && (
-            <p>This criterion is included in: {checkers.map((chk, i) => <>{i > 0 && ', '}<a href={checkerPath(chk)}>{chk.name}</a></>)}.</p>
+      <div class="byline">
+        <div class="byline-people">
+          {contributors.map((x) => (
+            <a class="byline-person" href={authorPath(x.author)}>
+              <AuthorAvatar name={x.author.data.name} />
+              <span><strong>{x.author.data.name}</strong><small>{x.role}</small></span>
+            </a>
+          ))}
+        </div>
+        <div class="article-meta">
+          {guide ? (
+            <>
+              <span>Published <time datetime={guide.data.pubDate.toISOString()}>{formatDate(guide.data.pubDate)}</time></span>
+              {guide.data.updatedDate && <span>Updated <time datetime={guide.data.updatedDate.toISOString()}>{formatDate(guide.data.updatedDate)}</time></span>}
+              <span>{minutes} min read</span>
+            </>
+          ) : (
+            <span>Reviewed <time datetime={REVIEWED.toISOString()}>{formatDate(REVIEWED)}</time> against the <a href={understandingUrl(c.sc)} rel="noopener noreferrer" target="_blank">W3C Understanding document<span class="visually-hidden"> (opens in a new tab)</span></a></span>
           )}
-        </>
-      ) : (
-        <p>Not fully. Like most WCAG criteria that depend on meaning or context, this one needs a person to judge. AccessBell's report lists it for manual review rather than marking it pass or fail automatically, so it never gets missed.</p>
-      )}
-    </section>
+        </div>
+      </div>
+    </header>
 
-    <section aria-labelledby="how-to-test">
-      <h2 id="how-to-test">How to Test It by Hand</h2>
-      <p>{content.howToTest}</p>
-      {['1.4.3', '1.4.6', '1.4.11'].includes(c.sc) && (
-        <p>Check any text and background pair in seconds with our free <a href="/resources/contrast-checker">WCAG color contrast checker</a>.</p>
-      )}
-    </section>
-
-    <section aria-labelledby="failures">
-      <h2 id="failures">Common Failures</h2>
-      <ul class="check-list check-list-warn">
-        {content.commonFailures.map((f) => <li><Icon name="alert" /><span>{f}</span></li>)}
-      </ul>
-    </section>
-
-    {example && (
-      <section aria-labelledby="fix">
-        <h2 id="fix">Example Fix</h2>
-        <ol class="steps-list">
-          {example.steps.map(([title, text]) => <li><strong>{title}.</strong> {text}</li>)}
-        </ol>
-        <pre class="fix-code" tabindex="0" role="region" aria-label="Example code"><code>{example.code}</code></pre>
-      </section>
+    {cover && (
+      <figure class="container article-cover">
+        <img src={cover.src} width={cover.width} height={cover.height} alt={cover.alt} fetchpriority="high" decoding="async" />
+      </figure>
     )}
 
-    {related.length > 0 && (
-      <section aria-labelledby="related-sc">
-        <h2 id="related-sc">Related Criteria in {GUIDELINES[guidelineKey]}</h2>
-        <ul class="related-guides">
-          {related.map((r) => <li><a href={criterionPath(r.sc)}><span class="sc-no">{r.sc}</span> {r.name}</a><span>Level {r.level} &middot; WCAG {r.version}</span></li>)}
-        </ul>
-      </section>
-    )}
+    <div class="container article-layout">
+      <div class="article-main">
+        <TableOfContents headings={toc} variant="inline" />
+        <div class="prose">
+          {Content ? <Content /> : (
+            <>
+              <h2 id="requires">What WCAG {c.sc} Requires</h2>
+              <p>{content.summary}</p>
+              {c.sc === '4.1.1' && <p>Because it is obsolete, WCAG {c.sc} is not counted in our WCAG 2.2 checkers, but it still applies to WCAG 2.0 and 2.1 targets.</p>}
+              <h2 id="how-to-test">How to Test It by Hand</h2>
+              <p>{content.howToTest}</p>
+              {['1.4.3', '1.4.6', '1.4.11'].includes(c.sc) && <p>Check any text and background pair with our free <a href="/resources/contrast-checker">WCAG color contrast checker</a>.</p>}
+              <h2 id="failures">Common Failures</h2>
+              <ul>{content.commonFailures.map((f) => <li>{f}</li>)}</ul>
+            </>
+          )}
 
-    <section aria-labelledby="faq-title">
-      <h2 id="faq-title">WCAG {c.sc} Questions</h2>
-      <Faq items={faqs} />
-    </section>
+          <h2 id="automated">Testing WCAG {c.sc} With AccessBell</h2>
+          {rules.length > 0 ? (
+            <>
+              <p>AccessBell's scanner runs axe-core, which includes {rules.length} {rules.length === 1 ? 'rule' : 'rules'} that catch code-level failures of this criterion. Automated checks help you spot issues quickly; a person still needs to review what they cannot judge.</p>
+              <ul>
+                {rules.map((r) => <li><code>{r.id}</code>: {r.description}{r.helpUrl && <> (<a href={r.helpUrl} rel="noopener noreferrer" target="_blank">details<span class="visually-hidden"> (opens in a new tab)</span></a>)</>}</li>)}
+              </ul>
+              {checkers.length > 0 && <p>This criterion is included in: {checkers.map((chk, i) => <>{i > 0 && ', '}<a href={checkerPath(chk)}>{chk.name}</a></>)}.</p>}
+            </>
+          ) : (
+            <p>This criterion depends on meaning or context, so it needs a person to judge. AccessBell's report lists it for manual review rather than marking it pass or fail automatically, so it is not missed.</p>
+          )}
+          <p><a href="/#scan">Run a free scan</a> to spot issues on your own pages.</p>
 
-    <section aria-labelledby="sources" class="checker-sources">
-      <h2 id="sources">Sources</h2>
-      <ul>
-        <li><a href={understandingUrl(c.sc)} rel="noopener noreferrer" target="_blank">W3C: Understanding {c.sc} {c.name}<span class="visually-hidden"> (opens in a new tab)</span></a></li>
-        <li><a href="https://www.w3.org/TR/WCAG22/" rel="noopener noreferrer" target="_blank">W3C: Web Content Accessibility Guidelines (WCAG) 2.2<span class="visually-hidden"> (opens in a new tab)</span></a></li>
-      </ul>
-      <p class="muted">This page explains a technical standard and is not legal advice. See our <a href="/disclaimer">disclaimer</a>.</p>
-    </section>
+          {example && (
+            <>
+              <h2 id="fix">Example Fix</h2>
+              <ol>{example.steps.map(([t, text]) => <li><strong>{t}.</strong> {text}</li>)}</ol>
+              <pre class="fix-code" tabindex="0" role="region" aria-label="Example code"><code>{example.code}</code></pre>
+            </>
+          )}
+
+          {related.length > 0 && !guideHasRelated && (
+            <>
+              <h2 id="related-sc">Related Criteria in {GUIDELINES[guidelineKey]}</h2>
+              <ul>{related.map((r) => <li><a href={criterionPath(r.sc)}>{r.sc} {r.name}</a> (Level {r.level}, WCAG {r.version})</li>)}</ul>
+            </>
+          )}
+
+          <section class="article-faq" aria-labelledby="faq">
+            <h2 id="faq">Frequently Asked Questions</h2>
+            {faqs.map((f) => (
+              <>
+                <h3>{f.q}</h3>
+                <p set:html={inlineMarkdown(f.a)} />
+              </>
+            ))}
+          </section>
+
+          <h2 id="sources">Sources</h2>
+          <ul>
+            <li><a href={understandingUrl(c.sc)} rel="noopener noreferrer" target="_blank">W3C: Understanding {c.sc} {c.name}<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+            <li><a href="https://www.w3.org/TR/WCAG22/" rel="noopener noreferrer" target="_blank">W3C: Web Content Accessibility Guidelines (WCAG) 2.2<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+          </ul>
+          <p class="muted">This page explains a technical standard and is not legal advice. See our <a href="/disclaimer">disclaimer</a>.</p>
+        </div>
+
+        {series.length > 0 && (
+          <nav class="guide-series" aria-labelledby="more-guides">
+            <h2 id="more-guides">More WCAG Codes Explained</h2>
+            <p>Plain-English guides to other WCAG success criteria, with examples and fixes.</p>
+            <ul>{series.map((g) => <li><a href={g.href}>{g.name}</a></li>)}</ul>
+            <p><a class="link-arrow" href="/resources/wcag">Browse every success criterion in the WCAG Library <Icon name="arrow" /></a></p>
+          </nav>
+        )}
+
+        <section class="author-box" aria-labelledby="about-the-authors">
+          <h2 id="about-the-authors">{contributors.length > 1 ? 'About the Authors' : 'About the Author'}</h2>
+          {contributors.map((x) => (
+            <div class="author-box-item">
+              <AuthorAvatar name={x.author.data.name} size="lg" />
+              <div>
+                <p class="author-box-name"><a href={authorPath(x.author)}>{x.author.data.name}</a><span class="tag">{x.role}</span></p>
+                <p class="author-box-title">{x.author.data.jobTitle}</p>
+                <p>{x.author.data.shortBio}</p>
+              </div>
+            </div>
+          ))}
+        </section>
+
+        {guide && guide.data.history.length > 0 && (
+          <details class="review-history">
+            <summary>How we reviewed this page</summary>
+            <ol>
+              {guide.data.history.map((h, i) => (
+                <li>
+                  <time datetime={h.date.toISOString()}>{formatDate(h.date)}</time>
+                  {i === 0 && <span class="tag tag-pass">Current version</span>}
+                  <p>{h.note}</p>
+                </li>
+              ))}
+            </ol>
+          </details>
+        )}
+      </div>
+
+      <aside class="article-aside" aria-label="Page tools">
+        <TableOfContents headings={toc} variant="aside" />
+        <div class="aside-card">
+          <h2>Check Your Website</h2>
+          <p>Run a free scan to spot WCAG {c.sc} issues and every other automated check on your page.</p>
+          <a class="btn btn-block" href="/#scan">Run a free scan <Icon name="arrow" /></a>
+        </div>
+      </aside>
+    </div>
   </article>
 
   <CtaBand
     title={`Check Your Site Against WCAG ${c.sc}`}
-    text={`Run a free scan and see whether your pages pass ${c.sc} ${c.name}, along with every other criterion in WCAG 2.2, 2.1 or 2.0.`}
+    text={`Run a free scan to spot ${c.sc} ${c.name} issues and every other automated WCAG check, then get help fixing them.`}
   />
 </BaseLayout>

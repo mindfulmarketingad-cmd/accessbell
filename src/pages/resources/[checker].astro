@@ -1,5 +1,6 @@
 ---
 import { getEntry, getEntries } from 'astro:content';
+import { postPath } from '../../lib/posts';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
 import ScanForm from '../../components/ScanForm.astro';
@@ -171,7 +172,7 @@ const schema = [
       <h2 id="related-guides">Related Guides</h2>
       <ul class="related-guides">
         {related.map((p) => (
-          <li><a href={`/blog/${p.id}`}>{p.data.title}</a><span>{p.data.description}</span></li>
+          <li><a href={postPath(p)}>{p.data.title}</a><span>{p.data.description}</span></li>
         ))}
         <li><a href="/resources/wcag">WCAG Success Criteria Library</a><span>Look up any of the {cov.total} criteria in {target} in plain language, with how to test it by hand.</span></li>
         <li><a href="/resources/statement-generator">Free Accessibility Statement Generator</a><span>Publish a statement that names {target} as your target and tells people how to report barriers.</span></li>

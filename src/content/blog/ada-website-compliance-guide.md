@@ -41,7 +41,7 @@ Because WCAG 2.2 is backward compatible, building to **WCAG 2.2 AA** is the most
 
 Most website accessibility claims begin with barriers that are easy to find with automated tools and a keyboard:
 
-- Images and image links with no [text alternative](/blog/wcag-1-1-1-non-text-content)
+- Images and image links with no [text alternative](/resources/wcag/1-1-1-non-text-content)
 - Form fields without labels, especially on checkout and contact forms
 - Buttons and icon links with no accessible name
 - Low [color contrast](/resources/contrast-checker) on text and buttons

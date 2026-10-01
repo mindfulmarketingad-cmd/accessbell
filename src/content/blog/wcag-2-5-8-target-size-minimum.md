@@ -38,7 +38,7 @@ There are two ways to pass:
 2. **Spacing:** if a target is smaller, imagine a circle 24 pixels across centered on it. If that circle does not overlap any other target, or the circle around another small target, it passes.
 
 <figure>
-  <img src="/blog/wcag-2-5-8-target-size-minimum/size-and-spacing.svg" width="800" height="400" loading="lazy" alt="Three examples of icon buttons. Fails: three 16 by 16 pixel buttons 2 pixels apart, whose 24 pixel circles overlap. Passes on size: three 24 by 24 pixel buttons. Passes on spacing: three 16 by 16 pixel buttons 26 pixels apart, whose 24 pixel circles do not overlap.">
+  <img src="/images/wcag/2-5-8-target-size-minimum/size-and-spacing.svg" width="800" height="400" loading="lazy" alt="Three examples of icon buttons. Fails: three 16 by 16 pixel buttons 2 pixels apart, whose 24 pixel circles overlap. Passes on size: three 24 by 24 pixel buttons. Passes on spacing: three 16 by 16 pixel buttons 26 pixels apart, whose 24 pixel circles do not overlap.">
   <figcaption>Small targets fail when they are crowded together. Make them 24 by 24 pixels, or space them so their 24 pixel circles do not overlap.</figcaption>
 </figure>
 
@@ -91,7 +91,7 @@ If a design really needs small controls, such as a row of social icons, space th
 ### Know the five exceptions
 
 <figure>
-  <img src="/blog/wcag-2-5-8-target-size-minimum/exceptions.svg" width="800" height="300" loading="lazy" alt="Four tiles showing exceptions to 2.5.8 Target Size (Minimum). Inline: links inside a sentence. Equivalent: a small icon next to a larger Share button that does the same job. User agent: unstyled default browser checkboxes and radio buttons. Essential: map pins whose size and position are essential.">
+  <img src="/images/wcag/2-5-8-target-size-minimum/exceptions.svg" width="800" height="300" loading="lazy" alt="Four tiles showing exceptions to 2.5.8 Target Size (Minimum). Inline: links inside a sentence. Equivalent: a small icon next to a larger Share button that does the same job. User agent: unstyled default browser checkboxes and radio buttons. Essential: map pins whose size and position are essential.">
   <figcaption>Targets can be smaller than 24 pixels in these situations.</figcaption>
 </figure>
 
@@ -123,4 +123,4 @@ Then [run a free WCAG 2.2 scan](/resources/wcag-2-2-aa-checker) to find undersiz
 - [2.5.2 Pointer Cancellation](/resources/wcag/2-5-2-pointer-cancellation): people can back out of an accidental press.
 - [2.5.7 Dragging Movements](/resources/wcag/2-5-7-dragging-movements): dragging needs a single-pointer alternative, also new in WCAG 2.2.
 
-Another new WCAG 2.2 rule, explained the same way: [2.4.12 Focus Not Obscured (Enhanced)](/blog/wcag-2-4-12-focus-not-obscured-enhanced).
+Another new WCAG 2.2 rule, explained the same way: [2.4.12 Focus Not Obscured (Enhanced)](/resources/wcag/2-4-12-focus-not-obscured-enhanced).

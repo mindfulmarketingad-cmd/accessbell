@@ -40,7 +40,7 @@ Success criterion **4.1.1 Parsing** is obsolete in WCAG 2.2. Modern browsers and
 
 **Dragging Movements (2.5.7).** Find sliders, sortable lists, maps and kanban boards. Each needs an alternative that works with single clicks or taps, such as up and down buttons or a menu.
 
-**[Target Size](/blog/wcag-2-5-8-target-size-minimum) (2.5.8).** Measure small icon buttons, pagination links and close buttons. Targets smaller than 24 by 24 CSS pixels pass only if a 24 pixel circle centered on each target does not overlap another target, or if an exception applies, such as links inside a sentence.
+**[Target Size](/resources/wcag/2-5-8-target-size-minimum) (2.5.8).** Measure small icon buttons, pagination links and close buttons. Targets smaller than 24 by 24 CSS pixels pass only if a 24 pixel circle centered on each target does not overlap another target, or if an exception applies, such as links inside a sentence.
 
 **Accessible Authentication (3.3.8).** Confirm your login allows password managers to fill fields and allows pasting. Avoid puzzles as the only verification method. Email magic links and passkeys are accessible alternatives.
 
@@ -50,11 +50,11 @@ Use this as a working list. The criteria numbers help you cross-reference the fu
 
 ### Perceivable
 
-- **1.1.1** Every meaningful image, icon and image button has a [text alternative](/blog/wcag-1-1-1-non-text-content). Decorative images use an empty alt.
+- **1.1.1** Every meaningful image, icon and image button has a [text alternative](/resources/wcag/1-1-1-non-text-content). Decorative images use an empty alt.
 - **1.2.2 and 1.2.4** Prerecorded video has captions. Live video has captions.
 - **1.2.5** Prerecorded video has audio description where visual information is not conveyed in the audio.
-- **1.3.1** Headings, lists, tables and [form labels](/blog/wcag-3-3-2-labels-or-instructions) are coded, not just styled.
-- **1.3.2** Content reads in a sensible order with CSS turned off. See our [1.3.2 Meaningful Sequence guide](/blog/wcag-1-3-2-meaningful-sequence).
+- **1.3.1** Headings, lists, tables and [form labels](/resources/wcag/3-3-2-labels-or-instructions) are coded, not just styled.
+- **1.3.2** Content reads in a sensible order with CSS turned off. See our [1.3.2 Meaningful Sequence guide](/resources/wcag/1-3-2-meaningful-sequence).
 - **1.3.5** Personal-data form fields use the correct `autocomplete` values.
 - **1.4.3** Text contrast is at least 4.5:1, or 3:1 for large text.
 - **1.4.4 and 1.4.10** Content works at 200 percent text size and reflows at 320 CSS pixels wide without horizontal scrolling.

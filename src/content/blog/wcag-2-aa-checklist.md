@@ -34,7 +34,7 @@ The checklist is based on the free WCAG 2.2 checklist originally published by Co
 
 The spreadsheet has three tabs.
 
-**Checklist** is where the testing happens. Each row is one specific check, grouped into categories such as Images, Forms and Inputs, and Content, and mapped to its WCAG success criterion and level. For example, WCAG 1.1.1 Non-text Content is split into separate checks for informative images, decorative images, functional images, complex images such as charts, and [CAPTCHAs](/blog/wcag-3-3-8-accessible-authentication-minimum). For every check you record:
+**Checklist** is where the testing happens. Each row is one specific check, grouped into categories such as Images, Forms and Inputs, and Content, and mapped to its WCAG success criterion and level. For example, WCAG 1.1.1 Non-text Content is split into separate checks for informative images, decorative images, functional images, complex images such as charts, and [CAPTCHAs](/resources/wcag/3-3-8-accessible-authentication-minimum). For every check you record:
 
 - A result: **Pass**, **Warning**, **Fail** or **N/A**
 - The element that caused the issue
@@ -92,7 +92,7 @@ These are the 55 success criteria the checklist covers, grouped by the four WCAG
 | 1.2.4 Captions (Live) | AA | WCAG 2.0 | Manual only |
 | 1.2.5 Audio Description (Prerecorded) | AA | WCAG 2.0 | Manual only |
 | 1.3.1 Info and Relationships | A | WCAG 2.0 | Partly automated |
-| [1.3.2 Meaningful Sequence](/blog/wcag-1-3-2-meaningful-sequence) | A | WCAG 2.0 | Manual only |
+| [1.3.2 Meaningful Sequence](/resources/wcag/1-3-2-meaningful-sequence) | A | WCAG 2.0 | Manual only |
 | 1.3.3 Sensory Characteristics | A | WCAG 2.0 | Manual only |
 | 1.3.4 Orientation | AA | WCAG 2.1 | Manual only |
 | 1.3.5 Identify Input Purpose | AA | WCAG 2.1 | Partly automated |

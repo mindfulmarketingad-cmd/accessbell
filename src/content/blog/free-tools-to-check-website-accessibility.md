@@ -28,7 +28,7 @@ faqs:
     a: 'Yes. In the free AccessBell scanner, choose "WCAG 2.1 AA" from the standard menu and the scan runs only the WCAG 2.0 and 2.1 Level A and AA rules, and reports how many issues it found. In the dashboard, report filters narrow results by version, level, principle, success criterion or severity. Pro plan customers can set WCAG 2.0, 2.1 or 2.2 and Level A, AA or AAA for each domain.'
 ---
 
-The best **free tools to check website accessibility** are AccessBell, WAVE, axe DevTools, Accessibility Insights, Google Lighthouse and ANDI. Each one finds barriers that stop people with disabilities from using a website, such as missing [alt text](/blog/wcag-1-1-1-non-text-content), unlabeled form fields, low [color contrast](/resources/contrast-checker) and buttons with no name. They differ in who they are built for, how you run them and how they present results.
+The best **free tools to check website accessibility** are AccessBell, WAVE, axe DevTools, Accessibility Insights, Google Lighthouse and ANDI. Each one finds barriers that stop people with disabilities from using a website, such as missing [alt text](/resources/wcag/1-1-1-non-text-content), unlabeled form fields, low [color contrast](/resources/contrast-checker) and buttons with no name. They differ in who they are built for, how you run them and how they present results.
 
 This guide compares all six so you can pick the right mix for your team. We make AccessBell, so we have marked it clearly and explained where it fits and where another tool is the better choice.
 
@@ -85,7 +85,7 @@ WAVE, from the nonprofit WebAIM, is available as a browser extension for Chrome,
 **Strengths:**
 
 - You see each issue in context, right where it sits on the page.
-- The structure and order views make heading and [reading order](/blog/wcag-1-3-2-meaningful-sequence) problems easy to spot.
+- The structure and order views make heading and [reading order](/resources/wcag/1-3-2-meaningful-sequence) problems easy to spot.
 - A built-in contrast panel checks text against its background.
 - Because the extension runs locally, it works on internal and signed-in pages.
 

@@ -1,5 +1,6 @@
 ---
 import { coverFor } from '../../lib/covers';
+import { postPath } from '../../lib/posts';
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AuthorAvatar from '../../components/AuthorAvatar.astro';
@@ -93,7 +94,7 @@ const schema = [
               {coverFor(p.id) && <img class="post-card-img" src={coverFor(p.id)!.src} width="1200" height="630" alt="" loading="lazy" decoding="async" />}
               <div class="post-card-body">
                 <span class="eyebrow">{roleIn(p)} &middot; {p.data.category}</span>
-                <h3><a href={`/blog/${p.id}`}>{p.data.title}</a></h3>
+                <h3><a href={postPath(p)}>{p.data.title}</a></h3>
                 <p>{p.data.description}</p>
                 <div class="post-meta">
                   <time datetime={p.data.pubDate.toISOString()}>{formatDate(p.data.pubDate)}</time>

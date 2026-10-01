@@ -39,7 +39,7 @@ That covers things like:
 - Sessions that time out and throw away unsaved work
 
 <figure>
-  <img src="/blog/wcag-2-2-3-no-timing/timed-vs-untimed.svg" width="800" height="440" loading="lazy" alt="Two versions of a job application form. The one labelled Fails 2.2.3 has a red banner reading 04:59 left to finish, and a note that answers are lost when time runs out. The one labelled Passes 2.2.3 has a green banner reading No time limit. Progress saved, and a note: no countdown, finish when ready.">
+  <img src="/images/wcag/2-2-3-no-timing/timed-vs-untimed.svg" width="800" height="440" loading="lazy" alt="Two versions of a job application form. The one labelled Fails 2.2.3 has a red banner reading 04:59 left to finish, and a note that answers are lost when time runs out. The one labelled Passes 2.2.3 has a green banner reading No time limit. Progress saved, and a note: no countdown, finish when ready.">
   <figcaption>A countdown on a job application fails 2.2.3 No Timing. Saving progress and dropping the timer passes.</figcaption>
 </figure>
 
@@ -97,7 +97,7 @@ Sessions sometimes have to expire. When they do, keep the person's data so they 
 ### Know the two exceptions
 
 <figure>
-  <img src="/blog/wcag-2-2-3-no-timing/exceptions.svg" width="800" height="320" loading="lazy" alt="Two exceptions to 2.2.3 No Timing. A live charity auction where bidding closes at 8:00 p.m.: the deadline is part of the event, so a time limit is allowed. A video player: media runs to its own clock, but nothing is lost if you pause it.">
+  <img src="/images/wcag/2-2-3-no-timing/exceptions.svg" width="800" height="320" loading="lazy" alt="Two exceptions to 2.2.3 No Timing. A live charity auction where bidding closes at 8:00 p.m.: the deadline is part of the event, so a time limit is allowed. A video player: media runs to its own clock, but nothing is lost if you pause it.">
   <figcaption>Real-time events and non-interactive media are exempt from 2.2.3 No Timing.</figcaption>
 </figure>
 
@@ -108,7 +108,7 @@ Sessions sometimes have to expire. When they do, keep the person's data so they 
 
 ## How to Test for 2.2.3 No Timing
 
-Time limits are hidden in scripts, server settings and business rules, so automated checkers cannot reliably find them. Automated tests also struggle with behavior over time in general: in [our test of 10 accessibility checker tools](/blog/we-tested-10-accessibility-checker-tools), every tool missed an [auto-advancing carousel](/blog/wcag-2-2-2-pause-stop-hide). Test by hand:
+Time limits are hidden in scripts, server settings and business rules, so automated checkers cannot reliably find them. Automated tests also struggle with behavior over time in general: in [our test of 10 accessibility checker tools](/blog/we-tested-10-accessibility-checker-tools), every tool missed an [auto-advancing carousel](/resources/wcag/2-2-2-pause-stop-hide). Test by hand:
 
 1. Look for countdowns, "expires in" messages and timed steps in forms, checkouts and quizzes.
 2. Start a task, then leave the page idle for 30 minutes or more. Come back and see whether your work survived.

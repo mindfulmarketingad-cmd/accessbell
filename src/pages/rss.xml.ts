@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { WCAG_GUIDES_CATEGORY } from '../lib/wcag-guides';
 import { getCollection } from 'astro:content';
 import { SITE } from '../config/site';
 
@@ -6,7 +7,7 @@ const esc = (s: string) =>
   s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 export const GET: APIRoute = async () => {
-  const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  const posts = (await getCollection('blog', ({ data }) => !data.draft && data.category !== WCAG_GUIDES_CATEGORY)).sort(
     (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
   );
   const items = posts

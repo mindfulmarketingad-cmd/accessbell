@@ -22,6 +22,7 @@ export const HEADER_NAV = [
   { label: 'Solutions', href: '/solutions' },
   { label: 'Platforms', href: '/platforms' },
   { label: 'Comparisons', href: '/comparisons' },
+  { label: 'WCAG Library', href: '/resources/wcag' },
   { label: 'Resources', href: '/resources' },
   { label: 'About', href: '/about' },
 ] as const;
@@ -36,6 +37,7 @@ export const FOOTER_NAV = [
   { label: 'Solutions', href: '/solutions' },
   { label: 'Comparisons', href: '/comparisons' },
   { label: 'Platform Checkers', href: '/platforms' },
+  { label: 'WCAG Library', href: '/resources/wcag' },
   { label: 'Help Center', href: '/resources/help-center' },
   { label: 'Disclaimer', href: '/disclaimer' },
   { label: 'Privacy', href: '/privacy' },

@@ -30,12 +30,12 @@ faqs:
 
 1.1.1 Non-text Content is a Level A requirement under the **Perceivable** principle, in the guideline "Text Alternatives". It is the first success criterion in WCAG.
 
-**Non-text content** is anything that is not text: photos, illustrations, icons, logos, charts, diagrams, image buttons, image maps, audio and video, and [CAPTCHAs](/blog/wcag-3-3-8-accessible-authentication-minimum). **Text alternatives** are the words that stand in for it, most often the `alt` attribute on an image.
+**Non-text content** is anything that is not text: photos, illustrations, icons, logos, charts, diagrams, image buttons, image maps, audio and video, and [CAPTCHAs](/resources/wcag/3-3-8-accessible-authentication-minimum). **Text alternatives** are the words that stand in for it, most often the `alt` attribute on an image.
 
 The key phrase is "serves the equivalent purpose". Alt text does not describe every pixel. It does the same job the image does on that page.
 
 <figure>
-  <img src="/blog/wcag-1-1-1-non-text-content/image-types.svg" width="800" height="340" loading="lazy" alt="Four kinds of image and the alt text each needs. Informative, a photo of a tent by a lake: describe it, alt equals Tent by a lake. Decorative, a leaf divider: hide it with an empty alt so screen readers skip it. Functional, a search button icon: name the action, alt equals Search, not magnifying glass. Complex, a bar chart: a short summary alt such as Sales by month, plus a data table below.">
+  <img src="/images/wcag/1-1-1-non-text-content/image-types.svg" width="800" height="340" loading="lazy" alt="Four kinds of image and the alt text each needs. Informative, a photo of a tent by a lake: describe it, alt equals Tent by a lake. Decorative, a leaf divider: hide it with an empty alt so screen readers skip it. Functional, a search button icon: name the action, alt equals Search, not magnifying glass. Complex, a bar chart: a short summary alt such as Sales by month, plus a data table below.">
   <figcaption>The right text alternative depends on the job the image does on the page.</figcaption>
 </figure>
 
@@ -62,7 +62,7 @@ Text alternatives also help people with slow connections who turn images off, pe
 The W3C's [images tutorial](https://www.w3.org/WAI/tutorials/images/) and its [alt decision tree](https://www.w3.org/WAI/tutorials/images/decision-tree/) walk through every case. Here is a short version:
 
 <figure>
-  <img src="/blog/wcag-1-1-1-non-text-content/decision-guide.svg" width="800" height="470" loading="lazy" alt="A decision guide with four questions. Is it a link or a button? If yes, describe the action or destination, for example alt equals Search. If no: does it show text? If yes, use the same words as the image. If no: does it add information? If yes, describe the information it adds. If no: is it only there for decoration? If yes, hide it from screen readers with an empty alt.">
+  <img src="/images/wcag/1-1-1-non-text-content/decision-guide.svg" width="800" height="470" loading="lazy" alt="A decision guide with four questions. Is it a link or a button? If yes, describe the action or destination, for example alt equals Search. If no: does it show text? If yes, use the same words as the image. If no: does it add information? If yes, describe the information it adds. If no: is it only there for decoration? If yes, hide it from screen readers with an empty alt.">
   <figcaption>Ask what the image is for, then write the text alternative that does the same job.</figcaption>
 </figure>
 
@@ -71,7 +71,7 @@ The W3C's [images tutorial](https://www.w3.org/WAI/tutorials/images/) and its [a
 For photos and illustrations that add information, describe what the image shows **in this context**. The same photo might need different alt text on a product page and on a travel blog. This is the W3C technique [H37, using alt attributes on img elements](https://www.w3.org/WAI/WCAG22/Techniques/html/H37).
 
 <figure>
-  <img src="/blog/wcag-1-1-1-non-text-content/alt-quality.svg" width="800" height="380" loading="lazy" alt="A photo of a tent on a lake shore with three possible alt texts. alt equals IMG_4032.jpg fails: a file name tells people nothing. alt equals image fails: placeholder text, not a description. alt equals Tent pitched on the shore of Pine Lake passes: it says what the photo shows and why it is there.">
+  <img src="/images/wcag/1-1-1-non-text-content/alt-quality.svg" width="800" height="380" loading="lazy" alt="A photo of a tent on a lake shore with three possible alt texts. alt equals IMG_4032.jpg fails: a file name tells people nothing. alt equals image fails: placeholder text, not a description. alt equals Tent pitched on the shore of Pine Lake passes: it says what the photo shows and why it is there.">
   <figcaption>File names and placeholder words are not text alternatives. Describe the image.</figcaption>
 </figure>
 
@@ -100,7 +100,7 @@ Use `alt=""`, with nothing between the quotes. Leaving the attribute out, or wri
 When an image is a link or a button, the text alternative should say what it does or where it goes, not what it looks like:
 
 <figure>
-  <img src="/blog/wcag-1-1-1-non-text-content/icon-button.svg" width="800" height="340" loading="lazy" alt="Two versions of a cart icon button in a Trail Supply header. The failing one has an img with no alt inside a button, and a screen reader says Button. The passing one has alt equals Cart, and a screen reader says Cart, button.">
+  <img src="/images/wcag/1-1-1-non-text-content/icon-button.svg" width="800" height="340" loading="lazy" alt="Two versions of a cart icon button in a Trail Supply header. The failing one has an img with no alt inside a button, and a screen reader says Button. The passing one has alt equals Cart, and a screen reader says Cart, button.">
   <figcaption>An icon button needs a name that says what it does.</figcaption>
 </figure>
 
@@ -141,7 +141,7 @@ Charts, diagrams, maps and infographics hold more than a short alt can carry. Gi
 1.1.1 Non-text Content lists situations where a full equivalent is not possible or not needed. In each case you still provide a text label that identifies the content:
 
 - **Controls and inputs:** give them a name that describes their purpose.
-- **Audio and video:** give a short description that identifies them. Captions and transcripts are covered by the 1.2 guidelines, such as [1.2.9 Audio-only (Live)](/blog/wcag-1-2-9-audio-only-live).
+- **Audio and video:** give a short description that identifies them. Captions and transcripts are covered by the 1.2 guidelines, such as [1.2.9 Audio-only (Live)](/resources/wcag/1-2-9-audio-only-live).
 - **Tests and exercises** that would be invalid in text, such as a hearing test: identify what they are.
 - **Sensory experiences**, such as a painting or a music performance: identify what they are.
 - **CAPTCHAs:** say what the CAPTCHA is for, and offer another form that uses a different sense, such as an audio CAPTCHA alongside a visual one.

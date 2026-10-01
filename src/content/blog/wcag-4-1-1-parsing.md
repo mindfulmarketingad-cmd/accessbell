@@ -33,14 +33,14 @@ faqs:
 4.1.1 Parsing was a Level A requirement under the **Robust** principle, present in WCAG 2.0 and WCAG 2.1. The idea was simple: if your code is malformed, assistive technology might read it wrongly, so the code should follow the rules of its markup language.
 
 <figure>
-  <img src="/blog/wcag-4-1-1-parsing/parsing-timeline.svg" width="800" height="372" loading="lazy" alt="Timeline. WCAG 2.0, December 2008: 4.1.1 Parsing is Level A. WCAG 2.1, June 2018: Level A. WCAG 2.2, October 2023: removed. In WCAG 2.0 and 2.1 the W3C notes that 4.1.1 always passes for HTML and XML.">
+  <img src="/images/wcag/4-1-1-parsing/parsing-timeline.svg" width="800" height="372" loading="lazy" alt="Timeline. WCAG 2.0, December 2008: 4.1.1 Parsing is Level A. WCAG 2.1, June 2018: Level A. WCAG 2.2, October 2023: removed. In WCAG 2.0 and 2.1 the W3C notes that 4.1.1 always passes for HTML and XML.">
   <figcaption>4.1.1 Parsing was Level A in WCAG 2.0 and 2.1, and was removed in WCAG 2.2.</figcaption>
 </figure>
 
 It asked for four things:
 
 <figure>
-  <img src="/blog/wcag-4-1-1-parsing/four-parsing-rules.svg" width="800" height="448" loading="lazy" alt="Four cards, each with a failing and a passing example. Complete start and end tags: p Hello with no closing tag versus a closed paragraph. Correct nesting: b and i closed in the wrong order versus the right order. No duplicate attributes: an h1 with two ids versus one id. Unique IDs: two anchors sharing the id x versus x and y.">
+  <img src="/images/wcag/4-1-1-parsing/four-parsing-rules.svg" width="800" height="448" loading="lazy" alt="Four cards, each with a failing and a passing example. Complete start and end tags: p Hello with no closing tag versus a closed paragraph. Correct nesting: b and i closed in the wrong order versus the right order. No duplicate attributes: an h1 with two ids versus one id. Unique IDs: two anchors sharing the id x versus x and y.">
   <figcaption>The four markup rules of 4.1.1 Parsing, with a failing and a passing example of each.</figcaption>
 </figure>
 
@@ -73,7 +73,7 @@ Dropping the criterion did not make every markup error harmless. A few still bre
 IDs are how the code connects one element to another. A `label` finds its field through `for`. `aria-labelledby`, `aria-describedby` and `aria-controls` find their targets by ID. If two elements share an ID, the connection can land on the wrong one:
 
 <figure>
-  <img src="/blog/wcag-4-1-1-parsing/duplicate-id-label.svg" width="800" height="404" loading="lazy" alt="Code shows two labels with for email pointing at two inputs that both have the id email. Both labels attach to the first input, and the second input has no label, so a screen reader reads it only as edit text.">
+  <img src="/images/wcag/4-1-1-parsing/duplicate-id-label.svg" width="800" height="404" loading="lazy" alt="Code shows two labels with for email pointing at two inputs that both have the id email. Both labels attach to the first input, and the second input has no label, so a screen reader reads it only as edit text.">
   <figcaption>Two inputs with the same ID: the second one ends up with no label.</figcaption>
 </figure>
 
@@ -87,7 +87,7 @@ IDs are how the code connects one element to another. A `label` finds its field 
 <label for="work-email">Work email</label> <input id="work-email">
 ```
 
-This is a failure of [1.3.1 Info and Relationships](/resources/wcag/1-3-1-info-and-relationships) or [4.1.2 Name, Role, Value](/blog/wcag-4-1-2-name-role-value), and of [3.3.2 Labels or Instructions](/blog/wcag-3-3-2-labels-or-instructions), depending on what breaks.
+This is a failure of [1.3.1 Info and Relationships](/resources/wcag/1-3-1-info-and-relationships) or [4.1.2 Name, Role, Value](/resources/wcag/4-1-2-name-role-value), and of [3.3.2 Labels or Instructions](/resources/wcag/3-3-2-labels-or-instructions), depending on what breaks.
 
 ### Broken nesting that changes structure
 
@@ -95,7 +95,7 @@ Browsers repair bad nesting, but not always the way you meant. A `<div>` inside 
 
 ### Invalid ARIA and duplicate attributes
 
-Unknown roles, misspelled `aria-` attributes and missing required attributes are real accessibility errors, and are checked under [4.1.2 Name, Role, Value](/blog/wcag-4-1-2-name-role-value).
+Unknown roles, misspelled `aria-` attributes and missing required attributes are real accessibility errors, and are checked under [4.1.2 Name, Role, Value](/resources/wcag/4-1-2-name-role-value).
 
 ## How to Test Your Markup Today
 
@@ -109,7 +109,7 @@ You do not need a 4.1.1 test, but a few quick checks catch the bugs above:
 ## Related Success Criteria
 
 - [1.3.1 Info and Relationships](/resources/wcag/1-3-1-info-and-relationships): structure and relationships are available in the code.
-- [4.1.2 Name, Role, Value](/blog/wcag-4-1-2-name-role-value): controls expose a name, role and state.
-- [4.1.3 Status Messages](/blog/wcag-4-1-3-status-messages): updates are announced without moving focus.
+- [4.1.2 Name, Role, Value](/resources/wcag/4-1-2-name-role-value): controls expose a name, role and state.
+- [4.1.3 Status Messages](/resources/wcag/4-1-3-status-messages): updates are announced without moving focus.
 
 Want to find the structural problems that still matter? [Run a free WCAG scan](/#scan) of any page, or [start a 3-day free trial](/app/signup) to monitor up to 500 URLs per domain every day.

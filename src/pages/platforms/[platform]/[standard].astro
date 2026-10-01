@@ -1,5 +1,6 @@
 ---
 import { getEntry } from 'astro:content';
+import { postPath } from '../../../lib/posts';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Icon from '../../../components/Icon.astro';
 import ScanForm from '../../../components/ScanForm.astro';
@@ -158,7 +159,7 @@ const schema = [
       <h2 id="std-guides">Related Guides</h2>
       <ul class="related-guides">
         <li><a href={checkerPath(general)}>{general.name}</a><span>The {std.label} standard in full, for any website.</span></li>
-        {related.map((post) => post && <li><a href={`/blog/${post.id}`}>{post.data.title}</a><span>{post.data.description}</span></li>)}
+        {related.map((post) => post && <li><a href={postPath(post)}>{post.data.title}</a><span>{post.data.description}</span></li>)}
         <li><a href="/resources/wcag">WCAG Success Criteria Library</a><span>Look up any criterion the scan flags, in plain language.</span></li>
       </ul>
     </section>

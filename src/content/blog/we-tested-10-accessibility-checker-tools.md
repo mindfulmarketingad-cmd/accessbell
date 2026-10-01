@@ -74,7 +74,7 @@ So we built a test website with 35 known barriers, ran all ten tools against it 
 | Sa11y | 12 | 9 | 3 | 17 | 1 |
 | W3C Nu Html Checker | 9 | 6 | 3 | 11 | 2 |
 
-"Findings not about a planted barrier" are not all mistakes. Some were real problems we had not planted (several tools correctly noticed an `aria-label` on a plain `div` in our carousel), and many were repeats or general "check this" prompts. The clear false positives were Pa11y's: it reported three correctly labelled social icon links as missing [alt text](/blog/wcag-1-1-1-non-text-content).
+"Findings not about a planted barrier" are not all mistakes. Some were real problems we had not planted (several tools correctly noticed an `aria-label` on a plain `div` in our carousel), and many were repeats or general "check this" prompts. The clear false positives were Pa11y's: it reported three correctly labelled social icon links as missing [alt text](/resources/wcag/1-1-1-non-text-content).
 
 ### Barrier-by-barrier results
 
@@ -124,8 +124,8 @@ So we built a test website with 35 known barriers, ran all ten tools against it 
 Five barriers slipped past all ten accessibility checker tools:
 
 - **A keyboard trap.** Our chat box swallowed the Tab key, so keyboard users could not leave it ([WCAG 2.1.2](/resources/wcag/2-1-2-no-keyboard-trap)).
-- **An [auto-advancing carousel](/blog/wcag-2-2-2-pause-stop-hide) with no pause button** ([WCAG 2.2.2](/resources/wcag/2-2-2-pause-stop-hide)).
-- **A [CAPTCHA](/blog/wcag-3-3-8-accessible-authentication-minimum) as the only way to sign in**, a cognitive test with no alternative ([WCAG 3.3.8](/resources/wcag/3-3-8-accessible-authentication-minimum)).
+- **An [auto-advancing carousel](/resources/wcag/2-2-2-pause-stop-hide) with no pause button** ([WCAG 2.2.2](/resources/wcag/2-2-2-pause-stop-hide)).
+- **A [CAPTCHA](/resources/wcag/3-3-8-accessible-authentication-minimum) as the only way to sign in**, a cognitive test with no alternative ([WCAG 3.3.8](/resources/wcag/3-3-8-accessible-authentication-minimum)).
 - **An "added to cart" message that screen readers never announce** ([WCAG 4.1.3](/resources/wcag/4-1-3-status-messages)).
 - **Name and email fields without autocomplete**, which makes forms harder for people with memory or motor disabilities ([WCAG 1.3.5](/resources/wcag/1-3-5-identify-input-purpose)).
 

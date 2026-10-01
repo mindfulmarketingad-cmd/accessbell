@@ -1,5 +1,6 @@
 ---
 import { getEntry } from 'astro:content';
+import { postPath } from '../../lib/posts';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
 import Faq from '../../components/Faq.astro';
@@ -96,7 +97,7 @@ const schema = [
       <h2 id="learn-title">Learn More About {s.name}</h2>
       <ul class="related-guides">
         {s.help.map((h) => <li><a href={h.href}>{h.label}</a><span>{h.note}</span></li>)}
-        {related.map((post) => post && <li><a href={`/blog/${post.id}`}>{post.data.title}</a><span>{post.data.description}</span></li>)}
+        {related.map((post) => post && <li><a href={postPath(post)}>{post.data.title}</a><span>{post.data.description}</span></li>)}
         <li><a href="/platforms">Accessibility Checkers by Platform</a><span>Free scans written for WordPress, Shopify, Wix and many more platforms.</span></li>
         <li><a href="/pricing">AccessBell pricing</a><span>One plan with every feature, 3-day free trial.</span></li>
       </ul>

@@ -7,7 +7,8 @@ import { resolve } from 'node:path';
 import sharp from 'sharp';
 import { ICONS } from '../src/lib/icons.js';
 import { ACCESSIBILITY_ICONS } from '../src/data/accessibility-icons.js';
-import { COVER_TOPICS, CATEGORY_THEMES } from '../src/data/blog-covers.js';
+import { COVER_TOPICS, CATEGORY_THEMES, WCAG_GUIDELINE_ICONS, wcagCoverSlug } from '../src/data/blog-covers.js';
+import { CRITERIA, PRINCIPLES } from '../server/wcag-criteria.js';
 
 const root = resolve(import.meta.dirname, '..');
 const blogDir = resolve(root, 'src/content/blog');
@@ -114,3 +115,23 @@ for (const [i, slug] of slugs.entries()) {
   await sharp(Buffer.from(ogSvg(slug, meta, topic, theme, i + 1))).png({ compressionLevel: 9, palette: true }).toFile(resolve(ogDir, `${slug}.png`));
 }
 console.log(`Wrote ${slugs.length} covers and social images.`);
+
+// WCAG library pages without a guide post get a featured image too:
+//   public/images/wcag/covers/<sc-slug>.webp and public/images/wcag/og/<sc-slug>.png
+const wcagCoverDir = resolve(root, 'public/images/wcag/covers');
+const wcagOgDir = resolve(root, 'public/images/wcag/og');
+mkdirSync(wcagCoverDir, { recursive: true });
+mkdirSync(wcagOgDir, { recursive: true });
+const guided = new Set(slugs.map((s) => (s.match(/^wcag-(\d+)-(\d+)-(\d+)-/) || []).slice(1).join('.')).filter(Boolean));
+let n = 0;
+for (const [i, c] of Object.values(CRITERIA).entries()) {
+  const slug = wcagCoverSlug(c.sc, c.name);
+  if (guided.has(c.sc)) continue;
+  const topic = { ...WCAG_GUIDELINE_ICONS[c.sc.split('.').slice(0, 2).join('.')], label: c.sc, caption: c.name.replace(/\s*\(.*\)$/, '') };
+  const meta = { category: `Level ${c.level} · ${PRINCIPLES[c.sc[0]]}`, title: `WCAG ${c.sc} ${c.name}` };
+  const theme = CATEGORY_THEMES['WCAG Codes Explained'];
+  await sharp(Buffer.from(coverSvg(slug, meta, topic, theme, i + 7))).webp({ quality: 82 }).toFile(resolve(wcagCoverDir, `${slug}.webp`));
+  await sharp(Buffer.from(ogSvg(slug, meta, topic, theme, i + 7))).png({ compressionLevel: 9, palette: true }).toFile(resolve(wcagOgDir, `${slug}.png`));
+  n++;
+}
+console.log(`Wrote ${n} WCAG library covers.`);

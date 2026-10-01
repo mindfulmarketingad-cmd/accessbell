@@ -38,3 +38,18 @@ test('old comparison blog posts and /comparison URLs redirect to /comparisons', 
   assert.equal(bySource.get('/comparison')?.destination, '/comparisons');
   assert.equal(bySource.get('/comparison/:slug')?.destination, '/comparisons/:slug');
 });
+
+test('WCAG Codes Explained blog posts redirect to their WCAG library page', async () => {
+  const { readdirSync } = await import('node:fs');
+  const { CRITERIA } = await import('../server/wcag-criteria.js');
+  const kebab = (s) => s.toLowerCase().replace(/[()]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const guides = readdirSync(new URL('../src/content/blog/', import.meta.url)).map((f) => f.replace(/\.md$/, '')).filter((id) => /^wcag-\d+-\d+-\d+-/.test(id));
+  assert.ok(guides.length >= 17);
+  for (const id of guides) {
+    const sc = id.match(/^wcag-(\d+)-(\d+)-(\d+)-/).slice(1).join('.');
+    const r = bySource.get(`/blog/${id}`);
+    assert.ok(r, `missing redirect for /blog/${id}`);
+    assert.equal(r.destination, `/resources/wcag/${sc.replace(/\./g, '-')}-${kebab(CRITERIA[sc].name)}`);
+    assert.equal(r.permanent, true);
+  }
+});

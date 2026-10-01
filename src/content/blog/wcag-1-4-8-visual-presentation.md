@@ -56,7 +56,7 @@ Long, dense text is tiring for everyone. For some readers it is the difference b
 ## How to Meet 1.4.8 Visual Presentation
 
 <figure>
-  <img src="/blog/wcag-1-4-8-visual-presentation/alignment-and-width.svg" width="800" height="420" loading="lazy" alt="Two blocks of text drawn as bars. Justified text, marked as failing, has uneven gaps between words that form a river of white space down the block. Left-aligned text, marked as passing, has even spacing and a measure showing a maximum of 80 characters per line.">
+  <img src="/images/wcag/1-4-8-visual-presentation/alignment-and-width.svg" width="800" height="420" loading="lazy" alt="Two blocks of text drawn as bars. Justified text, marked as failing, has uneven gaps between words that form a river of white space down the block. Left-aligned text, marked as passing, has even spacing and a measure showing a maximum of 80 characters per line.">
   <figcaption>Justified text creates uneven gaps. Left-aligned text with a limited line length is easier to read.</figcaption>
 </figure>
 
@@ -77,7 +77,7 @@ These follow the W3C techniques [C20, using relative measurements for column wid
 ### Give lines and paragraphs room to breathe
 
 <figure>
-  <img src="/blog/wcag-1-4-8-visual-presentation/spacing.svg" width="800" height="420" loading="lazy" alt="Two text layouts drawn as bars. Cramped lines, marked as failing, have single line spacing and almost no gap between paragraphs. 1.5 line spacing, marked as passing, has generous space between lines and a larger gap between paragraphs.">
+  <img src="/images/wcag/1-4-8-visual-presentation/spacing.svg" width="800" height="420" loading="lazy" alt="Two text layouts drawn as bars. Cramped lines, marked as failing, have single line spacing and almost no gap between paragraphs. 1.5 line spacing, marked as passing, has generous space between lines and a larger gap between paragraphs.">
   <figcaption>1.5 line spacing, with a clearly larger gap between paragraphs, helps readers keep their place.</figcaption>
 </figure>
 
@@ -101,7 +101,7 @@ You do not have to build a color picker. The key is not to fight the colors peop
 ### Make sure text reflows at 200%
 
 <figure>
-  <img src="/blog/wcag-1-4-8-visual-presentation/resize-200.svg" width="800" height="420" loading="lazy" alt="Two browser windows zoomed to 200 percent. In the passing one, text reflows so each line fits the window. In the failing one, every line runs off the right edge and a horizontal scrollbar is needed.">
+  <img src="/images/wcag/1-4-8-visual-presentation/resize-200.svg" width="800" height="420" loading="lazy" alt="Two browser windows zoomed to 200 percent. In the passing one, text reflows so each line fits the window. In the failing one, every line runs off the right edge and a horizontal scrollbar is needed.">
   <figcaption>At 200% zoom, text should wrap to fit the window instead of running off the side.</figcaption>
 </figure>
 

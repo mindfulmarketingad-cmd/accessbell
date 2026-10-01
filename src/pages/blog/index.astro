@@ -1,12 +1,13 @@
 ---
 import { getCollection, getEntry } from 'astro:content';
+import { WCAG_GUIDES_CATEGORY } from '../../lib/wcag-guides';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { coverFor } from '../../lib/covers';
 import { SITE } from '../../config/site';
 import { formatDate, readingTime } from '../../lib/format';
 
-const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+const posts = (await getCollection('blog', ({ data }) => !data.draft && data.category !== WCAG_GUIDES_CATEGORY)).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 const authorNames = new Map(
@@ -39,7 +40,7 @@ const schema = [
     <div class="container">
       <span class="eyebrow">AccessBell Blog</span>
       <h1 id="blog-title">Web Accessibility Guides and Compliance Insights</h1>
-      <p class="lead">Clear, practical articles on <a href="https://www.w3.org/TR/WCAG22/" rel="noopener noreferrer">WCAG</a>, the <a href="https://www.ada.gov/resources/web-guidance/" rel="noopener noreferrer">ADA</a> and testing your website for accessibility. Written for the people who have to make it work. <a href="/authors">Meet our authors</a> or browse our <a href="/resources">free tools</a>.</p>
+      <p class="lead">Clear, practical articles on <a href="https://www.w3.org/TR/WCAG22/" rel="noopener noreferrer">WCAG</a>, the <a href="https://www.ada.gov/resources/web-guidance/" rel="noopener noreferrer">ADA</a> and testing your website for accessibility. Written for the people who have to make it work. <a href="/authors">Meet our authors</a> or browse our <a href="/resources">free tools</a>. Looking for a WCAG success criterion explained? See the <a href="/resources/wcag">WCAG Library</a>.</p>
     </div>
   </section>
 

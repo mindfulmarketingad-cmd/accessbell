@@ -23,6 +23,91 @@
   },
   "redirects": [
     {
+      "source": "/blog/wcag-1-1-1-non-text-content",
+      "destination": "/resources/wcag/1-1-1-non-text-content",
+      "permanent": true
+    },
+    {
+      "source": "/blog/wcag-1-2-9-audio-only-live",
+      "destination": "/resources/wcag/1-2-9-audio-only-live",
+      "permanent": true
+    },
+    {
+      "source": "/blog/wcag-1-3-2-meaningful-sequence",
+      "destination": "/resources/wcag/1-3-2-meaningful-sequence",
+      "permanent": true
+    },
+    {
+      "source": "/blog/wcag-1-4-1-use-of-color",
+      "destination": "/resources/wcag/1-4-1-use-of-color",
+      "permanent": true
+    },
+    {
+      "source": "/blog/wcag-1-4-3-contrast-minimum",
+      "destination": "/resources/wcag/1-4-3-contrast-minimum",
+      "permanent": true
+    },
+    {
+      "source": "/blog/wcag-1-4-8-visual-presentation",
+      "destination": "/resources/wcag/1-4-8-visual-presentation",
+      "permanent": true
+    },
+    {
+      "source": "/blog/wcag-2-2-2-pause-stop-hide",
+      "destination": "/resources/wcag/2-2-2-pause-stop-hide",
+      "permanent": true
+    },
+    {
+      "source": "/blog/wcag-2-2-3-no-timing",
+      "destination": "/resources/wcag/2-2-3-no-timing",
+      "permanent": true
+    },
+    {
+      "source": "/blog/wcag-2-4-12-focus-not-obscured-enhanced",
+      "destination": "/resources/wcag/2-4-12-focus-not-obscured-enhanced",
+      "permanent": true
+    },
+    {
+      "source": "/blog/wcag-2-5-8-target-size-minimum",
+      "destination": "/resources/wcag/2-5-8-target-size-minimum",
+      "permanent": true
+    },
+    {
+      "source": "/blog/wcag-3-2-2-on-input",
+      "destination": "/resources/wcag/3-2-2-on-input",
+      "permanent": true
+    },
+    {
+      "source": "/blog/wcag-3-3-2-labels-or-instructions",
+      "destination": "/resources/wcag/3-3-2-labels-or-instructions",
+      "permanent": true
+    },
+    {
+      "source": "/blog/wcag-3-3-8-accessible-authentication-minimum",
+      "destination": "/resources/wcag/3-3-8-accessible-authentication-minimum",
+      "permanent": true
+    },
+    {
+      "source": "/blog/wcag-3-3-9-accessible-authentication-enhanced",
+      "destination": "/resources/wcag/3-3-9-accessible-authentication-enhanced",
+      "permanent": true
+    },
+    {
+      "source": "/blog/wcag-4-1-1-parsing",
+      "destination": "/resources/wcag/4-1-1-parsing-obsolete-in-wcag-2-2",
+      "permanent": true
+    },
+    {
+      "source": "/blog/wcag-4-1-2-name-role-value",
+      "destination": "/resources/wcag/4-1-2-name-role-value",
+      "permanent": true
+    },
+    {
+      "source": "/blog/wcag-4-1-3-status-messages",
+      "destination": "/resources/wcag/4-1-3-status-messages",
+      "permanent": true
+    },
+    {
       "source": "/blog/accessibe-alternative",
       "destination": "/comparisons/accessibe-vs-accessbell",
       "permanent": true

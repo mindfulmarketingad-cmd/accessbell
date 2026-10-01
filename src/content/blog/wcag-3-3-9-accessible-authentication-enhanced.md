@@ -35,10 +35,10 @@ faqs:
 - **An alternative:** another way to sign in that needs no such test, or
 - **A mechanism:** a tool that does the hard part, such as a password manager filling in the password.
 
-The difference from [3.3.8 Accessible Authentication (Minimum)](/blog/wcag-3-3-8-accessible-authentication-minimum) is in the exceptions:
+The difference from [3.3.8 Accessible Authentication (Minimum)](/resources/wcag/3-3-8-accessible-authentication-minimum) is in the exceptions:
 
 <figure>
-  <img src="/blog/wcag-3-3-9-accessible-authentication-enhanced/exceptions-compare.svg" width="800" height="440" loading="lazy" alt="Table comparing 3.3.8 Level AA and 3.3.9 Level AAA. Alternative method: allowed in both. Mechanism such as a password manager: allowed in both. Object recognition: allowed in 3.3.8, not in 3.3.9. Personal content: allowed in 3.3.8, not in 3.3.9.">
+  <img src="/images/wcag/3-3-9-accessible-authentication-enhanced/exceptions-compare.svg" width="800" height="440" loading="lazy" alt="Table comparing 3.3.8 Level AA and 3.3.9 Level AAA. Alternative method: allowed in both. Mechanism such as a password manager: allowed in both. Object recognition: allowed in 3.3.8, not in 3.3.9. Personal content: allowed in 3.3.8, not in 3.3.9.">
   <figcaption>3.3.9 keeps the alternative and the mechanism, and drops the two picture-based exceptions.</figcaption>
 </figure>
 
@@ -64,12 +64,12 @@ Removing the picture exceptions means the sign-in works for people whose difficu
 
 ## How to Meet 3.3.9 Accessible Authentication (Enhanced)
 
-First meet [3.3.8](/blog/wcag-3-3-8-accessible-authentication-minimum). Then remove any dependence on picture recognition.
+First meet [3.3.8](/resources/wcag/3-3-8-accessible-authentication-minimum). Then remove any dependence on picture recognition.
 
 ### Replace picture and puzzle steps
 
 <figure>
-  <img src="/blog/wcag-3-3-9-accessible-authentication-enhanced/failing-steps.svg" width="800" height="424" loading="lazy" alt="Four login challenges: pick the pictures with a bus, which is object recognition; find the picture you uploaded, which is personal content; copy wobbly text, which is transcription; and solve 17 plus 26, which is a calculation. Each asks people to recognize, remember or work something out.">
+  <img src="/images/wcag/3-3-9-accessible-authentication-enhanced/failing-steps.svg" width="800" height="424" loading="lazy" alt="Four login challenges: pick the pictures with a bus, which is object recognition; find the picture you uploaded, which is personal content; copy wobbly text, which is transcription; and solve 17 plus 26, which is a calculation. Each asks people to recognize, remember or work something out.">
   <figcaption>Each of these is a cognitive function test, and each needs an alternative.</figcaption>
 </figure>
 
@@ -84,7 +84,7 @@ Do not use any of these as the only route in:
 ### Offer at least one sign-in method with no test
 
 <figure>
-  <img src="/blog/wcag-3-3-9-accessible-authentication-enhanced/passing-options.svg" width="800" height="430" loading="lazy" alt="Five sign-in options that pass: a passkey or biometric, an email or SMS link, a password manager with autofill and paste, single sign-on, and a copy-friendly one-time code that can be autofilled or pasted.">
+  <img src="/images/wcag/3-3-9-accessible-authentication-enhanced/passing-options.svg" width="800" height="430" loading="lazy" alt="Five sign-in options that pass: a passkey or biometric, an email or SMS link, a password manager with autofill and paste, single sign-on, and a copy-friendly one-time code that can be autofilled or pasted.">
   <figcaption>Any one of these gives people a way in that needs no cognitive test.</figcaption>
 </figure>
 
@@ -99,7 +99,7 @@ If you keep passwords, do not fight the browser:
 <input id="password" name="password" type="password" autocomplete="current-password">
 ```
 
-Use the correct `autocomplete` values, such as `username`, `current-password`, `new-password` and `one-time-code`, and never block paste on a password or code field. Our guide to [3.3.8](/blog/wcag-3-3-8-accessible-authentication-minimum) covers one-time codes in more detail, and [3.3.2 Labels or Instructions](/blog/wcag-3-3-2-labels-or-instructions) covers the labels on the fields.
+Use the correct `autocomplete` values, such as `username`, `current-password`, `new-password` and `one-time-code`, and never block paste on a password or code field. Our guide to [3.3.8](/resources/wcag/3-3-8-accessible-authentication-minimum) covers one-time codes in more detail, and [3.3.2 Labels or Instructions](/resources/wcag/3-3-2-labels-or-instructions) covers the labels on the fields.
 
 ### If you must use a CAPTCHA
 
@@ -117,11 +117,11 @@ Automated tools cannot judge a whole login flow, so test by hand:
 4. **Try to sign in without typing or remembering anything.** Use a password manager or a passkey, and see whether every step still works.
 5. **Test with a screen reader and the keyboard,** since sign-in flows often trap both. See our [keyboard accessibility testing guide](/blog/keyboard-accessibility-testing).
 
-Login fields with missing names or labels are a separate, easy-to-catch failure of [4.1.2 Name, Role, Value](/blog/wcag-4-1-2-name-role-value), and a [free accessibility scan](/#scan) will find those.
+Login fields with missing names or labels are a separate, easy-to-catch failure of [4.1.2 Name, Role, Value](/resources/wcag/4-1-2-name-role-value), and a [free accessibility scan](/#scan) will find those.
 
 ## Related Success Criteria
 
-- [3.3.8 Accessible Authentication (Minimum)](/blog/wcag-3-3-8-accessible-authentication-minimum): the Level AA version, with four exceptions.
+- [3.3.8 Accessible Authentication (Minimum)](/resources/wcag/3-3-8-accessible-authentication-minimum): the Level AA version, with four exceptions.
 - [3.3.7 Redundant Entry](/resources/wcag/3-3-7-redundant-entry): do not ask for the same information twice in one process.
 - [1.3.5 Identify Input Purpose](/resources/wcag/1-3-5-identify-input-purpose): form fields say what they collect, which helps autofill.
 - [2.2.5 Re-authenticating](/resources/wcag/2-2-5-re-authenticating): when a session expires, people can continue without losing data.

@@ -150,7 +150,7 @@ After a final judgment, either side can appeal. Under Federal Rule of Appellate 
 
 ## How to Reduce the Risk of a Lawsuit
 
-The strongest protection is an accessible website and a record that proves it. Most website complaints cite barriers that automated tools catch quickly, such as missing [alt text](/blog/wcag-1-1-1-non-text-content), unlabeled form fields, low color contrast and buttons without names.
+The strongest protection is an accessible website and a record that proves it. Most website complaints cite barriers that automated tools catch quickly, such as missing [alt text](/resources/wcag/1-1-1-non-text-content), unlabeled form fields, low color contrast and buttons without names.
 
 - Scan your site regularly and fix issues by severity.
 - Test key journeys with a keyboard and a screen reader.
