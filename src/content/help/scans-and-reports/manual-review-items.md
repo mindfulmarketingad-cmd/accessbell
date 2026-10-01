@@ -23,7 +23,7 @@ Some checks need human judgment. When automated testing finds something it canno
 ## How to Review an Item
 
 1. Select **How to review** to open detailed guidance for that check.
-2. Look at the element on the page, ideally with the tools you would use for manual testing: a keyboard, a screen reader, or our [color contrast checker](/resources/contrast-checker).
+2. Look at the element on the page, ideally with the tools you would use for manual testing: a keyboard, a screen reader, or our [color contrast checker](/tools/contrast-checker).
 3. If it fails, fix it like any other issue. If it passes, no action is needed.
 
 Manual review items do not lower your score and are not counted as issues. They are still part of WCAG, so do not skip them. See [Plan manual testing](/resources/help-center/fixing-issues/plan-manual-testing).

@@ -85,7 +85,7 @@ For web content, EN 301 549 reuses WCAG:
 
 Version 4.1.1 is the first edition developed specifically for the European Accessibility Act, with an annex mapping its clauses to the EAA's requirements ([National Disability Authority, Ireland](https://nda.ie/news/en301549-published)). For web teams, the main change is the six new WCAG 2.2 Level A and AA success criteria, such as [target size](/resources/wcag/2-5-8-target-size-minimum) and [accessible authentication](/resources/wcag/3-3-8-accessible-authentication-minimum). Our guide to [what you should know about WCAG 2.2](/blog/what-you-should-know-about-wcag-2-2) covers each one.
 
-The practical advice: **test to WCAG 2.2 Level AA now.** It meets the new version and covers WCAG 2.1 AA as well. EN 301 549 also has clauses beyond the web, including documents (Clause 10), software and mobile apps (Clause 11) and documentation and support (Clause 12). See our [EN 301 549 checker](/resources/en-301-549-checker) for an overview.
+The practical advice: **test to WCAG 2.2 Level AA now.** It meets the new version and covers WCAG 2.1 AA as well. EN 301 549 also has clauses beyond the web, including documents (Clause 10), software and mobile apps (Clause 11) and documentation and support (Clause 12). See our [EN 301 549 checker](/tools/en-301-549-checker) for an overview.
 
 ## The Accessibility Information Requirement
 
@@ -95,7 +95,7 @@ Service providers must explain how their service meets the accessibility require
 - How the service meets the relevant accessibility requirements
 - Information a person needs to understand how the service works
 
-Our free [accessibility statement generator](/resources/statement-generator) creates a starting point you can adapt, and AccessBell can keep it updated from your scan results.
+Our free [accessibility statement generator](/tools/statement-generator) creates a starting point you can adapt, and AccessBell can keep it updated from your scan results.
 
 ## Exceptions and Transition Periods
 
@@ -119,9 +119,9 @@ If you sell across the EU, follow the strictest common technical standard, EN 30
 ## EAA Technical Compliance Checklist
 
 1. **Map what is in scope.** List your consumer-facing products, websites, apps, documents and support channels in the EU.
-2. **Audit against EN 301 549.** [Run a free scan](/#scan) for a first view, then test every page against WCAG 2.2 AA, plus a manual review with a keyboard and screen reader. Our [EN 301 549 checker](/resources/en-301-549-checker) runs the web checks.
+2. **Audit against EN 301 549.** [Run a free scan](/#scan) for a first view, then test every page against WCAG 2.2 AA, plus a manual review with a keyboard and screen reader. Our [EN 301 549 checker](/tools/en-301-549-checker) runs the web checks.
 3. **Fix the critical barriers first,** starting with checkout, sign-up, log-in and payment journeys.
-4. **Check your documents,** such as PDF terms, invoices and e-tickets, with the free [PDF accessibility checker](/resources/pdf-accessibility-checker).
+4. **Check your documents,** such as PDF terms, invoices and e-tickets, with the free [PDF accessibility checker](/tools/pdf-accessibility-checker).
 5. **Publish accessibility information** and a way for users to report problems.
 6. **Document any exception,** with the assessment behind it.
 7. **Train your teams,** including designers, developers, content editors and support staff.

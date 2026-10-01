@@ -199,4 +199,4 @@ Print this page or save it as a PDF from your browser to take it on a site walk-
 
 A compliant ramp is a matter of getting the numbers right: 1:12 slope, 36-inch width, 30-inch maximum rise per run, 60-inch landings, and continuous handrails with 12-inch extensions. Measure existing ramps against the checklist above. Fix the easy items like handrail extensions, edge protection and drainage first, and plan bigger changes into your next renovation.
 
-Your website is the front door many customers use before they ever reach your ramp, and the ADA applies there too. [Check your website with our free ADA compliance checker](/resources/ada-compliance-checker) or read our [ADA website compliance guide](/blog/ada-website-compliance-guide).
+Your website is the front door many customers use before they ever reach your ramp, and the ADA applies there too. [Check your website with our free ADA compliance checker](/tools/ada-compliance-checker) or read our [ADA website compliance guide](/blog/ada-website-compliance-guide).

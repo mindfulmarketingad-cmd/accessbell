@@ -609,7 +609,57 @@
     },
     {
       "source": "/resources/statement-Generator",
-      "destination": "/resources/statement-generator",
+      "destination": "/tools/statement-generator",
+      "permanent": true
+    },
+    {
+      "source": "/resources/wcag-2-2-aa-checker",
+      "destination": "/tools/wcag-2-2-aa-checker",
+      "permanent": true
+    },
+    {
+      "source": "/resources/wcag-2-1-aa-checker",
+      "destination": "/tools/wcag-2-1-aa-checker",
+      "permanent": true
+    },
+    {
+      "source": "/resources/ada-compliance-checker",
+      "destination": "/tools/ada-compliance-checker",
+      "permanent": true
+    },
+    {
+      "source": "/resources/section-508-checker",
+      "destination": "/tools/section-508-checker",
+      "permanent": true
+    },
+    {
+      "source": "/resources/en-301-549-checker",
+      "destination": "/tools/en-301-549-checker",
+      "permanent": true
+    },
+    {
+      "source": "/resources/contrast-checker",
+      "destination": "/tools/contrast-checker",
+      "permanent": true
+    },
+    {
+      "source": "/resources/chart-color-checker",
+      "destination": "/tools/chart-color-checker",
+      "permanent": true
+    },
+    {
+      "source": "/resources/pdf-accessibility-checker",
+      "destination": "/tools/pdf-accessibility-checker",
+      "permanent": true
+    },
+    {
+      "source": "/resources/statement-generator",
+      "destination": "/tools/statement-generator",
+      "permanent": true
+    },
+    {
+      "source": "/resources/free-accessibility-icon-set",
+      "destination": "/tools/free-accessibility-icon-set",
       "permanent": true
     }
   ],

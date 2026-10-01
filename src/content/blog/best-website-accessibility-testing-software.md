@@ -71,7 +71,7 @@ $29 per domain per month, or $199 per domain per year, with a 3-day free trial a
 
 ### AccessBell Free Resources
 
-A [free website accessibility scan](/#scan), a [free PDF accessibility checker](/resources/pdf-accessibility-checker), [color contrast](/resources/contrast-checker) and [chart color](/resources/chart-color-checker) checkers, a [WCAG success criteria library](/resources/wcag), an [accessibility statement generator](/resources/statement-generator) and a [Help Center](/resources/help-center).
+A [free website accessibility scan](/#scan), a [free PDF accessibility checker](/tools/pdf-accessibility-checker), [color contrast](/tools/contrast-checker) and [chart color](/tools/chart-color-checker) checkers, a [WCAG success criteria library](/resources/wcag), an [accessibility statement generator](/tools/statement-generator) and a [Help Center](/resources/help-center).
 
 **Best for:** teams that need every page tested continuously, with fixes developers can act on.
 

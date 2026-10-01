@@ -53,7 +53,7 @@ Searching for the **best website accessibility checker** turns up dozens of opti
 - **One flat price.** $29 per domain per month, unlimited rescans, monitoring for up to 500 URLs per domain. No traffic-based pricing tiers to track.
 - **Real fixes, every time.** Each issue shows the failing markup and a working example, not a generic tip.
 - **Built for the whole team**, not just one role: developers get failing components, QA gets repeatable criterion-level checks and CSV export, content teams get plain-language explanations.
-- **A full free toolkit**, no account required: a [free scanner](/#scan), the [WCAG success criteria library](/resources/wcag), an [accessibility statement generator](/resources/statement-generator), and checkers for your specific [platform](/resources) or [industry](/resources).
+- **A full free toolkit**, no account required: a [free scanner](/#scan), the [WCAG success criteria library](/resources/wcag), an [accessibility statement generator](/tools/statement-generator), and checkers for your specific [platform](/resources) or [industry](/resources).
 - **3-day free trial**, then $29/domain/month, cancel anytime.
 
 If you want a checker that finds real problems and hands you a real fix, at a price you can predict before you sign up, this is what AccessBell is built for.

@@ -340,7 +340,7 @@ export const SOLUTIONS: Solution[] = [
         id: 'statement-and-certificate',
         h2: 'Accessibility Statement and Certificate',
         paras: [
-          'An accessibility statement tells visitors what standard you aim for, what is not yet accessible and how to reach you. The W3C publishes [guidance on developing a statement](https://www.w3.org/WAI/planning/statements/), and our free [accessibility statement generator](/resources/statement-generator) writes a starting point. In the vault, the statement is kept with your scan results.',
+          'An accessibility statement tells visitors what standard you aim for, what is not yet accessible and how to reach you. The W3C publishes [guidance on developing a statement](https://www.w3.org/WAI/planning/statements/), and our free [accessibility statement generator](/tools/statement-generator) writes a starting point. In the vault, the statement is kept with your scan results.',
           'When every scanned page scores 100 in its latest scan, you can generate an Accessibility Certificate. It states that the site passed every automated check on that date, and it is not a certification of full WCAG conformance.',
         ],
       },

@@ -28,7 +28,7 @@ faqs:
     a: 'Yes. In the free AccessBell scanner, choose "WCAG 2.1 AA" from the standard menu and the scan runs only the WCAG 2.0 and 2.1 Level A and AA rules, and reports how many issues it found. In the dashboard, report filters narrow results by version, level, principle, success criterion or severity. Pro plan customers can set WCAG 2.0, 2.1 or 2.2 and Level A, AA or AAA for each domain.'
 ---
 
-The best **free tools to check website accessibility** are AccessBell, WAVE, axe DevTools, Accessibility Insights, Google Lighthouse and ANDI. Each one finds barriers that stop people with disabilities from using a website, such as missing [alt text](/resources/wcag/1-1-1-non-text-content), unlabeled form fields, low [color contrast](/resources/contrast-checker) and buttons with no name. They differ in who they are built for, how you run them and how they present results.
+The best **free tools to check website accessibility** are AccessBell, WAVE, axe DevTools, Accessibility Insights, Google Lighthouse and ANDI. Each one finds barriers that stop people with disabilities from using a website, such as missing [alt text](/resources/wcag/1-1-1-non-text-content), unlabeled form fields, low [color contrast](/tools/contrast-checker) and buttons with no name. They differ in who they are built for, how you run them and how they present results.
 
 This guide compares all six so you can pick the right mix for your team. We make AccessBell, so we have marked it clearly and explained where it fits and where another tool is the better choice.
 
@@ -74,7 +74,7 @@ The practical takeaway: use one or two automated tools to find and fix the objec
 - It checks **one public page at a time**. For pages behind a login, use a browser extension below or AccessBell Pro with custom headers.
 - It reports what automated rules can detect. Pair it with the manual checks described later in this guide.
 
-[Run a free AccessBell scan](/#scan) to see how many issues your page has, or open it preset for [WCAG 2.2 AA](/resources/wcag-2-2-aa-checker), [WCAG 2.1 AA](/resources/wcag-2-1-aa-checker), [ADA compliance](/resources/ada-compliance-checker), [Section 508](/resources/section-508-checker) or [EN 301 549](/resources/en-301-549-checker).
+[Run a free AccessBell scan](/#scan) to see how many issues your page has, or open it preset for [WCAG 2.2 AA](/tools/wcag-2-2-aa-checker), [WCAG 2.1 AA](/tools/wcag-2-1-aa-checker), [ADA compliance](/tools/ada-compliance-checker), [Section 508](/tools/section-508-checker) or [EN 301 549](/tools/en-301-549-checker).
 
 ## 2. WAVE by WebAIM
 

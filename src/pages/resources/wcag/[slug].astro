@@ -178,7 +178,7 @@ const schema = [
               {c.sc === '4.1.1' && <p>Because it is obsolete, WCAG {c.sc} is not counted in our WCAG 2.2 checkers, but it still applies to WCAG 2.0 and 2.1 targets.</p>}
               <h2 id="how-to-test">How to Test It by Hand</h2>
               <p>{content.howToTest}</p>
-              {['1.4.3', '1.4.6', '1.4.11'].includes(c.sc) && <p>Check any text and background pair with our free <a href="/resources/contrast-checker">WCAG color contrast checker</a>.</p>}
+              {['1.4.3', '1.4.6', '1.4.11'].includes(c.sc) && <p>Check any text and background pair with our free <a href="/tools/contrast-checker">WCAG color contrast checker</a>.</p>}
               <h2 id="failures">Common Failures</h2>
               <ul>{content.commonFailures.map((f) => <li>{f}</li>)}</ul>
             </>

@@ -101,7 +101,7 @@ A link inside a paragraph that differs from the text around it only by color fai
 }
 ```
 
-If your design removes underlines, the W3C technique [G183, using a 3:1 contrast ratio with surrounding text plus a visual cue on hover and focus](https://www.w3.org/WAI/WCAG22/Techniques/general/G183) describes the alternative: the link color needs a contrast ratio of at least **3:1** with the surrounding text, and the link needs a non-color cue, such as an underline, on hover and keyboard focus. Check both colors with our free [WCAG color contrast checker](/resources/contrast-checker). Navigation menus and buttons, where it is obvious everything is a link, do not need underlines.
+If your design removes underlines, the W3C technique [G183, using a 3:1 contrast ratio with surrounding text plus a visual cue on hover and focus](https://www.w3.org/WAI/WCAG22/Techniques/general/G183) describes the alternative: the link color needs a contrast ratio of at least **3:1** with the surrounding text, and the link needs a non-color cue, such as an underline, on hover and keyboard focus. Check both colors with our free [WCAG color contrast checker](/tools/contrast-checker). Navigation menus and buttons, where it is obvious everything is a link, do not need underlines.
 
 ### Add patterns and labels to charts
 
@@ -115,7 +115,7 @@ Charts and maps that tell lines, bars or areas apart only by color fail for many
 - Use **patterns or textures**, such as solid and striped fills. This is the W3C technique [G111, using color and pattern](https://www.w3.org/WAI/WCAG22/Techniques/general/G111).
 - Use **different marker shapes** on line charts, such as circles, squares and triangles.
 - **Label data directly** on the chart, rather than relying only on a color legend.
-- Test your palette with our free [chart color checker](/resources/chart-color-checker), which shows how the colors look with color blindness.
+- Test your palette with our free [chart color checker](/tools/chart-color-checker), which shows how the colors look with color blindness.
 - Offer the **data as a table** as well, which also helps meet [1.1.1 Non-text Content](/resources/wcag/1-1-1-non-text-content).
 
 ### Pair status colors with icons and words

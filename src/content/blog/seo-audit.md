@@ -120,7 +120,7 @@ Links help search engines discover pages and understand how they relate:
 Google does not list accessibility as a ranking factor, but an SEO audit and an accessibility review overlap a lot. Clear titles, a logical heading structure, alt text, descriptive link text, readable text and fast, stable pages help search engines and people using assistive technology alike. While you are auditing, it is worth running an accessibility check too:
 
 - Scan your templates with a [free WCAG checker](/#scan) to find missing alt text, empty links, low contrast and heading problems in one pass.
-- Check text colors with the [WCAG color contrast checker](/resources/contrast-checker).
+- Check text colors with the [WCAG color contrast checker](/tools/contrast-checker).
 - Remember that automated checks only find part of the picture, for SEO and accessibility alike. Our guide to [automated vs manual accessibility testing](/blog/automated-vs-manual-accessibility-testing) explains what to check by hand.
 
 ## Turning Your SEO Audit Into a Plan

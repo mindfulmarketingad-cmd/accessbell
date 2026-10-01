@@ -116,7 +116,7 @@ Some fixes, such as alt text, button names and the page language, can go live in
 
 ### 4. Check the PDFs on Your Site
 
-Menus, price lists and forms published as PDFs count too. AccessBell finds the PDFs linked from your pages, checks each one for tags, a title, a language, alt text and more, and fixes the title and language for you. Try a single file in the free [PDF accessibility checker](/resources/pdf-accessibility-checker).
+Menus, price lists and forms published as PDFs count too. AccessBell finds the PDFs linked from your pages, checks each one for tags, a title, a language, alt text and more, and fixes the title and language for you. Try a single file in the free [PDF accessibility checker](/tools/pdf-accessibility-checker).
 
 ### 5. Monitor Every Day
 
@@ -124,7 +124,7 @@ New products, blog posts, plugins and theme updates add new barriers. AccessBell
 
 ### 6. Keep Proof in the Compliance Vault
 
-If you are ever contacted about accessibility, you will want to show what you tested, what you fixed and when. The [Compliance Vault](/resources/help-center/scans-and-reports/compliance-vault) keeps dated scan records with a verifiable fingerprint, a fix log with your remediation notes and exportable evidence packages. Add an [accessibility statement](/resources/statement-generator) to your site that tells visitors how to report a problem.
+If you are ever contacted about accessibility, you will want to show what you tested, what you fixed and when. The [Compliance Vault](/resources/help-center/scans-and-reports/compliance-vault) keeps dated scan records with a verifiable fingerprint, a fix log with your remediation notes and exportable evidence packages. Add an [accessibility statement](/tools/statement-generator) to your site that tells visitors how to report a problem.
 
 ## What AccessBell Cannot Do for ADA Website Accessibility
 
@@ -140,7 +140,7 @@ Do not ignore it, and do not panic. Talk to a lawyer, run a full scan so you kno
 - [WCAG 2 at a glance](https://www.w3.org/WAI/standards-guidelines/wcag/glance/) from the W3C Web Accessibility Initiative
 - [Easy Checks: a first review of web accessibility](https://www.w3.org/WAI/test-evaluate/easy-checks/) from the W3C
 - The [ADA National Network](https://adata.org/), which answers ADA questions for free
-- AccessBell's free [website scan](/#scan), [color contrast checker](/resources/contrast-checker), [statement generator](/resources/statement-generator) and [Help Center](/resources/help-center)
+- AccessBell's free [website scan](/#scan), [color contrast checker](/tools/contrast-checker), [statement generator](/tools/statement-generator) and [Help Center](/resources/help-center)
 
 ADA website accessibility is ongoing work, not a one-time project. [Start your 3-day free trial](/app/signup) and let AccessBell find, track and document the fixes for you, or compare your options in our list of the [best ADA compliance software for small businesses](/blog/best-ada-compliance-software-for-small-businesses).
 

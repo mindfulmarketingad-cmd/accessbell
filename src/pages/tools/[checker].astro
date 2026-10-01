@@ -6,6 +6,7 @@ import Icon from '../../components/Icon.astro';
 import ScanForm from '../../components/ScanForm.astro';
 import Faq from '../../components/Faq.astro';
 import CtaBand from '../../components/CtaBand.astro';
+import MoreTools from '../../components/MoreTools.astro';
 import AuthorAvatar from '../../components/AuthorAvatar.astro';
 import PlatformLogo from '../../components/PlatformLogo.astro';
 import { PLATFORMS, platformCheckers } from '../../data/platforms';
@@ -28,7 +29,6 @@ const REVIEWED = new Date('2026-09-28');
 const url = `${SITE.url}${checkerPath(c)}`;
 const cov = coverageFor(c.version);
 const author = await getEntry('authors', 'anton-stewart');
-const others = CHECKERS.filter((o) => o.slug !== c.slug);
 const target = `WCAG ${c.version} Level ${c.level}`;
 const related = await getEntries(c.related.map((id) => ({ collection: 'blog' as const, id })));
 
@@ -62,7 +62,7 @@ const schema = [
 <BaseLayout
   title={`${c.seoTitle} | AccessBell`}
   description={c.description}
-  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: c.name, href: checkerPath(c) }]}
+  breadcrumbs={[{ label: 'Tools', href: '/tools' }, { label: c.name, href: checkerPath(c) }]}
   schema={schema}
 >
   <section class="checker-hero" id="scan" aria-labelledby="checker-title">
@@ -175,7 +175,7 @@ const schema = [
           <li><a href={postPath(p)}>{p.data.title}</a><span>{p.data.description}</span></li>
         ))}
         <li><a href="/resources/wcag">WCAG Success Criteria Library</a><span>Look up any of the {cov.total} criteria in {target} in plain language, with how to test it by hand.</span></li>
-        <li><a href="/resources/statement-generator">Free Accessibility Statement Generator</a><span>Publish a statement that names {target} as your target and tells people how to report barriers.</span></li>
+        <li><a href="/tools/statement-generator">Free Accessibility Statement Generator</a><span>Publish a statement that names {target} as your target and tells people how to report barriers.</span></li>
         <li><a href="/resources/help-center/scans-and-reports/filter-reports-by-wcag-version">Filter reports by WCAG version and level</a><span>Narrow your results to exactly the criteria in {target}.</span></li>
       </ul>
     </section>
@@ -215,28 +215,7 @@ const schema = [
     </section>
   )}
 
-  <section class="section section-surface" aria-labelledby="more-checkers">
-    <div class="container">
-      <div class="section-head">
-        <h2 id="more-checkers">More Free Accessibility Checkers</h2>
-        <p>The same engine, preset for the standard you need to meet.</p>
-      </div>
-      <ul class="res-grid">
-        {others.map((o) => (
-          <li>
-            <a class="res-card" href={checkerPath(o)}>
-              <span class="res-card-text">
-                <small>WCAG {o.version} Level {o.level}</small>
-                <strong>{o.name}</strong>
-                <span>{o.lead.split('. ')[0]}.</span>
-              </span>
-              <Icon name="arrow" class="res-arrow" />
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </section>
+  <MoreTools current={checkerPath(c)} />
 
   <CtaBand />
 </BaseLayout>

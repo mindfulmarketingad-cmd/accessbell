@@ -22,6 +22,7 @@ export const HEADER_NAV = [
   { label: 'Platforms', href: '/platforms' },
   { label: 'Comparisons', href: '/comparisons' },
   { label: 'WCAG Library', href: '/resources/wcag' },
+  { label: 'Tools', href: '/tools' },
   { label: 'Resources', href: '/resources' },
 ] as const;
 
@@ -40,7 +41,8 @@ export const FOOTER_GROUPS = [
   {
     title: 'Resources',
     links: [
-      { label: 'Free Tools', href: '/resources' },
+      { label: 'Free Tools', href: '/tools' },
+      { label: 'Resources', href: '/resources' },
       { label: 'WCAG Library', href: '/resources/wcag' },
       { label: 'Blog', href: '/blog' },
       { label: 'Help Center', href: '/resources/help-center' },

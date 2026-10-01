@@ -524,7 +524,7 @@ a:hover {
   width: 20px;
   height: 20px;
 }
-@media (max-width: 1079px) {
+@media (max-width: 1119px) {
   .nav-toggle {
     display: inline-flex;
   }
@@ -7854,7 +7854,7 @@ img.platform-logo-lg {
 }
 
 /* Desktops: keep the full header on one line. */
-@media (min-width: 1080px) {
+@media (min-width: 1120px) {
   .primary-nav ul {
     gap: 0;
   }

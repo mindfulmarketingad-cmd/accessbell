@@ -117,7 +117,7 @@ Parts of 1.4.8 can be measured in code, but judging it needs a person looking at
 4. **Resize:** zoom to 200% in a full-screen window and confirm you never scroll sideways to read a line.
 5. **Colors:** turn on a high-contrast or reading mode, or apply a custom style, and confirm the text still takes the new colors.
 
-Use our free [WCAG color contrast checker](/resources/contrast-checker) to confirm any colors you do set stay readable, and see our [1.4.8 Visual Presentation page](/resources/wcag/1-4-8-visual-presentation) in the WCAG library for a quick reference.
+Use our free [WCAG color contrast checker](/tools/contrast-checker) to confirm any colors you do set stay readable, and see our [1.4.8 Visual Presentation page](/resources/wcag/1-4-8-visual-presentation) in the WCAG library for a quick reference.
 
 ## Related Success Criteria
 

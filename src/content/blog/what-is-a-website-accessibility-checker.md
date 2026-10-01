@@ -39,10 +39,10 @@ Most checkers load a page, build its document tree and run a set of rules agains
 - **Accessible names for links and buttons (2.4.4 and 4.1.2).** Icon-only controls need a text name.
 - **Heading structure (1.3.1).** Headings should form a logical outline without empty headings.
 - **Zoom (1.4.4).** The viewport must not disable pinch zoom.
-- **[Color contrast](/resources/contrast-checker) (1.4.3).** Body text needs a contrast ratio of at least 4.5:1 against its background, and large text at least 3:1.
+- **[Color contrast](/tools/contrast-checker) (1.4.3).** Body text needs a contrast ratio of at least 4.5:1 against its background, and large text at least 3:1.
 - **Frames (4.1.2).** Embedded iframes need a title that describes their content.
 
-Our [free website accessibility checker](/) runs these kinds of checks against any public URL and tells you how many issues it found. With AccessBell Pro, every result is mapped to its WCAG criterion, so you can see exactly which requirement a failure relates to. You can also open it preset for the standard you are held to: [WCAG 2.2 AA](/resources/wcag-2-2-aa-checker), [WCAG 2.1 AA](/resources/wcag-2-1-aa-checker), [ADA compliance](/resources/ada-compliance-checker), [Section 508](/resources/section-508-checker) or [EN 301 549](/resources/en-301-549-checker). Each page shows exactly which criteria the automated rules cover.
+Our [free website accessibility checker](/) runs these kinds of checks against any public URL and tells you how many issues it found. With AccessBell Pro, every result is mapped to its WCAG criterion, so you can see exactly which requirement a failure relates to. You can also open it preset for the standard you are held to: [WCAG 2.2 AA](/tools/wcag-2-2-aa-checker), [WCAG 2.1 AA](/tools/wcag-2-1-aa-checker), [ADA compliance](/tools/ada-compliance-checker), [Section 508](/tools/section-508-checker) or [EN 301 549](/tools/en-301-549-checker). Each page shows exactly which criteria the automated rules cover.
 
 ## How Results Are Scored
 
@@ -114,7 +114,7 @@ If you are new to accessibility, start small and build a habit:
 3. Test those same pages with only a keyboard. Tab through every control.
 4. Turn on a screen reader such as NVDA or VoiceOver and listen to one full task.
 5. Set up scheduled scans so new content is checked automatically.
-6. Publish an accessibility statement that explains your commitment and how to report problems. Our free [accessibility statement generator](/resources/statement-generator) creates one in a minute.
+6. Publish an accessibility statement that explains your commitment and how to report problems. Our free [accessibility statement generator](/tools/statement-generator) creates one in a minute.
 
 Our [WCAG 2.2 checklist](/blog/wcag-2-2-checklist) walks through each requirement if you want a structured list to work from.
 

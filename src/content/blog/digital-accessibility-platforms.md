@@ -66,7 +66,7 @@ Before comparing vendors, decide what your team actually needs. These are the fe
 - **Automated audits** against WCAG 2.0, 2.1 or 2.2 at the level you choose, with each issue mapped to its success criterion, ranked by severity and shown with the failing HTML and a corrected example. See [how the score works](/resources/help-center/scans-and-reports/how-the-score-works).
 - **Manual testing guidance** for the checks automation cannot make, as step-by-step procedures your team can follow.
 - **The [Compliance Vault](/resources/help-center/scans-and-reports/compliance-vault):** dated scan records with a verifiable fingerprint, a fix log with remediation notes and exportable evidence packages, in case you are ever asked to show your work.
-- **PDF checks** for documents linked from your site, with the title and language fixed for you ([how PDF checks work](/resources/help-center/scans-and-reports/pdf-accessibility-scanning)). You can also test one file with our free [PDF accessibility checker](/resources/pdf-accessibility-checker).
+- **PDF checks** for documents linked from your site, with the title and language fixed for you ([how PDF checks work](/resources/help-center/scans-and-reports/pdf-accessibility-scanning)). You can also test one file with our free [PDF accessibility checker](/tools/pdf-accessibility-checker).
 - **Optional on-site tools:** AccessBellFix applies fixes you approve, such as missing alt text, and the PageAssist toolbar lets visitors adjust text size and contrast.
 
 **Pricing:** $29 per domain per month, or $199 per domain per year, with a 3-day free trial. See [pricing](/pricing).

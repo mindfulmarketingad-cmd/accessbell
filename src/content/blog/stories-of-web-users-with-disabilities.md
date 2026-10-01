@@ -90,7 +90,7 @@ Renata has deuteranopia, a form of red-green color blindness. Reds, greens, oran
 
 - Color is never the only way to show information. Swatches carry a text name, and errors include a message and an icon ([WCAG 1.4.1 Use of Color](/resources/wcag/1-4-1-use-of-color)).
 - Links inside paragraphs are underlined, not just a different color.
-- Charts use labels or patterns as well as color. Our [chart color checker](/resources/chart-color-checker) can simulate common types of color blindness on your own palette.
+- Charts use labels or patterns as well as color. Our [chart color checker](/tools/chart-color-checker) can simulate common types of color blindness on your own palette.
 
 Color vision differences are common enough that this barrier reaches many visitors.
 

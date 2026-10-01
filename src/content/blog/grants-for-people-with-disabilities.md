@@ -188,7 +188,7 @@ The [Alaska Mental Health Trust Authority](https://alaskamentalhealthtrust.org/a
 
 ## When a Grant Application Is Not Accessible
 
-Many grant applications are online forms or PDFs. If one does not work with your screen reader, keyboard or other assistive technology, contact the organization and ask for another format or for help. Programs that receive federal money are required to make their services accessible. If you run a grant program or nonprofit, [check your application pages with a free website accessibility checker](/resources/wcag-2-2-aa-checker) so the people you want to help can actually apply. The [ADA website compliance guide](/blog/ada-website-compliance-guide) explains what the law expects.
+Many grant applications are online forms or PDFs. If one does not work with your screen reader, keyboard or other assistive technology, contact the organization and ask for another format or for help. Programs that receive federal money are required to make their services accessible. If you run a grant program or nonprofit, [check your application pages with a free website accessibility checker](/tools/wcag-2-2-aa-checker) so the people you want to help can actually apply. The [ADA website compliance guide](/blog/ada-website-compliance-guide) explains what the law expects.
 
 ## Final Words
 

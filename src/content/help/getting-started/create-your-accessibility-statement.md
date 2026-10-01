@@ -29,7 +29,7 @@ The statement names the WCAG version and level from your domain's settings.
 - **Hosted link**: select **Copy link** and link to it from your site footer, for example with the text "Accessibility". The hosted page stays up to date, including the date your site was last checked.
 - **On your own site**: select **Copy HTML** or **Download HTML** and paste it into a new page on your site.
 
-Want a statement without an account? Use the free [accessibility statement generator](/resources/statement-generator).
+Want a statement without an account? Use the free [accessibility statement generator](/tools/statement-generator).
 
 ## Who Can Do This
 

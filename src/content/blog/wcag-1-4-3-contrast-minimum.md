@@ -70,7 +70,7 @@ The 4.5:1 minimum is set so text stays readable for people with moderately low v
 
 ### Pick text and background colors that pass
 
-Check every text color against the background it sits on, and adjust until it passes. This is the W3C technique [G18, ensuring a contrast ratio of at least 4.5:1](https://www.w3.org/WAI/WCAG22/Techniques/general/G18), and [G145](https://www.w3.org/WAI/WCAG22/Techniques/general/G145) for 3:1 on large text. Our free [WCAG color contrast checker](/resources/contrast-checker) calculates the ratio for any pair of colors and tells you which levels it passes.
+Check every text color against the background it sits on, and adjust until it passes. This is the W3C technique [G18, ensuring a contrast ratio of at least 4.5:1](https://www.w3.org/WAI/WCAG22/Techniques/general/G18), and [G145](https://www.w3.org/WAI/WCAG22/Techniques/general/G145) for 3:1 on large text. Our free [WCAG color contrast checker](/tools/contrast-checker) calculates the ratio for any pair of colors and tells you which levels it passes.
 
 Build the passing colors into your design system, so every page uses them:
 
@@ -135,7 +135,7 @@ Contrast on plain backgrounds is one of the easiest things for software to find.
 
 1. **Run an automated scan** to find low-contrast text on solid backgrounds. [Run a free WCAG scan](/#scan) of any page to start.
 2. **Check what tools cannot measure:** text on images, gradients and videos, text that appears on hover or focus, and text in images.
-3. **Measure any pair by hand** with an eyedropper tool and our [WCAG color contrast checker](/resources/contrast-checker).
+3. **Measure any pair by hand** with an eyedropper tool and our [WCAG color contrast checker](/tools/contrast-checker).
 4. **Check every state:** hover, focus, visited, selected and error states often use different colors.
 5. **Check the whole template:** navigation, footers, cookie banners and pop-ups are easy to miss.
 

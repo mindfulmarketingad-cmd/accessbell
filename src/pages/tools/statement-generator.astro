@@ -1,12 +1,13 @@
 ---
 import CtaBand from '../../components/CtaBand.astro';
+import MoreTools from '../../components/MoreTools.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
 import Faq from '../../components/Faq.astro';
 import { faqSchema, type FaqItem } from '../../lib/schema';
 import { SITE } from '../../config/site';
 
-const PATH = '/resources/statement-generator';
+const PATH = '/tools/statement-generator';
 const standards = [
   { value: 'wcag22aa', label: 'WCAG 2.2 AA (most common)' },
   { value: 'wcag21aa', label: 'WCAG 2.1 AA' },
@@ -56,7 +57,7 @@ const schema = [
 <BaseLayout
   title="Free Accessibility Statement Generator | AccessBell"
   description="Generate a free, custom accessibility statement for your website in seconds. Choose WCAG 2.2, ADA, Section 508 or EN 301 549, then copy or download it."
-  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: 'Accessibility Statement Generator', href: PATH }]}
+  breadcrumbs={[{ label: 'Tools', href: '/tools' }, { label: 'Accessibility Statement Generator', href: PATH }]}
   schema={schema}
 >
   <section class="gen-hero" aria-labelledby="gen-title">
@@ -88,8 +89,8 @@ const schema = [
 
     <section class="gen-main" aria-labelledby="gen-sub">
       <h2 id="gen-sub">Get Your Custom Accessibility Statement</h2>
-      <p class="gen-intro">Fill in your details, then copy the statement to a page on your website, such as <code>/accessibility</code>. You can edit the text to reflect your own work, and remember to link to it from your site's footer. The W3C's guide to <a href="https://www.w3.org/WAI/planning/statements/" rel="noopener noreferrer">developing an accessibility statement</a> explains what a complete statement covers. To mark the link in your footer, grab the Universal Access icon from our <a href="/resources/free-accessibility-icon-set">free accessibility icon set</a>.</p>
-      <p class="gen-intro">Not sure which standard to choose? Each option has a free checker with a full breakdown: <a href="/resources/wcag-2-2-aa-checker">WCAG 2.2 AA</a>, <a href="/resources/wcag-2-1-aa-checker">WCAG 2.1 AA</a>, <a href="/resources/ada-compliance-checker">ADA</a>, <a href="/resources/section-508-checker">Section 508</a> and <a href="/resources/en-301-549-checker">EN 301 549</a>.</p>
+      <p class="gen-intro">Fill in your details, then copy the statement to a page on your website, such as <code>/accessibility</code>. You can edit the text to reflect your own work, and remember to link to it from your site's footer. The W3C's guide to <a href="https://www.w3.org/WAI/planning/statements/" rel="noopener noreferrer">developing an accessibility statement</a> explains what a complete statement covers. To mark the link in your footer, grab the Universal Access icon from our <a href="/tools/free-accessibility-icon-set">free accessibility icon set</a>.</p>
+      <p class="gen-intro">Not sure which standard to choose? Each option has a free checker with a full breakdown: <a href="/tools/wcag-2-2-aa-checker">WCAG 2.2 AA</a>, <a href="/tools/wcag-2-1-aa-checker">WCAG 2.1 AA</a>, <a href="/tools/ada-compliance-checker">ADA</a>, <a href="/tools/section-508-checker">Section 508</a> and <a href="/tools/en-301-549-checker">EN 301 549</a>.</p>
 
       <div class="gen-grid">
         <form class="gen-card" data-gen-form novalidate aria-labelledby="gen-input-title">
@@ -151,6 +152,8 @@ const schema = [
       <Faq items={faqs} />
     </div>
   </section>
+
+  <MoreTools current="/tools/statement-generator" />
 
   <CtaBand title="Back Your Statement With Real Testing" text="An accessibility statement is only as good as the testing behind it. Start a 3-day free trial to scan your pages, track fixes and keep your statement accurate." />
 </BaseLayout>

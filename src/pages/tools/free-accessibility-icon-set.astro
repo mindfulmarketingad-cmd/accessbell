@@ -1,5 +1,6 @@
 ---
 import CtaBand from '../../components/CtaBand.astro';
+import MoreTools from '../../components/MoreTools.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
 import Faq from '../../components/Faq.astro';
@@ -8,7 +9,7 @@ import { SITE } from '../../config/site';
 import { understandingUrl } from '../../lib/wcag-pages';
 import { ACCESSIBILITY_ICONS, ICON_SET } from '../../data/accessibility-icons.js';
 
-const PATH = '/resources/free-accessibility-icon-set';
+const PATH = '/tools/free-accessibility-icon-set';
 const DEFAULT_COLOR = '#1f3a2d';
 const file = (fmt: 'svg' | 'png', slug: string) => `${ICON_SET.basePath}/${fmt}/${slug}.${fmt}`;
 const ATTRIBUTION = 'Accessibility icons by AccessBell (accessbell.co), CC BY 4.0';
@@ -61,7 +62,7 @@ const schema = [
 <BaseLayout
   title="Free Accessibility Icon Set: SVG and PNG Downloads | AccessBell"
   description="Download our free accessibility icon set: 17 original SVG and PNG icons for wheelchair access, captions, sign language, braille and more. Free for commercial use."
-  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: 'Free Accessibility Icon Set', href: PATH }]}
+  breadcrumbs={[{ label: 'Tools', href: '/tools' }, { label: 'Free Accessibility Icon Set', href: PATH }]}
   schema={schema}
 >
   <section class="gen-hero" aria-labelledby="ic-title">
@@ -122,10 +123,10 @@ const schema = [
       <ul>
         <li><strong>Pair icons with text.</strong> Not everyone reads icons the same way. A visible label next to the icon, such as "Captions available", removes the guesswork.</li>
         <li><strong>Get the alt text right.</strong> Next to a visible label, an icon is decorative, so use an empty <code>alt=""</code>. On its own, it needs a text alternative that describes its purpose. See the W3C's <a href={understandingUrl('1.1.1')} rel="noopener noreferrer">Understanding Non-text Content</a>.</li>
-        <li><strong>Keep enough contrast.</strong> Icons that carry meaning need at least a 3:1 contrast ratio against their background under <a href="/resources/wcag/1-4-11-non-text-contrast">WCAG 1.4.11</a>. Test your color with our free <a href="/resources/contrast-checker">WCAG color contrast checker</a>.</li>
+        <li><strong>Keep enough contrast.</strong> Icons that carry meaning need at least a 3:1 contrast ratio against their background under <a href="/resources/wcag/1-4-11-non-text-contrast">WCAG 1.4.11</a>. Test your color with our free <a href="/tools/contrast-checker">WCAG color contrast checker</a>.</li>
         <li><strong>Make icon buttons big enough.</strong> A clickable icon should be at least 24 by 24 CSS pixels, or have enough space around it, to meet <a href="/resources/wcag/2-5-8-target-size-minimum">WCAG 2.5.8 Target Size (Minimum)</a>.</li>
       </ul>
-      <p>Adding the Universal Access icon to your footer? Link it to an accessibility statement, which you can write in a minute with our free <a href="/resources/statement-generator">accessibility statement generator</a>.</p>
+      <p>Adding the Universal Access icon to your footer? Link it to an accessibility statement, which you can write in a minute with our free <a href="/tools/statement-generator">accessibility statement generator</a>.</p>
     </div>
   </section>
 
@@ -147,6 +148,8 @@ const schema = [
       <Faq items={faqs} />
     </div>
   </section>
+
+  <MoreTools current="/tools/free-accessibility-icon-set" />
 
   <CtaBand />
 </BaseLayout>

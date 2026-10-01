@@ -1,5 +1,6 @@
 ---
 import CtaBand from '../../components/CtaBand.astro';
+import MoreTools from '../../components/MoreTools.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
 import Faq from '../../components/Faq.astro';
@@ -7,7 +8,7 @@ import { faqSchema, type FaqItem } from '../../lib/schema';
 import { SITE } from '../../config/site';
 import { understandingUrl } from '../../lib/wcag-pages';
 
-const PATH = '/resources/chart-color-checker';
+const PATH = '/tools/chart-color-checker';
 
 const faqs: FaqItem[] = [
   {
@@ -48,7 +49,7 @@ const schema = [
 <BaseLayout
   title="Free Chart Color Checker for Color Blindness | AccessBell"
   description="Free chart color checker: test chart and infographic colors for WCAG 3:1 contrast and see if people with color blindness can tell them apart. In your browser."
-  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: 'Chart Color Checker', href: PATH }]}
+  breadcrumbs={[{ label: 'Tools', href: '/tools' }, { label: 'Chart Color Checker', href: PATH }]}
   schema={schema}
 >
   <section class="gen-hero" aria-labelledby="ccc-title">
@@ -123,7 +124,7 @@ const schema = [
         <li><strong>Different marker shapes</strong> on line and scatter charts.</li>
         <li><strong>A data table or text summary</strong>, which also gives the chart a text alternative under <a href="/resources/wcag/1-1-1-non-text-content">WCAG 1.1.1 Non-text Content</a>.</li>
       </ul>
-      <p>Checking text colors instead? Use our <a href="/resources/contrast-checker">WCAG color contrast checker</a>, and read our guide to <a href="/resources/wcag/1-4-3-contrast-minimum">1.4.3 Contrast (Minimum)</a>.</p>
+      <p>Checking text colors instead? Use our <a href="/tools/contrast-checker">WCAG color contrast checker</a>, and read our guide to <a href="/resources/wcag/1-4-3-contrast-minimum">1.4.3 Contrast (Minimum)</a>.</p>
     </div>
   </section>
 
@@ -137,6 +138,8 @@ const schema = [
       <Faq items={faqs} />
     </div>
   </section>
+
+  <MoreTools current="/tools/chart-color-checker" />
 
   <CtaBand title="Check Every Chart on Your Site" text="Start a 3-day free trial and AccessBell scans up to 500 pages per domain every day for contrast, missing text alternatives and every other automated WCAG check." />
 </BaseLayout>

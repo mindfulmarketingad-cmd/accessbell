@@ -12,7 +12,7 @@ const PNG_SIZE = 512;
 const root = resolve(import.meta.dirname, '..', 'public', ICON_SET.basePath.replace(/^\//, ''));
 
 const LICENSE = `${ICON_SET.name}
-https://www.accessbell.co/resources/free-accessibility-icon-set
+https://www.accessbell.co/tools/free-accessibility-icon-set
 
 Licensed under ${ICON_SET.license}: ${ICON_SET.licenseUrl}
 You may use, change and share these icons, including commercially, as long as

@@ -1,5 +1,6 @@
 ---
 import CtaBand from '../../components/CtaBand.astro';
+import MoreTools from '../../components/MoreTools.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
 import Faq from '../../components/Faq.astro';
@@ -8,7 +9,7 @@ import { SITE } from '../../config/site';
 import { criterionPath } from '../../lib/wcag-pages';
 import { PDF_CHECKS } from '../../../server/pdf-audit.js';
 
-const PATH = '/resources/pdf-accessibility-checker';
+const PATH = '/tools/pdf-accessibility-checker';
 
 // WCAG criteria the checks map to, so the browser script can link each one to its page.
 const wcagLinks = Object.fromEntries(
@@ -75,7 +76,7 @@ const schema = [
 <BaseLayout
   title="Free PDF Accessibility Checker, WCAG & PDF/UA Compliance"
   description="Free PDF accessibility checker for WCAG and PDF/UA compliance. Check tags, title, language, alt text, scanned pages and form labels in your browser. No upload."
-  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: 'PDF Accessibility Checker', href: PATH }]}
+  breadcrumbs={[{ label: 'Tools', href: '/tools' }, { label: 'PDF Accessibility Checker', href: PATH }]}
   schema={schema}
 >
   <section class="gen-hero" aria-labelledby="pdfc-title">
@@ -169,7 +170,7 @@ const schema = [
         <li><strong>Unlabeled form fields,</strong> which leave screen reader users guessing what to type.</li>
         <li><strong>Wrong reading order</strong> in multi-column layouts, where text is read across columns instead of down them.</li>
         <li><strong>Tables without header cells,</strong> so data cannot be matched to its column or row.</li>
-        <li><strong>Low contrast text,</strong> such as light gray on white. Test colors with our <a href="/resources/contrast-checker">color contrast checker</a>.</li>
+        <li><strong>Low contrast text,</strong> such as light gray on white. Test colors with our <a href="/tools/contrast-checker">color contrast checker</a>.</li>
       </ul>
 
       <h2 id="pdfc-tools-title">PDF Accessibility Checker Tools Compared</h2>
@@ -207,6 +208,8 @@ const schema = [
       <Faq items={faqs} />
     </div>
   </section>
+
+  <MoreTools current="/tools/pdf-accessibility-checker" />
 
   <CtaBand title="Check Every PDF on Your Website" text="Start a 3-day free trial and AccessBell finds the PDFs linked from your pages, checks each one and fixes the title and language for you, alongside daily WCAG scans of up to 500 pages per domain." />
 </BaseLayout>

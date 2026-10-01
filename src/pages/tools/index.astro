@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { SITE } from '../../config/site';
+import { faqSchema } from '../../lib/schema';
+import { TOOLS, TOOL_GROUPS } from '../../data/tools';
+
+const PATH = '/tools';
+const url = `${SITE.url}${PATH}`;
+const faqs = [
+  { q: 'Are these accessibility tools really free?', a: 'Yes. Every tool on this page is free with no account and no sign-up. A paid AccessBell plan adds scans of up to 500 pages per domain, daily monitoring, code-level fixes and a record of your work.' },
+  { q: 'Which free accessibility tool should I start with?', a: 'Start with the Website Accessibility Checker on your home page. It shows how many automated WCAG issues the page has. Then check your brand colors with the contrast checker and any PDFs you publish with the PDF checker.' },
+  { q: 'Can free tools make my website compliant?', a: 'No tool can make a website 100% compliant. These tools help you spot accessibility issues and fix them. Automated testing covers only part of WCAG, so a person still needs to check things like keyboard use and whether alt text makes sense.' },
+  { q: 'Do the tools store what I check?', a: 'The color, chart and PDF tools run in your browser and never send your files or colors to us. The website checker fetches the page you enter to scan it. See our privacy policy for details.' },
+];
+const schema = [
+  {
+    '@type': 'CollectionPage',
+    '@id': `${url}#webpage`,
+    name: 'Free Accessibility Tools',
+    url,
+    isPartOf: { '@id': `${SITE.url}/#website` },
+    hasPart: TOOLS.map((t) => ({ '@type': 'WebApplication', name: t.keyword, url: `${SITE.url}${t.href === '/' ? '/' : t.href}`, applicationCategory: 'DeveloperApplication', offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' } })),
+  },
+  faqSchema(faqs),
+];
+---
+<BaseLayout
+  title="Free Accessibility Tools and Checkers | AccessBell"
+  description="Free accessibility tools from AccessBell: WCAG, ADA and Section 508 checkers, a color contrast checker, a PDF checker, an icon set and a statement generator."
+  breadcrumbs={[{ label: 'Tools', href: PATH }]}
+  schema={schema}
+>
+  <section class="page-hero" aria-labelledby="tools-title">
+    <div class="container">
+      <span class="eyebrow">Tools</span>
+      <h1 id="tools-title">Free Accessibility <span class="accent">Tools</span></h1>
+      <p class="lead">These free accessibility tools help you find and fix barriers on your website, in your designs and in your documents. Scan a page against <a href="https://www.w3.org/TR/WCAG22/" rel="noopener noreferrer">WCAG 2.2</a> or the <a href="https://www.ada.gov/resources/web-guidance/" rel="noopener noreferrer">ADA</a>, check color contrast, test a PDF or create your accessibility statement. No account needed. For ongoing checks of your whole site, see <a href="/solutions/continuous-monitoring">continuous monitoring</a>.</p>
+    </div>
+  </section>
+
+  {TOOL_GROUPS.map((g) => (
+    <section class="section-tight pt-0" aria-labelledby={`tools-${g.id}`}>
+      <div class="container">
+        <div class="section-head section-head-left">
+          <h2 id={`tools-${g.id}`}>{g.title}</h2>
+          <p>{g.text}</p>
+        </div>
+        <ul class="res-grid">
+          {TOOLS.filter((t) => t.group === g.id).map((t) => (
+            <li>
+              <a class="res-card" href={t.href}>
+                <span class="res-card-icon" aria-hidden="true"><Icon name={t.icon} /></span>
+                <span class="res-card-text">
+                  <small>{t.tag}</small>
+                  <strong>{t.keyword}</strong>
+                  <span>{t.text}</span>
+                </span>
+                <Icon name="arrow" class="res-arrow" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  ))}
+
+  <section class="section-tight section-surface" aria-labelledby="tools-more">
+    <div class="container cc-prose">
+      <h2 id="tools-more">More Free Accessibility Checkers by Platform, Industry and State</h2>
+      <p>The same free scanner is also set up for the platform your site runs on, your industry and the state you operate in:</p>
+      <ul class="related-guides">
+        <li><a href="/platforms">Accessibility checkers by platform</a><span>WordPress, Shopify, Wix, Squarespace, Webflow and more.</span></li>
+        <li><a href="/industries">Accessibility checkers by industry</a><span>E-commerce, healthcare, education, government and real estate.</span></li>
+        <li><a href="/state-accessibility-laws">Website accessibility laws by state</a><span>State laws with a free checker for each.</span></li>
+        <li><a href="/resources/wcag">WCAG Library</a><span>Every WCAG success criterion explained, with how to test it.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="tools-faq">
+    <div class="container cc-prose">
+      <h2 id="tools-faq">Free Accessibility Tools: Frequently Asked Questions</h2>
+      <Faq items={faqs} />
+    </div>
+  </section>
+
+  <CtaBand title="Go Beyond Free Accessibility Tools" text="Start a 3-day free trial to scan up to 500 pages per domain every day, get the fix for every issue and keep a record of your work." />
+</BaseLayout>

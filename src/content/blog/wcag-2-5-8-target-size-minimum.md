@@ -114,7 +114,7 @@ To test by hand:
 3. For anything under 24 by 24 pixels, check the spacing: is there another target within 12 pixels of its center?
 4. Check whether an exception applies before marking it as a failure.
 
-Then [run a free WCAG 2.2 scan](/resources/wcag-2-2-aa-checker) to find undersized targets across the page automatically. For a quick reference, see our [2.5.8 Target Size (Minimum) page](/resources/wcag/2-5-8-target-size-minimum) in the WCAG library.
+Then [run a free WCAG 2.2 scan](/tools/wcag-2-2-aa-checker) to find undersized targets across the page automatically. For a quick reference, see our [2.5.8 Target Size (Minimum) page](/resources/wcag/2-5-8-target-size-minimum) in the WCAG library.
 
 ## Related Success Criteria
 

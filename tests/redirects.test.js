@@ -53,3 +53,13 @@ test('WCAG Codes Explained blog posts redirect to their WCAG library page', asyn
     assert.equal(r.permanent, true);
   }
 });
+
+test('free tools moved from /resources/<tool> to /tools/<tool>', () => {
+  const tools = ['wcag-2-2-aa-checker', 'wcag-2-1-aa-checker', 'ada-compliance-checker', 'section-508-checker', 'en-301-549-checker', 'contrast-checker', 'chart-color-checker', 'pdf-accessibility-checker', 'statement-generator', 'free-accessibility-icon-set'];
+  for (const t of tools) {
+    const r = bySource.get(`/resources/${t}`);
+    assert.ok(r, `missing redirect for /resources/${t}`);
+    assert.equal(r.destination, `/tools/${t}`);
+    assert.equal(r.permanent, true);
+  }
+});

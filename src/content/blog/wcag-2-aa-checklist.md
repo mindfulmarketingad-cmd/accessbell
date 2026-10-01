@@ -17,7 +17,7 @@ faqs:
   - q: 'Does the checklist cover WCAG 2.0 and 2.1 as well as 2.2?'
     a: 'Yes. WCAG 2.2 includes nearly every WCAG 2.0 and 2.1 requirement, so a WCAG 2.2 AA checklist covers all three. If you only need 2.0 AA or 2.1 AA, use the "Added in" column in the table on this page to skip the newer criteria.'
   - q: 'Can I use the checklist instead of an automated tool?'
-    a: 'Use both. An automated checker finds code-level failures across many pages in seconds, and the checklist guides the manual testing no tool can do. Start with a [free automated scan](/resources/wcag-2-2-aa-checker), then work through the checklist.'
+    a: 'Use both. An automated checker finds code-level failures across many pages in seconds, and the checklist guides the manual testing no tool can do. Start with a [free automated scan](/tools/wcag-2-2-aa-checker), then work through the checklist.'
   - q: 'How long does a full WCAG 2 AA review take?'
     a: 'It depends on the size of the site. Most teams review a set of representative pages and key user journeys rather than every page. Allow a few hours per template or journey for a careful manual review, less once you are familiar with the checks.'
   - q: 'Is the checklist free to use?'
@@ -66,7 +66,7 @@ Not sure which version applies to you? Our [WCAG version comparison](/#versions-
 
 1. **Make a copy.** Open the link above and select **Make a copy**. Rename it with the site and date.
 2. **Define your scope.** On the Scope tab, list the tasks people must be able to complete, such as signing up, searching or checking out, and the pages and templates involved. Testing one example of each template is usually enough to find issues that repeat across the site.
-3. **Run an automated scan first.** A [free WCAG 2.2 AA scan](/resources/wcag-2-2-aa-checker) finds the code-level failures in seconds, such as missing alternative text, unlabeled fields and low contrast. Record them in the checklist so the manual review can focus on what tools cannot judge.
+3. **Run an automated scan first.** A [free WCAG 2.2 AA scan](/tools/wcag-2-2-aa-checker) finds the code-level failures in seconds, such as missing alternative text, unlabeled fields and low contrast. Record them in the checklist so the manual review can focus on what tools cannot judge.
 4. **Work through each check.** Test with a keyboard, a screen reader and browser zoom where the check calls for it. Our [manual testing guide](/resources/help-center/fixing-issues/plan-manual-testing) walks through a simple routine.
 5. **Record one issue per row.** If a check fails in more than one way, duplicate the row and describe each issue separately. That keeps every issue traceable to a fix.
 6. **Choose the right result.**
@@ -164,7 +164,7 @@ Automated rules can test part of about 20 of the 55 criteria above, and they do 
 
 A practical split:
 
-- **Automated**: run a free scan against the standard you need, such as the [WCAG 2.1 AA checker](/resources/wcag-2-1-aa-checker), the [ADA compliance checker](/resources/ada-compliance-checker), the [Section 508 checker](/resources/section-508-checker) or the [EN 301 549 checker](/resources/en-301-549-checker).
+- **Automated**: run a free scan against the standard you need, such as the [WCAG 2.1 AA checker](/tools/wcag-2-1-aa-checker), the [ADA compliance checker](/tools/ada-compliance-checker), the [Section 508 checker](/tools/section-508-checker) or the [EN 301 549 checker](/tools/en-301-549-checker).
 - **Manual**: use the checklist on your key templates and journeys.
 - **Ongoing**: monitor your important pages so new issues are caught as content changes. [AccessBell Pro](/pricing) rescans up to 500 URLs per domain every day.
 
@@ -179,4 +179,4 @@ Read more in [automated vs manual accessibility testing](/blog/automated-vs-manu
 
 ## After the Review
 
-Share the filled-in checklist with the people who will fix the issues, starting with the failures. When you are done, publish an accessibility statement that explains your target standard and how people can report barriers. Our free [accessibility statement generator](/resources/statement-generator) creates one in a minute.
+Share the filled-in checklist with the people who will fix the issues, starting with the failures. When you are done, publish an accessibility statement that explains your target standard and how people can report barriers. Our free [accessibility statement generator](/tools/statement-generator) creates one in a minute.

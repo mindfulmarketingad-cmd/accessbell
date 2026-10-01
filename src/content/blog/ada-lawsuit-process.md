@@ -154,7 +154,7 @@ The strongest protection is an accessible website and a record that proves it. M
 
 - Scan your site regularly and fix issues by severity.
 - Test key journeys with a keyboard and a screen reader.
-- Publish an accessibility statement with a way to report problems. Our [free generator](/resources/statement-generator) can draft one.
+- Publish an accessibility statement with a way to report problems. Our [free generator](/tools/statement-generator) can draft one.
 - Keep dated records of scans and fixes as audit evidence.
 
 The [AccessBell website accessibility checker](/) runs a free WCAG 2.2 scan in seconds. [Continuous monitoring](/pricing) rescans your pages on a schedule and stores every result as evidence.
@@ -163,4 +163,4 @@ The [AccessBell website accessibility checker](/) runs a free WCAG 2.2 scan in s
 
 The ADA lawsuit process moves from service, through a 21-day response deadline, into mediation, discovery and settlement talks, and usually ends in a settlement within 6 to 18 months. Acting quickly protects your options: meet the deadline, bring in experienced counsel, and start fixing barriers right away.
 
-The best time to deal with accessibility is before a complaint arrives. [Run a free ADA compliance check](/resources/ada-compliance-checker) of your website to see what a plaintiff's lawyer would see.
+The best time to deal with accessibility is before a complaint arrives. [Run a free ADA compliance check](/tools/ada-compliance-checker) of your website to see what a plaintiff's lawyer would see.

@@ -1,0 +1,35 @@
+---
+/** Every other free tool, linked with its H1 keyword as the anchor text. */
+import Icon from './Icon.astro';
+import { TOOLS } from '../data/tools';
+
+interface Props {
+  /** The current tool's path, left out of the list. */
+  current: string;
+}
+const { current } = Astro.props;
+const others = TOOLS.filter((t) => t.href !== current);
+---
+<section class="section section-surface" aria-labelledby="more-tools">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="more-tools">More Free Accessibility Tools</h2>
+      <p>Every tool is free with no sign-up. See them all on the <a href="/tools">free accessibility tools</a> hub.</p>
+    </div>
+    <ul class="res-grid">
+      {others.map((t) => (
+        <li>
+          <a class="res-card" href={t.href}>
+            <span class="res-card-icon" aria-hidden="true"><Icon name={t.icon} /></span>
+            <span class="res-card-text">
+              <small>{t.tag}</small>
+              <strong>{t.keyword}</strong>
+              <span>{t.text}</span>
+            </span>
+            <Icon name="arrow" class="res-arrow" />
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

@@ -1,5 +1,5 @@
 /**
- * Programmatic SEO pages at /resources/<slug>: one free checker per standard.
+ * Programmatic SEO pages at /tools/<slug>: one free checker per standard.
  * The scanner, coverage table and counts are shared and computed; everything
  * below is written for the specific standard and its audience.
  */
@@ -360,4 +360,4 @@ export const CHECKERS: Checker[] = [
   },
 ];
 
-export const checkerPath = (c: Checker) => `/resources/${c.slug}`;
+export const checkerPath = (c: Checker) => `/tools/${c.slug}`;

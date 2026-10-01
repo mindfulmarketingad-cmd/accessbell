@@ -59,7 +59,7 @@ The most effective programs we see follow a simple loop.
 
 **4. Test new components before release.** Add accessibility acceptance criteria to your definition of done. It is far cheaper to catch a keyboard trap in review than in production.
 
-**5. Listen to users.** An [accessibility statement](/resources/statement-generator) with a clear feedback channel surfaces barriers that neither tools nor auditors anticipated.
+**5. Listen to users.** An [accessibility statement](/tools/statement-generator) with a clear feedback channel surfaces barriers that neither tools nor auditors anticipated.
 
 ## Where AI-Assisted Fixes Fit
 

@@ -6,7 +6,7 @@ updatedDate: 2026-09-30
 sources: ['pdf-techniques', 'pdf-title', 'pdf-lang', 'pdf-alt', 'understanding']
 ---
 
-Menus, price lists, forms and policies are often shared as PDF files, and WCAG applies to them just as it does to web pages. To check a single file without an account, try the free [PDF accessibility checker](/resources/pdf-accessibility-checker). **PDF accessibility** checks in AccessBell find the PDFs linked from your website, test each file and show you what to fix. Some fixes AccessBell can make for you.
+Menus, price lists, forms and policies are often shared as PDF files, and WCAG applies to them just as it does to web pages. To check a single file without an account, try the free [PDF accessibility checker](/tools/pdf-accessibility-checker). **PDF accessibility** checks in AccessBell find the PDFs linked from your website, test each file and show you what to fix. Some fixes AccessBell can make for you.
 
 ## Where AccessBell Finds PDFs
 

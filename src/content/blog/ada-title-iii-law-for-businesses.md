@@ -68,7 +68,7 @@ There is **no official technical standard** for business websites under Title II
 
 In practice, **WCAG 2.1 Level AA** is the benchmark. It is the level used in most settlements and court orders, and it is the standard the DOJ adopted in 2024 for state and local government websites under Title II. Meeting the newer **WCAG 2.2 Level AA** covers everything in 2.1 AA and more.
 
-Our [ADA website compliance guide](/blog/ada-website-compliance-guide) explains the standards in more detail, and our free [ADA compliance checker](/resources/ada-compliance-checker) scans any page against WCAG 2.1 AA.
+Our [ADA website compliance guide](/blog/ada-website-compliance-guide) explains the standards in more detail, and our free [ADA compliance checker](/tools/ada-compliance-checker) scans any page against WCAG 2.1 AA.
 
 ## Common Website Barriers Behind Title III Claims
 
@@ -105,7 +105,7 @@ ADA Title III law for businesses does not require perfection overnight, but it d
 1. **Audit your site.** Run an automated scan of your key pages, then test by hand. Automated tools find many issues but not all of them; our guide to [automated vs manual accessibility testing](/blog/automated-vs-manual-accessibility-testing) explains the split.
 2. **Fix the most important journeys first.** Booking, contact forms, checkout, menus and anything customers need to buy from you or reach you.
 3. **Verify the fixes** with a keyboard and a screen reader, not only with a tool.
-4. **Publish an accessibility statement** that explains your commitment and how people can report problems. Our free [accessibility statement generator](/resources/statement-generator) creates one in minutes.
+4. **Publish an accessibility statement** that explains your commitment and how people can report problems. Our free [accessibility statement generator](/tools/statement-generator) creates one in minutes.
 5. **Monitor and repeat.** New pages, plugins and content introduce new issues. Rescan regularly, especially after changes.
 6. **Avoid quick fixes.** Overlay widgets do not change your site's code, and businesses using them are still sued. See our [accessiBe alternative](/comparisons/accessibe-vs-accessbell) guide for why.
 
