@@ -1,6 +1,6 @@
 ---
-title: "We Tested 10 Accessibility Checker Tools on the Same Website. Here's What Each One Actually Caught."
-seoTitle: 'We Tested 10 Accessibility Checker Tools'
+title: "We Tested 10 Accessibility Checker Tools on the Same Website. Here's What Each One Actually Caught"
+seoTitle: 'We Tested 10 Accessibility Checker Tools 2026 Results'
 description: "We tested 10 accessibility checker tools on one website with 35 planted barriers. Here's what each tool caught, what it missed and what it flagged by mistake."
 pubDate: 2026-09-29
 category: 'Comparisons'

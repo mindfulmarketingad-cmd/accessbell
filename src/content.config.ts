@@ -27,8 +27,9 @@ const blog = defineCollection({
   schema: z.object({
     /** The H1. Over 70 characters needs a seoTitle for the <title> tag. */
     title: z.string().max(110),
-    /** <title> tag override when the H1 is longer than ~60 characters */
-    seoTitle: z.string().max(47).optional(),
+    /** <title> tag override when the H1 is longer than ~60 characters. Up to 47 characters
+     * gets " | AccessBell" appended; longer titles (up to 60) are used as written. */
+    seoTitle: z.string().max(60).optional(),
     description: z.string().min(110).max(165),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),

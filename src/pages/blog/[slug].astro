@@ -70,7 +70,7 @@ const schema = [
 ];
 ---
 <BaseLayout
-  title={`${post.data.seoTitle ?? post.data.title} | AccessBell`}
+  title={post.data.seoTitle && post.data.seoTitle.length > 47 ? post.data.seoTitle : `${post.data.seoTitle ?? post.data.title} | AccessBell`}
   description={post.data.description}
   ogType="article"
   article={{
