@@ -145,7 +145,7 @@ After a final judgment, either side can appeal. Under Federal Rule of Appellate 
 4. **Preserve records** of your website, testing and communications.
 5. **Get an accessibility audit.** Combine an automated scan with manual testing. Our guide to [automated vs manual accessibility testing](/blog/automated-vs-manual-accessibility-testing) explains why you need both.
 6. **Start fixing real barriers now**, prioritizing the ones named in the complaint and anything that blocks core tasks like checkout, booking or contact forms.
-7. **Avoid quick fixes.** [Accessibility overlay](/blog/accessibe-alternative) widgets do not fix the underlying code, and sites using them continue to be sued.
+7. **Avoid quick fixes.** [Accessibility overlay](/comparisons/accessibe-vs-accessbell) widgets do not fix the underlying code, and sites using them continue to be sued.
 8. **Document everything**: what you fixed, when and how you verified it.
 
 ## How to Reduce the Risk of a Lawsuit

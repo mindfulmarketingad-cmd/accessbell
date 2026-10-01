@@ -1,0 +1,17 @@
+---
+/** One cell of a comparison table: a check, a dash or a short answer. */
+import Icon from './Icon.astro';
+interface Props {
+  value: boolean | string | undefined;
+}
+const { value } = Astro.props;
+---
+{value === true ? (
+  <span class="cmp-yes"><Icon name="check" /><span class="visually-hidden">Yes</span></span>
+) : value === false ? (
+  <span class="cmp-no" aria-hidden="true">—</span><span class="visually-hidden">No</span>
+) : value === undefined ? (
+  <span class="cmp-na">Not published</span>
+) : (
+  <span>{value}</span>
+)}

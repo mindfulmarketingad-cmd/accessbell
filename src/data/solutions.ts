@@ -281,7 +281,7 @@ export const SOLUTIONS: Solution[] = [
       { href: 'https://www.w3.org/TR/WCAG22/', label: 'W3C: Web Content Accessibility Guidelines (WCAG) 2.2' },
       { href: 'https://www.ftc.gov/news-events/news/press-releases/2025/04/ftc-approves-final-order-requiring-accessibe-pay-1-million', label: 'FTC: final order requiring accessiBe to pay $1 million' },
     ],
-    related: ['accessibe-alternative', 'ada-website-accessibility'],
+    related: ['ada-website-accessibility'],
   },
   {
     slug: 'compliance-vault',

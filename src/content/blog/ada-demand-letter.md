@@ -10,7 +10,7 @@ contributors:
 history:
   - date: 2026-09-28
     note: 'First published. Lawsuit filing counts checked against Seyfarth Shaw''s ADA Title III tracker; settlement figures checked against multiple independent sources and given as ranges.'
-related: ['ada-lawsuit-process', 'ada-title-iii-law-for-businesses', 'accessibe-alternative']
+related: ['ada-lawsuit-process', 'ada-title-iii-law-for-businesses']
 faqs:
   - q: 'What is an ADA demand letter?'
     a: 'A letter, usually from an attorney representing someone with a disability, stating that they tried to use your website and could not because of specific accessibility barriers, and demanding that you fix them and often pay a settlement, before a lawsuit is filed.'
@@ -38,7 +38,7 @@ It is not a lawsuit. It is usually an attempt to resolve the claim, and the paym
 2. **Read the letter closely and note the deadline.** Most give you a window, often two to four weeks, to respond before the sender says they will file suit.
 3. **Get an attorney who handles ADA/website accessibility matters.** This is the single most important step. They will evaluate the specific claims, your exposure, and how to respond, and they will handle communication with the sender so you do not have to.
 4. **Run a real accessibility scan of your site immediately.** You need to know, independent of what the letter claims, what is actually wrong. [Run a free scan](/#scan) against WCAG 2.2 or 2.1 AA (the standard most ADA claims reference) to get a concrete list of issues mapped to the specific success criteria.
-5. **Do not install an overlay widget and call it done.** An overlay patches the browser at runtime; it does not change your site's code. Settlements routinely require overlays to be removed because the underlying barriers are still there. See what the [FTC found when it fined accessiBe](/blog/accessibe-alternative) for making similar claims.
+5. **Do not install an overlay widget and call it done.** An overlay patches the browser at runtime; it does not change your site's code. Settlements routinely require overlays to be removed because the underlying barriers are still there. See what the [FTC found when it fined accessiBe](/comparisons/accessibe-vs-accessbell) for making similar claims.
 6. **Build a real remediation plan with dates.** A documented plan, ideally with a developer already making fixes, is one of the strongest things your attorney can point to in a response. Prioritize whatever the letter specifically named, then work through the rest by severity.
 7. **Let your attorney respond, not you.** A professional response typically acknowledges the letter, outlines the remediation already underway, and negotiates from there, whether that is a smaller settlement, a compliance timeline, or both.
 

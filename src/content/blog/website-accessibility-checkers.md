@@ -64,7 +64,7 @@ Like AccessBell, AccessibilityChecker.org scans your actual page rather than pat
 
 ## 3. UserWay
 
-UserWay is a browser-based overlay: JavaScript that adjusts your page for visitors without changing your site's underlying code. It has a free tier and paid plans reported to start around $490/year, plus a "Legal Support Program" pledge. UserWay itself was named in a [2024 class action](https://www.courtlistener.com/opinion/10594298/bloomsyboxcom-llc-v-userway-inc/) alleging its compliance and legal-support claims fell short in practice; see our [UserWay alternative breakdown](/blog/userway-alternative) for what happened.
+UserWay is a browser-based overlay: JavaScript that adjusts your page for visitors without changing your site's underlying code. It has a free tier and paid plans reported to start around $490/year, plus a "Legal Support Program" pledge. UserWay itself was named in a [2024 class action](https://www.courtlistener.com/opinion/10594298/bloomsyboxcom-llc-v-userway-inc/) alleging its compliance and legal-support claims fell short in practice; see our [UserWay alternative breakdown](/comparisons/userway-vs-accessbell) for what happened.
 
 ## 4. EqualWeb
 
@@ -80,7 +80,7 @@ AudioEye pairs automated overlay-style detection with a paid human audit and rem
 
 ## 7. Siteimprove
 
-Siteimprove is a full digital governance suite bundling accessibility monitoring with SEO, content quality, analytics and policy management, aimed at large organizations. It does not publish pricing; independent estimates put small accessibility-only engagements around $11,000/year, with enterprise bundles reaching well into five figures. If you need one platform across marketing, content and compliance teams at that scale, it is a legitimate choice. If you only need accessibility scanning and monitoring, you are likely paying for modules you will not use; see our [Siteimprove alternative comparison](/blog/siteimprove-alternative) for the details.
+Siteimprove is a full digital governance suite bundling accessibility monitoring with SEO, content quality, analytics and policy management, aimed at large organizations. It does not publish pricing; independent estimates put small accessibility-only engagements around $11,000/year, with enterprise bundles reaching well into five figures. If you need one platform across marketing, content and compliance teams at that scale, it is a legitimate choice. If you only need accessibility scanning and monitoring, you are likely paying for modules you will not use; see our [Siteimprove alternative comparison](/comparisons/siteimprove-vs-accessbell) for the details.
 
 ## How to Choose
 

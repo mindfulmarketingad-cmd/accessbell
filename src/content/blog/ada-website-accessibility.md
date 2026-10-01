@@ -128,7 +128,7 @@ If you are ever contacted about accessibility, you will want to show what you te
 
 ## What AccessBell Cannot Do for ADA Website Accessibility
 
-Automated testing finds many, but not all, accessibility barriers. Some checks need a person, such as whether alt text actually describes the image or whether a page makes sense when read aloud. AccessBell lists those checks with step-by-step instructions, and our guide to [automated vs manual accessibility testing](/blog/automated-vs-manual-accessibility-testing) explains what to test by hand. Also be wary of any product that promises instant compliance: a widget alone does not fix your code. Read [why overlays fall short](/blog/accessibe-alternative).
+Automated testing finds many, but not all, accessibility barriers. Some checks need a person, such as whether alt text actually describes the image or whether a page makes sense when read aloud. AccessBell lists those checks with step-by-step instructions, and our guide to [automated vs manual accessibility testing](/blog/automated-vs-manual-accessibility-testing) explains what to test by hand. Also be wary of any product that promises instant compliance: a widget alone does not fix your code. Read [why overlays fall short](/comparisons/accessibe-vs-accessbell).
 
 ## If You Have Already Received a Demand Letter
 

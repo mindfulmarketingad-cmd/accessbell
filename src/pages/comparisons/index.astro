@@ -1,0 +1,107 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import CompareCell from '../../components/CompareCell.astro';
+import { SITE } from '../../config/site';
+import { faqSchema } from '../../lib/schema';
+import { COMPARISONS, comparisonPath } from '../../data/comparisons';
+
+const PATH = '/comparisons';
+const url = `${SITE.url}${PATH}`;
+const faqs = [
+  { q: 'How is AccessBell different from accessibility overlays?', a: 'Overlays such as accessiBe and UserWay change your page in the visitor’s browser. AccessBell finds issues in your code, shows the corrected code and confirms each fix on the next scan, so the fix works for every visitor and tool.' },
+  { q: 'How is AccessBell different from enterprise platforms?', a: 'Enterprise platforms such as Siteimprove, Level Access and Acquia are sold by quote, often with services or extra modules. AccessBell is self-serve accessibility software with one published price of $29 per domain per month.' },
+  { q: 'Where do the competitor facts come from?', a: 'From each vendor’s public pages, software directories such as Capterra and G2, press releases and court or regulator records. Each comparison lists its sources and the date it was checked. Where a vendor does not publish something, we say so.' },
+  { q: 'Does AccessBell offer expert audits?', a: 'No. AccessBell runs automated monitoring, gives manual testing procedures and records your work. If you need a third-party audit by specialists, providers such as Level Access offer one, and many teams pair it with AccessBell monitoring.' },
+];
+const schema = [
+  {
+    '@type': 'CollectionPage',
+    '@id': `${url}#webpage`,
+    name: 'AccessBell Comparisons',
+    url,
+    isPartOf: { '@id': `${SITE.url}/#website` },
+    hasPart: COMPARISONS.map((c) => ({ '@type': 'WebPage', name: `${c.name} vs. AccessBell`, url: `${SITE.url}${comparisonPath(c)}` })),
+  },
+  faqSchema(faqs),
+];
+---
+<BaseLayout
+  title="Accessibility Tool Comparisons | AccessBell"
+  description="Compare AccessBell with AudioEye, accessiBe, UserWay, Siteimprove, Level Access, Acquia and AAArdvark on features, pricing, overlays and legal evidence."
+  breadcrumbs={[{ label: 'Comparisons', href: PATH }]}
+  schema={schema}
+>
+  <section class="cmp-hero" aria-labelledby="cmp-hub-title">
+    <div class="container">
+      <span class="cmp-eyebrow">Comparisons</span>
+      <h1 id="cmp-hub-title">How AccessBell <span class="cmp-accent">Compares</span></h1>
+      <p class="cmp-lead">Side-by-side comparisons of AccessBell and other accessibility tools, from overlay widgets to enterprise platforms. Every comparison uses public sources, and says so when a vendor does not publish something.</p>
+      <div class="cmp-cta">
+        <a class="btn btn-accent" href="/app/signup">Start 3-day free trial <Icon name="arrow" /></a>
+        <a class="btn cmp-btn-ghost" href="/#scan">Run a free scan</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="cmp-list">
+    <div class="container">
+      <div class="section-head section-head-left">
+        <h2 id="cmp-list">Accessibility Tool Comparisons</h2>
+      </div>
+      <ul class="res-grid">
+        {COMPARISONS.map((c) => (
+          <li>
+            <a class="res-card" href={comparisonPath(c)}>
+              <span class="res-card-text">
+                <small>{c.kind}</small>
+                <strong>{c.name} vs. AccessBell</strong>
+                <span>{c.summary}</span>
+              </span>
+              <Icon name="arrow" class="res-arrow" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight section-surface" aria-labelledby="cmp-glance">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="cmp-glance">Accessibility Tools at a Glance</h2>
+        <p>How each tool is priced and whether it relies on an overlay. Open a comparison for the full table and sources.</p>
+      </div>
+      <div class="table-scroll cmp-table-wrap" tabindex="0" role="region" aria-label="Comparison table: type, price and overlay use">
+        <table class="cmp-table">
+          <caption class="visually-hidden">Accessibility tools compared by type, price and overlay use</caption>
+          <thead><tr><th scope="col">Tool</th><th scope="col">Type</th><th scope="col">Price</th><th scope="col">Overlay</th></tr></thead>
+          <tbody>
+            <tr class="cmp-us-row"><th scope="row">AccessBell</th><td>Scanner, monitoring and evidence</td><td>$29 per domain per month, or $199 per year</td><td>No</td></tr>
+            {COMPARISONS.map((c) => (
+              <tr>
+                <th scope="row"><a href={comparisonPath(c)}>{c.name}</a></th>
+                <td>{c.kind}</td>
+                <td><CompareCell value={c.cells.price} /></td>
+                <td><CompareCell value={c.cells.overlay} /></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="cmp-note">Based on public information checked October 2026, and subject to change. Read our guides to the <a href="/blog/best-ada-compliance-software-for-small-businesses">best ADA compliance software</a>, <a href="/blog/best-website-accessibility-testing-software">best accessibility testing software</a> and <a href="/blog/5-accessibe-alternatives">accessiBe alternatives</a>, and the <a href="https://overlayfactsheet.com/en/" rel="noopener noreferrer" target="_blank">Overlay Fact Sheet<span class="visually-hidden"> (opens in a new tab)</span></a>.</p>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="faq-title">
+    <div class="container cc-prose">
+      <h2 id="faq-title">AccessBell Comparisons: Frequently Asked Questions</h2>
+      <Faq items={faqs} />
+      <p>See what AccessBell includes in our <a href="/solutions">solutions</a> and <a href="/pricing">pricing</a>.</p>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>

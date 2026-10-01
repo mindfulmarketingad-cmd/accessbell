@@ -56,7 +56,7 @@ const BASE_PLATFORMS: Platform[] = [
       { q: 'Will an accessibility plugin make my WordPress site compliant?', a: 'An overlay-style widget will not; it runs in the browser and does not change your site’s code. A plugin that actually modifies your markup can help with some site-wide issues, but page-builder sections and custom plugin output still need to be fixed directly.' },
       { q: 'Does AccessBell work with WordPress?', a: 'Yes. AccessBell scans the live, rendered page in a real Chrome browser, the same page your visitors see, regardless of which theme, builder or plugins generated it.' },
     ],
-    related: ['free-tools-to-check-website-accessibility', 'automated-vs-manual-accessibility-testing', 'accessibe-alternative'],
+    related: ['free-tools-to-check-website-accessibility', 'automated-vs-manual-accessibility-testing'],
   },
   {
     slug: 'shopify-accessibility-checker',
@@ -90,7 +90,7 @@ const BASE_PLATFORMS: Platform[] = [
       { q: 'Which Shopify accessibility issue should I fix first?', a: 'Cart and checkout keyboard traps first, since they block purchases directly, followed by missing product image alt text, which is usually the highest-volume issue on a catalog site.' },
       { q: 'Do accessibility apps in the Shopify App Store fix this?', a: 'Overlay-style apps run in the browser and do not change your store’s underlying code. A real scan that shows you the failing markup, and a developer fix in your theme, resolves the issue permanently.' },
     ],
-    related: ['ada-website-compliance-guide', 'accessibe-alternative', 'userway-alternative'],
+    related: ['ada-website-compliance-guide'],
   },
   {
     slug: 'webflow-accessibility-checker',
@@ -297,7 +297,7 @@ const BASE_PLATFORMS: Platform[] = [
       { q: 'Do I need a plugin to check accessibility on Bluehost?', a: 'No. AccessBell scans the live page in a browser, so there is nothing to install on your hosting account or WordPress site.' },
       { q: 'Will an accessibility plugin make my site compliant?', a: 'Not on its own. Overlay widgets do not change your site’s code. Plugins that fix markup can help with some site-wide issues, but content and plugin output still need fixing directly.' },
     ],
-    related: ['wcag-1-1-1-non-text-content', 'wcag-3-3-2-labels-or-instructions', 'accessibe-alternative'],
+    related: ['wcag-1-1-1-non-text-content', 'wcag-3-3-2-labels-or-instructions'],
   },
   {
     slug: 'hosting-com-accessibility-checker',

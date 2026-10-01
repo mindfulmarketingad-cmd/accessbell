@@ -7,6 +7,7 @@ import { PLAN } from '../data/pricing';
 import { CHECKERS, checkerPath } from '../data/checkers';
 import { PLATFORMS, platformHome, platformCheckers } from '../data/platforms';
 import { SOLUTIONS, solutionPath } from '../data/solutions';
+import { COMPARISONS, comparisonPath } from '../data/comparisons';
 import { INDUSTRIES, industryPath } from '../data/industries';
 import { STATE_LAWS, stateLawPath } from '../data/state-laws';
 import { CRITERIA } from '../../server/wcag-criteria.js';
@@ -59,6 +60,8 @@ export const GET: APIRoute = async () => {
       [
         ...Object.values(CRITERIA).map((c) => link(`WCAG ${c.sc} ${c.name}`, criterionPath(c.sc), `Level ${c.level}, added in WCAG ${c.version}.`)),
         link('Solutions: monitoring, automated fixes and the Compliance Vault', '/solutions'),
+        link('Comparisons: AccessBell vs other accessibility tools', '/comparisons'),
+        ...COMPARISONS.map((c) => link(`${c.name} vs. AccessBell`, comparisonPath(c))),
         ...SOLUTIONS.map((x) => link(x.h1, solutionPath(x))),
         link('Accessibility checkers by platform', '/platforms'),
         link('Accessibility checkers by industry', '/industries'),

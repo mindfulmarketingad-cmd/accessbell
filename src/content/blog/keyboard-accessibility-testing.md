@@ -10,7 +10,7 @@ contributors:
 history:
   - date: 2026-09-29
     note: 'First published. Keystrokes and criteria checked against the WAI-ARIA Authoring Practices Guide and the W3C WCAG 2.2 Recommendation.'
-related: ['automated-vs-manual-accessibility-testing', 'wcag-2-2-checklist', 'accessibe-alternative']
+related: ['automated-vs-manual-accessibility-testing', 'wcag-2-2-checklist']
 faqs:
   - q: 'What is keyboard accessibility testing?'
     a: 'Testing whether every interactive part of a page, links, buttons, forms, menus and custom widgets, can be reached and operated using only a keyboard, with no mouse, trackpad or touchscreen involved.'
@@ -24,7 +24,7 @@ faqs:
     a: 'A missing or removed focus indicator, usually from a CSS reset that includes `outline: none` without replacing it. Without a visible focus indicator, a keyboard user has no way to see where they are on the page.'
 ---
 
-A well-known complaint about [accessibility overlays](/blog/accessibe-alternative) sums up why keyboard testing matters: you cannot patch your way past it with a script that runs in the browser. If a custom dropdown never responds to the arrow keys, or a modal traps focus and never lets go, that is broken in your actual code, and it only gets fixed there. Keyboard accessibility testing is how you find those problems before a real keyboard user does.
+A well-known complaint about [accessibility overlays](/comparisons/accessibe-vs-accessbell) sums up why keyboard testing matters: you cannot patch your way past it with a script that runs in the browser. If a custom dropdown never responds to the arrow keys, or a modal traps focus and never lets go, that is broken in your actual code, and it only gets fixed there. Keyboard accessibility testing is how you find those problems before a real keyboard user does.
 
 ## Why Keyboard Accessibility Testing Matters
 

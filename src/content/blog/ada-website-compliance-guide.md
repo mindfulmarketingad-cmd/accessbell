@@ -67,7 +67,7 @@ Because these barriers are easy to detect, they are also easy for plaintiffs' fi
 
 ## A Note on Overlay Widgets
 
-Some products claim a single line of JavaScript makes a site "ADA compliant." [Accessibility overlays](/blog/accessibe-alternative) modify a page after it loads but do not fix the source code, and they often conflict with the assistive technology people already use. Sites using overlays continue to be sued. Durable compliance comes from fixing the underlying code and keeping it fixed.
+Some products claim a single line of JavaScript makes a site "ADA compliant." [Accessibility overlays](/comparisons/accessibe-vs-accessbell) modify a page after it loads but do not fix the source code, and they often conflict with the assistive technology people already use. Sites using overlays continue to be sued. Durable compliance comes from fixing the underlying code and keeping it fixed.
 
 ## International Requirements to Be Aware Of
 

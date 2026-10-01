@@ -48,7 +48,7 @@ export const INDUSTRIES: Industry[] = [
       { q: 'Does my e-commerce platform matter?', a: 'It affects your starting point, but not your risk. WebAIM’s research found every major platform scores worse than the overall web average, so no platform is a safe default; a scan of your actual store is what matters.' },
       { q: 'What should I fix first on my store?', a: 'Cart and checkout keyboard access first, since it blocks purchases directly, followed by product image alt text, which is usually the highest-volume issue on a catalog site.' },
     ],
-    related: ['ada-website-compliance-guide', 'shopify-accessibility-checker', 'ada-demand-letter'],
+    related: ['ada-website-compliance-guide', 'best-ada-compliance-software-for-small-businesses', 'ada-demand-letter'],
   },
   {
     slug: 'healthcare',
@@ -147,7 +147,7 @@ export const INDUSTRIES: Industry[] = [
       { q: 'Is this different from Section 508?', a: 'Section 508 applies to federal agencies and federal contractors. The DOJ’s Title II rule specifically covers state and local government entities, both using WCAG 2.1 AA as the technical standard.' },
       { q: 'Does this cover our mobile apps too?', a: 'Yes. The Title II rule covers government mobile applications as well as websites.' },
     ],
-    related: ['section-508-checker', 'ada-website-compliance-guide', 'wcag-2-2-checklist'],
+    related: ['automated-vs-manual-accessibility-testing', 'ada-website-compliance-guide', 'wcag-2-2-checklist'],
   },
   {
     slug: 'real-estate',
@@ -180,7 +180,7 @@ export const INDUSTRIES: Industry[] = [
       { q: 'Does this apply to a single listing site or property management company?', a: 'It applies broadly, from individual agent and brokerage sites to large multifamily and property management platforms; any site used to search for or apply for housing is in scope.' },
       { q: 'Is an accessibility overlay enough for a real estate site?', a: 'It is generally not considered a durable fix. Overlays run in the browser and do not change your code, and many real estate accessibility settlements specifically require them to be removed.' },
     ],
-    related: ['accessibe-alternative', 'ada-lawsuit-process', 'ada-demand-letter'],
+    related: ['ada-lawsuit-process', 'ada-demand-letter'],
   },
 ];
 

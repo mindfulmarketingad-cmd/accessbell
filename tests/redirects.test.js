@@ -28,3 +28,13 @@ test('redirect destinations are never themselves redirected', () => {
 test('the removed /reviews page redirects to the homepage', () => {
   assert.equal(bySource.get('/reviews')?.destination, '/');
 });
+
+test('old comparison blog posts and /comparison URLs redirect to /comparisons', () => {
+  for (const [old, slug] of [['accessibe-alternative', 'accessibe'], ['userway-alternative', 'userway'], ['siteimprove-alternative', 'siteimprove']]) {
+    const r = bySource.get(`/blog/${old}`);
+    assert.equal(r?.destination, `/comparisons/${slug}-vs-accessbell`);
+    assert.equal(r.permanent, true);
+  }
+  assert.equal(bySource.get('/comparison')?.destination, '/comparisons');
+  assert.equal(bySource.get('/comparison/:slug')?.destination, '/comparisons/:slug');
+});

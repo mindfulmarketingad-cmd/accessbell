@@ -110,7 +110,7 @@ The cheapest lawsuit is the one that never gets filed. Common barriers take minu
 3. **Monitor, because sites change.** A new product template, theme update or plugin can undo last month's fixes. AccessBell rescans your monitored pages every day and emails you when a new critical issue appears.
 4. **Document the effort.** Keep dated scan reports, a record of fixes and a public accessibility statement with a way to report problems. AccessBell stores every scan and keeps your [accessibility statement](/resources/statement-generator) current. Its [Compliance Vault](/resources/help-center/scans-and-reports/compliance-vault) exports a dated evidence package of your scans, fixes and notes that anyone can verify. If you are ever sued, that record shows good faith and speeds up any settlement.
 5. **Test the journeys that matter by hand.** Automated tools cannot catch everything. Check checkout, sign-up and contact forms with a keyboard and a screen reader. Our guide to [automated vs manual accessibility testing](/blog/automated-vs-manual-accessibility-testing) explains how to split the work.
-6. **Skip the overlay shortcut.** Widgets that sit on top of a site do not fix the code underneath, and sites using them keep getting sued. See our [accessiBe alternative guide](/blog/accessibe-alternative) for why.
+6. **Skip the overlay shortcut.** Widgets that sit on top of a site do not fix the code underneath, and sites using them keep getting sued. See our [accessiBe alternative guide](/comparisons/accessibe-vs-accessbell) for why.
 
 ### What Prevention Costs Compared With Being Sued
 

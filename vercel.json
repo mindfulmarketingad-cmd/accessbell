@@ -23,6 +23,31 @@
   },
   "redirects": [
     {
+      "source": "/blog/accessibe-alternative",
+      "destination": "/comparisons/accessibe-vs-accessbell",
+      "permanent": true
+    },
+    {
+      "source": "/blog/userway-alternative",
+      "destination": "/comparisons/userway-vs-accessbell",
+      "permanent": true
+    },
+    {
+      "source": "/blog/siteimprove-alternative",
+      "destination": "/comparisons/siteimprove-vs-accessbell",
+      "permanent": true
+    },
+    {
+      "source": "/comparison",
+      "destination": "/comparisons",
+      "permanent": true
+    },
+    {
+      "source": "/comparison/:slug",
+      "destination": "/comparisons/:slug",
+      "permanent": true
+    },
+    {
       "source": "/platforms/wordpress-accessibility-checker",
       "destination": "/platforms/wordpress/accessibility-checker",
       "permanent": true

@@ -1,0 +1,187 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import Faq from '../../components/Faq.astro';
+import DemoVideo from '../../components/DemoVideo.astro';
+import CompareCell from '../../components/CompareCell.astro';
+import { SITE } from '../../config/site';
+import { faqSchema } from '../../lib/schema';
+import { formatDate } from '../../lib/format';
+import { COMPARISONS, ROWS, comparisonPath, type Comparison } from '../../data/comparisons';
+
+export function getStaticPaths() {
+  return COMPARISONS.map((c) => ({ params: { slug: c.slug }, props: { c } }));
+}
+
+const { c } = Astro.props as { c: Comparison };
+const url = `${SITE.url}${comparisonPath(c)}`;
+const title = `${c.name} vs. AccessBell`;
+const checked = new Date(c.checked);
+const others = COMPARISONS.filter((o) => o.slug !== c.slug);
+const related = (await Promise.all(c.related.map((id) => getEntry('blog', id)))).filter(Boolean);
+// Only rows where the competitor has a sourced answer.
+const groups = ROWS.map((g) => ({ ...g, rows: g.rows.filter((r) => r.key in c.cells) })).filter((g) => g.rows.length);
+
+const esc = (t: string) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const md = (t: string) =>
+  esc(t).replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2" rel="noopener noreferrer" target="_blank">$1<span class="visually-hidden"> (opens in a new tab)</span></a>').replace(/\[([^\]]+)\]\((\/[^)]*)\)/g, '<a href="$2">$1</a>');
+
+const schema = [
+  {
+    '@type': 'WebPage',
+    '@id': `${url}#webpage`,
+    name: title,
+    url,
+    description: c.description,
+    dateModified: checked.toISOString(),
+    isPartOf: { '@id': `${SITE.url}/#website` },
+    about: [{ '@id': `${SITE.url}/#software` }, { '@type': 'Thing', name: c.name }],
+  },
+  faqSchema(c.faqs),
+];
+---
+<BaseLayout
+  title={`${title}: Features and Pricing Compared | AccessBell`.length > 60 ? `${title} Compared | AccessBell` : `${title}: Features and Pricing Compared | AccessBell`}
+  description={c.description}
+  breadcrumbs={[{ label: 'Comparisons', href: '/comparisons' }, { label: title, href: comparisonPath(c) }]}
+  schema={schema}
+>
+  <section class="cmp-hero" aria-labelledby="cmp-title">
+    <div class="container">
+      <span class="cmp-eyebrow">{c.name} vs AccessBell</span>
+      <h1 id="cmp-title">{c.name} vs. <span class="cmp-accent">AccessBell</span></h1>
+      <p class="cmp-lead">{c.intro[0]}</p>
+      <div class="cmp-cta">
+        <a class="btn btn-accent" href="/app/signup">Start 3-day free trial <Icon name="arrow" /></a>
+        <a class="btn cmp-btn-ghost" href="/#scan">Run a free scan</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="cmp-short" role="note">
+      <p><strong>The short version:</strong> {c.short}</p>
+    </div>
+  </div>
+
+  <section class="section-tight" aria-labelledby="cmp-table-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="cmp-table-title">{c.name} vs. AccessBell, Side by Side</h2>
+        <p>AccessBell’s features next to what {c.name} publishes. “Not published” means we could not find it in a public source.</p>
+      </div>
+      <div class="table-scroll cmp-table-wrap" tabindex="0" role="region" aria-label={`${c.name} vs AccessBell comparison table`}>
+        <table class="cmp-table">
+          <caption class="visually-hidden">{c.name} compared with AccessBell, feature by feature</caption>
+          <thead>
+            <tr><th scope="col">Capability</th><th scope="col" class="cmp-us">AccessBell</th><th scope="col">{c.name}</th></tr>
+          </thead>
+          {groups.map((g) => (
+            <tbody>
+              <tr class="cmp-group"><th scope="colgroup" colspan="3">{g.group}</th></tr>
+              {g.rows.map((r) => (
+                <tr>
+                  <th scope="row">{r.label}</th>
+                  <td class="cmp-us"><CompareCell value={r.us} /></td>
+                  <td><CompareCell value={c.cells[r.key]} /></td>
+                </tr>
+              ))}
+            </tbody>
+          ))}
+        </table>
+      </div>
+      <p class="cmp-note">Comparison based on publicly available information, checked {formatDate(checked)}, and subject to change. See the sources below.</p>
+    </div>
+  </section>
+
+  <section class="section-tight section-surface" aria-labelledby="cmp-why">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="cmp-why">Why Teams Choose AccessBell Over {c.name}</h2>
+      </div>
+      <ul class="grid-3 cmp-why">
+        {c.differences.map((d) => <li><h3>{d.h}</h3><p>{d.text}</p></li>)}
+      </ul>
+    </div>
+  </section>
+
+  {c.background && (
+    <section class="section-tight" aria-labelledby="cmp-background">
+      <div class="container cc-prose">
+        <h2 id="cmp-background">More About {c.name}</h2>
+        {c.background.map((b) => (
+          <>
+            <h3>{b.h}</h3>
+            {b.paras.map((p) => <p set:html={md(p)} />)}
+          </>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <section class="section-tight" aria-labelledby="cmp-fit">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="cmp-fit">{c.name} or AccessBell: Which Is Right for You?</h2>
+      </div>
+      <div class="cmp-fit">
+        <div class="cmp-fit-us">
+          <h3>Choose AccessBell if…</h3>
+          <ul class="check-list">{c.chooseUs.map((x) => <li><Icon name="check" /><span>{x}</span></li>)}</ul>
+          <a class="btn btn-accent" href="/app/signup">Start 3-day free trial</a>
+        </div>
+        <div>
+          <h3>Consider {c.name} if…</h3>
+          <ul class="check-list">{c.chooseThem.map((x) => <li><Icon name="check" /><span>{x}</span></li>)}</ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="faq-title">
+    <div class="container cc-prose">
+      <h2 id="faq-title">{c.name} vs. AccessBell: Frequently Asked Questions</h2>
+      <Faq items={c.faqs} />
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="cmp-more">
+    <div class="container cc-prose">
+      <h2 id="cmp-more">Related Reading</h2>
+      <ul class="related-guides">
+        {related.map((post) => post && <li><a href={`/blog/${post.id}`}>{post.data.title}</a><span>{post.data.description}</span></li>)}
+        <li><a href="/solutions">AccessBell solutions</a><span>Continuous monitoring, URL monitoring, automated fixes and the Compliance Vault.</span></li>
+        <li><a href="/pricing">AccessBell pricing</a><span>One plan per domain with every feature.</span></li>
+      </ul>
+      <h3>Other Comparisons</h3>
+      <ul class="platform-links">
+        {others.map((o) => <li><a href={comparisonPath(o)}><span>{o.name} vs. AccessBell</span></a></li>)}
+      </ul>
+      <p><a class="link-arrow" href="/comparisons">All comparisons <Icon name="arrow" /></a></p>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="cmp-final">
+    <div class="container">
+      <div class="cta-band">
+        <h2 id="cmp-final">See AccessBell on Your Own Site</h2>
+        <p>Run a free scan with no account, watch the demo, or start a 3-day free trial to monitor every page on your domain.</p>
+        <div class="cmp-cta cmp-cta-center">
+          <a class="btn btn-accent" href="/app/signup">Start 3-day free trial <Icon name="arrow" /></a>
+          <DemoVideo />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="sources">
+    <div class="container cc-prose checker-sources">
+      <h2 id="sources">Sources</h2>
+      <ul>
+        {c.sources.map((x) => <li><a href={x.href} rel="noopener noreferrer" target="_blank">{x.label}<span class="visually-hidden"> (opens in a new tab)</span></a></li>)}
+      </ul>
+      <p class="muted">Comparison based on publicly available information as of {formatDate(checked)} and subject to change. {c.name} and all other product and company names are trademarks of their respective owners. AccessBell is not affiliated with, endorsed by or sponsored by {c.name}. No accessibility product makes an organization legally compliant on its own. See our <a href="/disclaimer">disclaimer</a>.</p>
+    </div>
+  </section>
+</BaseLayout>

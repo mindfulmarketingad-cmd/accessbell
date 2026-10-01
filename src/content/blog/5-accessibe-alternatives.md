@@ -10,7 +10,7 @@ contributors:
 history:
   - date: 2026-09-29
     note: 'First published. Pricing and feature claims checked against each vendor''s own pricing page where available, plus independent reviews, as of September 2026.'
-related: ['accessibe-alternative', 'website-accessibility-checkers', 'automated-vs-manual-accessibility-testing']
+related: ['website-accessibility-checkers', 'automated-vs-manual-accessibility-testing']
 faqs:
   - q: 'What is the best accessiBe alternative?'
     a: 'It depends on what you need. If you want a tool that scans your real code and shows you the fix, AccessBell and AccessibilityChecker.org are the closest fit. If you want a managed service where a vendor takes on remediation work, AudioEye is the more established option. If you specifically want to avoid another overlay, rule out UserWay and EqualWeb, which use the same runtime-patch model as accessiBe.'
@@ -22,7 +22,7 @@ faqs:
     a: 'For most sites, yes. AccessBell is a flat $29 per domain per month with unlimited rescans, monitoring for up to 500 URLs and a 3-day free trial. accessiBe’s pricing scales with your monthly traffic, so the cost rises as your site grows, independent of how many pages you actually need monitored.'
 ---
 
-If you are comparing **accessiBe alternatives**, you are probably here for one of two reasons: the price scales with your traffic and keeps climbing, or you found out that [an overlay doesn't actually fix your code](/blog/accessibe-alternative) the way the marketing implies. Either way, here are the five tools worth actually comparing in 2026, starting with the one built specifically to do what an overlay cannot.
+If you are comparing **accessiBe alternatives**, you are probably here for one of two reasons: the price scales with your traffic and keeps climbing, or you found out that [an overlay doesn't actually fix your code](/comparisons/accessibe-vs-accessbell) the way the marketing implies. Either way, here are the five tools worth actually comparing in 2026, starting with the one built specifically to do what an overlay cannot.
 
 ## Quick Facts
 
@@ -66,7 +66,7 @@ Pricing starts at $69/month (billed annually) for its Lite plan, covering up to 
 
 UserWay is an accessibility overlay: JavaScript that adjusts your page in the visitor's browser without changing your underlying code. It offers a free tier and paid Widget Pro plans reported to start around $490/year for up to 100,000 monthly page views, plus a "Legal Support Program" pledge.
 
-Worth knowing before you rely on that pledge: UserWay itself was named in a [2024 class action lawsuit](https://www.courtlistener.com/opinion/10594298/bloomsyboxcom-llc-v-userway-inc/) alleging its compliance and legal-support claims did not hold up in practice. See our full [UserWay alternative breakdown](/blog/userway-alternative) for what happened.
+Worth knowing before you rely on that pledge: UserWay itself was named in a [2024 class action lawsuit](https://www.courtlistener.com/opinion/10594298/bloomsyboxcom-llc-v-userway-inc/) alleging its compliance and legal-support claims did not hold up in practice. See our full [UserWay alternative breakdown](/comparisons/userway-vs-accessbell) for what happened.
 
 ## 4. EqualWeb
 

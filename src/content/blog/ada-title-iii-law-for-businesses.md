@@ -107,7 +107,7 @@ ADA Title III law for businesses does not require perfection overnight, but it d
 3. **Verify the fixes** with a keyboard and a screen reader, not only with a tool.
 4. **Publish an accessibility statement** that explains your commitment and how people can report problems. Our free [accessibility statement generator](/resources/statement-generator) creates one in minutes.
 5. **Monitor and repeat.** New pages, plugins and content introduce new issues. Rescan regularly, especially after changes.
-6. **Avoid quick fixes.** Overlay widgets do not change your site's code, and businesses using them are still sued. See our [accessiBe alternative](/blog/accessibe-alternative) guide for why.
+6. **Avoid quick fixes.** Overlay widgets do not change your site's code, and businesses using them are still sued. See our [accessiBe alternative](/comparisons/accessibe-vs-accessbell) guide for why.
 
 ## Tax Help for Small Businesses
 

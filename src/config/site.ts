@@ -33,6 +33,7 @@ export const FOOTER_NAV = [
   { label: 'Contact', href: '/contact' },
   { label: 'Resources', href: '/resources' },
   { label: 'Solutions', href: '/solutions' },
+  { label: 'Comparisons', href: '/comparisons' },
   { label: 'Platform Checkers', href: '/platforms' },
   { label: 'Help Center', href: '/resources/help-center' },
   { label: 'Disclaimer', href: '/disclaimer' },

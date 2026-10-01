@@ -107,7 +107,7 @@ UserWay is an accessibility overlay: a widget that changes how your page looks a
 
 - **Pricing:** a free widget, with paid plans from $490 per year, according to [Capterra](https://www.capterra.com/p/218549/UserWay/pricing/).
 - **Free resources:** the free widget and a free site scan.
-- **Watch out for:** a widget does not change your underlying code, and UserWay is named on the Overlay Fact Sheet. Read our [UserWay alternative](/blog/userway-alternative) breakdown before relying on it for compliance.
+- **Watch out for:** a widget does not change your underlying code, and UserWay is named on the Overlay Fact Sheet. Read our [UserWay alternative](/comparisons/userway-vs-accessbell) breakdown before relying on it for compliance.
 
 **Best for:** sites that want a free visitor toolbar alongside, not instead of, real fixes.
 
@@ -117,7 +117,7 @@ accessiBe's accessWidget is the best-known accessibility overlay. It uses AI to 
 
 - **Pricing:** priced by monthly website visits, from $490 per year for up to 5,000 visits a month, rising to $1,490 and $3,990 per year for higher traffic ([accessiBe pricing](https://accessibe.com/pricing/accesswidget)).
 - **Free resources:** a free scanner and published guides.
-- **Watch out for:** the FTC ordered accessiBe to [pay $1 million](https://www.ftc.gov/news-events/news/press-releases/2025/04/ftc-approves-final-order-requiring-accessibe-pay-1-million) over claims that its widget could make any website compliant. See our [accessiBe alternative](/blog/accessibe-alternative) guide.
+- **Watch out for:** the FTC ordered accessiBe to [pay $1 million](https://www.ftc.gov/news-events/news/press-releases/2025/04/ftc-approves-final-order-requiring-accessibe-pay-1-million) over claims that its widget could make any website compliant. See our [accessiBe alternative](/comparisons/accessibe-vs-accessbell) guide.
 
 **Best for:** we do not recommend relying on it for compliance. If you already use it, pair it with a scanner that shows you what to fix in your code.
 
@@ -164,3 +164,5 @@ accessiBe's accessWidget is the best-known accessibility overlay. It uses AI to 
 Need expert audits as well? See our comparison of [digital accessibility platforms with ongoing monitoring and audits](/blog/digital-accessibility-platforms), or compare the [best website accessibility testing software](/blog/best-website-accessibility-testing-software) for development teams.
 
 Not sure where to start? Scan your site with the [Shopify accessibility checker](/platforms/shopify/accessibility-checker), [WooCommerce accessibility checker](/platforms/woocommerce/accessibility-checker), [Wix accessibility checker](/platforms/wix/accessibility-checker) or [Squarespace accessibility checker](/platforms/squarespace/accessibility-checker) checker, or see [every platform checker](/platforms).
+
+Want the head-to-head detail? Read [AudioEye vs. AccessBell](/comparisons/audioeye-vs-accessbell), [UserWay vs. AccessBell](/comparisons/userway-vs-accessbell) and [accessiBe vs. AccessBell](/comparisons/accessibe-vs-accessbell), or browse [all comparisons](/comparisons).

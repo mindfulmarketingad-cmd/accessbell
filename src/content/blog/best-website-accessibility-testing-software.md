@@ -109,7 +109,7 @@ Pope Tech runs the WAVE engine across your whole site, adds scheduled scans, das
 
 Siteimprove bundles accessibility testing with SEO, content quality, analytics and policy tools in one platform for large organizations with many sites and editors.
 
-- **Pricing:** not published. Independent estimates put small accessibility-only contracts around $11,000 per year. See our [Siteimprove alternative](/blog/siteimprove-alternative) comparison.
+- **Pricing:** not published. Independent estimates put small accessibility-only contracts around $11,000 per year. See our [Siteimprove alternative](/comparisons/siteimprove-vs-accessbell) comparison.
 - **Free resources:** a free browser extension, guides and webinars.
 - **Watch out for:** enterprise contracts and a demo-led sales process. Small teams usually pay for modules they do not use.
 
@@ -159,3 +159,5 @@ The best results come from combining tools, each where it is strongest:
 We also ran [10 accessibility checker tools against the same test website](/blog/we-tested-10-accessibility-checker-tools) and published every result. If you are a small business buying for compliance, see the [best ADA compliance software for small businesses](/blog/best-ada-compliance-software-for-small-businesses). Or [scan your site free](/#scan) and see what AccessBell finds in under a minute.
 
 Building with a framework? See how to test a [React accessibility checker](/platforms/react/accessibility-checker) or [Next.js accessibility checker](/platforms/nextjs/accessibility-checker) app after it renders, or find your CMS in our [platform accessibility checkers](/platforms).
+
+Comparing more tools? See [AAArdvark vs. AccessBell](/comparisons/aaardvark-vs-accessbell), [Acquia vs. AccessBell](/comparisons/acquia-vs-accessbell) and [all AccessBell comparisons](/comparisons).
