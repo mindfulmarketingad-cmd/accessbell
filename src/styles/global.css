@@ -7620,3 +7620,39 @@ img.platform-logo-lg {
     width: auto;
   }
 }
+
+/* /platforms hub: search filter */
+.platform-filter {
+  max-width: 460px;
+  margin: 24px auto 0;
+  text-align: left;
+}
+.platform-filter label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.platform-filter input {
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  color: var(--ink-900);
+  font: inherit;
+}
+.platform-filter input:focus-visible {
+  outline: 3px solid var(--sage-700);
+  outline-offset: 2px;
+}
+.platform-filter-status {
+  min-height: 1.4em;
+  margin: 6px 0 0;
+  font-size: 0.875rem;
+  color: var(--ink-700);
+}
+.platform-filter-empty {
+  padding-block: 8px 24px;
+  text-align: center;
+}

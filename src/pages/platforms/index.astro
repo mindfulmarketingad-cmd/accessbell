@@ -41,16 +41,21 @@ const schema = [
     <div class="container">
       <h1 id="platforms-title">Accessibility Checkers by Platform</h1>
       <p class="lead">Choose your platform to see the free accessibility checkers available for it, including WCAG and ADA compliance checkers.</p>
+      <div class="platform-filter" data-platform-filter hidden>
+        <label for="platform-filter-input">Find your platform</label>
+        <input id="platform-filter-input" type="search" autocomplete="off" spellcheck="false" placeholder="Search platforms, e.g. Shopify" aria-describedby="platform-filter-status" />
+        <p id="platform-filter-status" class="platform-filter-status" role="status" aria-live="polite"></p>
+      </div>
     </div>
   </section>
 
   {GROUPS.map((g) => (
-    <section class="section-tight pt-0" aria-labelledby={`platforms-${g.id}`}>
+    <section class="section-tight pt-0" aria-labelledby={`platforms-${g.id}`} data-platform-group>
       <div class="container">
         <h2 id={`platforms-${g.id}`} class="platform-tiles-heading">{g.heading}</h2>
         <ul class="platform-tiles">
           {PLATFORMS.filter((p) => p.group === g.id).map((p) => (
-            <li>
+            <li data-platform-name={`${p.name} ${g.heading}`.toLowerCase()}>
               <a class="platform-tile" href={platformHome(p)}>
                 <PlatformLogo slug={p.slug} name={p.name} size="lg" />
                 <strong>{p.name}</strong>
@@ -63,6 +68,8 @@ const schema = [
     </section>
   ))}
 
+  <p class="container platform-filter-empty" data-platform-empty hidden>No platform matches your search. Try another name, or run the <a href="/#scan">free website accessibility scan</a>, which works on any site.</p>
+
   <section class="section-tight" aria-labelledby="platforms-note">
     <div class="container cc-prose">
       <h2 id="platforms-note" class="visually-hidden">About these checkers</h2>
@@ -72,3 +79,42 @@ const schema = [
 
   <CtaBand />
 </BaseLayout>
+<script>
+  // Filter the platform tiles as you type. Without JavaScript every tile shows.
+  const box = document.querySelector<HTMLElement>('[data-platform-filter]');
+  const input = document.querySelector<HTMLInputElement>('#platform-filter-input');
+  const status = document.querySelector<HTMLElement>('#platform-filter-status');
+  const empty = document.querySelector<HTMLElement>('[data-platform-empty]');
+  const groups = [...document.querySelectorAll<HTMLElement>('[data-platform-group]')];
+  if (box && input && status && empty) {
+    box.hidden = false;
+    let timer: number | undefined;
+    const apply = () => {
+      const q = input.value.trim().toLowerCase();
+      let shown = 0;
+      for (const g of groups) {
+        let inGroup = 0;
+        for (const li of g.querySelectorAll<HTMLElement>('[data-platform-name]')) {
+          const match = !q || (li.dataset.platformName ?? '').includes(q);
+          li.hidden = !match;
+          if (match) inGroup++;
+        }
+        g.hidden = inGroup === 0;
+        shown += inGroup;
+      }
+      empty.hidden = shown > 0;
+      // Announce after typing pauses, so screen readers are not flooded.
+      clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        status.textContent = q ? `${shown} ${shown === 1 ? 'platform' : 'platforms'} found` : '';
+      }, 400);
+    };
+    input.addEventListener('input', apply);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && input.value) {
+        input.value = '';
+        apply();
+      }
+    });
+  }
+</script>
