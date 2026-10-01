@@ -6,6 +6,7 @@ import CtaBand from '../components/CtaBand.astro';
 import ProcessTour from '../components/ProcessTour.astro';
 import CostCalculator from '../components/CostCalculator.astro';
 import { LAWSUITS } from '../data/lawsuits';
+import DemoVideo from '../components/DemoVideo.astro';
 import { PLAN, FEATURE_GROUPS } from '../data/pricing';
 import { faqSchema, softwareSchema, type FaqItem } from '../lib/schema';
 
@@ -68,6 +69,7 @@ const faqs: FaqItem[] = [
         Accessibility on <span class="accent">Autopilot</span>
       </h1>
       <p class="lead">One plan for developers, QA and content teams: test every template, track fixes and catch regressions before they ship. Pay per domain, cancel anytime.</p>
+      <DemoVideo class="demo-cta-center" />
     </div>
   </section>
 

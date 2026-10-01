@@ -1,0 +1,69 @@
+---
+/**
+ * "See a demo" button and the dialog that plays the product demo video. The
+ * video is silent, so the dialog also carries a text description (WCAG 1.2.1).
+ */
+import Icon from './Icon.astro';
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+const steps = [
+  'Add your domain and choose a standard, such as WCAG 2.2 Level AA.',
+  'AccessBell finds the pages on your site from your sitemap and links.',
+  'Each page is scanned in a real Chrome browser, on desktop and mobile.',
+  'Violations are ranked by severity and mapped to their WCAG success criteria.',
+  'Open an issue to see the failing code and a corrected example, then fix it with one click using AccessBellFix.',
+  'Every scan and fix is logged in the Compliance Vault, and you can export an evidence package.',
+  'Daily scans catch new issues as your site changes, and you get an email alert.',
+];
+---
+<div class={`demo-cta ${className ?? ''}`} data-demo>
+  <button type="button" class="btn btn-outline demo-open" data-demo-open aria-haspopup="dialog">
+    <Icon name="play" /> See a demo
+  </button>
+  <dialog class="demo-dialog" aria-labelledby="demo-title" data-demo-dialog>
+    <div class="demo-head">
+      <h2 id="demo-title">AccessBell demo</h2>
+      <button type="button" class="demo-close" data-demo-close><Icon name="x" /><span class="visually-hidden">Close demo</span></button>
+    </div>
+    <video class="demo-video" controls playsinline preload="none" poster="/demo/accessbell-demo-poster.jpg" width="1920" height="1080" data-demo-video>
+      <source src="/demo/accessbell-demo.webm" type="video/webm" />
+      <source src="/demo/accessbell-demo.mp4" type="video/mp4" />
+      <a href="/demo/accessbell-demo.mp4">Download the AccessBell demo video (MP4)</a>.
+    </video>
+    <details class="demo-desc">
+      <summary>What the demo shows (text description)</summary>
+      <ol>{steps.map((s) => <li>{s}</li>)}</ol>
+      <p>The site in the demo is an example store with example results.</p>
+    </details>
+    <div class="demo-actions">
+      <a class="btn btn-green" href="/app/signup">Start 3-day free trial</a>
+      <a class="btn btn-outline" href="/#scan" data-demo-close-link>Run a free scan</a>
+    </div>
+  </dialog>
+</div>
+
+<script>
+  for (const root of document.querySelectorAll<HTMLElement>('[data-demo]')) {
+    const dialog = root.querySelector<HTMLDialogElement>('[data-demo-dialog]');
+    const video = root.querySelector<HTMLVideoElement>('[data-demo-video]');
+    const open = root.querySelector<HTMLButtonElement>('[data-demo-open]');
+    if (!dialog || !video || !open) continue;
+    open.addEventListener('click', () => {
+      dialog.showModal();
+      video.play().catch(() => {});
+    });
+    const close = () => dialog.close();
+    root.querySelector('[data-demo-close]')?.addEventListener('click', close);
+    root.querySelector('[data-demo-close-link]')?.addEventListener('click', close);
+    // Click on the backdrop closes the dialog.
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) close();
+    });
+    dialog.addEventListener('close', () => {
+      video.pause();
+      open.focus();
+    });
+  }
+</script>

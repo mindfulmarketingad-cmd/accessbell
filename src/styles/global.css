@@ -7191,3 +7191,92 @@ h2[tabindex='-1']:focus {
   padding-top: 12px;
   border-top: 1px solid var(--border);
 }
+
+/* ---------- See a demo: button and video dialog ---------- */
+.demo-cta-hero {
+  margin-top: 14px;
+}
+.demo-cta-center {
+  display: flex;
+  justify-content: center;
+  margin-top: 22px;
+}
+.demo-open svg {
+  width: 18px;
+  height: 18px;
+}
+.demo-dialog {
+  width: min(1000px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: var(--bg);
+  color: var(--ink-900);
+  box-shadow: var(--shadow-lg);
+  overflow: auto;
+}
+.demo-dialog::backdrop {
+  background: rgb(34 38 47 / 0.72);
+}
+.demo-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px 14px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.demo-head h2 {
+  margin: 0;
+  font-size: 1.125rem;
+}
+.demo-close {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--ink-900);
+  cursor: pointer;
+}
+.demo-close:hover {
+  background: var(--surface);
+}
+.demo-close svg {
+  width: 20px;
+  height: 20px;
+}
+.demo-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  background: #e9eee8;
+}
+.demo-desc {
+  padding: 14px 20px 0;
+  font-size: 0.9375rem;
+  color: var(--ink-700);
+}
+.demo-desc summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--ink-900);
+}
+.demo-desc ol {
+  margin: 10px 0 8px;
+  padding-left: 1.3em;
+}
+.demo-desc p {
+  margin: 0;
+  color: var(--ink-500);
+}
+.demo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 16px 20px 20px;
+}

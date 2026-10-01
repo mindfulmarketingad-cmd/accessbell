@@ -13,6 +13,7 @@ import ownerPhoto from '../assets/website-owner-at-laptop.jpg';
 import { faqSchema, softwareSchema, type FaqItem } from '../lib/schema';
 import { formatDate, readingTime } from '../lib/format';
 import { LAWSUIT_STATS } from '../data/lawsuit-stats';
+import DemoVideo from '../components/DemoVideo.astro';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
@@ -271,6 +272,7 @@ const challenges = [
           AccessBell scans every page against WCAG 2.2, flags the kinds of barriers named in ADA website lawsuits, shows the exact code fix, and rescans on a schedule so new issues are caught early. Run a free scan to see how many issues your site has.
         </p>
         <ScanForm id="hero" />
+        <DemoVideo class="demo-cta-hero" />
         <div class="compliance-row">
           <span id="compliance-label">Checks for compliance with:</span>
           <ul aria-labelledby="compliance-label">
