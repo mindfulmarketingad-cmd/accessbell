@@ -164,22 +164,41 @@ const IMPACT_LABEL = { critical: 'Critical', serious: 'Serious', moderate: 'Mode
 const URGENT = new Set(['critical', 'serious']);
 
 /** The results list, then a prompt to start the trial for fixes and monitoring. */
-function showResults(r, url) {
+function showResults(r, url, form) {
   section.setAttribute('aria-busy', 'false');
-  const host = (() => {
+  // The free scan tests one URL. Show which one: the domain plus any path.
+  const { host, page } = (() => {
     try {
-      return new URL(r.finalUrl || url).hostname;
+      const u = new URL(r.finalUrl || url);
+      const path = u.pathname.replace(/\/+$/, '');
+      return { host: u.hostname, page: u.hostname + path };
     } catch {
-      return url;
+      return { host: url, page: url };
     }
   })();
   const total = r.summary?.issues || 0;
   const list = r.issues || [];
   const label = r.standard?.label || 'WCAG';
-  const heading = el('h2', { id: 'scan-result-title', tabindex: '-1', text: total ? `${plural(total, 'issue')} found on ${host}` : `No automated issues found on ${host}` });
+  const heading = el('h2', { id: 'scan-result-title', tabindex: '-1', text: total ? `${plural(total, 'issue')} found on this URL ${page}` : `No automated issues found on this URL ${page}` });
   const lead = total
     ? `${plural(list.length, 'type')} of problem, tested against ${label}. Here is what needs fixing.`
-    : `This page passed every automated check against ${label}. Automated testing covers only part of the standard, so scan the rest of your site and review the manual checks too.`;
+    : `This URL passed every automated check against ${label}. Automated testing covers only part of the standard, so review the manual checks too.`;
+  // One clean page says nothing about the rest of the domain.
+  const again = el('button', { type: 'button', class: 'btn btn-outline btn-sm', text: 'Scan another URL' });
+  again.addEventListener('click', () => {
+    const input = (form || forms[0])?.elements.url;
+    if (!input) return;
+    input.value = '';
+    input.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'center' });
+    input.focus({ preventScroll: true });
+  });
+  const scope = el('div', { class: 'scan-scope' }, [
+    el('p', {}, [
+      el('strong', { text: 'This free scan checks only this one URL. ' }),
+      `Other pages on ${host}, such as product pages, cart and checkout, forms and blog posts, often have different issues. Scan your other key URLs one at a time, or start a free trial to scan up to 500 URLs on your domain automatically.`,
+    ]),
+    again,
+  ]);
   const tiles = total
     ? el(
         'ul',
@@ -223,6 +242,7 @@ function showResults(r, url) {
   mount.replaceChildren(
     el('div', { class: 'results-card scan-result', role: 'region', 'aria-labelledby': 'scan-result-title' }, [
       el('div', { class: 'scan-result-head' }, [el('span', { class: 'scan-result-kicker', text: 'Free scan results' }), heading, el('p', { text: lead })]),
+      scope,
       tiles,
       rows,
       more,
@@ -261,7 +281,7 @@ for (const form of forms) {
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || 'The scan could not be completed. Please try again.');
       await scan.toLastStep();
-      showResults(data, parsed.url);
+      showResults(data, parsed.url, form);
     } catch (err) {
       scan.stop();
       showFailure(err.name === 'AbortError' ? 'The page took too long to respond. Please try again later.' : err.message);
