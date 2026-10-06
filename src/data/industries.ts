@@ -114,7 +114,7 @@ export const INDUSTRIES: Industry[] = [
       { q: 'What is the compliance deadline?', a: 'Under the HHS Section 504 rule, institutions with 15 or more employees must comply by May 11, 2027, and smaller institutions by May 10, 2028. Public institutions also face DOJ Title II deadlines around April 2027-2028 depending on the entity.' },
       { q: 'Does this cover our learning management system content?', a: 'Yes. Course content, PDFs, videos and other materials delivered through your LMS are within scope, not just the public-facing website.' },
     ],
-    related: ['ada-website-compliance-guide', 'wcag-2-2-checklist', 'ada-lawsuit-process'],
+    related: ['ada-title-ii-website-compliance', 'ada-website-compliance-guide', 'wcag-2-2-checklist'],
   },
   {
     slug: 'government',
@@ -147,7 +147,7 @@ export const INDUSTRIES: Industry[] = [
       { q: 'Is this different from Section 508?', a: 'Section 508 applies to federal agencies and federal contractors. The DOJ’s Title II rule specifically covers state and local government entities, both using WCAG 2.1 AA as the technical standard.' },
       { q: 'Does this cover our mobile apps too?', a: 'Yes. The Title II rule covers government mobile applications as well as websites.' },
     ],
-    related: ['automated-vs-manual-accessibility-testing', 'ada-website-compliance-guide', 'wcag-2-2-checklist'],
+    related: ['ada-title-ii-website-compliance', 'ada-website-compliance-guide', 'automated-vs-manual-accessibility-testing'],
   },
   {
     slug: 'real-estate',

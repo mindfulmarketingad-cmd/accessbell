@@ -61,6 +61,8 @@ The most effective programs we see follow a simple loop.
 
 **5. Listen to users.** An [accessibility statement](/tools/statement-generator) with a clear feedback channel surfaces barriers that neither tools nor auditors anticipated.
 
+**6. Record what you tested.** Write up automated and manual results together, and say which is which. Our guide on [how to create a website accessibility report](/blog/website-accessibility-report) shows what to include.
+
 ## Where AI-Assisted Fixes Fit
 
 Newer tools, including ours, can suggest code fixes for common failures, such as a label for an unlabeled input or alt text for an image. Suggestions speed up remediation, but they should always be reviewed by a person who understands the content. A suggested alt text is a draft, not a decision.

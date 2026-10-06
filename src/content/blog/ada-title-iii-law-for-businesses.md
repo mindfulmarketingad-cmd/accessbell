@@ -52,7 +52,7 @@ The ADA lists 12 categories of public accommodation ([42 U.S.C. 12181](https://w
 - Gyms, golf courses and other places of exercise or recreation
 - Stations used for public transportation
 
-**There is no minimum size.** A one-person shop is covered just like a national chain. Title III is also separate from Title II, which covers state and local governments.
+**There is no minimum size.** A one-person shop is covered just like a national chain. Title III is also separate from Title II, which covers state and local governments (see our guide to [ADA Title II website compliance](/blog/ada-title-ii-website-compliance)).
 
 ## Does ADA Title III Law Apply to Business Websites?
 

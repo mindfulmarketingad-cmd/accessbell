@@ -116,7 +116,7 @@ If you are new to accessibility, start small and build a habit:
 5. Set up scheduled scans so new content is checked automatically.
 6. Publish an accessibility statement that explains your commitment and how to report problems. Our free [accessibility statement generator](/tools/statement-generator) creates one in a minute.
 
-Our [WCAG 2.2 checklist](/blog/wcag-2-2-checklist) walks through each requirement if you want a structured list to work from.
+Our [WCAG 2.2 checklist](/blog/wcag-2-2-checklist) walks through each requirement if you want a structured list to work from, and our guide on [how to check if your website is ADA compliant](/blog/how-to-check-if-website-is-ada-compliant) turns these steps into a one-hour check. When you need to share the results, see [how to create a website accessibility report](/blog/website-accessibility-report).
 
 ## The Bottom Line
 

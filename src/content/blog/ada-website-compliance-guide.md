@@ -29,7 +29,7 @@ The [Title II rule](https://www.ada.gov/resources/2024-03-08-web-rule/) gives pu
 - **April 26, 2027** for entities serving a total population of 50,000 or more (originally April 24, 2026)
 - **April 26, 2028** for entities serving fewer than 50,000 people, and for special district governments (originally April 26, 2027)
 
-The rule includes limited exceptions, such as certain archived content and some preexisting documents, but these are narrow. Deadlines and enforcement policy can change, so confirm the current status on ADA.gov before planning around a date.
+The rule includes limited exceptions, such as certain archived content and some preexisting documents, but these are narrow. Our guide to [ADA Title II website compliance](/blog/ada-title-ii-website-compliance) explains each exception and how to prepare. Deadlines and enforcement policy can change, so confirm the current status on ADA.gov before planning around a date.
 
 ## What Standard Applies to Private Businesses
 
@@ -53,7 +53,7 @@ Because these barriers are easy to detect, they are also easy for plaintiffs' fi
 
 ## Steps That Reduce Risk
 
-**1. Audit your current state.** Start with a [website accessibility checker](/) on your key templates: home, product or service pages, forms, checkout and account areas. Then test the same pages with a keyboard and a screen reader.
+**1. Audit your current state.** Start with a [website accessibility checker](/) on your key templates: home, product or service pages, forms, checkout and account areas. Then test the same pages with a keyboard and a screen reader. Our step-by-step guide on [how to check if your website is ADA compliant](/blog/how-to-check-if-website-is-ada-compliant) covers each manual check.
 
 **2. Fix by impact, not by page count.** Prioritize barriers that stop someone from completing a task, such as buying, booking, applying or contacting you.
 
@@ -61,7 +61,7 @@ Because these barriers are easy to detect, they are also easy for plaintiffs' fi
 
 **4. Publish an accessibility statement.** Explain the standard you are working toward, known limitations and how people can report problems or request help. A clear feedback path lets you resolve issues before they escalate. Our free [accessibility statement generator](/tools/statement-generator) gives you a starting point.
 
-**5. Document your work.** Keep scan reports, remediation tickets and test results. A documented, good-faith program is useful evidence if a claim arrives.
+**5. Document your work.** Keep scan reports, remediation tickets and test results. See [how to create a website accessibility report](/blog/website-accessibility-report) for what to include. A documented, good-faith program is useful evidence if a claim arrives.
 
 **6. Train your team.** Content editors who know to add alt text and use real headings prevent many issues from reaching production.
 
