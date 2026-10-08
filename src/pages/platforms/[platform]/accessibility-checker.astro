@@ -147,6 +147,7 @@ const schema = [
         {related.map((post) => post && (
           <li><a href={postPath(post)}>{post.data.title}</a><span>{post.data.description}</span></li>
         ))}
+        <li><a href="/">Website Accessibility Checker</a><span>The same free scan for any website, whatever platform it runs on.</span></li>
         <li><a href="/resources/wcag">WCAG Success Criteria Library</a><span>Look up any success criterion the scan flags, in plain language.</span></li>
         <li><a href={platformAdaPath(p)}>{p.name} ADA Compliance Checker</a><span>The same scan with the ADA preset, plus the ADA risks specific to {p.name} sites.</span></li>
         <li><a href="/tools/statement-generator">Free Accessibility Statement Generator</a><span>Publish a statement once your {p.name} site's known issues are fixed.</span></li>

@@ -66,7 +66,7 @@ export const TOOLS: Tool[] = [
   },
   {
     href: '/tools/statement-generator',
-    keyword: 'Generate Free Custom Accessibility Statement',
+    keyword: 'Free Accessibility Statement Generator',
     icon: 'doc',
     tag: 'Free generator',
     text: 'Create a custom accessibility statement for your website, then copy it or download it as an HTML page.',

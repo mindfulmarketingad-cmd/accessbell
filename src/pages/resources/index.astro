@@ -7,13 +7,14 @@ import Icon from '../../components/Icon.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { SITE } from '../../config/site';
 import { formatDate } from '../../lib/format';
-import { helpByCategory } from '../../lib/help';
+import { helpByCategory, categoryPath } from '../../lib/help';
 import { CHECKERS, checkerPath } from '../../data/checkers';
 import { PLATFORMS, platformHome } from '../../data/platforms';
 import { INDUSTRIES, industryPath } from '../../data/industries';
 import { STATE_LAWS, stateLawPath } from '../../data/state-laws';
 
-const helpCount = (await helpByCategory()).reduce((n, g) => n + g.articles.length, 0);
+const helpGroups = await helpByCategory();
+const helpCount = helpGroups.reduce((n, g) => n + g.articles.length, 0);
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const tools = [
@@ -71,6 +72,30 @@ const schema = [
                 <small>{t.tag}</small>
                 <strong>{t.title}</strong>
                 <span>{t.text}</span>
+              </span>
+              <Icon name="arrow" class="res-arrow" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="res-help">
+    <div class="container">
+      <div class="section-head section-head-left">
+        <h2 id="res-help">Help Center Guides by Topic</h2>
+        <p>Step-by-step guides for every part of AccessBell, grouped the way the <a href="/resources/help-center">Help Center</a> is.</p>
+      </div>
+      <ul class="res-grid">
+        {helpGroups.map((g) => (
+          <li>
+            <a class="res-card" href={categoryPath(g.id)}>
+              <span class="help-cat-icon"><Icon name={g.icon} /></span>
+              <span class="res-card-text">
+                <small>{g.articles.length} {g.articles.length === 1 ? 'guide' : 'guides'}</small>
+                <strong>{g.title}</strong>
+                <span>{g.blurb}</span>
               </span>
               <Icon name="arrow" class="res-arrow" />
             </a>

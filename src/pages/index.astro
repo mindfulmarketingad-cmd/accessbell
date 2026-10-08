@@ -17,6 +17,13 @@ import { LAWSUIT_STATS } from '../data/lawsuit-stats';
 import DemoVideo from '../components/DemoVideo.astro';
 import PlatformLogo from '../components/PlatformLogo.astro';
 import { PLATFORMS, platformHome } from '../data/platforms';
+import { TOOLS } from '../data/tools';
+import { SOLUTIONS } from '../data/solutions';
+import { COMPARISONS } from '../data/comparisons';
+import { INDUSTRIES } from '../data/industries';
+import { STATE_LAWS } from '../data/state-laws';
+import { USE_CASES } from '../data/use-cases';
+import { helpByCategory } from '../lib/help';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
@@ -258,6 +265,22 @@ const challenges = [
   },
 ];
 
+
+// Every hub, linked from the homepage body so each section is one click away.
+const helpArticles = (await helpByCategory()).reduce((n, g) => n + g.articles.length, 0);
+const hubPosts = (await getCollection('blog', ({ data }) => !data.draft && data.category !== 'WCAG Codes Explained')).length;
+const HUBS = [
+  { href: '/tools', icon: 'wrench', title: 'Free Accessibility Tools', text: `${TOOLS.length} free checkers, generators and downloads, from WCAG and ADA scans to color contrast and PDFs.` },
+  { href: '/resources/wcag', icon: 'list', title: 'WCAG Library', text: 'Every WCAG success criterion explained in plain English, with how to test it.' },
+  { href: '/solutions', icon: 'shield', title: 'Solutions', text: `${SOLUTIONS.length} ways AccessBell helps after the first scan: monitoring, fixes and documentation.` },
+  { href: '/platforms', icon: 'layers', title: 'Platform Checkers', text: `Free checkers for ${PLATFORMS.length} platforms, including Shopify, WordPress, Wix and Squarespace.` },
+  { href: '/industries', icon: 'users', title: 'Industry Checkers', text: `The rules and common failures for ${INDUSTRIES.length} industries, with a free scan for each.` },
+  { href: '/state-accessibility-laws', icon: 'scale', title: 'State Accessibility Laws', text: `Website accessibility law in ${STATE_LAWS.length} states, with a free scan for each.` },
+  { href: '/comparisons', icon: 'chart', title: 'Comparisons', text: `AccessBell compared with ${COMPARISONS.length} other accessibility tools, feature by feature.` },
+  { href: '/use-cases', icon: 'check-circle', title: 'Use Cases', text: `How ${USE_CASES.length === 1 ? 'a customer uses' : 'customers use'} AccessBell to monitor accessibility compliance.` },
+  { href: '/blog', icon: 'doc', title: 'Blog', text: `${hubPosts} guides on ADA website compliance, WCAG, testing and lawsuits.` },
+  { href: '/resources/help-center', icon: 'chat', title: 'Help Center', text: `${helpArticles} step-by-step guides to every AccessBell feature.` },
+];
 ---
 <BaseLayout
   title="Website Accessibility Checker Free ADA & WCAG Compliance Scan"
@@ -692,6 +715,29 @@ const challenges = [
         ))}
       </ul>
       <p class="more-link"><a class="link-arrow" href="/platforms">All platform accessibility checkers <Icon name="arrow" /></a></p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="explore-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="explore-title">Explore Website Accessibility Checkers, Tools and Guides</h2>
+        <p>Everything on AccessBell, by section.</p>
+      </div>
+      <ul class="res-grid">
+        {HUBS.map((h) => (
+          <li>
+            <a class="res-card" href={h.href}>
+              <span class="res-card-icon" aria-hidden="true"><Icon name={h.icon} /></span>
+              <span class="res-card-text">
+                <strong>{h.title}</strong>
+                <span>{h.text}</span>
+              </span>
+              <Icon name="arrow" class="res-arrow" />
+            </a>
+          </li>
+        ))}
+      </ul>
     </div>
   </section>
 

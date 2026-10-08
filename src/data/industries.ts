@@ -14,6 +14,8 @@ export type Industry = {
   fixNotes: string[];
   faqs: { q: string; a: string }[];
   related: string[];
+  /** Free standard checkers (CHECKERS slugs) for the standard this industry is held to. */
+  checkers: string[];
 };
 
 export const INDUSTRIES: Industry[] = [
@@ -49,6 +51,7 @@ export const INDUSTRIES: Industry[] = [
       { q: 'What should I fix first on my store?', a: 'Cart and checkout keyboard access first, since it blocks purchases directly, followed by product image alt text, which is usually the highest-volume issue on a catalog site.' },
     ],
     related: ['ada-website-compliance-guide', 'best-ada-compliance-software-for-small-businesses', 'ada-demand-letter'],
+    checkers: ['ada-compliance-checker', 'wcag-2-2-aa-checker'],
   },
   {
     slug: 'healthcare',
@@ -82,6 +85,7 @@ export const INDUSTRIES: Industry[] = [
       { q: 'Am I responsible for my patient portal vendor’s accessibility?', a: 'Under Section 1557, yes, in practice. Outsourcing a website, portal or booking tool to a vendor does not remove your obligation to ensure patients can use it.' },
     ],
     related: ['ada-website-compliance-guide', 'ada-lawsuit-process', 'wcag-2-2-checklist'],
+    checkers: ['wcag-2-1-aa-checker', 'ada-compliance-checker'],
   },
   {
     slug: 'higher-education',
@@ -115,6 +119,7 @@ export const INDUSTRIES: Industry[] = [
       { q: 'Does this cover our learning management system content?', a: 'Yes. Course content, PDFs, videos and other materials delivered through your LMS are within scope, not just the public-facing website.' },
     ],
     related: ['ada-website-compliance-guide', 'wcag-2-2-checklist', 'ada-lawsuit-process'],
+    checkers: ['wcag-2-1-aa-checker', 'ada-compliance-checker'],
   },
   {
     slug: 'government',
@@ -148,6 +153,7 @@ export const INDUSTRIES: Industry[] = [
       { q: 'Does this cover our mobile apps too?', a: 'Yes. The Title II rule covers government mobile applications as well as websites.' },
     ],
     related: ['automated-vs-manual-accessibility-testing', 'ada-website-compliance-guide', 'wcag-2-2-checklist'],
+    checkers: ['wcag-2-1-aa-checker', 'section-508-checker'],
   },
   {
     slug: 'real-estate',
@@ -181,6 +187,7 @@ export const INDUSTRIES: Industry[] = [
       { q: 'Is an accessibility overlay enough for a real estate site?', a: 'It is generally not considered a durable fix. Overlays run in the browser and do not change your code, and many real estate accessibility settlements specifically require them to be removed.' },
     ],
     related: ['ada-lawsuit-process', 'ada-demand-letter'],
+    checkers: ['ada-compliance-checker', 'wcag-2-2-aa-checker'],
   },
 ];
 
