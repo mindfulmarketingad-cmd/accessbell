@@ -11,6 +11,7 @@ Apply these to every new blog post, resource page or landing page. Pick one prim
 - **Meta description:** contains the keyword (blog `description`: 110 to 165 characters).
 - **Body:** the keyword recurs naturally through the content. No stuffing.
 - **Internal links:** link out to related pages, and add links *to* the new page from existing related pages, so nothing is orphaned. Run `npm run build && npm run audit:links`; it must report 0 orphan pages, 0 pages without internal links and 0 pages without outbound links.
+- **Site structure:** new pages go under a hub (their nearest parent URL) and must be linked from it, and link back to it (breadcrumbs count). New hubs are linked from the homepage "Explore" section and the footer. Run `npm run audit:structure`; it must report 0 pages deeper than 3 clicks from the homepage (the HTML sitemap is not counted), 0 hubs missing a link down and 0 pages missing a link up.
 - **Outbound links:** cite authoritative primary sources (W3C, ADA.gov, vendor pricing pages). Never invent sources, reviews, statistics or test results.
 
 ## Featured images for blog posts

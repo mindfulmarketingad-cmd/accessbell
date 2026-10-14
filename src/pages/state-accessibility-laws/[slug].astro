@@ -104,6 +104,7 @@ const schema = [
     <section aria-labelledby="related-guides">
       <h2 id="related-guides">Related Guides</h2>
       <ul class="related-guides">
+        <li><a href="/tools/ada-compliance-checker">ADA Compliance Checker</a><span>The free scanner preset for WCAG 2.1 Level AA, the benchmark used in ADA website claims.</span></li>
         {related.map((post) => post && (
           <li><a href={postPath(post)}>{post.data.title}</a><span>{post.data.description}</span></li>
         ))}

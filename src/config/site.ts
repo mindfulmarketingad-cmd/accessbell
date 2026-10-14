@@ -36,6 +36,8 @@ export const FOOTER_GROUPS = [
       { label: 'Comparisons', href: '/comparisons' },
       { label: 'Use Cases', href: '/use-cases' },
       { label: 'Platform Checkers', href: '/platforms' },
+      { label: 'Industry Checkers', href: '/industries' },
+      { label: 'State Accessibility Laws', href: '/state-accessibility-laws' },
     ],
   },
   {
@@ -52,6 +54,7 @@ export const FOOTER_GROUPS = [
     title: 'Company',
     links: [
       { label: 'About', href: '/about' },
+      { label: 'Authors', href: '/authors' },
       { label: 'Methodology', href: '/methodology' },
       { label: 'Contact', href: '/contact' },
       { label: 'Accessibility Statement', href: '/statement' },

@@ -13,6 +13,7 @@ import { authorPath, authorSchema } from '../../lib/authors';
 import { faqSchema } from '../../lib/schema';
 import { formatDate } from '../../lib/format';
 import { INDUSTRIES, industryPath, type Industry } from '../../data/industries';
+import { CHECKERS, checkerPath } from '../../data/checkers';
 
 export function getStaticPaths() {
   return INDUSTRIES.map((i) => ({ params: { slug: i.slug }, props: { i } }));
@@ -24,6 +25,7 @@ const url = `${SITE.url}${industryPath(i)}`;
 const author = await getEntry('authors', 'joseph-edwards');
 const others = INDUSTRIES.filter((o) => o.slug !== i.slug);
 const related = (await Promise.all(i.related.map((id) => getEntry('blog', id)))).filter(Boolean);
+const checkers = i.checkers.map((slug) => CHECKERS.find((c) => c.slug === slug)!).filter(Boolean);
 
 const schema = [
   {
@@ -105,6 +107,9 @@ const schema = [
     <section aria-labelledby="related-guides">
       <h2 id="related-guides">Related Guides</h2>
       <ul class="related-guides">
+        {checkers.map((c) => (
+          <li><a href={checkerPath(c)}>{c.name}</a><span>The free scanner preset for WCAG {c.version} Level {c.level}, for any page.</span></li>
+        ))}
         {related.map((post) => post && (
           <li><a href={postPath(post)}>{post.data.title}</a><span>{post.data.description}</span></li>
         ))}
