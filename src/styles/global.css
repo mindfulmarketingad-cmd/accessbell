@@ -8067,3 +8067,29 @@ img.platform-logo-lg {
   width: 18px;
   height: 18px;
 }
+
+/* Homepage: Let Us Guide You */
+.guide-grid {
+  gap: 20px;
+  align-items: stretch;
+}
+.guide-col {
+  padding: clamp(18px, 3vw, 26px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: #fff;
+}
+.guide-col h3 {
+  margin: 0 0 12px;
+  font-size: 1.125rem;
+}
+.guide-col .check-list {
+  margin: 0;
+}
+.guide-note {
+  max-width: 760px;
+  margin: 20px auto 0;
+  text-align: center;
+  color: var(--ink-500);
+  font-size: 0.9375rem;
+}
