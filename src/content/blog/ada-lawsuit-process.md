@@ -1,7 +1,7 @@
 ---
-title: 'ADA Lawsuit Process: Stages, Timeline and What to Expect'
-seoTitle: 'ADA Lawsuit Process: Timeline and Stages'
-description: 'The ADA lawsuit process step by step: service, the 21-day answer deadline, mediation, discovery, settlement and appeal, plus what to do if you are sued.'
+title: 'The ADA Lawsuit Process: What Happens From Complaint to Settlement'
+seoTitle: 'ADA Lawsuit Process: 8 Stages and a Realistic Timeline'
+description: 'Every stage of the ADA lawsuit process, from the 21-day deadline to respond through mediation, discovery and settlement, plus what to do first if you are sued.'
 pubDate: 2026-09-28
 category: 'Compliance'
 contributors:
@@ -26,7 +26,7 @@ faqs:
     a: 'Sometimes. Some employment practices liability, cyber or general liability policies cover defense costs for accessibility claims. Notify your insurer as soon as you are served and ask your broker to review your policy.'
 ---
 
-The **ADA lawsuit process** usually follows a predictable path. A business is served with a complaint, has **21 days** to respond, often goes through mediation or settlement talks, and in most cases signs a settlement within **6 to 18 months**. Very few cases reach trial.
+The **ADA lawsuit process** is the path a disability access case takes in federal court: the business is served with a complaint, has **21 days** to respond, often goes through mediation or settlement talks, and in most cases signs a settlement within **6 to 18 months**. Very few cases reach trial.
 
 This guide walks through each stage of an [ADA Title III](/blog/ada-title-iii-law-for-businesses) lawsuit, how long each one takes and what happens next. It also covers what to do in the first days after you are served. Most examples involve website accessibility cases, but the same federal court process applies to cases about physical barriers.
 
