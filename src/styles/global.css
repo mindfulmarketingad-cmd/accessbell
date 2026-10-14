@@ -1717,6 +1717,49 @@ a:hover {
   font-size: 0.9375rem;
   color: var(--ink-500);
 }
+.aside-card-accent {
+  border-color: var(--sage);
+  background: var(--sage-50);
+  border-width: 2px;
+}
+/* Mobile and tablet: the aside is not sticky, so ADA posts get a bottom bar instead. */
+.sticky-cta {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -4px 16px rgb(34 38 47 / 0.08);
+  background: var(--bg);
+}
+.sticky-cta p {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.3;
+}
+.sticky-cta span {
+  color: var(--ink-500);
+}
+.sticky-cta .btn {
+  flex-shrink: 0;
+  padding: 10px 14px;
+  font-size: 0.875rem;
+}
+body:has(.sticky-cta) {
+  padding-bottom: 72px;
+}
+@media (min-width: 1040px) {
+  .sticky-cta {
+    display: none;
+  }
+  body:has(.sticky-cta) {
+    padding-bottom: 0;
+  }
+}
 .toc ol {
   list-style: none;
   margin: 0;
@@ -6270,6 +6313,8 @@ h2[tabindex='-1']:focus {
 }
 .prose pre code {
   padding: 0;
+  border: 0;
+  border-radius: 0;
   background: none;
   color: inherit;
   font-size: inherit;

@@ -26,6 +26,8 @@ const { Content, headings } = await render(post);
 const url = `${SITE.url}/blog/${post.id}`;
 const minutes = readingTime(post.body ?? '');
 const { faqs, history } = post.data;
+// ADA and lawsuit posts promote the free ADA compliance checker in a sticky CTA.
+const adaCta = post.data.category === 'Compliance' || /(^|-)(ada|lawsuit)(-|$)/.test(post.id);
 
 const people = await getEntries(post.data.contributors.map((c) => c.author));
 const contributors = post.data.contributors.map((c, i) => ({ role: c.role, author: people[i] }));
@@ -186,14 +188,29 @@ const schema = [
 
       <aside class="article-aside" aria-label="Article tools">
         <TableOfContents headings={toc} variant="aside" />
-        <div class="aside-card">
-          <h2>Check Your Website</h2>
-          <p>Run our free website accessibility checker to see how many WCAG 2.2 issues your page has.</p>
-          <a class="btn btn-block" href="/#scan">Run a free scan <Icon name="arrow" /></a>
-        </div>
+        {adaCta ? (
+          <div class="aside-card aside-card-accent">
+            <h2>Free ADA Compliance Checker</h2>
+            <p>Find the issues ADA lawsuits cite, like missing alt text, unlabeled form fields and low contrast. Tested against WCAG 2.1 AA, free, no signup.</p>
+            <a class="btn btn-accent btn-block" href="/tools/ada-compliance-checker">Check my website <Icon name="arrow" /></a>
+          </div>
+        ) : (
+          <div class="aside-card">
+            <h2>Check Your Website</h2>
+            <p>Run our free website accessibility checker to see how many WCAG 2.2 issues your page has.</p>
+            <a class="btn btn-block" href="/#scan">Run a free scan <Icon name="arrow" /></a>
+          </div>
+        )}
       </aside>
     </div>
   </article>
+
+  {adaCta && (
+    <div class="sticky-cta" role="complementary" aria-label="Free ADA compliance checker">
+      <p><strong>Is your site at risk?</strong> <span>Free ADA check, no signup.</span></p>
+      <a class="btn btn-accent btn-sm" href="/tools/ada-compliance-checker">Check my website</a>
+    </div>
+  )}
 
   {related.length > 0 && (
     <section class="section section-surface" aria-labelledby="related-title">

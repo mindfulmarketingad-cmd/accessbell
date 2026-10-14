@@ -59,13 +59,13 @@ This is the financial case for fixing real issues now: the cost of a scan, devel
 
 ## What Happens if You Ignore It
 
-Sources consistently describe the same pattern: the sender escalates to a filed lawsuit if a demand letter goes unanswered. Once a complaint is filed, you are on a legal clock (commonly 21 days to answer), the costs above increase, and you lose the leniency that comes from moving early. If you have already been served with a lawsuit rather than a demand letter, see our [ADA lawsuit process guide](/blog/ada-lawsuit-process) for the deadlines involved, and [one small store's story of being sued for violating ADA website compliance](/blog/what-happens-after-being-sued-for-ada-website-compliance) for what it cost them.
+Sources consistently describe the same pattern: the sender escalates to a filed lawsuit if a demand letter goes unanswered. Once a complaint is filed, you are on a legal clock (commonly 21 days to answer), the costs above increase, and you lose the leniency that comes from moving early. If you have already been served with a lawsuit rather than a demand letter, follow our step-by-step guide on [what to do after an ADA lawsuit](/blog/ada-lawsuit-what-to-do), see our [ADA lawsuit process guide](/blog/ada-lawsuit-process) for the deadlines involved, and [one small store's story of being sued for violating ADA website compliance](/blog/what-happens-after-being-sued-for-ada-website-compliance) for what it cost them.
 
 ## After the Letter: Staying Out of the Next One
 
 Once the immediate matter is resolved, the goal shifts to not receiving another one:
 
-1. **Fix the code, not just the symptom.** Work through your scan results by severity, starting with forms, navigation and any checkout or account flow.
+1. **Fix the code, not just the symptom.** Work through your scan results by severity, starting with forms, navigation and any checkout or account flow. Our guide on how to [fix your website after an ADA complaint](/blog/fix-website-after-ada-lawsuit) shows the order and the code.
 2. **Monitor continuously.** New pages and new code introduce new issues; a one-time fix does not stay fixed. [AccessBell Pro](/pricing) rescans your monitored pages automatically and alerts you when something regresses.
 3. **Publish an accessibility statement.** A dated, honest statement naming the standard you target and how people can report barriers is something plaintiffs' attorneys and courts both look for. [Generate one free](/tools/statement-generator) in a few minutes.
 4. **Keep a record.** Scan reports, fix commits and monitoring history are exactly what your attorney wants to show if this ever comes up again.

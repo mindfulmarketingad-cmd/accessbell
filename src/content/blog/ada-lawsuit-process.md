@@ -26,9 +26,9 @@ faqs:
     a: 'Sometimes. Some employment practices liability, cyber or general liability policies cover defense costs for accessibility claims. Notify your insurer as soon as you are served and ask your broker to review your policy.'
 ---
 
-The **ADA lawsuit process** is the path a disability access case takes in federal court: the business is served with a complaint, has **21 days** to respond, often goes through mediation or settlement talks, and in most cases signs a settlement within **6 to 18 months**. Very few cases reach trial.
+The **ADA lawsuit process** is the path a disability access case takes in federal court: the business is served with a complaint, has **21 days** to respond, often goes through mediation or settlement talks, and in most cases signs a settlement within **6 to 18 months**. Very few cases reach trial. For real case timelines, read [how long an ADA lawsuit takes](/blog/how-long-does-an-ada-lawsuit-take).
 
-This guide walks through each stage of an [ADA Title III](/blog/ada-title-iii-law-for-businesses) lawsuit, how long each one takes and what happens next. It also covers what to do in the first days after you are served. Most examples involve website accessibility cases, but the same federal court process applies to cases about physical barriers.
+This guide walks through each stage of an [ADA Title III](/blog/ada-title-iii-law-for-businesses) lawsuit, how long each one takes and what happens next. It also covers what to do in the first days after you are served; for a full checklist, see [what to do after an ADA lawsuit](/blog/ada-lawsuit-what-to-do). Most examples involve website accessibility cases, but the same federal court process applies to cases about physical barriers.
 
 *This article is general information, not legal advice. Court rules and deadlines vary. If you have been served with a lawsuit or [demand letter](/blog/ada-demand-letter), speak with a lawyer experienced in ADA defense right away.*
 
@@ -55,7 +55,7 @@ Title III covers public accommodations: businesses open to the public, such as s
 - **State laws** can add damages. That is why many cases are filed in states such as California and New York, where state civil rights laws allow them.
 - **The Department of Justice** can also bring enforcement actions, which can include civil penalties.
 
-Because attorney fees drive much of the cost, resolving a case early is usually cheaper than fighting it for months. For real numbers, see [what happens after being sued for violating ADA website compliance](/blog/what-happens-after-being-sued-for-ada-website-compliance), which walks through one small store's $5,000 settlement and what large brands paid.
+Because attorney fees drive much of the cost, resolving a case early is usually cheaper than fighting it for months. For real numbers, see [what happens after being sued for violating ADA website compliance](/blog/what-happens-after-being-sued-for-ada-website-compliance), which walks through one small store's $5,000 settlement and what large brands paid, and our breakdown of [ADA lawsuit payouts](/blog/ada-lawsuit-payouts) in five real cases.
 
 ## Before the Lawsuit: Demand Letters
 
