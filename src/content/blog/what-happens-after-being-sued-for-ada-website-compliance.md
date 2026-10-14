@@ -10,7 +10,7 @@ contributors:
 history:
   - date: 2026-09-30
     note: 'First published. Case figures checked against court records and reporting on NFB v. Target, NAD v. Netflix, the DOJ''s H&R Block consent decree, Gil v. Winn-Dixie, Robles v. Domino''s and Alcazar v. Fashion Nova. Filing counts from Seyfarth Shaw and UsableNet.'
-related: ['ada-lawsuit-process', 'ada-demand-letter', 'ada-website-compliance-guide']
+related: ['ada-lawsuit-what-to-do', 'ada-lawsuit-payouts', 'ada-lawsuit-process']
 faqs:
   - q: 'What happens after being sued for violating ADA website compliance?'
     a: 'You are served with a complaint and usually have 21 days to respond in federal court. Most cases then move into negotiation or mediation and end in a settlement: you agree to fix the website by a deadline, pay the plaintiff''s attorney fees and, in states such as California and New York, often some damages. Very few cases reach trial. Our guide to the [ADA lawsuit process](/blog/ada-lawsuit-process) covers each stage.'
@@ -92,7 +92,7 @@ Large brands have been through the same process with far bigger numbers:
 | Domino's (2016 to 2022) | Fought a blind customer's suit to the Supreme Court, which declined to hear it in 2019. | Six years of litigation before a confidential settlement in 2022 |
 | Fashion Nova (2025) | Agreed a class settlement over a site blind shoppers could not use. | A proposed $5.15 million fund. The DOJ opposed it in 2026, and the court had not ruled on final approval as of early 2026 |
 
-Sources: [W3C WAI on NFB v. Target](https://www.w3.org/WAI/business-case/archive/target-case-study), [Seyfarth Shaw on NAD v. Netflix](https://www.adatitleiii.com/2012/10/netflix-settles-massachusetts-web-video-captioning-action/), [DOJ on H&R Block](https://www.justice.gov/opa/pr/2014/March/14-crt-239.html), [Hunton on Gil v. Winn-Dixie](https://www.hunton.com/hunton-employment-labor-perspectives/the-eleventh-circuit-court-of-appeals-issues-its-highly-anticipated-decision-on-website-accessibility), [BOIA on Robles v. Domino's](https://www.boia.org/blog/the-robles-v.-dominos-settlement-and-why-it-matters) and [DOJ on Alcazar v. Fashion Nova](https://www.justice.gov/crt/case/alcazar-v-fashion-nova-inc).
+Sources: [W3C WAI on NFB v. Target](https://www.w3.org/WAI/business-case/archive/target-case-study), [Seyfarth Shaw on NAD v. Netflix](https://www.adatitleiii.com/2012/10/netflix-settles-massachusetts-web-video-captioning-action/), [DOJ on H&R Block](https://www.justice.gov/opa/pr/2014/March/14-crt-239.html), [Hunton on Gil v. Winn-Dixie](https://www.hunton.com/hunton-employment-labor-perspectives/the-eleventh-circuit-court-of-appeals-issues-its-highly-anticipated-decision-on-website-accessibility), [BOIA on Robles v. Domino's](https://www.boia.org/blog/the-robles-v.-dominos-settlement-and-why-it-matters) and [DOJ on Alcazar v. Fashion Nova](https://www.justice.gov/crt/case/alcazar-v-fashion-nova-inc). For more detail on each amount, see [ADA lawsuit payouts: 5 case examples](/blog/ada-lawsuit-payouts), and for this year's cases, [2026 ADA lawsuits](/blog/ada-lawsuits-2026).
 
 Winn-Dixie is the lesson in that table: even the company that eventually won spent years in court and faced a six-figure bill for the fixes along the way.
 
@@ -131,6 +131,8 @@ No tool can guarantee you will never be sued, and AccessBell does not claim to. 
 4. **Keep records** of your website, scans and changes.
 5. **Start fixing now.** Run a [free ADA compliance check](/tools/ada-compliance-checker), fix the barriers named in the complaint first, and document each fix.
 6. **Stay fixed after you settle,** so the next plaintiff finds nothing to sue over.
+
+For each step in more detail, read our guide on [what to do after an ADA lawsuit](/blog/ada-lawsuit-what-to-do).
 
 ## Conclusion
 
