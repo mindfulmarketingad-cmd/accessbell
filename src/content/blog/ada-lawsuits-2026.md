@@ -104,7 +104,7 @@ Put these cases together and a clear playbook comes out of them. If you are sued
 
 ## What Public Entities Should Know About 2026 ADA Lawsuits
 
-State and local governments are covered by Title II of the ADA, not Title III. In April 2026, the DOJ extended the deadlines in its Title II web accessibility rule to April 26, 2027 for large entities and April 26, 2028 for smaller ones. Disability groups have challenged the extension. Our [ADA website compliance guide](/blog/ada-website-compliance-guide) explains how Title II and Title III differ.
+State and local governments are covered by Title II of the ADA, not Title III. In April 2026, the DOJ extended the deadlines in its Title II web accessibility rule to April 26, 2027 for large entities and April 26, 2028 for smaller ones. Disability groups have challenged the extension. Our guide to [ADA Title II website compliance](/blog/ada-title-ii-website-compliance) has the details.
 
 ## Where To Start Before an ADA Lawsuit Finds You
 

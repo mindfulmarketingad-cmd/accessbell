@@ -61,7 +61,7 @@ Do not delete pages, change hosting or wipe analytics to make the problem disapp
 
 Most complaints list specific barriers: images with no alt text, form fields with no labels, buttons a screen reader cannot name, or a checkout that cannot be used with a keyboard. Run the [free ADA compliance checker](/tools/ada-compliance-checker) on the pages named in the complaint, your home page and your key templates, such as a product page and checkout. You get a list of the issues automated testing can find, ranked by severity, against WCAG 2.1 Level AA, the benchmark used in ADA website cases.
 
-Automated testing does not cover everything. Our guide to [automated vs. manual accessibility testing](/blog/automated-vs-manual-accessibility-testing) covers the manual checks, such as using the site with only a keyboard.
+Automated testing does not cover everything. Our guide on [how to check if your website is ADA compliant](/blog/how-to-check-if-website-is-ada-compliant) covers the manual checks, such as using the site with only a keyboard.
 
 ### Step 6: Look Up the Plaintiff's Other Lawsuits
 
