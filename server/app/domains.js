@@ -41,12 +41,15 @@ export function normalizeSiteUrl(input) {
   }
   url.hash = '';
   url.search = '';
+  // Any domain extension works (.co.uk, .site, .net, .org...). A trailing dot
+  // ("example.co.uk.") is the same site, so drop it to avoid a duplicate domain.
+  url.hostname = url.hostname.replace(/\.$/, '');
   const base = url.toString().replace(/\/$/, '');
   return { hostname: url.hostname.replace(/^www\./, ''), baseUrl: base };
 }
 
 const hostMatches = (host, domainHost, includeSubdomains) => {
-  const h = host.replace(/^www\./, '');
+  const h = host.replace(/\.$/, '').replace(/^www\./, '');
   return h === domainHost || (includeSubdomains && h.endsWith('.' + domainHost));
 };
 

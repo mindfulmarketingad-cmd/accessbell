@@ -20,7 +20,9 @@ function normalizeUrl(raw) {
     return { error: 'That does not look like a valid web address. Try something like example.com.' };
   }
   if (u.protocol !== 'http:' && u.protocol !== 'https:') return { error: 'Only http and https addresses can be checked.' };
-  if (!u.hostname.includes('.')) return { error: 'Enter a full domain name, such as example.com.' };
+  // Any domain extension is fine: .com, .co.uk, .site, .org, .com.au and so on.
+  u.hostname = u.hostname.replace(/\.$/, '');
+  if (!u.hostname.includes('.')) return { error: 'Enter a full domain name, such as example.com or example.co.uk.' };
   return { url: u.toString() };
 }
 
