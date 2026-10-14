@@ -65,7 +65,7 @@ Sources consistently describe the same pattern: the sender escalates to a filed 
 
 Once the immediate matter is resolved, the goal shifts to not receiving another one:
 
-1. **Fix the code, not just the symptom.** Work through your scan results by severity, starting with forms, navigation and any checkout or account flow.
+1. **Fix the code, not just the symptom.** Work through your scan results by severity, starting with forms, navigation and any checkout or account flow. Our guide on how to [fix your website after an ADA complaint](/blog/fix-website-after-ada-lawsuit) shows the order and the code.
 2. **Monitor continuously.** New pages and new code introduce new issues; a one-time fix does not stay fixed. [AccessBell Pro](/pricing) rescans your monitored pages automatically and alerts you when something regresses.
 3. **Publish an accessibility statement.** A dated, honest statement naming the standard you target and how people can report barriers is something plaintiffs' attorneys and courts both look for. [Generate one free](/tools/statement-generator) in a few minutes.
 4. **Keep a record.** Scan reports, fix commits and monitoring history are exactly what your attorney wants to show if this ever comes up again.

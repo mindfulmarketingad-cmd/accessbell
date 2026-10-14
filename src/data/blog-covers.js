@@ -99,6 +99,8 @@ export const COVER_TOPICS = {
   'ada-lawsuits-2026': { ui: 'chart', label: 'ADA', caption: '2026 lawsuits' },
   'how-long-does-an-ada-lawsuit-take': { ui: 'clock', label: 'ADA', caption: 'How long a lawsuit takes' },
   'ada-lawsuit-payouts': { ui: 'scale', label: 'ADA', caption: 'Lawsuit payouts' },
+  'fix-website-after-ada-lawsuit': { ui: 'wrench', label: 'ADA', caption: 'Fix your website' },
+  'ada-compliance-report-for-lawyer': { ui: 'doc', label: 'ADA', caption: 'A report for your lawyer' },
   'what-happens-after-being-sued-for-ada-website-compliance': { ui: 'scale', label: 'ADA', caption: 'After being sued' },
   'ada-requirements-for-bathrooms': { a11y: 'universal-access', label: 'ADA', caption: 'Accessible bathrooms' },
   'ada-requirements-for-ramps': { a11y: 'wheelchair', label: 'ADA', caption: 'Ramp requirements' },

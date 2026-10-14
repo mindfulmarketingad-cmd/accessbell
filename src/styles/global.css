@@ -6313,6 +6313,8 @@ h2[tabindex='-1']:focus {
 }
 .prose pre code {
   padding: 0;
+  border: 0;
+  border-radius: 0;
   background: none;
   color: inherit;
   font-size: inherit;

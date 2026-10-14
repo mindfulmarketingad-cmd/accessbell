@@ -132,7 +132,7 @@ No tool can guarantee you will never be sued, and AccessBell does not claim to. 
 5. **Start fixing now.** Run a [free ADA compliance check](/tools/ada-compliance-checker), fix the barriers named in the complaint first, and document each fix.
 6. **Stay fixed after you settle,** so the next plaintiff finds nothing to sue over.
 
-For each step in more detail, read our guide on [what to do after an ADA lawsuit](/blog/ada-lawsuit-what-to-do).
+For each step in more detail, read our guide on [what to do after an ADA lawsuit](/blog/ada-lawsuit-what-to-do), and how to [fix your website after an ADA complaint](/blog/fix-website-after-ada-lawsuit).
 
 ## Conclusion
 

@@ -98,7 +98,7 @@ From the cases above, a few things add the most time:
 
 - **Responding on time** and getting a lawyer involved in the first week.
 - **Fixing the website early.** It gives you something real to offer in a settlement, and in some cases, like Moscot, it ends the federal claim.
-- **Having a dated record of the work.** Proof of what you fixed and when shortens the argument about it.
+- **Having a dated record of the work.** Proof of what you fixed and when shortens the argument about it. See what goes into an [ADA compliance report for your lawyer](/blog/ada-compliance-report-for-lawyer).
 
 ## Shorten Your ADA Lawsuit by Starting the Fix Today
 

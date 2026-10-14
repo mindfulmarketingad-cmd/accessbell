@@ -55,7 +55,7 @@ Some business insurance policies cover part of the defense costs of an ADA lawsu
 
 ### Step 4: Preserve Your Records
 
-Do not delete pages, change hosting or wipe analytics to make the problem disappear. Keep a copy of the site as it was, along with any accessibility work you have already done, such as earlier audits, bug tickets or fixes. If you have been running scans, export them. A dated history of real accessibility work helps your lawyer.
+Do not delete pages, change hosting or wipe analytics to make the problem disappear. Keep a copy of the site as it was, along with any accessibility work you have already done, such as earlier audits, bug tickets or fixes. If you have been running scans, export them. A dated history of real accessibility work helps your lawyer. See what goes into an [ADA compliance report for your lawyer](/blog/ada-compliance-report-for-lawyer).
 
 ### Step 5: Scan Your Website for the Issues in the Complaint
 
@@ -71,7 +71,7 @@ Many website cases are filed by the same plaintiffs and firms against dozens of 
 
 Fixing the barriers is the one step that helps in every outcome. It lowers the cost of a settlement, it can support a mootness defense, and it stops the next lawsuit, because businesses that have been sued once are often sued again.
 
-Start with whatever blocks someone from finishing a task: missing labels in checkout, unnamed buttons, images without [alt text](/resources/wcag/1-1-1-non-text-content) and low [color contrast](/resources/wcag/1-4-3-contrast-minimum). Keep a dated log of every fix.
+Start with whatever blocks someone from finishing a task: missing labels in checkout, unnamed buttons, images without [alt text](/resources/wcag/1-1-1-non-text-content) and low [color contrast](/resources/wcag/1-4-3-contrast-minimum). Keep a dated log of every fix. Our guide on how to [fix your website after an ADA lawsuit](/blog/fix-website-after-ada-lawsuit) covers the order and the code.
 
 ### Step 8: Decide Your Strategy With Your Lawyer
 

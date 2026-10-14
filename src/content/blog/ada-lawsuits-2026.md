@@ -98,7 +98,7 @@ Put these cases together and a clear playbook comes out of them. If you are sued
 1. **Respond on time.** In federal court you have 21 days after being served. Our step-by-step guide covers [what to do after an ADA lawsuit](/blog/ada-lawsuit-what-to-do) in the first week.
 2. **Get a lawyer who defends ADA cases.** They know the plaintiff firms and which defenses work in your court.
 3. **Check the plaintiff's history.** Search their other cases on [CourtListener](https://www.courtlistener.com/). Cuddle Clones shows why it matters.
-4. **Fix the site and document every fix.** Moscot shows this can end the federal claim. Missouri shows states are rewarding it. Even when it does not end the case, it lowers the cost and protects you from the next one.
+4. **[Fix the site](/blog/fix-website-after-ada-lawsuit) and document every fix.** Moscot shows this can end the federal claim. Missouri shows states are rewarding it. Even when it does not end the case, it lowers the cost and protects you from the next one.
 5. **Do not rely on an overlay.** In 2025 the FTC ordered overlay vendor accessiBe to pay $1 million over misleading claims about what its tool could do ([Seyfarth Shaw](https://www.adatitleiii.com/2025/05/federal-trade-commission-orders-accessibe-to-pay-1m-for-misleading-claims-relating-to-automated-website-accessibility-remediation-tool/)). See [accessiBe vs. AccessBell](/comparisons/accessibe-vs-accessbell).
 6. **Know your timeline.** Read [how long an ADA lawsuit takes](/blog/how-long-does-an-ada-lawsuit-take) and the stages of the [ADA lawsuit process](/blog/ada-lawsuit-process).
 
