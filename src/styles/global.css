@@ -1796,7 +1796,7 @@ body:has(.sticky-cta) {
   align-items: center;
   gap: 8px;
   min-height: 40px;
-  padding: 8px 18px;
+  padding: 8px clamp(12px, 3vw, 18px);
   border-radius: 999px;
   font-size: 0.9375rem;
   font-weight: 600;
@@ -5001,17 +5001,13 @@ h2[tabindex='-1']:focus {
 
 /* ---------- Single plan (pricing) ---------- */
 .plan-single {
-  display: grid;
+  max-width: 720px;
+  margin-inline: auto;
   border: 2px solid var(--sage);
   border-radius: var(--radius-lg);
   background: #fff;
   box-shadow: var(--shadow-lg);
   overflow: hidden;
-}
-@media (min-width: 960px) {
-  .plan-single {
-    grid-template-columns: 360px 1fr;
-  }
 }
 .plan-single-main {
   padding: clamp(24px, 4vw, 40px);
@@ -5019,12 +5015,11 @@ h2[tabindex='-1']:focus {
   border-bottom: 1px solid var(--border);
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
-@media (min-width: 960px) {
-  .plan-single-main {
-    border-bottom: 0;
-    border-right: 1px solid var(--border);
-  }
+.plan-single-main .check-list {
+  text-align: left;
 }
 .plan-single-main h2 {
   font-size: 1rem;
@@ -5036,15 +5031,11 @@ h2[tabindex='-1']:focus {
 .plan-single-main .plan-price strong {
   font-size: 3.25rem;
 }
-.plan-single-main .plan-price-trial strong {
-  font-size: clamp(2rem, 6vw, 2.75rem);
-  letter-spacing: -0.02em;
-}
 .plan-single-main .check-list {
   margin: 4px 0 28px;
 }
 .plan-flag-inline {
-  align-self: flex-start;
+  align-self: center;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -6656,56 +6647,68 @@ h2[tabindex='-1']:focus {
   font-size: 0.9375rem;
 }
 
-/* ---------- Pricing: monthly and annual options ---------- */
-.plan-options {
-  display: grid;
-  gap: 12px;
-  margin-top: 24px;
-}
-.plan-option {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 18px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+/* ---------- Pricing: monthly / yearly toggle (CSS only) ---------- */
+.billing-toggle {
+  display: inline-flex;
+  gap: 4px;
+  margin: 4px 0 20px;
+  padding: 4px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
   background: #fff;
 }
-.plan-option-annual {
-  border: 2px solid var(--sage-700);
+.billing-toggle label {
+  position: relative;
+  cursor: pointer;
 }
-.plan-option .plan-option-name {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+.billing-toggle input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
   margin: 0;
-  font-size: 1rem;
+  cursor: pointer;
+}
+.billing-toggle label > span {
+  display: inline-flex;
+  white-space: nowrap;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-weight: 600;
+  color: var(--ink-500);
+}
+.billing-toggle input:checked + span {
+  background: var(--ink-900);
+  color: #fff;
+}
+.billing-toggle input:focus-visible + span {
+  outline: 3px solid var(--sage-700);
+  outline-offset: 2px;
 }
 .plan-save {
-  padding: 3px 9px;
+  white-space: nowrap;
+  padding: 2px 8px;
   border-radius: 999px;
   background: var(--sage-100);
   color: var(--sage-800);
   font-size: 0.75rem;
   font-weight: 700;
 }
-.plan-option-price {
-  margin: 0;
-  color: var(--ink-500);
+.billing-panel {
+  width: 100%;
+  max-width: 380px;
 }
-.plan-option-price strong {
-  color: var(--ink-900);
-  font-size: 1.75rem;
-  letter-spacing: -0.02em;
+.billing-panel .plan-price {
+  justify-content: center;
 }
-.plan-option-note {
-  margin: 0 0 10px;
-  color: var(--ink-500);
-  font-size: 0.875rem;
+.billing-panel .btn {
+  margin: 4px 0 20px;
 }
-.plan-option .btn {
-  margin-top: auto;
+.plan-single:has(input[value='monthly']:checked) [data-billing='annual'],
+.plan-single:has(input[value='annual']:checked) [data-billing='monthly'] {
+  display: none;
 }
 
 /* ---------- Free scan: results and trial prompt ---------- */

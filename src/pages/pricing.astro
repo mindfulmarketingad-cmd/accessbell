@@ -79,28 +79,25 @@ const faqs: FaqItem[] = [
         <div class="plan-single-main">
           <span class="plan-flag-inline">One plan, every feature</span>
           <h2 id="plan-title">{PLAN.name}</h2>
-          <p class="plan-price plan-price-trial">
-            <strong>3-Day Free Trial</strong>
-          </p>
-          <p class="plan-billed">Then ${PLAN.price}/mo per domain, or ${PLAN.annualPrice}/year per domain billed annually. Same features on both.</p>
+          <fieldset class="billing-toggle">
+            <legend class="visually-hidden">Billing period</legend>
+            <label><input type="radio" name="billing" value="monthly" checked /><span>Monthly</span></label>
+            <label><input type="radio" name="billing" value="annual" /><span>Yearly <span class="plan-save">Save {Math.round((1 - PLAN.annualPrice / (PLAN.price * 12)) * 100)}%</span></span></label>
+          </fieldset>
+          <div class="billing-panel" data-billing="monthly">
+            <p class="plan-price"><strong>${PLAN.price}</strong><span>/mo per domain</span></p>
+            <p class="plan-billed">Billed monthly. Cancel anytime.</p>
+            <a class="btn btn-accent btn-block btn-lg" href={`${PLAN.ctaHref}?plan=monthly`}>{PLAN.cta} <Icon name="arrow" /></a>
+          </div>
+          <div class="billing-panel" data-billing="annual">
+            <p class="plan-price"><strong>${PLAN.annualPrice}</strong><span>/year per domain</span></p>
+            <p class="plan-billed">Billed yearly. Works out to ${(PLAN.annualPrice / 12).toFixed(2)}/mo, saving ${PLAN.price * 12 - PLAN.annualPrice} a year.</p>
+            <a class="btn btn-accent btn-block btn-lg" href={PLAN.annualCtaHref}>{PLAN.cta} <Icon name="arrow" /></a>
+          </div>
           <p class="plan-blurb">{PLAN.blurb}</p>
           <ul class="check-list">
             {PLAN.highlights.map((h) => <li><Icon name="check" />{h}</li>)}
           </ul>
-          <div class="plan-options">
-            <div class="plan-option">
-              <h3 class="plan-option-name">Monthly</h3>
-              <p class="plan-option-price"><strong>${PLAN.price}</strong> /mo per domain</p>
-              <p class="plan-option-note">3-day free trial. Cancel anytime.</p>
-              <a class="btn btn-accent btn-block" href={PLAN.ctaHref}>{PLAN.cta} <Icon name="arrow" /></a>
-            </div>
-            <div class="plan-option plan-option-annual">
-              <h3 class="plan-option-name">Annual <span class="plan-save">Save {Math.round((1 - PLAN.annualPrice / (PLAN.price * 12)) * 100)}%</span></h3>
-              <p class="plan-option-price"><strong>${PLAN.annualPrice}</strong> /year per domain</p>
-              <p class="plan-option-note">3-day free trial. Works out to ${(PLAN.annualPrice / 12).toFixed(2)}/mo, saving ${PLAN.price * 12 - PLAN.annualPrice} a year.</p>
-              <a class="btn btn-block" href={PLAN.annualCtaHref}>{PLAN.cta} <Icon name="arrow" /></a>
-            </div>
-          </div>
           <p class="plan-note">Need more than {PLAN.urlsPerDomain} URLs per domain? <a href="/contact?topic=sales">Talk to us</a>.</p>
         </div>
         <div class="plan-single-features">
