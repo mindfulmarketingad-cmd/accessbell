@@ -165,6 +165,41 @@ const SEVERITIES = [
 const IMPACT_LABEL = { critical: 'Critical', serious: 'Serious', moderate: 'Moderate', minor: 'Minor' };
 const URGENT = new Set(['critical', 'serious']);
 
+// What an unresolved issue can cost. Every figure is published and linked; there is no
+// reliable public "average" settlement, so these are ranges and counts, not a prediction.
+const RISK_STATS = [
+  { value: '$5,000–$20,000', text: 'What ADA website lawsuits commonly settle for, before your own legal fees', source: 'Accessible.org', href: 'https://accessible.org/ada-website-compliance-lawsuit-settlement-amounts/' },
+  { value: '$4,000+', text: 'Minimum damages per violation in California under the Unruh Civil Rights Act', source: 'Cal. Civ. Code § 52', href: 'https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=CIV&sectionNum=52.' },
+  { value: '5,006', text: 'Federal ADA Title III lawsuits filed in the first half of 2026', source: 'Seyfarth Shaw', href: 'https://www.adatitleiii.com/2026/09/2026-mid-year-report-ada-title-iii-federal-lawsuit-numbers-are-climbing/' },
+  { value: '64%', text: 'Of companies sued in the first half of 2025 had annual revenue under $25 million', source: 'UsableNet', href: 'https://blog.usablenet.com/2025-midyear-accessibility-lawsuit-report-key-legal-trends' },
+];
+
+/** Shown when the page has critical or serious issues: what leaving them unfixed can cost. */
+function riskPanel(urgent) {
+  if (!urgent) return null;
+  return el('section', { class: 'scan-risk', 'aria-labelledby': 'scan-risk-title' }, [
+    el('span', { class: 'scan-risk-kicker', text: 'Lawsuit risk' }),
+    el('h3', { id: 'scan-risk-title', text: `${plural(urgent, 'critical or serious issue')} on this page could be cited in an ADA demand letter or lawsuit` }),
+    el('p', { text: 'And that is one page. Missing labels, unnamed buttons and images without alt text are among the barriers website accessibility complaints list most often. This is what leaving them unfixed can cost:' }),
+    el(
+      'ul',
+      { class: 'scan-risk-stats' },
+      RISK_STATS.map((s) =>
+        el('li', {}, [
+          el('strong', { text: s.value }),
+          el('span', { text: s.text }),
+          el('a', { class: 'scan-risk-source', href: s.href, rel: 'noopener noreferrer', target: '_blank' }, [`Source: ${s.source}`, el('span', { class: 'visually-hidden', text: ' (opens in a new tab)' })]),
+        ]),
+      ),
+    ),
+    el('div', { class: 'scan-risk-actions' }, [
+      el('a', { class: 'btn btn-accent', href: '/pricing', text: 'Fix these issues before they cost you' }),
+      el('a', { href: '/blog/ada-lawsuit-payouts', text: 'See what real ADA cases cost' }),
+    ]),
+    el('p', { class: 'scan-risk-note', text: 'Figures come from public sources and vary widely by case and state. They are not a prediction for your site and not legal advice.' }),
+  ]);
+}
+
 /** The results list, then a prompt to start the trial for fixes and monitoring. */
 function showResults(r, url, form) {
   section.setAttribute('aria-busy', 'false');
@@ -195,11 +230,21 @@ function showResults(r, url, form) {
     input.focus({ preventScroll: true });
   });
   const scope = el('div', { class: 'scan-scope' }, [
-    el('p', {}, [
-      el('strong', { text: 'This free scan checks only this one URL. ' }),
-      `Other pages on ${host}, such as product pages, cart and checkout, forms and blog posts, often have different issues. Scan your other key URLs one at a time, or start a free trial to scan up to 500 URLs on your domain automatically.`,
+    el('p', { class: 'scan-scope-title' }, [el('strong', { text: `You scanned 1 page, not your whole website.` })]),
+    el('div', { class: 'scan-scope-compare' }, [
+      el('div', { class: 'scan-scope-col' }, [
+        el('span', { class: 'scan-scope-label', text: 'Free scan' }),
+        el('strong', { text: '1 page' }),
+        el('span', { text: `Only ${page}` }),
+      ]),
+      el('div', { class: 'scan-scope-col scan-scope-pro' }, [
+        el('span', { class: 'scan-scope-label', text: 'AccessBell Pro' }),
+        el('strong', { text: 'Your whole website' }),
+        el('span', { text: `Up to 500 pages on ${host}, found automatically and rescanned every day` }),
+      ]),
     ]),
-    again,
+    el('p', { text: `Product pages, cart and checkout, forms and blog posts often have issues this page does not, and they are the pages customers use to buy from or contact you.` }),
+    el('div', { class: 'scan-scope-actions' }, [el('a', { class: 'btn btn-accent btn-sm', href: '/pricing', text: 'Scan my whole website' }), again]),
   ]);
   const tiles = total
     ? el(
@@ -231,10 +276,10 @@ function showResults(r, url, form) {
     : null;
   const more = r.summary.rulesFailed > list.length ? el('p', { class: 'scan-result-more', text: `Plus ${r.summary.rulesFailed - list.length} more types of issue.` }) : null;
   const cta = el('div', { class: 'scan-cta' }, [
-    el('h3', { text: total ? 'Get the fix for every issue' : 'Keep monitoring your site' }),
+    el('h3', { text: total ? 'Scan your entire website and get the fix for every issue' : 'Scan the rest of your website' }),
     el('ul', {}, [
       el('li', { text: 'The failing code and a corrected example for each issue' }),
-      el('li', { text: 'Every page scanned automatically, up to 500 per domain' }),
+      el('li', { text: 'Your entire website scanned, not just one URL: up to 500 pages per domain' }),
       el('li', { text: 'Daily monitoring with an email when something breaks' }),
       el('li', { text: 'A dated record of your fixes, in case you ever need proof' }),
     ]),
@@ -246,6 +291,7 @@ function showResults(r, url, form) {
       el('div', { class: 'scan-result-head' }, [el('span', { class: 'scan-result-kicker', text: 'Free scan results' }), heading, el('p', { text: lead })]),
       scope,
       tiles,
+      riskPanel((r.summary?.critical || 0) + (r.summary?.serious || 0)),
       rows,
       more,
       cta,
