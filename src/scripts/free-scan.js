@@ -1,6 +1,8 @@
 // Free accessibility checker: submits a URL to /api/scan, runs the checklist
-// animation, then lists the issues found. No sign-up is needed to run it. The
-// failing code, the fixes and daily monitoring are what a free trial adds.
+// animation, then lists the issues found. No sign-up is needed to run it.
+// The most severe issues are shown in full (failing code and fix) as a
+// teaser; the full detail for every issue is what a one-time report adds,
+// and daily monitoring is what a free trial adds.
 // All data is inserted as text, never HTML.
 import { el } from './shared/report-view.js';
 
@@ -275,16 +277,90 @@ function showResults(r, url, form) {
       )
     : null;
   const more = r.summary.rulesFailed > list.length ? el('p', { class: 'scan-result-more', text: `Plus ${r.summary.rulesFailed - list.length} more types of issue.` }) : null;
+  // Teaser: the most severe issues in full, failing code and fix included.
+  // Everything else stays names-only; the full detail is what the reports sell.
+  const teaser = (r.teaser || []).length
+    ? el('section', { class: 'scan-teaser', 'aria-labelledby': 'scan-teaser-title' }, [
+        el('span', { class: 'scan-teaser-kicker', text: 'See the worst issues in full' }),
+        el('h3', { id: 'scan-teaser-title', text: 'The exact problem, and the exact fix' }),
+        el('p', { text: 'The list above names every issue. Here are the most severe ones in full: the failing code and how to fix it. A one-time report gives you this detail for every issue.' }),
+        el(
+          'ol',
+          { class: 'scan-teaser-list' },
+          r.teaser.map((i) =>
+            el('li', { 'data-sev': i.impact }, [
+              el('div', { class: 'scan-result-main' }, [
+                el('strong', { text: i.title }),
+                el('span', { class: 'scan-result-meta', text: `${plural(i.count, 'element')} on this page${i.wcag.length ? ' · WCAG ' + i.wcag.map((c) => `${c.sc} ${c.name}`).join(', ') : ''}` }),
+              ]),
+              el('span', { class: `tag tag-${i.impact}`, text: IMPACT_LABEL[i.impact] || i.impact }),
+              i.samples && i.samples.length ? el('pre', { class: 'scan-teaser-code' }, [el('code', { text: i.samples.join('\n') })]) : null,
+              i.fix ? el('p', { class: 'scan-teaser-fix' }, [el('strong', { text: 'Fix: ' }), el('span', { text: i.fix })]) : null,
+              i.helpUrl ? el('a', { href: i.helpUrl, rel: 'noopener noreferrer', target: '_blank', text: 'Read the guidance' }) : null,
+            ]),
+          ),
+        ),
+        el('div', { class: 'scan-teaser-actions' }, [
+          el('a', { class: 'btn btn-accent btn-sm', href: `/solutions/page-report?url=${encodeURIComponent(url)}`, text: 'Full report for this page — $19' }),
+          el('a', { class: 'btn btn-outline btn-sm', href: `/solutions/domain-audit?url=${encodeURIComponent(url)}`, text: 'Audit my whole domain — $79' }),
+        ]),
+      ])
+    : null;
+  // Email capture AFTER the results: never a gate in front of them. The
+  // address is stored for the follow-up sequence; nothing is sent here.
+  const leadNote = el('p', { class: 'scan-lead-note', hidden: true });
+  const leadForm = el('form', { class: 'scan-lead', 'aria-label': 'Get the full-report offers by email' }, [
+    el('h3', { text: 'Get the full-report offers by email' }),
+    el('p', { text: 'We will follow up by email with the full report for this page and the whole-domain audit. No account needed.' }),
+    el('label', { for: 'scan-lead-email', text: 'Email' }),
+    el('input', { id: 'scan-lead-email', name: 'email', type: 'email', autocomplete: 'email', required: true, maxlength: 254, placeholder: 'you@example.com' }),
+    el('button', { type: 'submit', class: 'btn btn-outline btn-sm', text: 'Email me the offers' }),
+    leadNote,
+  ]);
+  leadForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const button = leadForm.querySelector('button[type="submit"]');
+    const input = leadForm.elements.email;
+    const email = (input.value || '').trim();
+    if (!email.includes('@')) {
+      leadNote.textContent = 'Enter a valid email address.';
+      leadNote.hidden = false;
+      input.focus();
+      return;
+    }
+    button.disabled = true;
+    try {
+      const res = await fetch('/api/scan-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, url }),
+        credentials: 'same-origin',
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'Could not save your email.');
+      leadNote.textContent = 'Saved. We will follow up by email.';
+      leadForm.querySelector('button[type="submit"]').remove();
+      input.setAttribute('readonly', '');
+    } catch (err) {
+      leadNote.textContent = err.message || 'Could not save your email. Please try again.';
+      button.disabled = false;
+    } finally {
+      leadNote.hidden = false;
+    }
+  });
   const cta = el('div', { class: 'scan-cta' }, [
-    el('h3', { text: total ? 'Scan your entire website and get the fix for every issue' : 'Scan the rest of your website' }),
+    el('h3', { text: total ? 'Get the fix for every issue' : 'Scan the rest of your website' }),
     el('ul', {}, [
       el('li', { text: 'The failing code and a corrected example for each issue' }),
       el('li', { text: 'Your entire website scanned, not just one URL: up to 500 pages per domain' }),
-      el('li', { text: 'Daily monitoring with an email when something breaks' }),
       el('li', { text: 'A dated record of your fixes, in case you ever need proof' }),
     ]),
-    el('a', { class: 'btn btn-accent', href: '/app/signup', text: 'Start 3-day free trial' }),
-    el('p', { class: 'scan-cta-note' }, ['Already subscribed? ', el('a', { href: '/app/login', text: 'Log in to your dashboard' }), '.']),
+    el('div', { class: 'scan-cta-actions' }, [
+      el('a', { class: 'btn btn-accent', href: `/solutions/page-report?url=${encodeURIComponent(url)}`, text: 'Full report for this page — $19 one-time' }),
+      el('a', { class: 'btn btn-outline', href: `/solutions/domain-audit?url=${encodeURIComponent(url)}`, text: 'Audit my whole domain — $79 one-time' }),
+      el('a', { class: 'btn btn-outline', href: '/app/signup', text: 'Start 3-day free trial' }),
+    ]),
+    el('p', { class: 'scan-cta-note' }, ['One-time reports need no account. Pro monitoring is $29/mo or $199/year per domain. Already subscribed? ', el('a', { href: '/app/login', text: 'Log in to your dashboard' }), '.']),
   ]);
   mount.replaceChildren(
     el('div', { class: 'results-card scan-result', role: 'region', 'aria-labelledby': 'scan-result-title' }, [
@@ -293,7 +369,9 @@ function showResults(r, url, form) {
       tiles,
       riskPanel((r.summary?.critical || 0) + (r.summary?.serious || 0)),
       rows,
+      teaser,
       more,
+      leadForm,
       cta,
     ]),
   );

@@ -7,7 +7,7 @@ import ProcessTour from '../components/ProcessTour.astro';
 import CostCalculator from '../components/CostCalculator.astro';
 import { LAWSUITS } from '../data/lawsuits';
 import DemoVideo from '../components/DemoVideo.astro';
-import { PLAN, FEATURE_GROUPS } from '../data/pricing';
+import { PLAN, FEATURE_GROUPS, ONE_TIME } from '../data/pricing';
 import { faqSchema, softwareSchema, type FaqItem } from '../lib/schema';
 
 const steps = [
@@ -114,6 +114,28 @@ const faqs: FaqItem[] = [
           </div>
         </div>
       </article>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="onetime-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">One-time reports</span>
+        <h2 id="onetime-title">Need the Detail Once, Not a Subscription?</h2>
+        <p>Buy a single report for one page or your whole domain. No account, nothing renews.</p>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Page Report — ${ONE_TIME.pageReport.price} one-time</h3>
+          <p>{ONE_TIME.pageReport.blurb}</p>
+          <p><a class="btn btn-outline" href={ONE_TIME.pageReport.href}>Get a Page Report <Icon name="arrow" /></a></p>
+        </div>
+        <div class="card">
+          <h3>Domain Audit — ${ONE_TIME.domainAudit.price} one-time</h3>
+          <p>{ONE_TIME.domainAudit.blurb}</p>
+          <p><a class="btn btn-outline" href={ONE_TIME.domainAudit.href}>Get a Domain Audit <Icon name="arrow" /></a></p>
+        </div>
+      </div>
     </div>
   </section>
 

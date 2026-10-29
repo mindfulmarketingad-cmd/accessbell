@@ -9,6 +9,7 @@ import { config, ACTIVE_STATUSES, ADMIN_DOMAIN_QUOTA, SUBSCRIBER_MIN_DOMAINS } f
 import { one } from './db.js';
 import { AppError } from './errors.js';
 import { requireRole, isAdminUser } from './accounts.js';
+import { handleOneTimePayment } from './one-time.js';
 
 const UNDEFINED_COLUMN = '42703';
 
@@ -175,6 +176,12 @@ export async function handleStripeEvent(event, { fetchSubscription = (id) => str
 
 async function processStripeEvent(event, fetchSubscription) {
   const obj = event.data?.object || {};
+
+  // One-time purchases (Page Report, Domain Audit) never touch subscription
+  // state: they are matched to a purchase row by client_reference_id token.
+  if (event.type === 'checkout.session.completed' && obj.mode === 'payment') {
+    return handleOneTimePayment(obj);
+  }
 
   if (event.type === 'checkout.session.completed') {
     if (obj.mode !== 'subscription' || !obj.subscription) return 'ignored: not a subscription checkout';

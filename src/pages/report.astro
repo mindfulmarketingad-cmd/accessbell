@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Your AccessBell Report"
+  description="Open your AccessBell one-time report: every accessibility issue with its fix, plus a PDF download."
+>
+  <section class="section-tight" aria-labelledby="report-title">
+    <div class="container">
+      <h1 id="report-title">Your AccessBell Report</h1>
+      <div id="report-mount"><p>Loading your report…</p></div>
+      <p>Keep your report current with <a href="/pricing">Pro monitoring</a>, or run a <a href="/#scan">free scan</a> on another page. For background, see the W3C's <a href="https://www.w3.org/WAI/test-evaluate/" rel="noopener noreferrer">overview of evaluating web accessibility</a>.</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import '../scripts/one-time-report.js';
+</script>

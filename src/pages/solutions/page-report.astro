@@ -1,0 +1,111 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import Faq from '../../components/Faq.astro';
+import { faqSchema, type FaqItem } from '../../lib/schema';
+import { ONE_TIME } from '../../data/pricing';
+
+const faqs: FaqItem[] = [
+  {
+    q: 'What does the Page Report cover?',
+    a: 'One page: every issue the automated scan finds on it, the failing code for each issue, how to fix it, and a PDF copy of the report. It is tested against WCAG 2.2 Level AA.',
+  },
+  {
+    q: 'Do I need an account?',
+    a: 'No. Enter the page and your email, pay $19 once, and the report link arrives by email. The report opens from that link, and you can save it to a dashboard later by signing up.',
+  },
+  {
+    q: 'How is this different from the free scan?',
+    a: 'The free scan lists issues by name and shows the most severe ones in full. The Page Report gives you the full detail for every issue on the page, including the failing code and the fix, plus a PDF download.',
+  },
+  {
+    q: 'How is this different from Pro monitoring?',
+    a: 'The Page Report is a one-time snapshot of one page. Pro monitors your whole domain continuously, rescans daily and emails you when something new breaks. See <a href="/pricing">pricing</a> for Pro, or the <a href="/solutions/domain-audit">Domain Audit</a> for a one-time audit of your whole domain.',
+  },
+  {
+    q: 'Does the report guarantee my page is compliant?',
+    a: 'No tool can guarantee compliance on its own. Automated checks find code-level barriers, but some checks, such as whether alt text is meaningful, need a person. See our <a href="/disclaimer">disclaimer</a> for details.',
+  },
+];
+---
+<BaseLayout
+  title="Single Page Accessibility Report | AccessBell"
+  description="Get a single page accessibility report for any page: every issue with the failing code, how to fix it, and a PDF copy. One-time $19, no subscription."
+  breadcrumbs={[{ label: 'Solutions', href: '/solutions' }, { label: 'Page Report', href: '/solutions/page-report' }]}
+  schema={[faqSchema(faqs)]}
+>
+  <section class="page-hero page-hero-center" aria-labelledby="pr-title">
+    <div class="container">
+      <h1 id="pr-title">
+        <span class="h1-kicker">One-time report</span>
+        Single Page Accessibility Report
+      </h1>
+      <p class="lead">A single page accessibility report gives you the full detail for one page: every issue the automated scan finds, the failing code for each one, and how to fix it. Run a <a href="/#scan">free scan</a> first, then buy the report for the page you care about. Checkout takes a minute, no account is needed, and the report link arrives by email.</p>
+      <p><a class="btn btn-accent btn-lg" href="#buy">Get the Page Report — ${ONE_TIME.pageReport.price} <Icon name="arrow" /></a></p>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="pr-includes">
+    <div class="container cc-prose">
+      <h2 id="pr-includes">What your single page accessibility report includes</h2>
+      <p>Every issue on the page, with the detail a developer needs to fix it:</p>
+      <ul>
+        <li><strong>Every issue, not just the worst ones.</strong> The free scan lists issues by name; the report shows all of them.</li>
+        <li><strong>The failing code for each issue.</strong> The exact markup that fails, so the fix goes straight into a ticket.</li>
+        <li><strong>How to fix it.</strong> A corrected example for each issue, mapped to the WCAG success criterion it breaks.</li>
+        <li><strong>A PDF copy.</strong> Download the report as a PDF to share with your team or keep with your records.</li>
+        <li><strong>An emailed link.</strong> The report opens from the link in your email. No account, no dashboard setup.</li>
+      </ul>
+      <p>For background on what automated testing can and cannot do, see the W3C's <a href="https://www.w3.org/WAI/test-evaluate/" rel="noopener noreferrer">overview of evaluating web accessibility</a> and the Department of Justice's <a href="https://www.ada.gov/resources/web-guidance/" rel="noopener noreferrer">ADA web guidance</a>.</p>
+    </div>
+  </section>
+
+  <section class="section-tight section-surface" aria-labelledby="pr-how">
+    <div class="container cc-prose">
+      <h2 id="pr-how">How a single page accessibility report works</h2>
+      <ol class="steps-list">
+        <li><strong>Enter the page and your email.</strong> Any public page: a product page, a checkout step, a form, a blog post.</li>
+        <li><strong>Pay ${ONE_TIME.pageReport.price} once.</strong> One-time payment through Stripe. No subscription, nothing renews.</li>
+        <li><strong>Open the emailed link.</strong> The report builds when you open it and stays available from that link. Download the PDF from the report page.</li>
+      </ol>
+      <p>Want the same detail for your whole website instead? The <a href="/solutions/domain-audit">Domain Audit</a> crawls up to 500 pages for ${ONE_TIME.domainAudit.price} one-time. Want ongoing cover? <a href="/solutions">Solutions</a> explains <a href="/solutions/continuous-monitoring">continuous monitoring</a>, and <a href="/pricing">pricing</a> covers Pro at $29 per domain per month or $199 per year.</p>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="pr-limits">
+    <div class="container cc-prose">
+      <h2 id="pr-limits">What a single page accessibility report cannot do</h2>
+      <p>Automated checks reliably find objective, code-level failures: missing alt text, unlabeled fields, unnamed buttons, low contrast, missing page language. They cannot judge whether alt text is meaningful, whether focus order is logical, or whether captions are accurate. Those checks need a person, and the report says so where it applies. Read <a href="/methodology">how we test</a> for the engine and its limits, and our <a href="/disclaimer">disclaimer</a> for what no automated tool can promise.</p>
+      <p>One page is also one page: the rest of your domain can have issues this page does not. That is what the <a href="/solutions/domain-audit">Domain Audit</a> is for.</p>
+    </div>
+  </section>
+
+  <section class="section-tight section-surface" aria-labelledby="buy">
+    <div class="container cc-prose">
+      <h2 id="buy">Get your single page accessibility report</h2>
+      <p>One-time ${ONE_TIME.pageReport.price}. No account needed. The report link is emailed to you after checkout.</p>
+      <form class="scan-lead" data-checkout-form data-product="page_report">
+        <label for="pr-email">Email</label>
+        <input id="pr-email" name="email" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com" />
+        <label for="pr-url">Page to report on</label>
+        <input id="pr-url" name="url" type="url" inputmode="url" required maxlength="2048" placeholder="https://example.com/checkout" />
+        <button class="btn btn-accent" type="submit">Buy the Page Report — ${ONE_TIME.pageReport.price}</button>
+        <p data-checkout-error hidden></p>
+        <p class="scan-cta-note">Prefer to monitor the whole domain instead? <a href="/app/signup">Start a 3-day free trial</a> of Pro.</p>
+      </form>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="pr-faq">
+    <div class="container">
+      <div class="section-head section-head-left">
+        <h2 id="pr-faq">Single page accessibility report FAQ</h2>
+      </div>
+      <Faq items={faqs} />
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import '../../scripts/one-time-checkout.js';
+</script>

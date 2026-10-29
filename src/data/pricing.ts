@@ -13,6 +13,24 @@ export const PLAN = {
   ctaHref: '/app/signup',
 } as const;
 
+/** One-time reports, sold without a subscription. Prices are per report, not per domain per month. */
+export const ONE_TIME = {
+  pageReport: {
+    id: 'page_report',
+    name: 'Page Report',
+    price: 19,
+    href: '/solutions/page-report',
+    blurb: 'Full issue detail, fixes and a PDF for a single page.',
+  },
+  domainAudit: {
+    id: 'domain_audit',
+    name: 'Domain Audit',
+    price: 79,
+    href: '/solutions/domain-audit',
+    blurb: 'Full crawl of up to 500 pages, every issue with fixes, a PDF evidence pack, a dated good-faith summary and an accessibility statement.',
+  },
+} as const;
+
 export type FeatureGroup = { title: string; features: string[] };
 
 /** Everything included in Pro, grouped for the pricing page. */
