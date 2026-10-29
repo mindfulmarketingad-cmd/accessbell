@@ -4,8 +4,123 @@ import { pagesDueForMonitoring, monitorPage, sendRegressionAlert } from '../app/
 import { startOneTimeAudit, finishOneTimeAudit, failOneTimeAudit } from '../app/one-time.js';
 import { discoverOneTimeUrls, scanOneTimeUrls, aggregateOneTimeReport } from '../one-time-audit.js';
 import { sendReportReadyEmail } from '../app/email-sequences.js';
+import { query } from '../app/db.js';
+import {
+  funnelLive,
+  scanFollowupCandidates,
+  upsellCandidates,
+  runScanFollowups,
+  runUpsells,
+  abandonedReminderSender,
+  fetchSuppressedEmails,
+} from '../app/funnel.js';
+import { sendAbandonedCheckoutReminders } from '../app/one-time.js';
+import {
+  sendScanFollowup,
+  sendAbandonedCheckoutReminder,
+  sendAuditUpsell,
+  sendPageReportUpsell,
+} from '../app/email-sequences.js';
 
 export const inngest = new Inngest({ id: 'accessbell' });
+
+/**
+ * Funnel agent, dry-run by default (FUNNEL_EMAIL_LIVE=1 to send for real).
+ * Every function returns its full log so the run output in the Inngest
+ * dashboard IS the review log David approves before go-live. No function
+ * sends, marks, or mutates anything while dry-run is on.
+ */
+function noDatabase() {
+  return !process.env.DATABASE_URL;
+}
+
+function logDryRun(entries) {
+  for (const e of entries) console.log('[funnel dry-run]', JSON.stringify(e));
+}
+
+/** Daily: one scan follow-up per emailed lead with no paid purchase yet. */
+export const funnelScanFollowupFn = inngest.createFunction(
+  { id: 'funnel-scan-followup', triggers: [{ cron: 'TZ=UTC 0 7 * * *' }] },
+  async ({ step }) => {
+    if (noDatabase()) return { skipped: 'DATABASE_URL is not set' };
+    const live = funnelLive();
+    const result = await step.run('followups', async () => {
+      const leads = await query(
+        `select l.id, l.email, l.hostname, l.url, l.followup_sent_at,
+                fs.issues, fs.critical, fs.serious
+           from app.scan_leads l
+           left join lateral (
+             select issues, critical, serious from app.free_scans
+              where hostname = l.hostname order by created_at desc limit 1
+           ) fs on true
+          where l.email is not null and l.email <> '' and l.followup_sent_at is null
+          order by l.created_at asc limit 100`,
+      );
+      const paidRows = await query(`select distinct lower(email) as email from app.one_time_purchases where status = 'paid'`);
+      const candidates = scanFollowupCandidates({
+        leads,
+        paidEmails: paidRows.map((r) => r.email),
+        suppressedEmails: await fetchSuppressedEmails(),
+      });
+      return runScanFollowups({
+        candidates,
+        sendScanFollowup,
+        markFollowupSent: (id) => query('update app.scan_leads set followup_sent_at = now() where id = $1', [id]),
+        live,
+      });
+    });
+    if (!live) logDryRun(result.log);
+    return result;
+  },
+);
+
+/** Daily: one abandoned-checkout reminder per stale pending purchase. */
+export const funnelAbandonedCheckoutFn = inngest.createFunction(
+  { id: 'funnel-abandoned-checkout', triggers: [{ cron: 'TZ=UTC 0 8 * * *' }] },
+  async ({ step }) => {
+    if (noDatabase()) return { skipped: 'DATABASE_URL is not set' };
+    const live = funnelLive();
+    const log = [];
+    const result = await step.run('reminders', async () => {
+      const sender = abandonedReminderSender({
+        live,
+        realSend: sendAbandonedCheckoutReminder,
+        suppressedEmails: await fetchSuppressedEmails(),
+        log,
+      });
+      const out = await sendAbandonedCheckoutReminders({ sendReminder: sender });
+      return { live, checked: out.checked, sent: out.sent, log };
+    });
+    if (!live) logDryRun(result.log);
+    return result;
+  },
+);
+
+/** Daily: one post-purchase upsell per buyer (Page Report -> Audit, Audit -> Pro). */
+export const funnelUpsellFn = inngest.createFunction(
+  { id: 'funnel-upsell', triggers: [{ cron: 'TZ=UTC 0 9 * * *' }] },
+  async ({ step }) => {
+    if (noDatabase()) return { skipped: 'DATABASE_URL is not set' };
+    const live = funnelLive();
+    const result = await step.run('upsells', async () => {
+      const purchases = await query(
+        `select * from app.one_time_purchases
+          where status = 'paid' and upsell_sent_at is null
+          order by paid_at asc nulls last limit 100`,
+      );
+      const candidates = upsellCandidates({ purchases });
+      return runUpsells({
+        candidates,
+        sendPageUpsell: sendPageReportUpsell,
+        sendAuditUpsell,
+        markUpsellSent: (id) => query('update app.one_time_purchases set upsell_sent_at = now() where id = $1', [id]),
+        live,
+      });
+    });
+    if (!live) logDryRun(result.log);
+    return result;
+  },
+);
 
 /** Every day, queue a rescan for every monitored page of paying accounts. */
 export const scheduleMonitoring = inngest.createFunction(
@@ -88,4 +203,12 @@ export const oneTimeAuditFn = inngest.createFunction(
   },
 );
 
-export const functions = [scheduleMonitoring, monitorPageFn, scanPageFn, oneTimeAuditFn];
+export const functions = [
+  scheduleMonitoring,
+  monitorPageFn,
+  scanPageFn,
+  oneTimeAuditFn,
+  funnelScanFollowupFn,
+  funnelAbandonedCheckoutFn,
+  funnelUpsellFn,
+];

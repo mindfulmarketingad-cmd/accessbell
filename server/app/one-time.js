@@ -177,7 +177,7 @@ export async function sendAbandonedCheckoutReminders({ sendReminder } = {}) {
   for (const row of rows) {
     const url = oneTimeCheckoutUrl(row.product, row);
     if (!url) continue;
-    const res = await send({ to: row.email, product: row.product, hostname: row.hostname, checkoutUrl: url });
+    const res = await send({ to: row.email, product: row.product, hostname: row.hostname, checkoutUrl: url, purchaseId: row.id });
     if (res.ok) {
       await one('update app.one_time_purchases set reminder_sent_at = now() where id = $1', [row.id]);
       sent++;
