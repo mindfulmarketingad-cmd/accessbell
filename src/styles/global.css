@@ -6901,6 +6901,164 @@ h2[tabindex='-1']:focus {
   color: var(--ink-500);
   font-size: 0.9375rem;
 }
+/* Free scan: full-detail teaser, email capture, CTA buttons (also used on /report) */
+.scan-teaser {
+  display: grid;
+  gap: 10px;
+  padding: clamp(18px, 3vw, 24px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  min-width: 0;
+}
+.scan-teaser > p,
+.scan-teaser h3 {
+  margin: 0;
+}
+.scan-teaser h3 {
+  font-size: 1.125rem;
+}
+.scan-teaser-kicker {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sage-700);
+}
+.scan-teaser-list {
+  display: grid;
+  gap: 10px;
+  margin: 6px 0;
+  padding: 0;
+  list-style: none;
+}
+.scan-teaser-list > li,
+.scan-result-list > li:has(.scan-teaser-code, .scan-teaser-fix) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px 12px;
+  min-width: 0;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: #fff;
+}
+.scan-teaser-list > [data-sev='critical'] {
+  border-left-color: var(--danger);
+}
+.scan-teaser-list > [data-sev='serious'] {
+  border-left-color: var(--warn);
+}
+.scan-teaser-list .scan-result-main,
+.scan-result-list > li:has(.scan-teaser-code, .scan-teaser-fix) .scan-result-main {
+  flex: 1 1 240px;
+}
+.scan-teaser-code,
+.scan-teaser-fix,
+.scan-teaser-list > li > a,
+.scan-result-list > li > .scan-teaser-code,
+.scan-result-list > li > .scan-teaser-fix,
+.scan-result-list > li:has(.scan-teaser-fix) > a {
+  flex: 1 1 100%;
+  min-width: 0;
+}
+.scan-teaser-code {
+  margin: 0;
+  padding: 12px 14px;
+  max-height: 240px;
+  overflow: auto;
+  border-radius: var(--radius);
+  background: var(--ink-900);
+  color: #f1f4f2;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  /* Long single-line HTML wraps instead of running off the page. */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+.scan-teaser-code code {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+}
+.scan-teaser-fix {
+  margin: 0;
+  color: var(--ink-700);
+  font-size: 0.9375rem;
+  overflow-wrap: anywhere;
+}
+.scan-teaser-actions,
+.scan-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 6px;
+}
+.scan-teaser-actions .btn,
+.scan-cta-actions .btn {
+  white-space: normal;
+  text-align: center;
+}
+.scan-lead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  max-width: 560px;
+  padding: clamp(18px, 3vw, 24px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: #fff;
+}
+.scan-lead > * {
+  margin: 0;
+}
+.scan-lead h3 {
+  font-size: 1.0625rem;
+}
+.scan-lead p {
+  color: var(--ink-500);
+  font-size: 0.9375rem;
+}
+.scan-lead label {
+  margin-top: 6px;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: var(--ink-900);
+}
+.scan-lead input {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--ink-900);
+  font: inherit;
+}
+.scan-lead input:focus-visible {
+  outline: 3px solid var(--sage-700);
+  outline-offset: 1px;
+}
+.scan-lead .btn {
+  justify-self: start;
+  margin-top: 8px;
+  white-space: normal;
+}
+.scan-lead [data-checkout-error] {
+  color: var(--danger);
+  font-weight: 600;
+}
+.scan-lead .scan-lead-note {
+  font-size: 0.875rem;
+  color: var(--ink-700);
+}
 /* Free scan: lawsuit risk for critical and serious issues */
 .scan-risk {
   margin: 20px 0;
