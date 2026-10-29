@@ -128,9 +128,31 @@ export function auditUpsellEmail({ hostname, reportUrl }) {
   };
 }
 
+/**
+ * NEW TEMPLATE (funnel agent, 2026-10-29): Page Report -> Domain Audit
+ * upsell, sent a few days after a Page Report purchase. Needs David's
+ * approval before any live send; the funnel agent runs dry-run until then.
+ */
+export function pageReportUpsellEmail({ hostname, reportUrl }) {
+  return {
+    subject: `Your ${hostname} page report, and the full-domain version`,
+    text: [
+      `You recently got a Page Report for ${hostname}. That report covered a single page in full detail.`,
+      '',
+      `Your report: ${reportUrl}`,
+      '',
+      'A Domain Audit ($79, one-time) does the same for your whole website: it crawls up to 500 pages, lists every issue with its fix, and includes a PDF evidence pack, a dated good-faith summary and an accessibility statement.',
+      'Get the full-domain version at https://www.accessbell.co/solutions/domain-audit',
+      FOOT,
+      OPTOUT,
+    ].join('\n'),
+  };
+}
+
 export const sendReportLinkEmail = (a) => sendEmail({ to: a.to, ...reportLinkEmail(a) });
 export const sendPaymentReceivedEmail = (a) => sendEmail({ to: a.to, ...paymentReceivedEmail(a) });
 export const sendReportReadyEmail = (a) => sendEmail({ to: a.to, ...reportReadyEmail(a) });
 export const sendScanFollowup = (a) => sendEmail({ to: a.to, ...scanFollowupEmail(a) });
 export const sendAbandonedCheckoutReminder = (a) => sendEmail({ to: a.to, ...abandonedCheckoutEmail(a) });
 export const sendAuditUpsell = (a) => sendEmail({ to: a.to, ...auditUpsellEmail(a) });
+export const sendPageReportUpsell = (a) => sendEmail({ to: a.to, ...pageReportUpsellEmail(a) });
