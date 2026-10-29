@@ -31,6 +31,9 @@ export function config(env = process.env) {
     stripeWebhookSecret: env.STRIPE_WEBHOOK_SECRET || '',
     stripePaymentLink: env.STRIPE_PAYMENT_LINK || 'https://buy.stripe.com/8x2bJ2gyKdFe7My31kfrW0o',
     stripePaymentLinkAnnual: env.STRIPE_PAYMENT_LINK_ANNUAL || 'https://buy.stripe.com/3cI14ogyK44EaYKeK2frW0p',
+    // One-time report checkouts (created 2026-10-29, live mode). Env vars override these defaults.
+    stripePaymentLinkPageReport: env.STRIPE_PAYMENT_LINK_PAGE_REPORT || 'https://buy.stripe.com/bJe8wQ2HU9oY7MyeK2frW0q',
+    stripePaymentLinkDomainAudit: env.STRIPE_PAYMENT_LINK_DOMAIN_AUDIT || 'https://buy.stripe.com/fZu28sciueJi8QC1XgfrW0r',
     resendApiKey: env.RESEND_API_KEY || '',
     emailFrom: env.EMAIL_FROM || 'AccessBell <alerts@accessbell.co>',
     appUrl: (env.APP_URL || 'https://www.accessbell.co').replace(/\/$/, ''),

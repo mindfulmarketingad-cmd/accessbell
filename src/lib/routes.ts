@@ -20,6 +20,8 @@ const STATIC_LASTMOD = new Date('2026-09-30');
 const STATIC: Omit<RouteEntry, 'lastmod'>[] = [
   { path: '/', label: 'Home', note: 'Free website accessibility checker', group: 'main' },
   { path: '/pricing', label: 'Pricing', note: 'Pro plan and features', group: 'main' },
+  { path: '/solutions/page-report', label: 'Single Page Accessibility Report', note: 'Full issue detail, fixes and a PDF for one page, $19 one-time', group: 'main' },
+  { path: '/solutions/domain-audit', label: 'Website Accessibility Audit', note: 'Full audit of up to 500 pages with a PDF evidence pack, $79 one-time', group: 'main' },
   { path: '/blog', label: 'Blog', note: 'Accessibility guides and compliance insights', group: 'main' },
   { path: '/comparisons', label: 'Comparisons', note: 'AccessBell compared with other accessibility tools', group: 'main' },
   { path: '/use-cases', label: 'Use Cases', note: 'How customers use AccessBell to monitor accessibility compliance', group: 'main' },

@@ -1,9 +1,11 @@
 // POST /api/scan  { url, standard } -> the issues found on one public page
 //
 // The free scan lists what is wrong: each issue's name, severity, WCAG
-// criteria and how many elements are affected. It never returns the failing
-// code, where on the page it is or how to fix it. Those, plus daily
-// monitoring, are what a subscription adds in the dashboard.
+// criteria and how many elements are affected. The top 5 most severe issues
+// are also shown in full (the failing code samples and the fix) as a teaser:
+// seeing the exact problem and its fix is what turns a free scan into a
+// one-time report purchase. Everything beyond the teaser, plus daily
+// monitoring, is what a report or a subscription adds.
 //
 // Uses a real browser with axe-core when BROWSER_WS_ENDPOINT is configured,
 // and falls back to the HTML-only audit if the browser is unavailable.
@@ -24,6 +26,7 @@ async function htmlAudit(url, standard) {
 }
 
 const MAX_ISSUES = 30;
+const MAX_TEASER = 5;
 
 /** Issue names, severities and counts only: nothing that shows an element, its code or a fix. */
 export function preview(report) {
@@ -49,7 +52,28 @@ export function preview(report) {
       count: n(i.count),
       wcag: (i.wcag || []).filter((c) => c && c.sc).map((c) => ({ sc: c.sc, name: c.name, level: c.level })),
     })),
+    teaser: teaser(report),
   };
+}
+
+/**
+ * The most severe issues in full: failing code samples and the fix. Issues
+ * arrive sorted by severity then affected elements from both audit engines,
+ * so the first entries are the ones that block users most. The rest of the
+ * list stays names-only; the full detail for every issue is what the
+ * one-time reports sell.
+ */
+export function teaser(report) {
+  const n = (v) => (Number.isFinite(v) ? v : 0);
+  return (report.issues || []).slice(0, MAX_TEASER).map((i) => ({
+    title: String(i.title || '').slice(0, 200),
+    impact: i.impact,
+    count: n(i.count),
+    wcag: (i.wcag || []).filter((c) => c && c.sc).map((c) => ({ sc: c.sc, name: c.name, level: c.level })),
+    fix: String(i.fix || '').slice(0, 500),
+    samples: (i.samples || []).slice(0, 2).map((s) => String(s).slice(0, 300)),
+    helpUrl: typeof i.helpUrl === 'string' ? i.helpUrl : undefined,
+  }));
 }
 
 export async function POST(request) {

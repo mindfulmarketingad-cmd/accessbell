@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import Faq from '../../components/Faq.astro';
+import { faqSchema, type FaqItem } from '../../lib/schema';
+import { ONE_TIME } from '../../data/pricing';
+
+const faqs: FaqItem[] = [
+  {
+    q: 'What does the Domain Audit cover?',
+    a: 'Your whole domain: up to 500 pages discovered from your sitemap and your home page links, each tested against WCAG 2.2 Level AA, with every issue, its fix, a PDF evidence pack, a dated good-faith summary and an accessibility statement.',
+  },
+  {
+    q: 'How long does the audit take?',
+    a: 'The crawl runs in the background after checkout. We email you the report link as soon as it finishes, and the same link shows the report once it is ready.',
+  },
+  {
+    q: 'Do I need an account?',
+    a: 'No. Enter the domain and your email, pay $79 once, and the report link arrives by email. You can save the report to a dashboard later by signing up.',
+  },
+  {
+    q: 'How is this different from the Page Report?',
+    a: 'The <a href="/solutions/page-report">Page Report</a> covers one page for $19. The Domain Audit covers your whole domain, up to 500 pages, for $79.',
+  },
+  {
+    q: 'How is this different from Pro monitoring?',
+    a: 'The Domain Audit is a one-time snapshot. Pro monitors your domain continuously, rescans daily and emails you when something new breaks. See <a href="/pricing">pricing</a> for Pro, or <a href="/solutions/continuous-monitoring">continuous monitoring</a> for how it works.',
+  },
+  {
+    q: 'Does the audit guarantee my site is compliant?',
+    a: 'No tool can guarantee compliance on its own. Automated checks find code-level barriers, but some checks need a person. The audit says so where it applies, and the good-faith summary records what was tested and when. See our <a href="/disclaimer">disclaimer</a> for details.',
+  },
+];
+---
+<BaseLayout
+  title="Website Accessibility Audit | AccessBell"
+  description="Get a website accessibility audit for your whole domain: up to 500 pages tested against WCAG 2.2 AA, every issue with fixes, a PDF evidence pack. One-time $79."
+  breadcrumbs={[{ label: 'Solutions', href: '/solutions' }, { label: 'Domain Audit', href: '/solutions/domain-audit' }]}
+  schema={[faqSchema(faqs)]}
+>
+  <section class="page-hero page-hero-center" aria-labelledby="da-title">
+    <div class="container">
+      <h1 id="da-title">
+        <span class="h1-kicker">One-time audit</span>
+        Website Accessibility Audit
+      </h1>
+      <p class="lead">A website accessibility audit tests your whole domain, not just one page: up to 500 pages crawled from your sitemap and links, each tested against WCAG 2.2 AA, with every issue, its fix, and a PDF evidence pack. One-time ${ONE_TIME.domainAudit.price}, no subscription, delivered by email when the crawl finishes.</p>
+      <p><a class="btn btn-accent btn-lg" href="#buy">Get the Domain Audit — ${ONE_TIME.domainAudit.price} <Icon name="arrow" /></a></p>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="da-includes">
+    <div class="container cc-prose">
+      <h2 id="da-includes">What your website accessibility audit includes</h2>
+      <p>Everything from a <a href="/solutions/page-report">Page Report</a>, for your whole domain:</p>
+      <ul>
+        <li><strong>Up to 500 pages.</strong> Discovered from your sitemap and your home page's links, on your domain only.</li>
+        <li><strong>Every issue with its fix.</strong> Issues are grouped by rule across pages, so one template fix can clear the same issue everywhere.</li>
+        <li><strong>Per-page results.</strong> Issue counts and a score for each page, so you fix the worst pages first.</li>
+        <li><strong>A PDF evidence pack.</strong> The full findings as a downloadable PDF for your records.</li>
+        <li><strong>A dated good-faith summary.</strong> What was tested, when, and what was found: the record that shows an accessibility effort was made.</li>
+        <li><strong>An accessibility statement.</strong> A statement reflecting the audit's findings, ready to publish.</li>
+      </ul>
+      <p>For background on what automated testing can and cannot do, see the W3C's <a href="https://www.w3.org/WAI/test-evaluate/" rel="noopener noreferrer">overview of evaluating web accessibility</a> and the Department of Justice's <a href="https://www.ada.gov/resources/web-guidance/" rel="noopener noreferrer">ADA web guidance</a>.</p>
+    </div>
+  </section>
+
+  <section class="section-tight section-surface" aria-labelledby="da-how">
+    <div class="container cc-prose">
+      <h2 id="da-how">How a website accessibility audit works</h2>
+      <ol class="steps-list">
+        <li><strong>Enter your domain and email.</strong> Any public domain. We discover its pages from the sitemap and links.</li>
+        <li><strong>Pay ${ONE_TIME.domainAudit.price} once.</strong> One-time payment through Stripe. No subscription, nothing renews.</li>
+        <li><strong>We crawl and test every page.</strong> Each page loads in a real browser and is tested against WCAG 2.2 AA.</li>
+        <li><strong>Open the emailed report link.</strong> The aggregated report, the PDF evidence pack, the good-faith summary and the statement are all on the report page.</li>
+      </ol>
+      <p>Want this to keep running instead of a one-time snapshot? <a href="/solutions/continuous-monitoring">Continuous monitoring</a> rescans daily and alerts you to new issues, and every scan and fix goes into the <a href="/solutions/compliance-vault">Compliance Vault</a>. See <a href="/solutions">all solutions</a> and <a href="/pricing">pricing</a> for Pro at $29 per domain per month or $199 per year.</p>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="da-limits">
+    <div class="container cc-prose">
+      <h2 id="da-limits">What a website accessibility audit cannot do</h2>
+      <p>Automated checks reliably find objective, code-level failures: missing alt text, unlabeled fields, unnamed buttons, low contrast, missing page language. They cannot judge whether alt text is meaningful, whether focus order is logical, or whether captions are accurate. Those checks need a person, and the audit says so where it applies. Read <a href="/methodology">how we test</a> for the engine and its limits, and our <a href="/disclaimer">disclaimer</a> for what no automated tool can promise.</p>
+      <p>An audit is also a snapshot: the next edit to your site can introduce new issues. That is what <a href="/solutions/continuous-monitoring">continuous monitoring</a> is for.</p>
+    </div>
+  </section>
+
+  <section class="section-tight section-surface" aria-labelledby="buy">
+    <div class="container cc-prose">
+      <h2 id="buy">Get your website accessibility audit</h2>
+      <p>One-time ${ONE_TIME.domainAudit.price}. No account needed. The report link is emailed to you when the crawl finishes.</p>
+      <form class="scan-lead" data-checkout-form data-product="domain_audit">
+        <label for="da-email">Email</label>
+        <input id="da-email" name="email" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com" />
+        <label for="da-url">Domain to audit</label>
+        <input id="da-url" name="url" type="url" inputmode="url" required maxlength="2048" placeholder="https://example.com" />
+        <button class="btn btn-accent" type="submit">Buy the Domain Audit — ${ONE_TIME.domainAudit.price}</button>
+        <p data-checkout-error hidden></p>
+        <p class="scan-cta-note">Just one page instead? <a href="/solutions/page-report">Get a Page Report for $19</a>. Prefer ongoing monitoring? <a href="/app/signup">Start a 3-day free trial</a> of Pro.</p>
+      </form>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="da-faq">
+    <div class="container">
+      <div class="section-head section-head-left">
+        <h2 id="da-faq">Website accessibility audit FAQ</h2>
+      </div>
+      <Faq items={faqs} />
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import '../../scripts/one-time-checkout.js';
+</script>
