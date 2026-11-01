@@ -3,7 +3,7 @@ title: 'What Is a Website Accessibility Checker? How Automated Testing Works'
 seoTitle: 'What Is a Website Accessibility Checker?'
 description: 'A plain-English guide to website accessibility checkers: what they test, how they map results to WCAG, what they miss, and how to choose one.'
 pubDate: 2026-09-14
-updatedDate: 2026-09-30
+updatedDate: 2026-11-01
 category: 'Guides'
 contributors:
   - author: joseph-edwards
@@ -14,6 +14,17 @@ history:
     note: 'First published.'
   - date: 2026-09-30
     note: 'Added how AccessBell scores a page and what each score range means.'
+  - date: 2026-11-01
+    note: 'Refresh: updated the CDC disability figure to more than 1 in 4 adults (28.7%), clarified what automated testing can and cannot evaluate, corrected the monitoring claim to AccessBell Pro, added FAQs and a keyboard-testing link. pubDate unchanged: no substantial rewrite.'
+faqs:
+  - q: 'What does a website accessibility checker test?'
+    a: 'It loads a page, builds its document tree, and runs rules against WCAG success criteria: text alternatives, form labels, accessible names, heading structure, color contrast, page language and titles, and similar code-level checks. Each failure comes with a location, a severity and a fix.'
+  - q: 'Can a checker prove my website is ADA compliant?'
+    a: 'No. A checker only evaluates what a machine can verify, roughly a third of WCAG success criteria. A clean automated result still needs manual checks, such as keyboard and screen reader testing, before anyone can claim WCAG conformance.'
+  - q: 'What does an AccessBell score of 100 mean?'
+    a: 'It means the page passed every automated check. It is a strong result, but it is not proof of compliance on its own: manual checks that no automated tool can do are still required.'
+  - q: 'How often should I run an accessibility check?'
+    a: 'Run a scan whenever content changes, and use scheduled monitoring for the pages that matter most. Websites change every week, and each change, from a new form to a third-party widget, can introduce new barriers.'
 ---
 
 A **website accessibility checker** is software that inspects the code of a web page and flags patterns that are known to block people with disabilities. It reads the page the way a browser does, compares what it finds against the Web Content Accessibility Guidelines (WCAG), and reports each failure with a location, a severity and a fix.
@@ -22,7 +33,7 @@ That definition sounds simple, but the details matter. Checkers differ in what t
 
 ## Why Accessibility Checkers Exist
 
-Roughly one in four adults in the United States lives with some form of disability, according to the CDC. Many of them use assistive technology to browse: screen readers that turn text into speech, switch devices and voice control that replace a mouse, magnifiers and high-contrast modes that change how a page looks.
+More than one in four adults in the United States (28.7%) lives with some form of disability, according to the [CDC](https://www.cdc.gov/disability-and-health/about/). Many of them use assistive technology to browse: screen readers that turn text into speech, switch devices and voice control that replace a mouse, magnifiers and high-contrast modes that change how a page looks.
 
 Those tools depend on the page being built correctly. A screen reader cannot describe an image that has no [text alternative](/resources/wcag/1-1-1-non-text-content). A keyboard user cannot reach a menu that only opens on mouse hover. A voice user cannot say "click Submit" if the button's accessible name is empty.
 
@@ -72,7 +83,7 @@ A score of 100 is a strong result, but it is not proof of compliance on its own.
 
 ## What Automated Checkers Cannot Tell You
 
-This is where honest tools and marketing claims part ways. Automated testing is strong at finding objective, code-level failures. It cannot judge meaning or experience. Industry studies consistently find that automated rules detect only a portion of WCAG issues, commonly estimated at around a third.
+This is where honest tools and marketing claims part ways. Automated testing is strong at finding objective, code-level failures. It cannot judge meaning or experience. Automated rules can fully evaluate only about a third of WCAG success criteria; the rest need human judgment, which is why the W3C says evaluation tools "can not determine accessibility, they can only assist in doing so" ([W3C, Selecting Web Accessibility Evaluation Tools](https://www.w3.org/WAI/test-evaluate/tools/selecting/)).
 
 A checker can confirm that an image has alt text. It cannot tell you whether "image123.jpg" is a useful description. It can confirm a button has a name. It cannot tell you whether the checkout flow makes sense when you only use a keyboard.
 
@@ -92,7 +103,7 @@ We cover how to combine the two approaches in [automated vs manual accessibility
 
 A one-time scan tells you where a page stands today. Websites change every week: new blog posts, new product images, a redesigned form, a third-party chat widget. Each change can introduce new barriers.
 
-Continuous monitoring rescans your domain on a schedule and alerts you when something regresses. For most organizations, that is the difference between fixing an issue in a day and discovering it in a demand letter months later. It is why every [AccessBell plan](/pricing) includes scheduled scans and alerts.
+Continuous monitoring rescans your domain on a schedule and alerts you when something regresses. For most organizations, that is the difference between fixing an issue in a day and discovering it in a demand letter months later. It is why [AccessBell Pro](/pricing) includes scheduled scans and alerts.
 
 ## How to Choose a Website Accessibility Checker
 
@@ -111,7 +122,7 @@ If you are new to accessibility, start small and build a habit:
 
 1. Run a free scan on your homepage and your most important conversion page.
 2. Fix critical and serious issues first, especially on forms and navigation.
-3. Test those same pages with only a keyboard. Tab through every control.
+3. Test those same pages with only a keyboard. Tab through every control. Our [keyboard accessibility testing guide](/blog/keyboard-accessibility-testing) shows what to check.
 4. Turn on a screen reader such as NVDA or VoiceOver and listen to one full task.
 5. Set up scheduled scans so new content is checked automatically.
 6. Publish an accessibility statement that explains your commitment and how to report problems. Our free [accessibility statement generator](/tools/statement-generator) creates one in a minute.
