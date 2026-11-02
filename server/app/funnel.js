@@ -14,7 +14,10 @@
 // - Never email David's own properties (ramenearyou.com) or his employer's
 //   store (shopsigvaris.com), whatever the trigger row says.
 // - A suppressed email (bounce / opt-out, recorded in
-//   app.funnel_suppressions) is skipped on every later run.
+//   app.funnel_suppressions, including one-click unsubscribes via
+//   /api/unsubscribe) is skipped on every later run.
+// - Live sends also need FUNNEL_MAILING_ADDRESS and an unsubscribe signing
+//   key (see unsubscribe.js); without them FUNNEL_EMAIL_LIVE=1 stays dry-run.
 // - One send per trigger, tracked in the database: scan_leads.followup_sent_at,
 //   one_time_purchases.reminder_sent_at (existing), one_time_purchases.upsell_sent_at.
 //   Markers are written only after a live send succeeds.
@@ -24,6 +27,7 @@
 // in this change and needs David's approval before live sends, like every
 // other template in the funnel.
 import { query } from './db.js';
+import { funnelSendBlockers } from './unsubscribe.js';
 
 // ---------------------------------------------------------------------------
 // Configuration
@@ -42,6 +46,20 @@ export const ABANDONED_MIN_AGE_HOURS = 24;
 /** Live sending is opt-in: FUNNEL_EMAIL_LIVE=1. Anything else is dry-run. */
 export function funnelLive(env = process.env) {
   return env.FUNNEL_EMAIL_LIVE === '1';
+}
+
+/**
+ * Live only when requested AND ready: a CAN-SPAM mailing address
+ * (FUNNEL_MAILING_ADDRESS) and an unsubscribe signing key must be configured.
+ * Requested-but-not-ready logs an error and runs as dry-run.
+ */
+export function funnelLiveStatus(env = process.env) {
+  const requested = funnelLive(env);
+  const blockers = funnelSendBlockers(env);
+  if (requested && blockers.length) {
+    console.error('[funnel] FUNNEL_EMAIL_LIVE=1 but not ready, staying dry-run:', blockers.join('; '));
+  }
+  return { requested, live: requested && blockers.length === 0, blockers };
 }
 
 export function normalizeHostname(hostname) {
@@ -94,10 +112,13 @@ export function isAbandonedCheckout(row, now = new Date()) {
  * whose payment is older than the per-product delay. Page Report buyers get
  * the Domain Audit upsell; Domain Audit buyers get the Pro upsell.
  */
-export function upsellCandidates({ purchases, now = new Date() }) {
+export function upsellCandidates({ purchases, suppressedEmails = [], now = new Date() }) {
+  const suppressed = new Set((suppressedEmails || []).map(normalizeEmail));
   return purchases
     .filter((row) => {
       if (row.status !== 'paid') return false;
+      if (suppressed.has(normalizeEmail(row.email))) return false;
+      if (isExcludedHostname(row.hostname)) return false;
       if (row.upsell_sent_at) return false;
       if (!row.paid_at) return false;
       const delay = row.product === 'page_report' ? PAGE_REPORT_UPSELL_DELAY_DAYS : DOMAIN_AUDIT_UPSELL_DELAY_DAYS;
@@ -201,6 +222,10 @@ export async function runUpsells({ candidates, sendPageUpsell, sendAuditUpsell, 
       trigger: `one_time_purchases:${row.id}`,
       hostname: row.hostname || null,
     };
+    if (!hasEmail(row.email)) {
+      log.push({ ...entry, action: 'skipped', reason: 'no-email' });
+      continue;
+    }
     if (!live) {
       log.push({ ...entry, action: 'dry-run' });
       continue;

@@ -6,7 +6,7 @@ import { discoverOneTimeUrls, scanOneTimeUrls, aggregateOneTimeReport } from '..
 import { sendReportReadyEmail } from '../app/email-sequences.js';
 import { query } from '../app/db.js';
 import {
-  funnelLive,
+  funnelLiveStatus,
   scanFollowupCandidates,
   upsellCandidates,
   runScanFollowups,
@@ -43,7 +43,7 @@ export const funnelScanFollowupFn = inngest.createFunction(
   { id: 'funnel-scan-followup', triggers: [{ cron: 'TZ=UTC 0 7 * * *' }] },
   async ({ step }) => {
     if (noDatabase()) return { skipped: 'DATABASE_URL is not set' };
-    const live = funnelLive();
+    const { live } = funnelLiveStatus();
     const result = await step.run('followups', async () => {
       const leads = await query(
         `select l.id, l.email, l.hostname, l.url, l.followup_sent_at,
@@ -79,7 +79,7 @@ export const funnelAbandonedCheckoutFn = inngest.createFunction(
   { id: 'funnel-abandoned-checkout', triggers: [{ cron: 'TZ=UTC 0 8 * * *' }] },
   async ({ step }) => {
     if (noDatabase()) return { skipped: 'DATABASE_URL is not set' };
-    const live = funnelLive();
+    const { live } = funnelLiveStatus();
     const log = [];
     const result = await step.run('reminders', async () => {
       const sender = abandonedReminderSender({
@@ -101,14 +101,14 @@ export const funnelUpsellFn = inngest.createFunction(
   { id: 'funnel-upsell', triggers: [{ cron: 'TZ=UTC 0 9 * * *' }] },
   async ({ step }) => {
     if (noDatabase()) return { skipped: 'DATABASE_URL is not set' };
-    const live = funnelLive();
+    const { live } = funnelLiveStatus();
     const result = await step.run('upsells', async () => {
       const purchases = await query(
         `select * from app.one_time_purchases
           where status = 'paid' and upsell_sent_at is null
           order by paid_at asc nulls last limit 100`,
       );
-      const candidates = upsellCandidates({ purchases });
+      const candidates = upsellCandidates({ purchases, suppressedEmails: await fetchSuppressedEmails() });
       return runUpsells({
         candidates,
         sendPageUpsell: sendPageReportUpsell,
