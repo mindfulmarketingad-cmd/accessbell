@@ -177,7 +177,7 @@ const RISK_STATS = [
 ];
 
 /** Shown when the page has critical or serious issues: what leaving them unfixed can cost. */
-function riskPanel(urgent) {
+function riskPanel(urgent, url) {
   if (!urgent) return null;
   return el('section', { class: 'scan-risk', 'aria-labelledby': 'scan-risk-title' }, [
     el('span', { class: 'scan-risk-kicker', text: 'Lawsuit risk' }),
@@ -195,7 +195,8 @@ function riskPanel(urgent) {
       ),
     ),
     el('div', { class: 'scan-risk-actions' }, [
-      el('a', { class: 'btn btn-accent', href: '/pricing', text: 'Fix these issues before they cost you' }),
+      el('a', { class: 'btn btn-accent', href: '/app/signup', text: 'Start a 3-day free trial' }),
+      el('a', { href: `/solutions/page-report?url=${encodeURIComponent(url)}`, text: 'Full report for this page, $19' }),
       el('a', { href: '/blog/ada-lawsuit-payouts', text: 'See what real ADA cases cost' }),
     ]),
     el('p', { class: 'scan-risk-note', text: 'Figures come from public sources and vary widely by case and state. They are not a prediction for your site and not legal advice.' }),
@@ -246,7 +247,12 @@ function showResults(r, url, form) {
       ]),
     ]),
     el('p', { text: `Product pages, cart and checkout, forms and blog posts often have issues this page does not, and they are the pages customers use to buy from or contact you.` }),
-    el('div', { class: 'scan-scope-actions' }, [el('a', { class: 'btn btn-accent btn-sm', href: '/pricing', text: 'Scan my whole website' }), again]),
+    el('div', { class: 'scan-scope-actions' }, [el('a', { class: 'btn btn-accent btn-sm', href: '/app/signup', text: 'Start 3-day free trial' }), again]),
+    el('p', { class: 'scan-cta-note' }, [
+      'The trial covers up to 500 pages on this domain, rescanned every day. Then $29 per domain per month or $199 per year. Cancel before the trial ends and you will not be charged. ',
+      el('a', { href: `/solutions/domain-audit?url=${encodeURIComponent(url)}`, text: 'Or buy a $79 Domain Audit' }),
+      ', once, with no subscription.',
+    ]),
   ]);
   const tiles = total
     ? el(
@@ -269,7 +275,7 @@ function showResults(r, url, form) {
               el('span', { class: `tag tag-${i.impact}`, text: IMPACT_LABEL[i.impact] || i.impact }),
               // The most urgent problems get a direct route to a plan that fixes them.
               URGENT.has(i.impact)
-                ? el('a', { class: 'btn btn-sm btn-resolve', href: '/pricing' }, ['Resolve Now', el('span', { class: 'visually-hidden', text: `: ${i.title}` })])
+                ? el('a', { class: 'btn btn-sm btn-resolve', href: `/solutions/page-report?url=${encodeURIComponent(url)}` }, ['Get the fix', el('span', { class: 'visually-hidden', text: `: ${i.title}. Opens the $19 Page Report for this URL.` })])
                 : null,
             ]),
           ]),
@@ -358,9 +364,9 @@ function showResults(r, url, form) {
       el('li', { text: 'A dated record of your fixes, in case you ever need proof' }),
     ]),
     el('div', { class: 'scan-cta-actions' }, [
-      el('a', { class: 'btn btn-accent', href: `/solutions/page-report?url=${encodeURIComponent(url)}`, text: 'Full report for this page — $19 one-time' }),
+      el('a', { class: 'btn btn-accent', href: '/app/signup', text: 'Start 3-day free trial' }),
+      el('a', { class: 'btn btn-outline', href: `/solutions/page-report?url=${encodeURIComponent(url)}`, text: 'Full report for this page — $19 one-time' }),
       el('a', { class: 'btn btn-outline', href: `/solutions/domain-audit?url=${encodeURIComponent(url)}`, text: 'Audit my whole domain — $79 one-time' }),
-      el('a', { class: 'btn btn-outline', href: '/app/signup', text: 'Start 3-day free trial' }),
     ]),
     el('p', { class: 'scan-cta-note' }, ['One-time reports need no account. Pro monitoring is $29/mo or $199/year per domain. Already subscribed? ', el('a', { href: '/app/login', text: 'Log in to your dashboard' }), '.']),
   ]);
@@ -369,7 +375,7 @@ function showResults(r, url, form) {
       el('div', { class: 'scan-result-head' }, [el('span', { class: 'scan-result-kicker', text: 'Free scan results' }), heading, el('p', { text: lead })]),
       scope,
       tiles,
-      riskPanel((r.summary?.critical || 0) + (r.summary?.serious || 0)),
+      riskPanel((r.summary?.critical || 0) + (r.summary?.serious || 0), url),
       leadForm,
       rows,
       teaser,
