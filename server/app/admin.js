@@ -2,11 +2,13 @@
 // business totals. Read-only. Non-admins get 403 before any query runs.
 import { query } from './db.js';
 import { isAdminUser } from './accounts.js';
-import { forbidden } from './errors.js';
+import { forbidden, badRequest, notFound } from './errors.js';
+import { publicSettings } from './domains.js';
 import { stripe, accessBellProductIds, subscriptionMatchesProducts } from './billing.js';
 import { config } from './config.js';
 
-const MISSING = new Set(['42P01', '42703']);
+// Missing table/column, or no permission (e.g. the auth schema): treat as not tracked.
+const MISSING = new Set(['42P01', '42703', '42501', '3F000']);
 
 /** Run a query, returning [] when an optional table is not migrated yet. */
 async function safe(sql, params) {
@@ -187,4 +189,157 @@ export async function adminOverview(ctx, { stripeApi } = {}) {
     },
     accounts: rows,
   };
+}
+
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const DAY = 24 * 60 * 60 * 1000;
+const NOT_TRACKED = 'not tracked';
+
+/** Flag likely problems for one account from its recorded data. Pure, for tests. */
+export function accountFlags(d, now = Date.now()) {
+  const flags = [];
+  const add = (level, text) => flags.push({ level, text });
+  const a = d.profile;
+  const paying = ['trialing', 'active'].includes(a.status);
+  const failed7 = d.scans.filter((x) => x.status === 'failed' && now - new Date(x.createdAt).getTime() < 7 * DAY);
+  if (failed7.length) add('error', `${failed7.length} failed scan${failed7.length === 1 ? '' : 's'} in the last 7 days (latest: ${failed7[0].error || 'no message'})`);
+  for (const dm of d.domains) {
+    if (!dm.lastScanAt) add('warn', `${dm.hostname}: never scanned`);
+    if (paying && dm.overduePages) add('warn', `${dm.hostname}: ${dm.overduePages} monitored page${dm.overduePages === 1 ? '' : 's'} not scanned in 36+ hours (daily rescan may not be completing)`);
+    if (dm.fixes && !dm.snippetSeenAt) add('warn', `${dm.hostname}: has fixes but the AccessBellFix snippet has never called in`);
+    else if (dm.fixes && now - new Date(dm.snippetSeenAt).getTime() > 3 * DAY) add('warn', `${dm.hostname}: AccessBellFix snippet has not called in for 3+ days`);
+  }
+  if (a.status !== 'none' && !a.stripeLinked) add('error', 'Subscription status set but no Stripe subscription linked');
+  if (['past_due', 'unpaid', 'incomplete'].includes(a.status)) add('error', `Payment problem: subscription is ${a.status}`);
+  if (a.lastSignInAt === null && a.signedUpAt) add('warn', 'No sign-in recorded since sign-up');
+  if (a.status === 'trialing' && a.trialEndsAt) {
+    const left = new Date(a.trialEndsAt).getTime() - now;
+    const scans7 = d.scans.filter((x) => now - new Date(x.createdAt).getTime() < 7 * DAY).length;
+    if (left > 0 && left < 2 * DAY && (d.domains.length === 0 || scans7 < 3)) add('warn', `Trial ends within 48 hours with low usage (${d.domains.length} domains, ${scans7} scans in 7 days)`);
+  }
+  if (paying && !d.domains.length) add('warn', 'Has access but no domains added');
+  return flags;
+}
+
+/** Admins only: one account's analytics, for spotting problems. Read-only. */
+export async function adminAccountDetail(ctx, id) {
+  if (!isAdminUser(ctx?.user)) throw forbidden();
+  if (!UUID.test(String(id || ''))) throw badRequest('Invalid account id.');
+  const [acct] = await query(
+    `select a.*, o.user_id as owner_id, o.email, o.signed_up_at
+       from app.accounts a
+       left join lateral (
+         select p.user_id, p.email, p.created_at as signed_up_at
+           from app.account_members m join app.profiles p on p.user_id = m.user_id
+          where m.account_id = a.id and m.role = 'owner' order by m.created_at asc limit 1
+       ) o on true
+      where a.id = $1`,
+    [id],
+  );
+  if (!acct) throw notFound('Account not found.');
+
+  const [signIn] = acct.owner_id ? await safe('select last_sign_in_at from auth.users where id = $1', [acct.owner_id]) : [];
+  const [lastActivity] = await safe('select max(created_at) as at from app.activity_log where account_id = $1', [id]);
+
+  const members = await query(
+    `select p.email, m.role, m.created_at from app.account_members m join app.profiles p on p.user_id = m.user_id
+      where m.account_id = $1 order by m.created_at`,
+    [id],
+  );
+  const domainRows = await query(
+    `select d.id, d.hostname, d.base_url, d.settings, d.created_at, d.site_key is not null as has_site_key, d.fix_seen_at,
+            (select count(*)::int from app.pages p where p.domain_id = d.id) as pages,
+            (select count(*)::int from app.pages p where p.domain_id = d.id and p.monitored) as monitored_pages,
+            (select count(*)::int from app.pages p where p.domain_id = d.id and p.monitored
+               and (p.last_scanned_at is null or p.last_scanned_at < now() - interval '36 hours')) as overdue_pages,
+            (select max(created_at) from app.scans s where s.domain_id = d.id) as last_scan_at,
+            (select status from app.scans s where s.domain_id = d.id order by created_at desc limit 1) as last_scan_status
+       from app.domains d where d.account_id = $1 order by d.created_at`,
+    [id],
+  );
+  const fixRows = await safe(
+    `select d.hostname, f.domain_id, f.kind, f.enabled, f.created_at from app.fixes f join app.domains d on d.id = f.domain_id
+      where d.account_id = $1 order by f.created_at desc limit 200`,
+    [id],
+  );
+  const scans = await query(
+    `select s.id, s.created_at, s.status, s.device, s.trigger, s.score, s.issues_count, s.error, s.engine,
+            p.url, d.hostname
+       from app.scans s join app.pages p on p.id = s.page_id join app.domains d on d.id = s.domain_id
+      where s.account_id = $1 order by s.created_at desc limit 100`,
+    [id],
+  );
+  const daily = await query(
+    `select to_char(date_trunc('day', created_at), 'YYYY-MM-DD') as day,
+            count(distinct page_id)::int as pages, count(*)::int as scans,
+            count(*) filter (where status = 'done')::int as done,
+            count(*) filter (where status = 'failed')::int as failed,
+            coalesce(sum(issues_count) filter (where status = 'done'), 0)::int as issues
+       from app.scans where account_id = $1 and trigger = 'scheduled' and created_at > now() - interval '30 days'
+      group by 1 order by 1 desc`,
+    [id],
+  );
+  const vault = await safe(
+    `select hostname, period_from, period_to, user_email, created_at from app.compliance_records
+      where account_id = $1 order by created_at desc limit 50`,
+    [id],
+  );
+  const activity = await safe(
+    `select l.action, l.user_email, l.created_at, d.hostname from app.activity_log l left join app.domains d on d.id = l.domain_id
+      where l.account_id = $1 order by l.created_at desc limit 50`,
+    [id],
+  );
+
+  const fixesByDomain = {};
+  for (const f of fixRows) fixesByDomain[f.domain_id] = (fixesByDomain[f.domain_id] || 0) + 1;
+  const domains = domainRows.map((d) => {
+    const s = publicSettings(d.settings || {});
+    return {
+      id: d.id,
+      hostname: d.hostname,
+      baseUrl: d.base_url,
+      addedAt: d.created_at,
+      settings: { wcagVersion: s.wcagVersion, wcagLevel: s.wcagLevel, devices: s.devices, includeSubdomains: s.includeSubdomains, customHeaders: (s.headers || []).length },
+      pages: d.pages,
+      monitoredPages: d.monitored_pages,
+      overduePages: d.overdue_pages,
+      lastScanAt: d.last_scan_at,
+      lastScanStatus: d.last_scan_status,
+      fixes: fixesByDomain[d.id] || 0,
+      snippetSeenAt: d.fix_seen_at,
+    };
+  });
+
+  const out = {
+    profile: {
+      accountId: acct.id,
+      name: acct.name,
+      email: acct.email || null,
+      signedUpAt: acct.signed_up_at || acct.created_at,
+      lastSignInAt: signIn ? signIn.last_sign_in_at || null : NOT_TRACKED,
+      lastActivityAt: lastActivity?.at || null,
+      status: acct.subscription_status,
+      interval: acct.billing_interval || null,
+      stripeLinked: Boolean(acct.stripe_subscription_id),
+      trialEndsAt: acct.trial_ends_at,
+      currentPeriodEnd: acct.current_period_end,
+      domainQuota: acct.domain_quota,
+      welcomeEmailSent: NOT_TRACKED,
+    },
+    members: members.map((m) => ({ email: m.email, role: m.role, addedAt: m.created_at })),
+    domains,
+    scans: scans.map((x) => ({
+      id: x.id, createdAt: x.created_at, status: x.status, device: x.device, trigger: x.trigger, score: x.score,
+      issues: x.issues_count, error: x.error, engine: x.engine, url: x.url, hostname: x.hostname, durationMs: NOT_TRACKED,
+    })),
+    dailyRescans: daily,
+    alertEmails: NOT_TRACKED,
+    snippetErrors: NOT_TRACKED,
+    vault: vault.map((v) => ({ hostname: v.hostname, from: v.period_from, to: v.period_to, by: v.user_email, createdAt: v.created_at })),
+    fixes: fixRows.map((f) => ({ hostname: f.hostname, kind: f.kind, enabled: f.enabled, createdAt: f.created_at })),
+    activity: activity.map((a) => ({ action: a.action, by: a.user_email, hostname: a.hostname, at: a.created_at })),
+  };
+  // A sign-in time we could not read is unknown, not "never".
+  out.flags = accountFlags({ ...out, profile: { ...out.profile, lastSignInAt: out.profile.lastSignInAt === NOT_TRACKED ? undefined : out.profile.lastSignInAt } });
+  return out;
 }
