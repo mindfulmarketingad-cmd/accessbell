@@ -14,6 +14,8 @@
 // - "outreach-send": owner-approved outreach batch { items:[{email,hostname,
 //   subject,body}], confirm:"SEND" } (or dryRun:true). Footer, unsubscribe
 //   headers and suppression checks are applied. Never scheduled.
+// - "delete-scan-lead": remove one address's scan_leads rows (test rows,
+//   deletion requests). Needs confirm: true.
 // - "unsuppress": remove one address from app.funnel_suppressions.
 // - "welcome": send the subscriber welcome email (Resend dedupes per account
 //   for 24h). Only to an account that has dashboard access.
@@ -120,6 +122,12 @@ export async function POST(request) {
 
   try {
     if (action === 'unsuppress') return json(200, { removed: await removeFunnelSuppression(email) });
+    if (action === 'delete-scan-lead') {
+      const rows = await one('select count(*)::int as n from app.scan_leads where lower(email) = $1', [email]);
+      if (!body?.confirm) return json(200, { wouldDelete: rows?.n || 0 });
+      const del = await one('with d as (delete from app.scan_leads where lower(email) = $1 returning 1) select count(*)::int as n from d', [email]);
+      return json(200, { removed: del?.n || 0 });
+    }
     if (action === 'status') return json(200, await status(email));
 
     if (action === 'repair') {
