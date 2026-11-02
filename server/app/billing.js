@@ -8,7 +8,8 @@ import crypto from 'node:crypto';
 import { config, ACTIVE_STATUSES, ADMIN_DOMAIN_QUOTA, SUBSCRIBER_MIN_DOMAINS } from './config.js';
 import { one } from './db.js';
 import { AppError } from './errors.js';
-import { requireRole, isAdminUser } from './accounts.js';
+import { requireRole, isAdminUser, ensureUserSetup } from './accounts.js';
+import { auth } from './auth-client.js';
 import { handleOneTimePayment } from './one-time.js';
 import { sendWelcomeSubscriberEmail } from './email-sequences.js';
 
@@ -174,6 +175,60 @@ export async function welcomeOnce(accountId, session, sendWelcome = sendWelcomeS
   }
 }
 
+const EXISTS = new Set(['email_exists', 'user_already_exists']);
+
+/** Invite a buyer who has no login yet and return their new account id, or null. */
+export async function accountFromInvite(email, { invite = (e, r) => auth.invite(e, r) } = {}) {
+  const to = String(email || '').trim().toLowerCase();
+  if (!to || !config().supabaseServiceKey) return null;
+  try {
+    const user = await invite(to, `${config().appUrl}/app/auth/callback`);
+    const u = user?.user || user;
+    if (!u?.id) return null;
+    await ensureUserSetup({ id: u.id, email: u.email || to });
+    const row = await one(`select account_id from app.account_members where user_id = $1 and role = 'owner' order by created_at asc limit 1`, [u.id]);
+    return row?.account_id || null;
+  } catch (err) {
+    // Already has a login but never opened the dashboard: their subscription
+    // is linked on their next sign-in (claimSubscriptionForUser).
+    if (!EXISTS.has(err?.code)) console.error('checkout invite failed', err?.code || err?.message);
+    return null;
+  }
+}
+
+/**
+ * Link a Stripe subscription found by the owner's email to their account, for
+ * buyers whose checkout could not be matched to an account at payment time.
+ * Runs at sign-in; does nothing when the account is already linked. Never throws.
+ */
+export async function claimSubscriptionForUser(user, { stripeApi = stripe } = {}) {
+  try {
+    const email = String(user?.email || '').trim().toLowerCase();
+    if (!email || !config().stripeSecretKey) return 'skipped';
+    const acct = await one(
+      `select a.id, a.stripe_subscription_id from app.account_members m join app.accounts a on a.id = m.account_id
+        where m.user_id = $1 and m.role = 'owner' order by m.created_at asc limit 1`,
+      [user.id],
+    );
+    if (!acct || acct.stripe_subscription_id) return 'not-needed';
+    const customers = await stripeApi('GET', `/customers?email=${encodeURIComponent(email)}&limit=10`);
+    for (const c of customers?.data || []) {
+      const subs = await stripeApi('GET', `/subscriptions?customer=${encodeURIComponent(c.id)}&status=all&limit=10`);
+      const sub = (subs?.data || []).find((s) => ACTIVE_STATUSES.has(s.status));
+      if (!sub) continue;
+      const taken = await one('select id from app.accounts where stripe_subscription_id = $1 and id <> $2', [sub.id, acct.id]);
+      if (taken) return 'already-linked-elsewhere';
+      await applySubscription(acct.id, sub);
+      await welcomeOnce(acct.id, { customer_email: email });
+      return 'linked';
+    }
+    return 'none-found';
+  } catch (err) {
+    console.error('subscription claim failed', err?.message);
+    return 'error';
+  }
+}
+
 async function accountForSubscription(sub) {
   const customer = typeof sub.customer === 'string' ? sub.customer : sub.customer?.id;
   const row = await one(
@@ -215,7 +270,10 @@ async function processStripeEvent(event, fetchSubscription, sendWelcome) {
 
   if (event.type === 'checkout.session.completed') {
     if (obj.mode !== 'subscription' || !obj.subscription) return 'ignored: not a subscription checkout';
-    const accountId = await accountForCheckout(obj);
+    let accountId = await accountForCheckout(obj);
+    // Paid through the Payment Link without an AccessBell login: create one
+    // with Supabase's invite (the buyer gets a set-password email).
+    if (!accountId) accountId = await accountFromInvite(obj.customer_details?.email || obj.customer_email);
     if (!accountId) return 'unmatched checkout';
     const subId = typeof obj.subscription === 'string' ? obj.subscription : obj.subscription.id;
     // First subscription on this account? Checked before linking, so a retried
