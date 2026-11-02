@@ -18,6 +18,18 @@
   // Scanners (including AccessBell's) wait for ready so they test the fixed page.
   var state = (window.AccessBellFix = { ready: false, applied: 0 });
 
+  // Tell AccessBell when the script hits a problem: the site key and a fixed
+  // error code only (no page URL, message or visitor data), once per code
+  // per page view. Reporting can never break the page.
+  var reported = {};
+  function report(code) {
+    try {
+      if (reported[code]) return;
+      reported[code] = true;
+      fetch(origin + '/api/app/fix/error?k=' + encodeURIComponent(key) + '&c=' + code, { credentials: 'omit', keepalive: true }).catch(function () {});
+    } catch (e) {}
+  }
+
   function setAttr(el, name, value) {
     if (el.getAttribute(name) !== value) el.setAttribute(name, value);
   }
@@ -33,6 +45,7 @@
       try {
         nodes = document.querySelectorAll(f.selector);
       } catch (e) {
+        report('bad_selector');
         continue; // an invalid selector skips that one fix
       }
       for (var j = 0; j < nodes.length; j++) {
@@ -57,7 +70,7 @@
     queued = true;
     setTimeout(function () {
       queued = false;
-      apply();
+      guard('apply_error', apply);
     }, 200);
   }
 
@@ -290,21 +303,43 @@
     (document.body || document.documentElement).appendChild(host);
   }
 
+  // Runs fn; on an exception, reports the code and rethrows (same outcome as before).
+  function guard(code, fn) {
+    try {
+      return fn();
+    } catch (e) {
+      report(code);
+      throw e;
+    }
+  }
+
   fetch(origin + '/api/app/fix?k=' + encodeURIComponent(key), { credentials: 'omit' })
-    .then(function (res) {
-      return res.ok ? res.json() : { fixes: [] };
-    })
+    .then(
+      function (res) {
+        if (!res.ok) report('config_http');
+        return res.ok
+          ? res.json().catch(function (e) {
+              report('config_parse');
+              throw e;
+            })
+          : { fixes: [] };
+      },
+      function (e) {
+        report('config_network');
+        throw e;
+      },
+    )
     .then(function (data) {
       fixes = (data && data.fixes) || [];
       if (fixes.length) {
-        apply();
+        guard('apply_error', apply);
         state.applied = fixes.length;
         new MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true });
       }
       if (data && data.toolbar) {
-        if (document.body) toolbar(data.toolbar);
+        if (document.body) guard('toolbar_error', function () { toolbar(data.toolbar); });
         else document.addEventListener('DOMContentLoaded', function () {
-          toolbar(data.toolbar);
+          guard('toolbar_error', function () { toolbar(data.toolbar); });
         });
       }
     })

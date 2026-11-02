@@ -10,6 +10,7 @@ import { fetchPage } from '../fetch-page.js';
 import { UnsafeUrlError } from '../net-guard.js';
 import { tagsFor, standardFor } from '../wcag.js';
 import { recordDocuments, isPdfUrl } from './documents.js';
+import { startScanRun, finishScanRun, recordScanDuration } from './tracking.js';
 
 /** Run one device scan. Browser first; HTML audit if the browser is unavailable. */
 /** Screenshots of failing elements kept per scan (see stripOldShots). */
@@ -65,8 +66,12 @@ export async function runAudit(url, settings, device, { browser = browserAudit, 
 export async function scanPage(page, { accountId, trigger = 'manual', userId = null, deps } = {}) {
   const settings = { ...DEFAULT_SETTINGS, ...page.settings };
   const stored = [];
+  const durations = [];
+  const runStarted = Date.now();
+  const runId = await startScanRun({ accountId, domainId: page.domain_id, pageId: page.id, kind: 'page', trigger });
   for (const device of settings.devices) {
     let row;
+    const t0 = Date.now();
     try {
       const r = await runAudit(page.url, settings, device, deps);
       row = await one(
@@ -95,7 +100,9 @@ export async function scanPage(page, { accountId, trigger = 'manual', userId = n
       );
     }
     stored.push(row);
+    durations.push([row?.id, Date.now() - t0]);
   }
+  for (const [id, ms] of durations) await recordScanDuration(id, ms);
 
   const done = stored.filter((s) => s.status === 'done');
   if (done.length) {
@@ -106,6 +113,7 @@ export async function scanPage(page, { accountId, trigger = 'manual', userId = n
       [page.id, worst.id, worst.score, Math.max(...done.map((d) => d.issues_count))],
     );
   }
+  await finishScanRun(runId, { status: done.length ? 'done' : 'failed', durationMs: Date.now() - runStarted });
   return stored;
 }
 
@@ -145,7 +153,10 @@ export async function startDomainScan(ctx, domainId, { send = sendScanEvents, ba
   const pages = await query('select id, url from app.pages where domain_id = $1 and monitored order by url', [domain.id]);
   if (!pages.length) throw new AppError(400, 'Select pages to scan first.', 'no_pages');
   const since = new Date().toISOString();
-  if (!background || pages.length < BACKGROUND_SCAN_FROM) return { mode: 'client', since, pages };
+  if (!background || pages.length < BACKGROUND_SCAN_FROM) {
+    await startScanRun({ accountId: ctx.account.id, domainId: domain.id, kind: 'domain', trigger: 'manual', pages: pages.length });
+    return { mode: 'client', since, pages };
+  }
   const recent = await one(
     `select count(*)::int as n from app.scans where account_id = $1 and created_at > now() - interval '1 hour'`,
     [ctx.account.id],
@@ -154,6 +165,7 @@ export async function startDomainScan(ctx, domainId, { send = sendScanEvents, ba
     throw new AppError(429, 'You have run a very large number of scans in the last hour. Please wait a little and try again.', 'fair_use');
   }
   await send(pages.map((p) => ({ name: 'app/page.scan', data: { pageId: p.id, userId: ctx.user.id } })));
+  await startScanRun({ accountId: ctx.account.id, domainId: domain.id, kind: 'domain', trigger: 'manual', pages: pages.length });
   return { mode: 'background', since, total: pages.length };
 }
 

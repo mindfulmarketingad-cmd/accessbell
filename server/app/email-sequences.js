@@ -9,6 +9,7 @@
 // sequence email carries an opt-out line. Nothing in this file sends mail on
 // import: each function sends only when called.
 import { config } from './config.js';
+import { recordWelcomeEmail } from './tracking.js';
 
 async function sendEmail({ to, subject, text, replyTo, idempotencyKey }) {
   const c = config();
@@ -183,14 +184,23 @@ export function welcomeSubscriberEmail({ dashboardUrl = 'https://www.accessbell.
 }
 
 /** Send the welcome email. `key` (e.g. the account id) makes Resend drop duplicates. */
-export function sendWelcomeSubscriberEmail({ to, key }) {
+export async function sendWelcomeSubscriberEmail({ to, key }) {
   const replyTo = config().adminEmails[0] || undefined;
-  return sendEmail({
-    to,
-    ...welcomeSubscriberEmail(),
-    replyTo,
-    idempotencyKey: key ? `welcome-subscriber/${key}` : undefined,
-  });
+  let res;
+  try {
+    res = await sendEmail({
+      to,
+      ...welcomeSubscriberEmail(),
+      replyTo,
+      idempotencyKey: key ? `welcome-subscriber/${key}` : undefined,
+    });
+  } catch (err) {
+    await recordWelcomeEmail(key, { ok: false, reason: err?.name || 'error' });
+    throw err;
+  }
+  // Recorded for the admin account page (key is the account id). Never throws.
+  await recordWelcomeEmail(key, res);
+  return res;
 }
 
 export const sendReportLinkEmail = (a) => sendEmail({ to: a.to, ...reportLinkEmail(a) });
