@@ -149,3 +149,19 @@ test('suppressed addresses are skipped by follow-ups and upsells', () => {
   ];
   assert.deepEqual(upsellCandidates({ purchases, suppressedEmails: ['GONE@example.com'], now }).map((r) => r.id), [2]);
 });
+
+test('subscriber-admin funnel-preview and unsuppress need the admin token', async () => {
+  const saved = { ...process.env };
+  process.env.SUBSCRIBER_ADMIN_TOKEN = 'right-token';
+  try {
+    const { POST } = await import('../api/subscriber-admin.js');
+    for (const action of ['funnel-preview', 'unsuppress']) {
+      const res = await POST(new Request('https://www.accessbell.co/api/subscriber-admin', {
+        method: 'POST', headers: { 'content-type': 'application/json', 'x-admin-token': 'wrong' }, body: JSON.stringify({ action, email: 'a@b.co' }),
+      }));
+      assert.equal(res.status, 403);
+    }
+  } finally {
+    process.env = saved;
+  }
+});
