@@ -10,16 +10,23 @@
 // import: each function sends only when called.
 import { config } from './config.js';
 
-async function sendEmail({ to, subject, text }) {
+async function sendEmail({ to, subject, text, replyTo, idempotencyKey }) {
   const c = config();
   if (!c.resendApiKey) return { ok: false, reason: 'not-configured' };
+  const headers = { Authorization: `Bearer ${c.resendApiKey}`, 'Content-Type': 'application/json' };
+  // Resend drops a repeat request with the same key (24h), so a retried
+  // webhook cannot send the same transactional email twice.
+  if (idempotencyKey) headers['Idempotency-Key'] = String(idempotencyKey).slice(0, 256);
+  const payload = { from: c.emailFrom, to: [to], subject: subject.slice(0, 150), text };
+  if (replyTo) payload.reply_to = replyTo;
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
-    headers: { Authorization: `Bearer ${c.resendApiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ from: c.emailFrom, to: [to], subject: subject.slice(0, 150), text }),
+    headers,
+    body: JSON.stringify(payload),
     signal: AbortSignal.timeout(8000),
   });
-  return { ok: res.ok, reason: res.ok ? undefined : `resend-${res.status}` };
+  const data = await res.json().catch(() => ({}));
+  return { ok: res.ok, id: data?.id, reason: res.ok ? undefined : `resend-${res.status}` };
 }
 
 const FOOT = '\n\nAccessBell finds accessibility barriers in your site code and explains how to fix them. Automated testing covers part of the WCAG standard, not all of it, so some checks still need a person. No tool can guarantee legal compliance on its own.';
@@ -147,6 +154,43 @@ export function pageReportUpsellEmail({ hostname, reportUrl }) {
       OPTOUT,
     ].join('\n'),
   };
+}
+
+/**
+ * Welcome (transactional): sent once when a Pro subscription checkout links
+ * to an account. Written as David; replies go to him (first ADMIN_EMAILS
+ * entry). Sent live regardless of FUNNEL_EMAIL_LIVE: it is not a sequence.
+ */
+export function welcomeSubscriberEmail({ dashboardUrl = 'https://www.accessbell.co/app' } = {}) {
+  return {
+    subject: 'Welcome to AccessBell',
+    text: [
+      'Hi there,',
+      '',
+      "Thanks for subscribing to AccessBell, I'm really glad you're here.",
+      '',
+      `Your dashboard is ready here: ${dashboardUrl}`,
+      '',
+      'From there you can run scans, see exactly how to fix each issue, and get daily rescans with alerts so your site stays accessible.',
+      '',
+      'If you have any questions or ideas, just reply to this email. It comes straight to me.',
+      '',
+      'Welcome aboard,',
+      'David',
+      'AccessBell',
+    ].join('\n'),
+  };
+}
+
+/** Send the welcome email. `key` (e.g. the account id) makes Resend drop duplicates. */
+export function sendWelcomeSubscriberEmail({ to, key }) {
+  const replyTo = config().adminEmails[0] || undefined;
+  return sendEmail({
+    to,
+    ...welcomeSubscriberEmail(),
+    replyTo,
+    idempotencyKey: key ? `welcome-subscriber/${key}` : undefined,
+  });
 }
 
 export const sendReportLinkEmail = (a) => sendEmail({ to: a.to, ...reportLinkEmail(a) });
