@@ -4,7 +4,7 @@
 // matching x-admin-token header. Actions:
 // - "status": does the email have a login/profile, an account, a linked
 //   Stripe subscription, and dashboard access? Read-only.
-// - "repair": no profile yet -> create the login with Supabase's invite (the
+// - "repair" (David only; he vouches for the address): no profile yet -> create the login with Supabase's invite (the
 //   person gets a set-password email); login exists but never used -> send a
 //   password-reset email only when sendReset is true. Then link a trialing or
 //   active Stripe subscription found by email. Sends the welcome once linked.
@@ -16,7 +16,7 @@ import { one } from '../server/app/db.js';
 import { config } from '../server/app/config.js';
 import { auth } from '../server/app/auth-client.js';
 import { withAccessRule } from '../server/app/access.js';
-import { accountFromInvite, claimSubscriptionForUser } from '../server/app/billing.js';
+import { accountFromInvite, claimSubscriptionForUser, stripe, isAccessBellSubscription } from '../server/app/billing.js';
 import { sendWelcomeSubscriberEmail } from '../server/app/email-sequences.js';
 import { json, readJson, methodNotAllowed } from '../server/http.js';
 
@@ -30,7 +30,7 @@ function tokenOk(given, expected) {
 async function status(email) {
   const row = await one(
     `select p.user_id, p.status as profile_status, a.id as account_id, a.subscription_status,
-            a.stripe_subscription_id is not null as stripe_linked, a.trial_ends_at
+            a.stripe_subscription_id is not null as stripe_linked, a.stripe_subscription_id, a.trial_ends_at
        from app.profiles p
        left join app.account_members m on m.user_id = p.user_id and m.role = 'owner'
        left join app.accounts a on a.id = m.account_id
@@ -45,6 +45,14 @@ async function status(email) {
     const r = await withAccessRule((rule) => one(`select ${rule} as ok from app.accounts a where a.id = $1`, [row.account_id]));
     access = Boolean(r?.ok);
   }
+  let accessBellProduct = null;
+  if (row.stripe_subscription_id) {
+    try {
+      accessBellProduct = await isAccessBellSubscription(await stripe('GET', `/subscriptions/${encodeURIComponent(row.stripe_subscription_id)}`));
+    } catch {
+      accessBellProduct = 'unknown';
+    }
+  }
   return {
     profile: true,
     userId: row.user_id,
@@ -52,6 +60,7 @@ async function status(email) {
     profileStatus: row.profile_status,
     subscriptionStatus: row.subscription_status,
     stripeLinked: row.stripe_linked,
+    accessBellProduct,
     trialEndsAt: row.trial_ends_at,
     access,
   };

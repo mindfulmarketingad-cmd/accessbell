@@ -135,21 +135,61 @@ async function accountForCheckout(session) {
     const row = await one('select id from app.accounts where id = $1', [ref]);
     if (row) return row.id;
   }
-  // Paid through the link without signing in first: match the owner by email.
-  const email = session.customer_details?.email || session.customer_email;
-  if (email) {
-    const row = await one(
-      `select m.account_id as id
-         from app.profiles p
-         join app.account_members m on m.user_id = p.user_id and m.role = 'owner'
-        where lower(p.email) = lower($1)
-        order by m.created_at asc
-        limit 1`,
-      [email],
-    );
-    if (row) return row.id;
-  }
+  // No email-based matching here: sign-up does not prove email ownership, so
+  // linking by email could hand a subscription to whoever registered that
+  // address first. Unmatched buyers are invited (new email) or claim their
+  // subscription on a verified email-link sign-in (claimSubscriptionForUser).
   return null;
+}
+
+// ---------- AccessBell products ----------
+
+const PRODUCT_CACHE_MS = 10 * 60 * 1000;
+let productCache = null;
+
+/**
+ * Stripe product ids sold by AccessBell's Pro Payment Links (monthly and
+ * annual), read from Stripe with the app's own key. The Stripe account also
+ * sells other businesses' products; only these grant AccessBell access.
+ * Throws when Stripe cannot be read, so callers fail closed.
+ */
+export async function accessBellProductIds({ stripeApi = stripe, now = Date.now() } = {}) {
+  if (productCache && now - productCache.at < PRODUCT_CACHE_MS) return productCache.ids;
+  const c = config();
+  const wanted = new Set([c.stripePaymentLink, c.stripePaymentLinkAnnual].filter(Boolean));
+  const links = [];
+  let after = '';
+  for (let page = 0; page < 5; page++) {
+    const res = await stripeApi('GET', `/payment_links?limit=100${after ? `&starting_after=${encodeURIComponent(after)}` : ''}`);
+    for (const l of res?.data || []) if (wanted.has(l.url)) links.push(l.id);
+    if (!res?.has_more || !res.data?.length) break;
+    after = res.data[res.data.length - 1].id;
+  }
+  const ids = new Set();
+  for (const id of links) {
+    const items = await stripeApi('GET', `/payment_links/${encodeURIComponent(id)}/line_items?limit=20`);
+    for (const it of items?.data || []) {
+      const product = typeof it.price?.product === 'string' ? it.price.product : it.price?.product?.id;
+      if (product) ids.add(product);
+    }
+  }
+  if (!ids.size) throw new Error('AccessBell Payment Link products not found in Stripe');
+  productCache = { at: now, ids };
+  return ids;
+}
+
+/** True when every item on the subscription is an AccessBell Pro product. */
+export function subscriptionMatchesProducts(sub, productIds) {
+  const items = sub?.items?.data || [];
+  if (!items.length) return false;
+  return items.every((i) => {
+    const p = i.price?.product ?? i.plan?.product;
+    return productIds.has(typeof p === 'string' ? p : p?.id);
+  });
+}
+
+export async function isAccessBellSubscription(sub, opts) {
+  return subscriptionMatchesProducts(sub, await accessBellProductIds(opts));
 }
 
 /** Email the welcome to the checkout email (or the account owner). Never throws. */
@@ -199,7 +239,9 @@ export async function accountFromInvite(email, { invite = (e, r) => auth.invite(
 /**
  * Link a Stripe subscription found by the owner's email to their account, for
  * buyers whose checkout could not be matched to an account at payment time.
- * Runs at sign-in; does nothing when the account is already linked. Never throws.
+ * Call ONLY after the email is proven (email-link sign-in: recovery, invite,
+ * magic link, signup confirmation); see emailVerifiedSession. Only AccessBell
+ * Pro products are linked. Does nothing when already linked. Never throws.
  */
 export async function claimSubscriptionForUser(user, { stripeApi = stripe } = {}) {
   try {
@@ -214,7 +256,8 @@ export async function claimSubscriptionForUser(user, { stripeApi = stripe } = {}
     const customers = await stripeApi('GET', `/customers?email=${encodeURIComponent(email)}&limit=10`);
     for (const c of customers?.data || []) {
       const subs = await stripeApi('GET', `/subscriptions?customer=${encodeURIComponent(c.id)}&status=all&limit=10`);
-      const sub = (subs?.data || []).find((s) => ACTIVE_STATUSES.has(s.status));
+      const productIds = await accessBellProductIds({ stripeApi });
+      const sub = (subs?.data || []).find((s) => ACTIVE_STATUSES.has(s.status) && subscriptionMatchesProducts(s, productIds));
       if (!sub) continue;
       const taken = await one('select id from app.accounts where stripe_subscription_id = $1 and id <> $2', [sub.id, acct.id]);
       if (taken) return 'already-linked-elsewhere';
@@ -229,11 +272,26 @@ export async function claimSubscriptionForUser(user, { stripeApi = stripe } = {}
   }
 }
 
+const VERIFIED_AMR = new Set(['otp', 'magiclink', 'recovery', 'invite', 'email/signup', 'email_change']);
+
+/**
+ * True when a Supabase access token came from an email link (the person
+ * proved they control the address), read from the token's amr claim. The
+ * token must already be validated (auth.getUser) by the caller.
+ */
+export function emailVerifiedSession(accessToken) {
+  try {
+    const payload = JSON.parse(Buffer.from(String(accessToken).split('.')[1], 'base64url').toString('utf8'));
+    return (payload.amr || []).some((a) => VERIFIED_AMR.has(a?.method));
+  } catch {
+    return false;
+  }
+}
+
 async function accountForSubscription(sub) {
-  const customer = typeof sub.customer === 'string' ? sub.customer : sub.customer?.id;
   const row = await one(
-    'select id from app.accounts where stripe_subscription_id = $1 or stripe_customer_id = $2 limit 1',
-    [sub.id, customer],
+    'select id from app.accounts where stripe_subscription_id = $1 limit 1',
+    [sub.id],
   );
   return row?.id || null;
 }
@@ -248,18 +306,19 @@ export async function handleStripeEvent(
   {
     fetchSubscription = (id) => stripe('GET', `/subscriptions/${encodeURIComponent(id)}`),
     sendWelcome = sendWelcomeSubscriberEmail,
+    isAccessBell = (sub) => isAccessBellSubscription(sub),
   } = {},
 ) {
   const seen = await one('select 1 from app.stripe_events where id = $1', [event.id]);
   if (seen) return 'duplicate';
-  const result = await processStripeEvent(event, fetchSubscription, sendWelcome);
+  const result = await processStripeEvent(event, fetchSubscription, sendWelcome, isAccessBell);
   // Recorded only after success, so a failed attempt is retried by Stripe.
   // Processing is idempotent, so a rare concurrent duplicate is harmless.
   await one('insert into app.stripe_events (id, type) values ($1, $2) on conflict do nothing', [event.id, event.type]);
   return result;
 }
 
-async function processStripeEvent(event, fetchSubscription, sendWelcome) {
+async function processStripeEvent(event, fetchSubscription, sendWelcome, isAccessBell) {
   const obj = event.data?.object || {};
 
   // One-time purchases (Page Report, Domain Audit) never touch subscription
@@ -270,16 +329,19 @@ async function processStripeEvent(event, fetchSubscription, sendWelcome) {
 
   if (event.type === 'checkout.session.completed') {
     if (obj.mode !== 'subscription' || !obj.subscription) return 'ignored: not a subscription checkout';
+    const subId = typeof obj.subscription === 'string' ? obj.subscription : obj.subscription.id;
+    const subscription = await fetchSubscription(subId);
+    // Same Stripe account sells other products: only AccessBell Pro counts.
+    if (!(await isAccessBell(subscription))) return 'ignored: not an AccessBell subscription';
     let accountId = await accountForCheckout(obj);
     // Paid through the Payment Link without an AccessBell login: create one
     // with Supabase's invite (the buyer gets a set-password email).
     if (!accountId) accountId = await accountFromInvite(obj.customer_details?.email || obj.customer_email);
     if (!accountId) return 'unmatched checkout';
-    const subId = typeof obj.subscription === 'string' ? obj.subscription : obj.subscription.id;
     // First subscription on this account? Checked before linking, so a retried
     // event (or a later resubscribe) never sends the welcome a second time.
     const prior = await one('select stripe_subscription_id from app.accounts where id = $1', [accountId]);
-    await applySubscription(accountId, await fetchSubscription(subId));
+    await applySubscription(accountId, subscription);
     if (!prior?.stripe_subscription_id) await welcomeOnce(accountId, obj, sendWelcome);
     return 'linked';
   }
@@ -293,6 +355,7 @@ async function processStripeEvent(event, fetchSubscription, sendWelcome) {
     } catch (err) {
       if (err.status !== 404) throw err;
     }
+    if (!(await isAccessBell(sub))) return 'ignored: not an AccessBell subscription';
     await applySubscription(accountId, sub);
     return 'updated';
   }
