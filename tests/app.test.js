@@ -300,6 +300,39 @@ test('an admin (ADMIN_EMAILS) gets a dashboard and can add a domain without subs
   }
 });
 
+test('admin analytics: admins read every account, subscribers and others get 403', { skip }, async () => {
+  process.env.ADMIN_EMAILS = 'analytics-admin@ops.test';
+  try {
+    const admin = new Client('10.0.1.30');
+    await admin.post('auth/signup', { email: 'analytics-admin@ops.test', password: 'correct horse' });
+    await admin.post('domains', { url: 'analytics-example.com' });
+
+    const overview = await admin.get('admin/overview');
+    assert.equal(overview.status, 200, JSON.stringify(overview.body));
+    assert.ok(overview.body.summary.totalAccounts >= 1);
+    const row = overview.body.accounts.find((a) => a.email === 'analytics-admin@ops.test');
+    assert.ok(row, 'own account listed');
+    assert.equal(row.domains, 1);
+
+    const detail = await admin.get(`admin/account?id=${row.id}`);
+    assert.equal(detail.status, 200, JSON.stringify(detail.body));
+    assert.equal(detail.body.profile.email, 'analytics-admin@ops.test');
+    assert.equal(detail.body.domains[0].hostname, 'analytics-example.com');
+    assert.ok(detail.body.flags.some((f) => f.text.includes('never scanned')));
+    assert.equal((await admin.get('admin/account?id=00000000-0000-0000-0000-000000000000')).status, 404);
+
+    const sub = new Client('10.0.1.31');
+    await sub.post('auth/signup', { email: 'analytics-sub@acme.test', password: 'correct horse' });
+    const me = await sub.get('me');
+    await markSubscriber(me.body.account.id);
+    assert.equal((await sub.get('admin/overview')).status, 403);
+    assert.equal((await sub.get(`admin/account?id=${row.id}`)).status, 403);
+    assert.equal((await new Client('10.0.1.32').get('admin/overview')).status, 401);
+  } finally {
+    delete process.env.ADMIN_EMAILS;
+  }
+});
+
 test('a non-admin still needs to subscribe', { skip }, async () => {
   const someone = new Client('10.0.1.10');
   await someone.post('auth/signup', { email: 'not-admin@acme.test', password: 'correct horse' });

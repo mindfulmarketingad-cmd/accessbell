@@ -58,7 +58,7 @@ function render() {
           { label: 'Monitored pages', num: true }, { label: 'Scans', num: true }, { label: 'Scans, 30 days', num: true },
           { label: 'Rescans', num: true }, { label: 'Last scan' }, { label: 'Last active' }, { label: 'Vault records', num: true }, { label: 'Fixes', num: true },
         ], data.accounts.map((a) => el('tr', {}, [
-          el('th', { scope: 'row', text: a.email || a.name }),
+          el('th', { scope: 'row' }, [el('a', { href: `/app/admin/account?id=${encodeURIComponent(a.id)}`, text: a.email || a.name })]),
           td(date(a.signedUpAt)),
           td(`${a.status}${a.interval ? ` (${a.interval})` : ''}${a.stripeLinked ? '' : a.status === 'none' ? '' : ' - not linked'}`),
           td(date(a.trialEndsAt)),

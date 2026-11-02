@@ -4,7 +4,7 @@ import { createRateLimiter } from '../rate-limit.js';
 import { auth } from './auth-client.js';
 import { readSession, sessionCookies, clearSessionCookies } from './session.js';
 import { ensureUserSetup, getContext, renameAccount, requireRole, isSubscribed, isAdminUser, getOnboarding, completeTour } from './accounts.js';
-import { adminOverview } from './admin.js';
+import { adminOverview, adminAccountDetail } from './admin.js';
 import { checkoutUrl, portalUrl, billingSummary, claimSubscriptionForUser, emailVerifiedSession } from './billing.js';
 import {
   listDomains, createDomain, updateDomainSettings, deleteDomain, addPage, setMonitored, deletePage, discoverPages, domainOverview, selectPages, addPages,
@@ -306,6 +306,9 @@ const routes = {
 
   async 'GET admin/overview'({ ctx }) {
     return adminOverview(ctx);
+  },
+  async 'GET admin/account'({ ctx, url }) {
+    return adminAccountDetail(ctx, url.searchParams.get('id'));
   },
   async 'GET admin/free-scans'({ ctx, url }) {
     const p = url.searchParams;

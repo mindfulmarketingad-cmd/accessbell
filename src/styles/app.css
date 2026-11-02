@@ -4276,3 +4276,11 @@ a.count-pill:hover {
 [data-fs-list] tbody th {
   text-align: left;
 }
+
+/* Admin account analytics */
+.ac-flags { list-style: none; padding: 0; margin: 0; display: grid; gap: .5rem; }
+.ac-flags li { padding: .6rem .8rem; border-radius: 8px; border-left: 4px solid #b26a00; background: #fff6e5; }
+.ac-flags li[data-level='error'] { border-left-color: #b3261e; background: #fdecea; }
+.ac-list { display: grid; grid-template-columns: max-content 1fr; gap: .35rem 1rem; margin: 0; }
+.ac-list dt { font-weight: 600; }
+.ac-list dd { margin: 0; }

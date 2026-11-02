@@ -1,0 +1,34 @@
+---
+import AppLayout from '../../../layouts/AppLayout.astro';
+---
+<AppLayout title="Account analytics" section="admin">
+  <header class="app-head">
+    <div>
+      <p><a href="/app/admin">&larr; All accounts</a></p>
+      <h1 data-ac-title>Account analytics</h1>
+      <p>One account's usage and anything that looks wrong. Only site admins can see this.</p>
+    </div>
+  </header>
+  <p class="status-line" data-ac-status role="status" aria-live="polite"></p>
+  <div data-ac-body hidden>
+    <section class="panel" aria-labelledby="ac-issues-title">
+      <h2 id="ac-issues-title">Issues</h2>
+      <div data-ac-flags></div>
+    </section>
+    <div class="fs-grid">
+      <section class="panel" aria-labelledby="ac-profile-title"><h2 id="ac-profile-title">Profile and billing</h2><div data-ac-profile></div></section>
+      <section class="panel" aria-labelledby="ac-team-title"><h2 id="ac-team-title">Team members</h2><div data-ac-team></div></section>
+    </div>
+    <section class="panel" aria-labelledby="ac-domains-title"><h2 id="ac-domains-title">Domains</h2><div data-ac-domains></div></section>
+    <section class="panel" aria-labelledby="ac-daily-title"><h2 id="ac-daily-title">Daily rescans (last 30 days)</h2><div data-ac-daily></div></section>
+    <section class="panel" aria-labelledby="ac-scans-title"><h2 id="ac-scans-title">Recent scans</h2><div data-ac-scans></div></section>
+    <div class="fs-grid">
+      <section class="panel" aria-labelledby="ac-fixes-title"><h2 id="ac-fixes-title">AccessBellFix</h2><div data-ac-fixes></div></section>
+      <section class="panel" aria-labelledby="ac-vault-title"><h2 id="ac-vault-title">Vault records</h2><div data-ac-vault></div></section>
+    </div>
+    <section class="panel" aria-labelledby="ac-activity-title"><h2 id="ac-activity-title">Recent activity</h2><div data-ac-activity></div></section>
+  </div>
+</AppLayout>
+<script>
+  import '../../../scripts/app/admin-account.js';
+</script>
