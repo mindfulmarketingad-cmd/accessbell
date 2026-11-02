@@ -6,12 +6,14 @@
 // Transactional mail (report links, payment receipts) is sent by the webhook
 // and the audit function. Marketing sequences (scan follow-up, abandoned
 // checkout, audit upsell) are sent by the ops agent on their schedule; every
-// sequence email carries an opt-out line. Nothing in this file sends mail on
+// sequence email carries a signed one-click unsubscribe link, List-Unsubscribe
+// headers and the CAN-SPAM mailing address (see unsubscribe.js). Nothing in this file sends mail on
 // import: each function sends only when called.
 import { config } from './config.js';
 import { recordWelcomeEmail } from './tracking.js';
+import { marketingFooter, unsubscribeHeaders, funnelSendBlockers } from './unsubscribe.js';
 
-async function sendEmail({ to, subject, text, replyTo, idempotencyKey }) {
+async function sendEmail({ to, subject, text, replyTo, idempotencyKey, extraHeaders }) {
   const c = config();
   if (!c.resendApiKey) return { ok: false, reason: 'not-configured' };
   const headers = { Authorization: `Bearer ${c.resendApiKey}`, 'Content-Type': 'application/json' };
@@ -20,6 +22,7 @@ async function sendEmail({ to, subject, text, replyTo, idempotencyKey }) {
   if (idempotencyKey) headers['Idempotency-Key'] = String(idempotencyKey).slice(0, 256);
   const payload = { from: c.emailFrom, to: [to], subject: subject.slice(0, 150), text };
   if (replyTo) payload.reply_to = replyTo;
+  if (extraHeaders && Object.keys(extraHeaders).length) payload.headers = extraHeaders;
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers,
@@ -31,7 +34,6 @@ async function sendEmail({ to, subject, text, replyTo, idempotencyKey }) {
 }
 
 const FOOT = '\n\nAccessBell finds accessibility barriers in your site code and explains how to fix them. Automated testing covers part of the WCAG standard, not all of it, so some checks still need a person. No tool can guarantee legal compliance on its own.';
-const OPTOUT = '\n\nReply to this email with "opt out" and we will not follow up.';
 
 /** Page Report: the emailed link opens the report, which builds on first view. */
 export function reportLinkEmail({ hostname, reportUrl }) {
@@ -85,7 +87,7 @@ export function reportReadyEmail({ hostname, reportUrl, summary }) {
 }
 
 /** Scan follow-up (sequence): sent after a free scan when the visitor left an email. */
-export function scanFollowupEmail({ hostname, url, issues, critical, serious }) {
+export function scanFollowupEmail({ to, hostname, url, issues, critical, serious }) {
   return {
     subject: `Your ${hostname} scan results, and the full report`,
     text: [
@@ -98,13 +100,12 @@ export function scanFollowupEmail({ hostname, url, issues, critical, serious }) 
       'Get the full detail for that page with a Page Report ($19, one-time): https://www.accessbell.co/solutions/page-report',
       'Or audit your whole domain, up to 500 pages, with a Domain Audit ($79, one-time): https://www.accessbell.co/solutions/domain-audit',
       FOOT,
-      OPTOUT,
-    ].join('\n'),
+    ].join('\n') + marketingFooter(to),
   };
 }
 
 /** Abandoned checkout (sequence): one reminder for a pending purchase. */
-export function abandonedCheckoutEmail({ product, hostname, checkoutUrl }) {
+export function abandonedCheckoutEmail({ to, product, hostname, checkoutUrl }) {
   const name = product === 'domain_audit' ? 'Domain Audit ($79)' : 'Page Report ($19)';
   return {
     subject: `Your AccessBell ${name} checkout is still open`,
@@ -115,13 +116,12 @@ export function abandonedCheckoutEmail({ product, hostname, checkoutUrl }) {
       '',
       'If you no longer want it, just ignore this email. We will not send another reminder for this order.',
       FOOT,
-      OPTOUT,
-    ].join('\n'),
+    ].join('\n') + marketingFooter(to),
   };
 }
 
 /** Audit-to-Pro upsell (sequence): sent after a domain audit is delivered. */
-export function auditUpsellEmail({ hostname, reportUrl }) {
+export function auditUpsellEmail({ to, hostname, reportUrl }) {
   return {
     subject: `Keep your ${hostname} audit current with monitoring`,
     text: [
@@ -131,8 +131,7 @@ export function auditUpsellEmail({ hostname, reportUrl }) {
       '',
       'AccessBell Pro ($29 per domain per month, or $199 per year) rescans your domain daily, emails you when a new critical or serious issue appears, and keeps a dated record of every scan and fix. Start a 3-day free trial at https://www.accessbell.co/app/signup.',
       FOOT,
-      OPTOUT,
-    ].join('\n'),
+    ].join('\n') + marketingFooter(to),
   };
 }
 
@@ -141,7 +140,7 @@ export function auditUpsellEmail({ hostname, reportUrl }) {
  * upsell, sent a few days after a Page Report purchase. Needs David's
  * approval before any live send; the funnel agent runs dry-run until then.
  */
-export function pageReportUpsellEmail({ hostname, reportUrl }) {
+export function pageReportUpsellEmail({ to, hostname, reportUrl }) {
   return {
     subject: `Your ${hostname} page report, and the full-domain version`,
     text: [
@@ -152,8 +151,7 @@ export function pageReportUpsellEmail({ hostname, reportUrl }) {
       'A Domain Audit ($79, one-time) does the same for your whole website: it crawls up to 500 pages, lists every issue with its fix, and includes a PDF evidence pack, a dated good-faith summary and an accessibility statement.',
       'Get the full-domain version at https://www.accessbell.co/solutions/domain-audit',
       FOOT,
-      OPTOUT,
-    ].join('\n'),
+    ].join('\n') + marketingFooter(to),
   };
 }
 
@@ -206,7 +204,20 @@ export async function sendWelcomeSubscriberEmail({ to, key }) {
 export const sendReportLinkEmail = (a) => sendEmail({ to: a.to, ...reportLinkEmail(a) });
 export const sendPaymentReceivedEmail = (a) => sendEmail({ to: a.to, ...paymentReceivedEmail(a) });
 export const sendReportReadyEmail = (a) => sendEmail({ to: a.to, ...reportReadyEmail(a) });
-export const sendScanFollowup = (a) => sendEmail({ to: a.to, ...scanFollowupEmail(a) });
-export const sendAbandonedCheckoutReminder = (a) => sendEmail({ to: a.to, ...abandonedCheckoutEmail(a) });
-export const sendAuditUpsell = (a) => sendEmail({ to: a.to, ...auditUpsellEmail(a) });
-export const sendPageReportUpsell = (a) => sendEmail({ to: a.to, ...pageReportUpsellEmail(a) });
+/**
+ * Sequence (marketing) sender: refuses to send without the CAN-SPAM address
+ * and unsubscribe key, and attaches the one-click unsubscribe headers.
+ */
+async function sendSequenceEmail(a, template) {
+  const blockers = funnelSendBlockers();
+  if (blockers.length) {
+    console.error('[funnel] refusing to send sequence email:', blockers.join('; '));
+    return { ok: false, reason: 'funnel-not-ready' };
+  }
+  return sendEmail({ to: a.to, ...template({ ...a, to: a.to }), extraHeaders: unsubscribeHeaders(a.to) });
+}
+
+export const sendScanFollowup = (a) => sendSequenceEmail(a, scanFollowupEmail);
+export const sendAbandonedCheckoutReminder = (a) => sendSequenceEmail(a, abandonedCheckoutEmail);
+export const sendAuditUpsell = (a) => sendSequenceEmail(a, auditUpsellEmail);
+export const sendPageReportUpsell = (a) => sendSequenceEmail(a, pageReportUpsellEmail);
