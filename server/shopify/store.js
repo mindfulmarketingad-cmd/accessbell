@@ -4,6 +4,7 @@ import crypto from 'node:crypto';
 import { one, query, tx } from '../app/db.js';
 import { DEFAULT_SETTINGS, normalizeSiteUrl } from '../app/domains.js';
 import { seal, open } from './crypto-box.js';
+import { PLANS, accountStatusFor } from './plans.js';
 
 export function createStore({ apiSecret }) {
   const unseal = (row) => row && {
@@ -61,6 +62,69 @@ export function createStore({ apiSecret }) {
 
     async getAccount(accountId) {
       return one('select * from app.accounts where id = $1', [accountId]);
+    },
+
+    /**
+     * Store the Shopify plan and mirror it onto the account the app created,
+     * so the existing access rule (subscription_status), the scheduler
+     * (plan_tier) and fix.js follow it. Monitored pages over the plan's limit
+     * are switched off (home page kept first). Accounts with a Stripe
+     * subscription are never changed.
+     */
+    async applyPlan(shop, plan) {
+      return tx(async (q) => {
+        const [row] = await q(
+          `update app.shopify_shops set billing_plan = $2, billing_status = $3, billing_interval = $4, trial_ends_at = $5,
+                  current_period_end = $6, subscription_gid = $7, updated_at = now()
+            where shop = $1 returning account_id, domain_id, account_created`,
+          [shop, plan.tier, plan.status, plan.interval, plan.trialEndsAt, plan.currentPeriodEnd, plan.subscriptionId],
+        );
+        if (!row?.account_id || !row.account_created) return { applied: false };
+        const [acct] = await q(
+          `update app.accounts set plan_tier = $2, subscription_status = $3, trial_ends_at = $4, current_period_end = $5, domain_quota = 1, updated_at = now()
+            where id = $1 and stripe_subscription_id is null returning id`,
+          [row.account_id, plan.tier, accountStatusFor(plan), plan.trialEndsAt, plan.currentPeriodEnd],
+        );
+        if (!acct || !row.domain_id) return { applied: Boolean(acct) };
+        const limit = PLANS[plan.tier].monitoredPages;
+        await q(
+          `update app.pages set monitored = false where domain_id = $1 and monitored and id not in (
+             select p.id from app.pages p join app.domains d on d.id = p.domain_id
+              where p.domain_id = $1 and p.monitored
+              order by (p.url = d.base_url || '/') desc, p.created_at, p.id limit $2)`,
+          [row.domain_id, limit],
+        );
+        // The home page is always monitored, whatever the plan.
+        await q(
+          `insert into app.pages (domain_id, url, monitored, source) select id, base_url || '/', true, 'manual' from app.domains where id = $1
+           on conflict (domain_id, url) do update set monitored = true`,
+          [row.domain_id],
+        );
+        return { applied: true };
+      });
+    },
+
+    async getDomain(domainId) {
+      return one(`select id, hostname, base_url, (to_jsonb(d)->>'fix_seen_at') as fix_seen_at from app.domains d where id = $1`, [domainId]);
+    },
+
+    async monitoredPages(domainId) {
+      return query(
+        `select p.id, p.url, p.last_scanned_at from app.pages p join app.domains d on d.id = p.domain_id
+          where p.domain_id = $1 and p.monitored order by (p.url = d.base_url || '/') desc, p.created_at, p.id`,
+        [domainId],
+      );
+    },
+
+    /** Mark discovered pages monitored, up to `limit` in total, home page first, shortest URLs next. */
+    async monitorUpTo(domainId, limit) {
+      await query(
+        `update app.pages set monitored = true where id in (
+           select p.id from app.pages p join app.domains d on d.id = p.domain_id where p.domain_id = $1
+            order by p.monitored desc, (p.url = d.base_url || '/') desc, length(p.url), p.url limit $2)`,
+        [domainId, limit],
+      );
+      return this.monitoredPages(domainId);
     },
 
     /** Returns false when this webhook id was already handled (Shopify retries). */

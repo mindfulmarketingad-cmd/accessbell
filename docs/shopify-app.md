@@ -1,7 +1,7 @@
 # AccessBell for Shopify (branch `shopify-app`)
 
-Status: scaffolding only. Not merged, not deployed, migration not applied.
-Billing is a stub until David approves Shopify pricing.
+Status: draft. Not merged, not deployed, migration not applied.
+Billing uses Shopify Managed Pricing (plans approved by David: Option B).
 
 ## How it fits the existing app
 
@@ -21,7 +21,10 @@ Stripe billing, Supabase auth or the existing dashboard changes.
 | Install records in Supabase | `server/shopify/store.js`, `supabase/migrations/0016_shopify.sql` |
 | Privacy + uninstall webhooks | `server/shopify/webhooks.js` |
 | Embedded admin page (App Bridge) | `server/shopify/app-page.js` |
-| Billing (TODO) | `server/shopify/billing.js` |
+| Plans and limits | `server/shopify/plans.js` |
+| Billing (Managed Pricing sync) | `server/shopify/billing.js` |
+| App embed check | `server/shopify/embed.js` |
+| Free monthly scan | `server/shopify/free-scans.js` + `server/inngest/functions.js` |
 | Tests | `tests/shopify.test.js` |
 
 ## Install and auth flow
@@ -56,17 +59,70 @@ by webhook id):
 - `shop/redact` (48 h after uninstall): install record deleted, and the
   account created for the store too if it has no Stripe customer and no members.
 
+## Billing: Shopify Managed Pricing
+
+| Plan | Price | Pages | Automatic rescans | Manual "Scan now" | Fixes + page discovery |
+| --- | --- | --- | --- | --- | --- |
+| Free | $0 | home page | monthly | once a month | no (toolbar only) |
+| Starter | $12/mo | 25 | weekly | once a day | yes |
+| Pro | $29/mo or $290/yr | 500 (same as web Pro) | daily | any time (10 min gap) | yes |
+
+3-day free trial on Starter and Pro. One store per plan (each install is its own account, domain quota 1).
+
+**Why Managed Pricing, not the Billing API.** App Store rules require apps sold
+there to charge through Shopify, not Stripe. Both options satisfy that.
+Managed Pricing was chosen because Shopify hosts the plan picker, runs the
+trial, upgrades, downgrades and proration, and Shopify recommends it for
+simple, fixed-tier plans like these. That means no charge-creation or
+approval-redirect code to get wrong in review. The Billing API would only be
+needed for usage charges or custom discounts, which we don't have.
+
+How it works:
+
+- The "See plans" / "Change plan" button opens Shopify's hosted page
+  `https://admin.shopify.com/store/{handle}/charges/accessbell/pricing_plans`.
+- The plan is read from `currentAppInstallation.activeSubscriptions`
+  (`billing.js`) on every app open and on the `app_subscriptions/update`
+  webhook, then written to `app.shopify_shops` and mirrored to
+  `app.accounts` (`plan_tier`, `subscription_status`, trial and period
+  dates, `domain_quota = 1`). Accounts with a Stripe subscription are never
+  touched.
+- Because `subscription_status` follows Shopify, the existing access rule,
+  daily scheduler and `fix.js` gate paid features with no new code paths.
+  `FROZEN` maps to `paused` and pending approval to `incomplete`, both
+  without access. A cancelled plan falls back to Free.
+- Limits: pages above the plan limit are unmonitored whenever a plan is
+  applied (home page kept first); the scheduler adds a Starter filter
+  (weekly, first 25 pages); a separate daily cron scans Free home pages
+  older than ~30 days; manual scans are rate-limited per plan (429
+  `plan_scan_limit`); "Find pages" is paid only (402 `plan_required`).
+  Free stores get the visitor toolbar from `fix.js`, but no fixes.
+- `plan_tier` is read through `to_jsonb(a)->>'plan_tier'`, so the changed
+  queries work before and after the migration, and web accounts (null tier)
+  behave exactly as today.
+
+**Partner Dashboard setup (David):** in the app's Pricing section choose
+Managed Pricing and create plans named exactly **Free**, **Starter** ($12
+every 30 days, 3-day trial) and **Pro** ($29 every 30 days and $290 annual,
+3-day trial). The code maps plan names to tiers; an unknown name is treated
+as Free.
+
+## Embedded page
+
+Shows the score and top issues, the current plan and trial end, a Scan now
+button (Free and Starter show when the next scan is allowed; more than one
+page runs in the background through Inngest), Find pages on paid plans, and
+whether the AccessBell app embed is on (read from the live theme's
+`config/settings_data.json` with `read_themes`, falling back to "fix.js was
+seen in the last 7 days"), with a deep link that opens App embeds.
+
 ## Still to do before submission
 
-- **Billing (blocked on pricing approval):** Managed Pricing or Billing API,
-  `app_subscriptions/update` webhook, gate scans/fixes on the Shopify plan.
-  Until then a Shopify account has `subscription_status = 'none'` and daily
-  rescans do not run for it.
-- Manual "Scan now" button in the embedded page (reuse `rescanPage`).
-- Background token refresh (`refreshOfflineToken`) for scheduled work that
-  calls the Admin API (not needed yet: scans hit the public storefront).
+- Create the Managed Pricing plans in the Partner Dashboard (names above).
+- Regression alert emails: Shopify accounts have no members, so alerts are
+  not emailed yet (could go to the shop email).
+- Compliance Vault and CSV export are not exposed in the embedded page yet.
 - Polaris web components for the admin UI (for "Built for Shopify").
-- Check whether the app embed is on (`read_themes`) and show it in the page.
 - Password-protected dev stores: the storefront scanner cannot see pages
   behind the store password.
 - Apply `0016_shopify.sql`, set `SHOPIFY_API_KEY` / `SHOPIFY_API_SECRET` in

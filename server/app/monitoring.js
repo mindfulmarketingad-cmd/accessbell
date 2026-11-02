@@ -4,6 +4,7 @@ import { config } from './config.js';
 import { scanPage } from './scanning.js';
 import { withAccessRule } from './access.js';
 import { recordAlertEmail } from './tracking.js';
+import { scheduleFilterSql } from '../shopify/plans.js';
 
 const SEVERE = new Set(['critical', 'serious']);
 
@@ -16,6 +17,8 @@ export async function pagesDueForMonitoring() {
          join app.domains d on d.id = p.domain_id
          join app.accounts a on a.id = d.account_id
         where p.monitored and ${rule}
+          -- Shopify Starter: weekly, first 25 pages. No effect on other accounts.
+          and ${scheduleFilterSql('a', 'p')}
         order by p.last_scanned_at asc nulls first
         limit 50000`,
     ),

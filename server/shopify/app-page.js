@@ -42,6 +42,8 @@ h1{font-size:20px;margin:0 0 12px}h2{font-size:16px;margin:0 0 8px}
 table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:8px;border-bottom:1px solid #e3e3e3;vertical-align:top}
 .impact{font-weight:600;text-transform:capitalize}
 a{color:#005bd3}
+button{font:inherit;padding:6px 14px;border-radius:8px;border:1px solid #8a8a8a;background:#fff;cursor:pointer}button:disabled{opacity:.6;cursor:default}
+.ok{color:#0c5132;font-weight:600}.warn{color:#8e1f0b;font-weight:600}
 </style>
 </head>
 <body>
@@ -50,8 +52,15 @@ a{color:#005bd3}
   <div id="status" class="card" role="status" aria-live="polite">Loading your store's results&hellip;</div>
   <section id="summary" class="card" hidden aria-labelledby="sum-h"><h2 id="sum-h">Accessibility score</h2><div id="sum"></div></section>
   <section id="issues" class="card" hidden aria-labelledby="iss-h"><h2 id="iss-h">Top issues and guided fix suggestions</h2><div id="iss"></div></section>
-  <section id="setup" class="card" hidden aria-labelledby="set-h"><h2 id="set-h">Apply approved fixes on your storefront</h2>
-    <p>Turn on the <strong>AccessBell fixes</strong> app embed in <em>Online Store &rsaquo; Themes &rsaquo; Customize &rsaquo; App embeds</em>. It loads the fixes you approve in AccessBell. It changes attributes such as alt text and labels, never your design.</p>
+  <section id="plan" class="card" hidden aria-labelledby="plan-h"><h2 id="plan-h">Your plan</h2><div id="plan-body"></div>
+    <p><button type="button" id="change-plan">See plans</button></p></section>
+  <section id="scan" class="card" hidden aria-labelledby="scan-h"><h2 id="scan-h">Scans</h2><p id="scan-info"></p>
+    <p><button type="button" id="scan-now">Scan now</button> <button type="button" id="find-pages" hidden>Find and monitor store pages</button></p>
+    <p id="scan-msg" role="status" aria-live="polite"></p></section>
+  <section id="setup" class="card" hidden aria-labelledby="set-h"><h2 id="set-h">AccessBell app embed</h2>
+    <p id="embed-state"></p>
+    <p>The <strong>AccessBell fixes</strong> app embed loads the fixes you approve and the accessibility toolbar. It changes attributes such as alt text and labels, never your design.</p>
+    <p><a id="embed-link" target="_top" href="#">Open App embeds in the theme editor</a></p>
   </section>
 </main>
 <script nonce="${nonce}">
@@ -64,12 +73,18 @@ a{color:#005bd3}
     for (const c of [].concat(kids || [])) e.append(typeof c === 'string' ? text(c) : c);
     return e;
   }
-  try {
+  const api = async (path) => {
     const token = await shopify.idToken();
-    const res = await fetch('/api/shopify/session', { method: 'POST', headers: { Authorization: 'Bearer ' + token } });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Something went wrong.');
+    const res = await fetch('/api/shopify/' + path, { method: 'POST', headers: { Authorization: 'Bearer ' + token } });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) { const e = new Error(data.error || 'Something went wrong.'); e.data = data; e.status = res.status; throw e; }
+    return data;
+  };
+  const day = (d) => new Date(d).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+  async function load() {
+    const data = await api('session');
     const o = data.overview || {};
+    const p = data.plan;
     $('status').textContent = o.scanned ? 'Results for ' + data.hostname + '.' : 'Your store ' + data.hostname + ' is connected. Results appear here after its first scan.';
     if (o.scanned) {
       $('sum').replaceChildren(
@@ -87,10 +102,42 @@ a{color:#005bd3}
         $('issues').hidden = false;
       }
     }
-    if (data.billing && data.billing.status === 'pending') {
-      $('status').append(el('p', { class: 'muted' }, 'Plans are coming soon.'));
-    }
+    const every = p.rescanEveryDays === 1 ? 'daily' : p.rescanEveryDays === 7 ? 'weekly' : 'monthly';
+    const lines = [el('p', {}, [el('strong', {}, p.name), ': ' + (p.monitoredPages === 1 ? 'home page' : 'up to ' + p.monitoredPages + ' pages') + ', rescanned ' + every + (p.fixes ? ', approved fixes on your storefront.' : '. Upgrade to apply approved fixes.')])];
+    if (p.status === 'trialing' && p.trialEndsAt) lines.push(el('p', { class: 'muted' }, 'Free trial ends ' + day(p.trialEndsAt) + '.'));
+    if (p.status === 'paused') lines.push(el('p', { class: 'warn' }, 'Your Shopify billing is on hold, so paid features are paused.'));
+    $('plan-body').replaceChildren(...lines);
+    $('change-plan').textContent = p.tier === 'free' ? 'Start a 3-day free trial' : 'Change plan';
+    $('change-plan').onclick = () => window.open(data.pricingUrl, '_top');
+    $('plan').hidden = false;
+
+    $('scan-info').textContent = data.scan.monitored + ' page' + (data.scan.monitored === 1 ? '' : 's') + ' monitored.' + (data.scan.nextAllowedAt ? ' Next manual scan: ' + day(data.scan.nextAllowedAt) + '.' : '');
+    $('scan-now').disabled = Boolean(data.scan.nextAllowedAt);
+    $('find-pages').hidden = !p.discovery;
+    $('scan').hidden = false;
+
+    $('embed-state').replaceChildren(data.embed.enabled
+      ? el('span', { class: 'ok' }, 'The app embed is on.')
+      : el('span', { class: 'warn' }, 'The app embed is off, so fixes and the toolbar are not on your storefront yet.'));
+    $('embed-link').href = data.embed.activateUrl;
     $('setup').hidden = false;
+  }
+  async function action(btn, path, done) {
+    btn.disabled = true;
+    $('scan-msg').textContent = 'Working…';
+    try {
+      const r = await api(path);
+      $('scan-msg').textContent = done(r);
+      await load();
+    } catch (err) {
+      $('scan-msg').textContent = err.message;
+      btn.disabled = false;
+    }
+  }
+  $('scan-now').onclick = () => action($('scan-now'), 'scan', (r) => r.mode === 'background' ? 'Scanning ' + r.pages + ' pages. Results update as each one finishes.' : 'Scan finished.');
+  $('find-pages').onclick = () => action($('find-pages'), 'pages', (r) => 'Found ' + r.found + ' pages. Monitoring ' + r.monitored + ' of up to ' + r.limit + '.');
+  try {
+    await load();
   } catch (err) {
     $('status').textContent = 'Could not load AccessBell: ' + err.message;
   }

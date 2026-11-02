@@ -9,9 +9,9 @@ import { verifyWebhookHmac, normalizeShop } from './verify.js';
 
 const MAX_BODY = 256 * 1024;
 
-export const TOPICS = ['app/uninstalled', 'customers/data_request', 'customers/redact', 'shop/redact'];
+export const TOPICS = ['app/uninstalled', 'app_subscriptions/update', 'customers/data_request', 'customers/redact', 'shop/redact'];
 
-export async function handleWebhook(request, { apiSecret, store, log = console }) {
+export async function handleWebhook(request, { apiSecret, store, syncPlan, log = console }) {
   const raw = await request.text();
   if (raw.length > MAX_BODY) return { status: 413, body: { error: 'payload too large' } };
   // Shopify's review checks that a bad signature gets a 401.
@@ -35,6 +35,10 @@ export async function handleWebhook(request, { apiSecret, store, log = console }
   switch (topic) {
     case 'app/uninstalled':
       await store.markUninstalled(shop);
+      break;
+    case 'app_subscriptions/update':
+      // Plan changed, trial started or ended, or the merchant cancelled.
+      if (syncPlan) await syncPlan(shop, payload);
       break;
     case 'customers/data_request':
     case 'customers/redact':

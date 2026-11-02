@@ -5,6 +5,7 @@ import { startOneTimeAudit, finishOneTimeAudit, failOneTimeAudit } from '../app/
 import { discoverOneTimeUrls, scanOneTimeUrls, aggregateOneTimeReport } from '../one-time-audit.js';
 import { sendReportReadyEmail } from '../app/email-sequences.js';
 import { query } from '../app/db.js';
+import { freePagesDue, scanFreePage } from '../shopify/free-scans.js';
 import {
   funnelLiveStatus,
   scanFollowupCandidates,
@@ -137,6 +138,23 @@ export const scheduleMonitoring = inngest.createFunction(
   },
 );
 
+/** Shopify Free plan: each store's home page gets a fresh score once a month. */
+export const shopifyFreeScheduleFn = inngest.createFunction(
+  { id: 'shopify-free-monthly', triggers: [{ cron: 'TZ=UTC 30 6 * * *' }] },
+  async ({ step }) => {
+    const pages = await step.run('list-free-pages', () => freePagesDue());
+    for (let i = 0; i < pages.length; i += 500) {
+      await step.sendEvent(`queue-free-${i}`, pages.slice(i, i + 500).map((p) => ({ name: 'app/shopify.free-scan', data: { pageId: p.id } })));
+    }
+    return { queued: pages.length };
+  },
+);
+
+export const shopifyFreeScanFn = inngest.createFunction(
+  { id: 'shopify-free-scan', triggers: [{ event: 'app/shopify.free-scan' }], concurrency: { limit: 2 }, retries: 1 },
+  async ({ event, step }) => step.run('scan', () => scanFreePage(event.data.pageId)),
+);
+
 /** Rescan one page. Concurrency is capped to respect the browser provider's limits. */
 export const monitorPageFn = inngest.createFunction(
   { id: 'monitor-page', triggers: [{ event: 'app/page.monitor' }], concurrency: { limit: 3 }, retries: 2 },
@@ -204,6 +222,8 @@ export const oneTimeAuditFn = inngest.createFunction(
 );
 
 export const functions = [
+  shopifyFreeScheduleFn,
+  shopifyFreeScanFn,
   scheduleMonitoring,
   monitorPageFn,
   scanPageFn,
