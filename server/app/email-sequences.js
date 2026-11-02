@@ -257,16 +257,22 @@ export async function sendScanResultsEmail(a) {
   return sendEmail({ to: a.to, ...scanResultsEmail(a), extraHeaders: unsubscribeHeaders(a.to) });
 }
 
+/** Why an outreach recipient got the email (they did not sign up). */
+export function outreachReason(hostname) {
+  const site = hostname ? String(hostname) : 'your website';
+  return `You are getting this because ${site} was scanned with AccessBell's free checker and this address is listed on that site.`;
+}
+
 /**
  * Owner-approved outreach (one email per prospect). Same footer, headers and
  * readiness gate as the funnel. The caller checks suppression first.
  */
-export async function sendOutreachEmail({ to, subject, body, key }) {
+export async function sendOutreachEmail({ to, subject, body, key, hostname }) {
   if (funnelSendBlockers().length) return { ok: false, reason: 'funnel-not-ready' };
   return sendEmail({
     to,
     subject,
-    text: String(body).trimEnd() + marketingFooter(to),
+    text: String(body).trimEnd() + marketingFooter(to, process.env, outreachReason(hostname)),
     extraHeaders: unsubscribeHeaders(to),
     idempotencyKey: key ? `outreach/${key}` : undefined,
   });
