@@ -29,3 +29,9 @@ test('welcomeOnce never throws when sending fails', async () => {
   });
   assert.equal(res.ok, false);
 });
+
+test('dashboard access rule includes a live Stripe subscription', async () => {
+  const { accessRules } = await import('../server/app/access.js');
+  const rules = accessRules('a');
+  assert.ok(rules.every((r) => r.includes("a.subscription_status in ('trialing', 'active')")));
+});
