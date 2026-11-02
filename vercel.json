@@ -19,6 +19,9 @@
     },
     "api/stripe-webhook.js": {
       "maxDuration": 20
+    },
+    "api/shopify.js": {
+      "maxDuration": 30
     }
   },
   "redirects": [
@@ -665,7 +668,7 @@
   ],
   "headers": [
     {
-      "source": "/(.*)",
+      "source": "/((?!shopify$|shopify/).*)",
       "headers": [
         {
           "key": "Content-Security-Policy",
@@ -781,6 +784,14 @@
     {
       "source": "/api/app/:route*",
       "destination": "/api/app?route=:route*"
+    },
+    {
+      "source": "/api/shopify/:route*",
+      "destination": "/api/shopify?route=:route*"
+    },
+    {
+      "source": "/shopify",
+      "destination": "/api/shopify?route=app"
     }
   ]
 }

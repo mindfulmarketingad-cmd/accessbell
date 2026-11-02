@@ -1,0 +1,34 @@
+# Shopify app config for AccessBell. Deploy with Shopify CLI from this folder:
+#   cd shopify && npx @shopify/cli app deploy
+# client_id comes from the app David creates in the Shopify Dev Dashboard.
+client_id = "REPLACE_WITH_SHOPIFY_CLIENT_ID"
+name = "AccessBell"
+handle = "accessbell"
+application_url = "https://www.accessbell.co/shopify"
+embedded = true
+
+[build]
+include_config_on_deploy = true
+
+[access_scopes]
+# Shopify-managed install (no OAuth redirect); the app uses token exchange.
+# read_themes: check whether the AccessBell app embed is turned on.
+scopes = "read_themes"
+use_legacy_install_flow = false
+
+[auth]
+redirect_urls = ["https://www.accessbell.co/api/shopify/auth/callback"]
+
+[webhooks]
+api_version = "2026-10"
+
+  [[webhooks.subscriptions]]
+  topics = ["app/uninstalled"]
+  uri = "https://www.accessbell.co/api/shopify/webhooks"
+
+  [[webhooks.subscriptions]]
+  compliance_topics = ["customers/data_request", "customers/redact", "shop/redact"]
+  uri = "https://www.accessbell.co/api/shopify/webhooks"
+
+[pos]
+embedded = false
