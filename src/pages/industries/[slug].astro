@@ -20,7 +20,7 @@ export function getStaticPaths() {
 }
 
 const { i } = Astro.props as { i: Industry };
-const REVIEWED = new Date('2026-09-28');
+const REVIEWED = i.reviewed ?? new Date('2026-09-28');
 const url = `${SITE.url}${industryPath(i)}`;
 const author = await getEntry('authors', 'joseph-edwards');
 const others = INDUSTRIES.filter((o) => o.slug !== i.slug);
@@ -127,6 +127,9 @@ const schema = [
       <h2 id="sources">Sources</h2>
       <ul>
         <li><a href={i.stat.href} rel="noopener noreferrer" target="_blank">{i.stat.label}<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+        {i.sources?.map((s) => (
+          <li><a href={s.href} rel="noopener noreferrer" target="_blank">{s.label}<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+        ))}
       </ul>
       <p class="muted">This page explains general accessibility and legal context for {i.name.toLowerCase()} websites and is not legal advice. See our <a href="/disclaimer">disclaimer</a>.</p>
     </section>

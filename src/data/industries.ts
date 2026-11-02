@@ -16,6 +16,10 @@ export type Industry = {
   related: string[];
   /** Free standard checkers (CHECKERS slugs) for the standard this industry is held to. */
   checkers: string[];
+  /** Extra primary sources listed under the in-body citation. */
+  sources?: { href: string; label: string }[];
+  /** When this page's content was last reviewed. Defaults to the shared industry review date. */
+  reviewed?: Date;
 };
 
 export const INDUSTRIES: Industry[] = [
@@ -188,6 +192,49 @@ export const INDUSTRIES: Industry[] = [
     ],
     related: ['ada-lawsuit-process', 'ada-demand-letter'],
     checkers: ['ada-compliance-checker', 'wcag-2-2-aa-checker'],
+  },
+  {
+    slug: 'restaurants',
+    name: 'Restaurant',
+    seoTitle: 'Restaurant Accessibility Checker',
+    description: 'Free restaurant accessibility checker. Scan your menu, online ordering and reservation pages for the WCAG issues that block guests and show up in ADA website claims.',
+    lead: 'Scan your restaurant website with a free restaurant accessibility checker. It finds the WCAG failures on menus, online ordering and reservations that can stop a guest from ordering, and that ADA website complaints often name.',
+    stat: {
+      text: 'In Robles v. Domino’s Pizza, the Ninth Circuit held in 2019 that the ADA applied to Domino’s website and mobile app because they connected customers to the goods and services of its physical restaurants, even when customers used them away from the restaurant.',
+      href: 'https://cdn.ca9.uscourts.gov/datastore/opinions/2019/01/15/17-55504.pdf',
+      label: 'Robles v. Domino’s Pizza, 913 F.3d 898 (9th Cir. 2019)',
+    },
+    whatIs: [
+      'A restaurant accessibility checker scans the pages guests actually use: the menu, online ordering, reservations and the contact form. The ADA names a restaurant, bar, or other establishment serving food or drink as a public accommodation when its operations affect commerce. The Department of Justice’s web guidance lists food and drink establishments among the businesses that must make the goods and services they offer online accessible.',
+      'There is no Title III regulation that sets a technical standard for business websites. The Department of Justice says businesses have flexibility in how they comply, and it points to the Web Content Accessibility Guidelines (WCAG) as helpful guidance. AccessBell’s ADA preset tests WCAG 2.1 Level AA. A restaurant accessibility checker shows the automated failures on a live page so you can fix the menu and the order flow, then keep checking as the site changes.',
+    ],
+    commonIssues: [
+      { title: 'Menus that are only a picture or a PDF', text: 'A photo of the menu, or a PDF exported without tags, has no text alternative. Screen reader users cannot hear the dishes or the prices. WCAG 1.1.1 requires a text alternative for that content.' },
+      { title: 'Ordering controls that need a mouse', text: 'Size, modifier and add-to-cart controls built as clickable boxes often have no accessible name and no keyboard support, so a guest cannot build an order without a mouse. That is a WCAG 2.1.1 and 4.1.2 failure.' },
+      { title: 'Reservation and contact forms', text: 'Date, party size and phone fields are frequently unlabeled, and an error such as “pick a time” is not announced to a screen reader. WCAG 3.3.2 and 3.3.1 cover labels and error identification.' },
+      { title: 'Allergens and specials shown only by color', text: 'A red dot for spicy, or a green badge for vegetarian, conveys nothing to someone who cannot see that color and nothing to a screen reader. WCAG 1.4.1 requires the information in text as well.' },
+      { title: 'Embedded ordering and reservation widgets', text: 'Third-party ordering, reservation, review and chat widgets add their own markup. One unlabeled button or focus trap in the widget is on every page that loads it, and your theme cannot fix code the widget owns.' },
+    ],
+    fixNotes: [
+      'Start with the pages that take an order or a reservation. A guest who cannot read the menu, choose a dish or submit a booking cannot spend money with you, and those are the journeys restaurant website complaints describe.',
+      'Publish the menu as real text, or add a text alternative that includes the dishes and prices. Do not rely on a photo or an untagged PDF as the only menu.',
+      'Name every ordering control in text, such as “Size: large” and “Add margherita pizza”, and check the flow with the keyboard: Tab to each control, activate it with Enter or Space, and leave pop-ups with Escape.',
+      'Rescan after every theme, plugin or ordering-widget update. A new widget can add unlabeled buttons to every page overnight.',
+    ],
+    faqs: [
+      { q: 'Does the ADA apply to my restaurant website?', a: 'If you are a restaurant, bar or other place serving food or drink and your operations affect commerce, the ADA lists you as a public accommodation. The Department of Justice says the ADA applies to the goods and services those businesses offer on the web, which includes online menus, ordering and reservations. In Robles v. Domino’s Pizza (9th Cir. 2019), the court held that Domino’s website and app were covered because they connected customers to its physical restaurants. This is general information, not legal advice.' },
+      { q: 'What should a restaurant accessibility checker look at first?', a: 'The menu, the online ordering flow and the reservation or contact form. Those are the pages a guest needs to eat with you. Run the free scan above on each of them, then fix critical and serious issues before the rest of the site.' },
+      { q: 'Will an overlay make my restaurant website compliant?', a: 'No. An overlay runs in the visitor’s browser and does not change your menu, forms or ordering code. The restaurant accessibility checker shows the failing markup so it can be fixed at the source. Guided fix suggestions can speed up specific edits, such as missing alt text and unnamed buttons. They do not make a site conform to WCAG on their own, and no tool can guarantee you will not be sued.' },
+      { q: 'Can I scan my ordering page for free?', a: 'Yes. The scan on this page is free and needs no account. It tests one public URL. To see the failing code and the fix for every issue on that page, buy a Page Report for $19. A Domain Audit is $79 for up to 500 pages, once. Pro monitors up to 500 URLs per domain every day and starts with a 3-day free trial, then $29 per domain per month or $199 per domain per year.' },
+    ],
+    related: ['ada-title-iii-law-for-businesses', 'ada-website-compliance-guide', 'ada-demand-letter', 'wcag-1-1-1-non-text-content'],
+    checkers: ['ada-compliance-checker', 'wcag-2-2-aa-checker'],
+    reviewed: new Date('2026-11-02'),
+    sources: [
+      { href: 'https://www.law.cornell.edu/uscode/text/42/12181', label: '42 U.S.C. § 12181: a restaurant, bar, or other establishment serving food or drink is a public accommodation' },
+      { href: 'https://www.ada.gov/resources/web-guidance/', label: 'ADA.gov: Guidance on Web Accessibility and the ADA (March 18, 2022)' },
+      { href: 'https://www.w3.org/TR/WCAG22/', label: 'W3C: Web Content Accessibility Guidelines (WCAG) 2.2' },
+    ],
   },
 ];
 
