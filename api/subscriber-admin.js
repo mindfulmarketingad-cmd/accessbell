@@ -16,6 +16,7 @@ import { one } from '../server/app/db.js';
 import { config } from '../server/app/config.js';
 import { auth } from '../server/app/auth-client.js';
 import { withAccessRule } from '../server/app/access.js';
+import { isAdminUser } from '../server/app/accounts.js';
 import { accountFromInvite, claimSubscriptionForUser, stripe, isAccessBellSubscription } from '../server/app/billing.js';
 import { sendWelcomeSubscriberEmail } from '../server/app/email-sequences.js';
 import { json, readJson, methodNotAllowed } from '../server/http.js';
@@ -39,7 +40,8 @@ async function status(email) {
       limit 1`,
     [email],
   );
-  if (!row) return { profile: false };
+  const admin = isAdminUser({ email });
+  if (!row) return { profile: false, admin };
   let access = false;
   if (row.account_id) {
     const r = await withAccessRule((rule) => one(`select ${rule} as ok from app.accounts a where a.id = $1`, [row.account_id]));
@@ -61,6 +63,7 @@ async function status(email) {
     subscriptionStatus: row.subscription_status,
     stripeLinked: row.stripe_linked,
     accessBellProduct,
+    admin,
     trialEndsAt: row.trial_ends_at,
     access,
   };

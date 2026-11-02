@@ -1,0 +1,38 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+import Icon from '../../components/Icon.astro';
+---
+<AppLayout title="Admin analytics" section="admin">
+  <header class="app-head">
+    <div>
+      <h1>Admin analytics</h1>
+      <p>Every AccessBell account and how it uses the product, plus subscription and funnel totals. Only site admins can see this.</p>
+    </div>
+    <button class="btn btn-outline" type="button" data-ad-csv disabled><Icon name="download" /> Export CSV</button>
+  </header>
+
+  <p class="status-line" data-ad-status role="status" aria-live="polite"></p>
+
+  <div data-ad-body hidden>
+    <ul class="fs-totals" aria-label="Subscription totals" data-ad-summary></ul>
+
+    <div class="fs-grid">
+      <section class="panel" aria-labelledby="ad-funnel-title">
+        <h2 id="ad-funnel-title">Funnel, last 30 days</h2>
+        <div data-ad-funnel></div>
+      </section>
+      <section class="panel" aria-labelledby="ad-free-title">
+        <h2 id="ad-free-title">Free scans per day</h2>
+        <div data-ad-free></div>
+      </section>
+    </div>
+
+    <section class="panel" aria-labelledby="ad-accounts-title">
+      <h2 id="ad-accounts-title">Accounts</h2>
+      <div data-ad-accounts></div>
+    </section>
+  </div>
+</AppLayout>
+<script>
+  import '../../scripts/app/admin.js';
+</script>
