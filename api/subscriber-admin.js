@@ -8,6 +8,9 @@
 //   person gets a set-password email); login exists but never used -> send a
 //   password-reset email only when sendReset is true. Then link a trialing or
 //   active Stripe subscription found by email. Sends the welcome once linked.
+// - "funnel-preview": read-only list of who each drip email would go to
+//   if FUNNEL_EMAIL_LIVE were on today, plus free-scan counts. Sends nothing.
+// - "unsuppress": remove one address from app.funnel_suppressions.
 // - "welcome": send the subscriber welcome email (Resend dedupes per account
 //   for 24h). Only to an account that has dashboard access.
 // Responses never include secrets.
@@ -20,6 +23,7 @@ import { isAdminUser } from '../server/app/accounts.js';
 import { accountFromInvite, claimSubscriptionForUser, stripe, isAccessBellSubscription } from '../server/app/billing.js';
 import { sendWelcomeSubscriberEmail } from '../server/app/email-sequences.js';
 import { json, readJson, methodNotAllowed } from '../server/http.js';
+import { funnelPreview, removeFunnelSuppression } from '../server/app/funnel.js';
 
 function tokenOk(given, expected) {
   if (!given || !expected) return false;
@@ -76,9 +80,19 @@ export async function POST(request) {
   const body = await readJson(request, 2048);
   const email = typeof body?.email === 'string' ? body.email.trim().toLowerCase() : '';
   const action = String(body?.action || 'status');
+  // Read-only: who the drip would email if it were live today. Sends nothing.
+  if (action === 'funnel-preview') {
+    try {
+      return json(200, await funnelPreview());
+    } catch (err) {
+      console.error('funnel-preview failed', err?.code || err?.message);
+      return json(500, { error: 'failed', code: err?.code || null });
+    }
+  }
   if (!email) return json(400, { error: 'email required' });
 
   try {
+    if (action === 'unsuppress') return json(200, { removed: await removeFunnelSuppression(email) });
     if (action === 'status') return json(200, await status(email));
 
     if (action === 'repair') {

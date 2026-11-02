@@ -267,3 +267,56 @@ export async function fetchSuppressedEmails() {
   const rows = await query('select lower(email) as email from app.funnel_suppressions');
   return rows.map((r) => r.email);
 }
+
+/** Owner tool: remove one address from the suppression list (e.g. a test row). */
+export async function removeFunnelSuppression(email) {
+  if (!hasEmail(email)) return 0;
+  const rows = await query('delete from app.funnel_suppressions where lower(email) = $1 returning id', [normalizeEmail(email)]);
+  return rows.length;
+}
+
+/**
+ * Read-only preview: who each funnel email would go to if live today, using
+ * the same queries and selectors as the scheduled runs. Sends and marks nothing.
+ */
+export async function funnelPreview({ now = new Date() } = {}) {
+  const { oneTimeCheckoutUrl } = await import('./one-time.js');
+  const suppressedEmails = await fetchSuppressedEmails();
+  const suppressed = new Set(suppressedEmails);
+  const leads = await query(
+    `select l.id, l.email, l.hostname, l.url, l.followup_sent_at
+       from app.scan_leads l
+      where l.email is not null and l.email <> '' and l.followup_sent_at is null
+      order by l.created_at asc limit 100`,
+  );
+  const paidRows = await query(`select distinct lower(email) as email from app.one_time_purchases where status = 'paid'`);
+  const followups = scanFollowupCandidates({ leads, paidEmails: paidRows.map((r) => r.email), suppressedEmails });
+  const pending = await query(
+    `select * from app.one_time_purchases
+      where status = 'pending' and reminder_sent_at is null and created_at < now() - interval '24 hours'
+      order by created_at asc limit 100`,
+  );
+  const abandoned = pending.filter(
+    (r) => hasEmail(r.email) && oneTimeCheckoutUrl(r.product, r) && !isExcludedHostname(r.hostname) && !suppressed.has(normalizeEmail(r.email)),
+  );
+  const purchases = await query(
+    `select * from app.one_time_purchases where status = 'paid' and upsell_sent_at is null
+      order by paid_at asc nulls last limit 100`,
+  );
+  const upsells = upsellCandidates({ purchases, suppressedEmails, now }).filter((r) => hasEmail(r.email));
+  const counts = await query(
+    `select (select count(*) from app.free_scans)::int as free_scans,
+            (select count(distinct hostname) from app.free_scans)::int as free_scan_hostnames,
+            (select count(*) from app.scan_leads)::int as scan_leads,
+            (select count(*) from app.funnel_suppressions)::int as suppressions`,
+  );
+  const row = (email, hostname, type) => ({ email: normalizeEmail(email), hostname: hostname || null, type });
+  return {
+    wouldSend: [
+      ...followups.map((l) => row(l.email, l.hostname, 'scanFollowupEmail')),
+      ...abandoned.map((r) => row(r.email, r.hostname, `abandonedCheckoutEmail:${r.product}`)),
+      ...upsells.map((r) => row(r.email, r.hostname, r.product === 'page_report' ? 'pageReportUpsellEmail' : 'auditUpsellEmail')),
+    ],
+    counts: counts[0] || {},
+  };
+}
