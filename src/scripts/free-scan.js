@@ -306,15 +306,17 @@ function showResults(r, url, form) {
         ]),
       ])
     : null;
-  // Email capture AFTER the results: never a gate in front of them. The
-  // address is stored for the follow-up sequence; nothing is sent here.
-  const leadNote = el('p', { class: 'scan-lead-note', hidden: true });
-  const leadForm = el('form', { class: 'scan-lead', 'aria-label': 'Get the full-report offers by email' }, [
-    el('h3', { text: 'Get the full-report offers by email' }),
-    el('p', { text: 'We will follow up by email with the full report for this page and the whole-domain audit. No account needed.' }),
+  // Email capture shown with the results, never a gate in front of them.
+  // Submitting stores the address (app.scan_leads) and emails a summary of
+  // these results right away; follow-ups carry a one-click unsubscribe.
+  const leadNote = el('p', { class: 'scan-lead-note', role: 'status', hidden: true });
+  const leadForm = el('form', { class: 'scan-lead scan-lead-prominent', 'aria-labelledby': 'scan-lead-title' }, [
+    el('h3', { id: 'scan-lead-title', text: 'Email me these results' }),
+    el('p', { text: 'Get a copy of this scan summary in your inbox, with links to the full fix details. Free, no account needed.' }),
     el('label', { for: 'scan-lead-email', text: 'Email' }),
-    el('input', { id: 'scan-lead-email', name: 'email', type: 'email', autocomplete: 'email', required: true, maxlength: 254, placeholder: 'you@example.com' }),
-    el('button', { type: 'submit', class: 'btn btn-outline btn-sm', text: 'Email me the offers' }),
+    el('input', { id: 'scan-lead-email', name: 'email', type: 'email', autocomplete: 'email', required: true, maxlength: 254, placeholder: 'you@example.com', 'aria-describedby': 'scan-lead-consent' }),
+    el('button', { type: 'submit', class: 'btn btn-accent btn-sm', text: 'Email me my results' }),
+    el('p', { id: 'scan-lead-consent', class: 'scan-lead-consent', text: "We'll email your results and occasional follow-ups; unsubscribe anytime." }),
     leadNote,
   ]);
   leadForm.addEventListener('submit', async (e) => {
@@ -338,7 +340,7 @@ function showResults(r, url, form) {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || 'Could not save your email.');
-      leadNote.textContent = 'Saved. We will follow up by email.';
+      leadNote.textContent = data.emailed === false ? 'Saved. Your results email is on its way shortly.' : 'Sent. Check your inbox for your results.';
       leadForm.querySelector('button[type="submit"]').remove();
       input.setAttribute('readonly', '');
     } catch (err) {
@@ -368,10 +370,10 @@ function showResults(r, url, form) {
       scope,
       tiles,
       riskPanel((r.summary?.critical || 0) + (r.summary?.serious || 0)),
+      leadForm,
       rows,
       teaser,
       more,
-      leadForm,
       cta,
     ]),
   );

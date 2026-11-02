@@ -7022,6 +7022,15 @@ h2[tabindex='-1']:focus {
 .scan-lead h3 {
   font-size: 1.0625rem;
 }
+.scan-lead-prominent {
+  max-width: none;
+  border: 2px solid var(--sage-700);
+  background: var(--sage-50);
+  margin: 16px 0;
+}
+.scan-lead p.scan-lead-consent {
+  font-size: 0.875rem;
+}
 .scan-lead p {
   color: var(--ink-500);
   font-size: 0.9375rem;

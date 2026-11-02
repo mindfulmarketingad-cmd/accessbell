@@ -104,6 +104,35 @@ export function scanFollowupEmail({ to, hostname, url, issues, critical, serious
   };
 }
 
+/**
+ * Scan results (transactional, requested): sent right away when a visitor
+ * asks for their free scan results by email. Counts come from the server's
+ * own free_scans log, never from the browser.
+ */
+export function scanResultsEmail({ to, hostname, url, issues, critical, serious }) {
+  const known = Number.isInteger(issues);
+  return {
+    subject: `Your AccessBell scan results for ${hostname}`,
+    text: [
+      `Here are the results of the free AccessBell scan you ran on ${url}.`,
+      '',
+      known
+        ? issues
+          ? `The automated scan found ${issues} issue${issues === 1 ? '' : 's'} (${critical || 0} critical, ${serious || 0} serious).`
+          : 'The automated scan found no issues on that page. Automated testing covers only part of the standard, so other pages and some manual checks may still have issues.'
+        : 'Your scan summary is shown on the results page where you ran it.',
+      '',
+      'See the failing code and guided fix suggestions for every issue on that page with a Page Report ($19, one-time):',
+      `https://www.accessbell.co/solutions/page-report?url=${encodeURIComponent(url)}`,
+      '',
+      'Or keep the whole site monitored: AccessBell Pro rescans daily and emails you when new issues appear. $29 per month after a 3-day free trial: https://www.accessbell.co/app/signup',
+      '',
+      'Run another free scan any time: https://www.accessbell.co/#scan',
+      FOOT,
+    ].join('\n') + marketingFooter(to),
+  };
+}
+
 /** Abandoned checkout (sequence): one reminder for a pending purchase. */
 export function abandonedCheckoutEmail({ to, product, hostname, checkoutUrl }) {
   const name = product === 'domain_audit' ? 'Domain Audit ($79)' : 'Page Report ($19)';
@@ -221,3 +250,24 @@ export const sendScanFollowup = (a) => sendSequenceEmail(a, scanFollowupEmail);
 export const sendAbandonedCheckoutReminder = (a) => sendSequenceEmail(a, abandonedCheckoutEmail);
 export const sendAuditUpsell = (a) => sendSequenceEmail(a, auditUpsellEmail);
 export const sendPageReportUpsell = (a) => sendSequenceEmail(a, pageReportUpsellEmail);
+
+/** Requested scan results: transactional, so not gated by FUNNEL_EMAIL_LIVE, but still needs the footer config. */
+export async function sendScanResultsEmail(a) {
+  if (funnelSendBlockers().length) return { ok: false, reason: 'funnel-not-ready' };
+  return sendEmail({ to: a.to, ...scanResultsEmail(a), extraHeaders: unsubscribeHeaders(a.to) });
+}
+
+/**
+ * Owner-approved outreach (one email per prospect). Same footer, headers and
+ * readiness gate as the funnel. The caller checks suppression first.
+ */
+export async function sendOutreachEmail({ to, subject, body, key }) {
+  if (funnelSendBlockers().length) return { ok: false, reason: 'funnel-not-ready' };
+  return sendEmail({
+    to,
+    subject,
+    text: String(body).trimEnd() + marketingFooter(to),
+    extraHeaders: unsubscribeHeaders(to),
+    idempotencyKey: key ? `outreach/${key}` : undefined,
+  });
+}
