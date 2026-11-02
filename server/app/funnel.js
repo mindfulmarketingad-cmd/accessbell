@@ -28,6 +28,7 @@
 // other template in the funnel.
 import { query } from './db.js';
 import { funnelSendBlockers } from './unsubscribe.js';
+import { OUTREACH_ALREADY_SENT } from './outreach-sent.js';
 
 // ---------------------------------------------------------------------------
 // Configuration
@@ -339,7 +340,7 @@ const OUTREACH_EMAIL = /^[^\s@<>()[\]\\,;:"]{1,64}@[a-z0-9](?:[a-z0-9-]{0,61}[a-
  * excluded hostnames and invalid rows; one send per address+site (Resend
  * idempotency key) so a retried batch does not double-send within 24h.
  */
-export async function runOutreach({ items, confirm, send, suppressedEmails, dryRun = false }) {
+export async function runOutreach({ items, confirm, send, suppressedEmails, dryRun = false, alreadySent = OUTREACH_ALREADY_SENT, pauseMs = 600 }) {
   if (confirm !== 'SEND' && !dryRun) return { error: 'confirm must be "SEND"' };
   const suppressed = new Set((suppressedEmails || []).map(normalizeEmail));
   const log = [];
@@ -351,7 +352,9 @@ export async function runOutreach({ items, confirm, send, suppressedEmails, dryR
     if (!OUTREACH_EMAIL.test(to) || !it?.subject || !it?.body) { log.push({ ...entry, action: 'skipped', reason: 'invalid' }); continue; }
     if (isExcludedHostname(hostname)) { log.push({ ...entry, action: 'skipped', reason: 'excluded-hostname' }); continue; }
     if (suppressed.has(to)) { log.push({ ...entry, action: 'skipped', reason: 'suppressed' }); continue; }
+    if (alreadySent.has(to)) { log.push({ ...entry, action: 'skipped', reason: 'already-sent' }); continue; }
     if (dryRun) { log.push({ ...entry, action: 'dry-run' }); continue; }
+    if (sent > 0 && pauseMs) await new Promise((r) => setTimeout(r, pauseMs)); // Resend rate limit (~2/s)
     const res = await send({ to, subject: String(it.subject).slice(0, 150), body: String(it.body).slice(0, 5000), key: `${to}/${hostname}`, hostname });
     if (res?.ok) { sent++; log.push({ ...entry, action: 'sent', id: res.id || null }); }
     else log.push({ ...entry, action: 'failed', reason: res?.reason || 'send-failed' });

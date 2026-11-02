@@ -32,7 +32,7 @@ test('outreach needs confirm SEND, skips suppressed/excluded/invalid, sends once
   const dry = await runOutreach({ items, send, dryRun: true, suppressedEmails: ['GONE@x.com'] });
   assert.equal(sends.length, 0);
   assert.deepEqual(dry.log.map((l) => l.action), ['dry-run', 'skipped', 'skipped', 'skipped']);
-  const live = await runOutreach({ items, send, confirm: 'SEND', suppressedEmails: ['gone@x.com'] });
+  const live = await runOutreach({ items, send, confirm: 'SEND', suppressedEmails: ['gone@x.com'], pauseMs: 0 });
   assert.equal(live.sent, 1);
   assert.deepEqual(sends.map((s) => [s.to, s.key]), [['info@shop.com', 'info@shop.com/shop.com']]);
 });
@@ -63,4 +63,14 @@ test('outreach footer states the real reason, not a signup', async () => {
     globalThis.fetch = realFetch;
     process.env = saved;
   }
+});
+
+test('outreach never re-sends an address already sent', async () => {
+  const { OUTREACH_ALREADY_SENT } = await import('../server/app/outreach-sent.js');
+  const first = [...OUTREACH_ALREADY_SENT][0];
+  assert.ok(first);
+  let calls = 0;
+  const out = await runOutreach({ items: [{ email: first.toUpperCase(), hostname: 'x.com', subject: 's', body: 'b' }], confirm: 'SEND', send: async () => { calls++; return { ok: true }; }, suppressedEmails: [], pauseMs: 0 });
+  assert.equal(calls, 0);
+  assert.equal(out.log[0].reason, 'already-sent');
 });
