@@ -18,6 +18,7 @@ import { resolveIssue, reopenIssue } from './resolutions.js';
 import { listFreeScans } from './free-scans.js';
 import { getFixSetup, verifyFix, addFix, updateFix, publicFixRules, getStatement, saveStatement, publicStatement, setToolbar, getToolbar } from './site-setup.js';
 import { AppError, badRequest, unauthorized } from './errors.js';
+import { recordSnippetError } from './tracking.js';
 import { addNote, vault, certificate, createRecord, getRecord, verifyRecord } from './records.js';
 import { listDocuments, addDocument, scanDocument, getDocument, documentFile, removeDocument } from './documents.js';
 
@@ -26,6 +27,8 @@ const limits = {
   signup: createRateLimiter({ limit: 5, windowMs: 60 * 60_000 }),
   email: createRateLimiter({ limit: 5, windowMs: 60 * 60_000 }),
   api: createRateLimiter({ limit: 300, windowMs: 60_000 }),
+  snippetIp: createRateLimiter({ limit: 20, windowMs: 10 * 60_000 }),
+  snippetKey: createRateLimiter({ limit: 200, windowMs: 60 * 60_000 }),
 };
 
 const SECURITY_HEADERS = {
@@ -186,6 +189,18 @@ const publicRoutes = {
   async 'GET fix'({ url }) {
     const out = await publicFixRules(url.searchParams.get('k'));
     return { body: out, headers: { 'Access-Control-Allow-Origin': '*', 'Cache-Control': 'public, max-age=60' } };
+  },
+
+  /**
+   * AccessBellFix error report: the script sends only a site key and a fixed
+   * error code (no URL, message or visitor data). Rate-limited per IP and
+   * per site; over the limit or invalid input is dropped silently.
+   */
+  async 'GET fix/error'({ url, ip }) {
+    const key = url.searchParams.get('k');
+    const code = url.searchParams.get('c');
+    if (limits.snippetIp(ip).allowed && limits.snippetKey(String(key).slice(0, 40)).allowed) await recordSnippetError(key, code);
+    return { body: { ok: true }, headers: { 'Access-Control-Allow-Origin': '*' } };
   },
 
   /** Check that a compliance record ID and fingerprint match a record AccessBell issued. */

@@ -6,6 +6,7 @@ import { forbidden, badRequest, notFound } from './errors.js';
 import { publicSettings } from './domains.js';
 import { stripe, accessBellProductIds, subscriptionMatchesProducts } from './billing.js';
 import { config } from './config.js';
+import { ensureTrackingSchema, HUNG_AFTER_MS } from './tracking.js';
 
 // Missing table/column, or no permission (e.g. the auth schema): treat as not tracked.
 const MISSING = new Set(['42P01', '42703', '42501', '3F000']);
@@ -194,6 +195,10 @@ export async function adminOverview(ctx, { stripeApi } = {}) {
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const DAY = 24 * 60 * 60 * 1000;
 const NOT_TRACKED = 'not tracked';
+/** Tracking (scan runs, alert/welcome emails, snippet errors) started with this release. */
+export const TRACKING_SINCE = '2026-11-02T03:00:00Z';
+const within = (t, ms, now) => t && now - new Date(t).getTime() < ms;
+const utc = (t) => `${new Date(t).toISOString().slice(0, 16).replace('T', ' ')} UTC`;
 
 /** Flag likely problems for one account from its recorded data. Pure, for tests. */
 export function accountFlags(d, now = Date.now()) {
@@ -218,6 +223,31 @@ export function accountFlags(d, now = Date.now()) {
     if (left > 0 && left < 2 * DAY && (d.domains.length === 0 || scans7 < 3)) add('warn', `Trial ends within 48 hours with low usage (${d.domains.length} domains, ${scans7} scans in 7 days)`);
   }
   if (paying && !d.domains.length) add('warn', 'Has access but no domains added');
+
+  const runs = d.scanRuns || [];
+  const hung = runs.filter((r) => r.hung && within(r.startedAt, 7 * DAY, now));
+  if (hung.length) add('error', `${hung.length} scan${hung.length === 1 ? '' : 's'} started but never finished in the last 7 days (latest started ${utc(hung[0].startedAt)}${hung[0].url ? `, ${hung[0].url}` : ''})`);
+  const stalled = runs.filter((r) => r.kind === 'domain' && r.pagesScanned < r.pages && within(r.startedAt, 7 * DAY, now) && now - new Date(r.startedAt).getTime() > 2 * 60 * 60 * 1000);
+  if (stalled.length) add('warn', `${stalled.length} domain scan${stalled.length === 1 ? '' : 's'} did not finish every page (latest: ${stalled[0].hostname || 'domain'}, ${stalled[0].pagesScanned} of ${stalled[0].pages} pages)`);
+
+  const alerts = (d.alertEmails || []).filter((e) => within(e.createdAt, 30 * DAY, now));
+  const failedAlerts = alerts.filter((e) => e.status === 'failed');
+  if (failedAlerts.length) add('error', `${failedAlerts.length} regression alert email${failedAlerts.length === 1 ? '' : 's'} failed to send in the last 30 days (latest: ${failedAlerts[0].error || 'unknown error'})`);
+  const skipped = alerts.filter((e) => e.status === 'skipped');
+  if (skipped.length) add('warn', `${skipped.length} regression alert${skipped.length === 1 ? '' : 's'} not sent in the last 30 days (${skipped[0].error || 'skipped'})`);
+
+  const w = d.welcomeEmail;
+  if (w && w.status === 'failed') add('error', `Welcome email failed to send (${w.error || 'unknown error'})`);
+  else if (!w && paying && a.stripeLinked && a.accountCreatedAt && new Date(a.accountCreatedAt).getTime() >= new Date(TRACKING_SINCE).getTime()) {
+    add('warn', 'No welcome email recorded for this subscriber');
+  }
+
+  const snip = (d.snippetErrors || []).filter((e) => within(e.lastAt, 7 * DAY, now));
+  if (snip.length) {
+    const total = snip.reduce((n, e) => n + e.count, 0);
+    const kinds = [...new Set(snip.map((e) => `${e.hostname}: ${e.code}`))].slice(0, 4).join(', ');
+    add('warn', `AccessBellFix reported ${total} error${total === 1 ? '' : 's'} in the last 7 days (${kinds})`);
+  }
   return flags;
 }
 
@@ -279,6 +309,38 @@ export async function adminAccountDetail(ctx, id) {
       group by 1 order by 1 desc`,
     [id],
   );
+  // Tracking tables (0015). Applied automatically if missing; empty until data arrives.
+  await ensureTrackingSchema();
+  const durations = await safe(
+    `select id, duration_ms from app.scans where account_id = $1 and duration_ms is not null order by created_at desc limit 100`,
+    [id],
+  );
+  const runRows = await safe(
+    `select r.id, r.kind, r.trigger, r.pages, r.status, r.started_at, r.finished_at, r.duration_ms,
+            p.url, d.hostname,
+            r.status = 'running' and r.kind = 'page' and r.started_at < now() - make_interval(secs => $2) as hung,
+            case when r.kind = 'domain' then (
+              select count(distinct s.page_id)::int from app.scans s
+               where s.domain_id = r.domain_id and s.created_at >= r.started_at and s.created_at < r.started_at + interval '6 hours'
+            ) end as pages_scanned
+       from app.scan_runs r left join app.pages p on p.id = r.page_id left join app.domains d on d.id = r.domain_id
+      where r.account_id = $1 order by r.started_at desc limit 100`,
+    [id, HUNG_AFTER_MS / 1000],
+  );
+  const alertRows = await safe(
+    `select page_url, recipients, status, resend_id, error, created_at from app.alert_emails
+      where account_id = $1 order by created_at desc limit 50`,
+    [id],
+  );
+  const [welcome] = await safe('select status, resend_id, error, sent_at, updated_at from app.welcome_emails where account_id = $1', [id]);
+  const snippetRows = await safe(
+    `select d.hostname, e.code, sum(e.count)::int as count, max(e.last_at) as last_at
+       from app.snippet_errors e join app.domains d on d.id = e.domain_id
+      where d.account_id = $1 and e.day > current_date - 30
+      group by d.hostname, e.code order by max(e.last_at) desc limit 50`,
+    [id],
+  );
+
   const vault = await safe(
     `select hostname, period_from, period_to, user_email, created_at from app.compliance_records
       where account_id = $1 order by created_at desc limit 50`,
@@ -290,6 +352,7 @@ export async function adminAccountDetail(ctx, id) {
     [id],
   );
 
+  const durationById = Object.fromEntries(durations.map((r) => [r.id, r.duration_ms]));
   const fixesByDomain = {};
   for (const f of fixRows) fixesByDomain[f.domain_id] = (fixesByDomain[f.domain_id] || 0) + 1;
   const domains = domainRows.map((d) => {
@@ -324,17 +387,25 @@ export async function adminAccountDetail(ctx, id) {
       trialEndsAt: acct.trial_ends_at,
       currentPeriodEnd: acct.current_period_end,
       domainQuota: acct.domain_quota,
-      welcomeEmailSent: NOT_TRACKED,
+      accountCreatedAt: acct.created_at,
     },
+    welcomeEmail: welcome
+      ? { status: welcome.status, resendId: welcome.resend_id, error: welcome.error, sentAt: welcome.sent_at, updatedAt: welcome.updated_at }
+      : null,
     members: members.map((m) => ({ email: m.email, role: m.role, addedAt: m.created_at })),
     domains,
     scans: scans.map((x) => ({
       id: x.id, createdAt: x.created_at, status: x.status, device: x.device, trigger: x.trigger, score: x.score,
-      issues: x.issues_count, error: x.error, engine: x.engine, url: x.url, hostname: x.hostname, durationMs: NOT_TRACKED,
+      issues: x.issues_count, error: x.error, engine: x.engine, url: x.url, hostname: x.hostname, durationMs: durationById[x.id] ?? null,
     })),
     dailyRescans: daily,
-    alertEmails: NOT_TRACKED,
-    snippetErrors: NOT_TRACKED,
+    scanRuns: runRows.map((r) => ({
+      kind: r.kind, trigger: r.trigger, pages: r.pages, status: r.hung ? 'hung' : r.status, hung: Boolean(r.hung),
+      startedAt: r.started_at, finishedAt: r.finished_at, durationMs: r.duration_ms, url: r.url || null, hostname: r.hostname || null,
+      pagesScanned: r.pages_scanned ?? null,
+    })),
+    alertEmails: alertRows.map((e) => ({ pageUrl: e.page_url, recipients: e.recipients, status: e.status, resendId: e.resend_id, error: e.error, createdAt: e.created_at })),
+    snippetErrors: snippetRows.map((e) => ({ hostname: e.hostname, code: e.code, count: e.count, lastAt: e.last_at })),
     vault: vault.map((v) => ({ hostname: v.hostname, from: v.period_from, to: v.period_to, by: v.user_email, createdAt: v.created_at })),
     fixes: fixRows.map((f) => ({ hostname: f.hostname, kind: f.kind, enabled: f.enabled, createdAt: f.created_at })),
     activity: activity.map((a) => ({ action: a.action, by: a.user_email, hostname: a.hostname, at: a.created_at })),

@@ -3,6 +3,7 @@ import { query, one } from './db.js';
 import { config } from './config.js';
 import { scanPage } from './scanning.js';
 import { withAccessRule } from './access.js';
+import { recordAlertEmail } from './tracking.js';
 
 const SEVERE = new Set(['critical', 'serious']);
 
@@ -64,13 +65,20 @@ export async function monitorPage(pageId, { deps, trigger = 'scheduled', userId 
 /** Email owners and admins about new serious or critical issues. */
 export async function sendRegressionAlert(result, { fetchImpl = fetch } = {}) {
   const c = config();
-  if (!c.resendApiKey || !result.regressions?.length) return { sent: false };
+  if (!result.regressions?.length) return { sent: false };
+  if (!c.resendApiKey) {
+    await recordAlertEmail({ accountId: result.accountId, pageUrl: result.url, status: 'skipped', error: 'RESEND_API_KEY not set' });
+    return { sent: false };
+  }
   const recipients = await query(
     `select p.email from app.account_members m join app.profiles p on p.user_id = m.user_id
       where m.account_id = $1 and m.role in ('owner', 'admin')`,
     [result.accountId],
   );
-  if (!recipients.length) return { sent: false };
+  if (!recipients.length) {
+    await recordAlertEmail({ accountId: result.accountId, pageUrl: result.url, recipients: 0, status: 'skipped', error: 'no owner or admin email' });
+    return { sent: false };
+  }
 
   const lines = result.regressions
     .slice(0, 10)
@@ -85,16 +93,32 @@ export async function sendRegressionAlert(result, { fetchImpl = fetch } = {}) {
     'You receive this because you are an owner or admin of this AccessBell account.',
   ].join('\n');
 
-  const res = await fetchImpl('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${c.resendApiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      from: c.emailFrom,
-      to: recipients.map((r) => r.email).slice(0, 20),
-      subject: `New accessibility issues on ${result.hostname}`.slice(0, 150),
-      text,
-    }),
-    signal: AbortSignal.timeout(8000),
+  const to = recipients.map((r) => r.email).slice(0, 20);
+  let res;
+  try {
+    res = await fetchImpl('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${c.resendApiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: c.emailFrom,
+        to,
+        subject: `New accessibility issues on ${result.hostname}`.slice(0, 150),
+        text,
+      }),
+      signal: AbortSignal.timeout(8000),
+    });
+  } catch (err) {
+    await recordAlertEmail({ accountId: result.accountId, pageUrl: result.url, recipients: to.length, status: 'failed', error: err?.name || 'network error' });
+    throw err;
+  }
+  const data = res.ok && typeof res.json === 'function' ? await res.json().catch(() => null) : null;
+  await recordAlertEmail({
+    accountId: result.accountId,
+    pageUrl: result.url,
+    recipients: to.length,
+    status: res.ok ? 'sent' : 'failed',
+    resendId: data?.id,
+    error: res.ok ? null : `resend-${res.status}`,
   });
   return { sent: res.ok };
 }

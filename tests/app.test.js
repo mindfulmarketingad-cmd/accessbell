@@ -319,6 +319,16 @@ test('admin analytics: admins read every account, subscribers and others get 403
     assert.equal(detail.body.profile.email, 'analytics-admin@ops.test');
     assert.equal(detail.body.domains[0].hostname, 'analytics-example.com');
     assert.ok(detail.body.flags.some((f) => f.text.includes('never scanned')));
+    assert.deepEqual(detail.body.alertEmails, []);
+    assert.deepEqual(detail.body.snippetErrors, []);
+    assert.equal(detail.body.welcomeEmail, null);
+    // A page scan started long ago and never finished shows as hung.
+    await db.query(`insert into app.scan_runs (account_id, kind, status, started_at) values ($1, 'page', 'running', now() - interval '1 hour')`, [row.id]);
+    await db.query(`insert into app.alert_emails (account_id, status, error) values ($1, 'failed', 'resend-422')`, [row.id]);
+    const again = await admin.get(`admin/account?id=${row.id}`);
+    assert.equal(again.body.scanRuns[0].status, 'hung');
+    assert.ok(again.body.flags.some((f) => f.text.includes('never finished')));
+    assert.ok(again.body.flags.some((f) => f.text.includes('resend-422')));
     assert.equal((await admin.get('admin/account?id=00000000-0000-0000-0000-000000000000')).status, 404);
 
     const sub = new Client('10.0.1.31');
@@ -706,6 +716,13 @@ test('monitoring flags only new serious issues', { skip }, async () => {
     assert.deepEqual([...new Set(result.regressions.map((r) => r.rule))], ['image-alt']);
     const due = await monitoring.pagesDueForMonitoring();
     assert.ok(due.some((d) => d.id === page.id), 'monitored pages of paying accounts are due');
+    // Tracking (0015, applied by the app itself): a finished run and per-scan durations.
+    const run = (await db.query(`select status, duration_ms, trigger from app.scan_runs where page_id = $1 order by started_at desc limit 1`, [page.id])).rows[0];
+    assert.equal(run.status, 'done');
+    assert.equal(run.trigger, 'scheduled');
+    assert.ok(run.duration_ms >= 0);
+    const timed = (await db.query(`select count(*)::int as n from app.scans where page_id = $1 and duration_ms is not null`, [page.id])).rows[0];
+    assert.ok(timed.n >= 1);
   } finally {
     delete process.env.BROWSER_WS_ENDPOINT;
   }
@@ -844,6 +861,13 @@ test('AccessBellFix: site key, approved fixes, public rules with CORS, and conne
   await owner.post('domain/fix/update', { id: domain.id, fixId: off.body.fix.id, enabled: false });
 
   const res = await handle(new Request(`${ORIGIN}/api/app?route=fix&k=${setup.body.siteKey}`));
+  // fix.js error reports: counted per domain/day/code; unknown codes are dropped.
+  for (const c of ['bad_selector', 'bad_selector', 'not_a_code']) {
+    const r = await handle(new Request(`${ORIGIN}/api/app?route=fix/error&k=${setup.body.siteKey}&c=${c}`));
+    assert.equal(r.status, 200);
+  }
+  const snip = (await db.query(`select code, count from app.snippet_errors where domain_id = $1`, [domain.id])).rows;
+  assert.deepEqual(snip, [{ code: 'bad_selector', count: 2 }]);
   assert.equal(res.status, 200);
   assert.equal(res.headers.get('access-control-allow-origin'), '*');
   const rules = await res.json();
