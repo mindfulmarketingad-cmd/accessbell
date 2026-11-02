@@ -67,8 +67,10 @@ test('outreach footer states the real reason, not a signup', async () => {
 
 test('outreach never re-sends an address already sent', async () => {
   const { OUTREACH_ALREADY_SENT } = await import('../server/app/outreach-sent.js');
-  const first = [...OUTREACH_ALREADY_SENT][0];
-  assert.ok(first);
+  assert.equal(OUTREACH_ALREADY_SENT.size, 17);
+  const first = 'info@howardcpas.com';
+  assert.ok(OUTREACH_ALREADY_SENT.has(' INFO@howardcpas.com '));
+  assert.ok(!OUTREACH_ALREADY_SENT.has('someone-new@example.com'));
   let calls = 0;
   const out = await runOutreach({ items: [{ email: first.toUpperCase(), hostname: 'x.com', subject: 's', body: 'b' }], confirm: 'SEND', send: async () => { calls++; return { ok: true }; }, suppressedEmails: [], pauseMs: 0 });
   assert.equal(calls, 0);
