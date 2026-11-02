@@ -1,7 +1,7 @@
 // Permanent guard: addresses that already got owner-approved outreach,
 // stored as SHA-256 of the lowercased address (the repo is public).
 // runOutreach skips these forever, so a rerun cannot double-send.
-// Batch 1: 2026-11-02 08:16 ET, 17 sent.
+// Batch 1: 2026-11-02 08:16 ET, 17 sent. Batch 2: 08:27 ET, 7 sent.
 import crypto from 'node:crypto';
 
 const HASHES = new Set([
@@ -22,6 +22,14 @@ const HASHES = new Set([
   'a8f98c8b2e13b618aae0a3edfc10c339c76e7acda432471ab92914e1fecd7561',
   '59c132604f47e1b4157268cffb84beb5f1af5fec941c1c6982f3419d605c0d00',
   'cf3a9fc4d55d28e5fd4108928f704240884fed1032805366bb7dadabba353e63',
+  // Batch 2: 2026-11-02 08:27 ET, 7 sent.
+  'd167f65a88b8122c9bbeea292e848b64d310fb6328f6bae023e7f8aae33b1852',
+  '21584d63ec1e525e2644103277515e4d18c7146dac4af98c0ed99df714c590ac',
+  '6bd6ba144dd3e95bc4c31f0a156151a84fb2a23927389ee0200c2968e80e891b',
+  '373669d357ab1886ec075e5a1ebb4979322a999d5effd0a2b9a2330572183045',
+  '28bc1ad512015130e664086cecc9cfa35cf9600b651b3640259898bf4d550607',
+  'f7d28cbbd90c35f3b52f48df94af2d655e9144d9ec0c748bdbc4589b49b06672',
+  '2579183898168db7d8d1c14f209be9d6ef71dc60b166c7efae69722ee638f0c0',
 ]);
 
 const hash = (email) => crypto.createHash('sha256').update(String(email || '').trim().toLowerCase()).digest('hex');
