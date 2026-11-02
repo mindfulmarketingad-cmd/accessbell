@@ -392,17 +392,13 @@ test('checkout completion activates the account with a domain quota; duplicates 
   assert.equal(result, 'linked');
   assert.equal(await billing.handleStripeEvent(event, { fetchSubscription: async () => ({}) }), 'duplicate');
 
-  // Paying alone does not open the dashboard: the site owner switches it on in Supabase.
+  // A trialing or active Stripe subscription opens the dashboard on its own,
+  // with no manual "Subscriber" flag needed.
   const paid = await owner.get('me');
-  assert.equal(paid.body.subscribed, false);
+  assert.equal(paid.body.subscribed, true);
   assert.equal(paid.body.billing.status, 'trialing');
-  assert.equal((await owner.get('domains')).body.code, 'access_pending');
-  await markSubscriber(me.body.account.id);
-
-  const after = await owner.get('me');
-  assert.equal(after.body.subscribed, true);
-  assert.equal(after.body.billing.status, 'trialing');
-  assert.equal(after.body.billing.domainQuota, 2);
+  assert.equal(paid.body.billing.domainQuota, 2);
+  assert.equal((await owner.get('domains')).status, 200);
 });
 
 test('domains respect the quota and monitor the home page', { skip }, async () => {
