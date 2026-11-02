@@ -352,7 +352,7 @@ export async function runOutreach({ items, confirm, send, suppressedEmails, dryR
     if (isExcludedHostname(hostname)) { log.push({ ...entry, action: 'skipped', reason: 'excluded-hostname' }); continue; }
     if (suppressed.has(to)) { log.push({ ...entry, action: 'skipped', reason: 'suppressed' }); continue; }
     if (dryRun) { log.push({ ...entry, action: 'dry-run' }); continue; }
-    const res = await send({ to, subject: String(it.subject).slice(0, 150), body: String(it.body).slice(0, 5000), key: `${to}/${hostname}` });
+    const res = await send({ to, subject: String(it.subject).slice(0, 150), body: String(it.body).slice(0, 5000), key: `${to}/${hostname}`, hostname });
     if (res?.ok) { sent++; log.push({ ...entry, action: 'sent', id: res.id || null }); }
     else log.push({ ...entry, action: 'failed', reason: res?.reason || 'send-failed' });
   }

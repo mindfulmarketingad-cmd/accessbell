@@ -47,3 +47,20 @@ test('outreach sender refuses without the mailing address', async () => {
     process.env = saved;
   }
 });
+
+test('outreach footer states the real reason, not a signup', async () => {
+  const saved = { ...process.env };
+  const realFetch = globalThis.fetch;
+  let payload;
+  globalThis.fetch = async (_u, init) => { payload = JSON.parse(init.body); return new Response('{"id":"e"}'); };
+  try {
+    Object.assign(process.env, { FUNNEL_MAILING_ADDRESS: '1 Test St', RESEND_API_KEY: 'x' });
+    await seq.sendOutreachEmail({ to: 'info@shop.com', subject: 's', body: 'b', hostname: 'shop.com' });
+    assert.match(payload.text, /shop\.com was scanned with AccessBell's free checker/);
+    assert.doesNotMatch(payload.text, /gave us this email/);
+    assert.equal(payload.headers['List-Unsubscribe-Post'], 'List-Unsubscribe=One-Click');
+  } finally {
+    globalThis.fetch = realFetch;
+    process.env = saved;
+  }
+});

@@ -95,7 +95,7 @@ export function unsubscribeHeaders(email, env = process.env) {
  * physical address. Placeholders appear only when config is missing, and in
  * that state the funnel refuses to send live, so they never reach a person.
  */
-export function marketingFooter(email, env = process.env) {
+export function marketingFooter(email, env = process.env, reason = 'You are getting this because you used AccessBell at accessbell.co and gave us this email address.') {
   const url = unsubscribeUrl(email, env) || '[unsubscribe link: signing key missing]';
   const address = mailingAddress(env) || '[mailing address: FUNNEL_MAILING_ADDRESS not set]';
   return [
@@ -104,7 +104,7 @@ export function marketingFooter(email, env = process.env) {
     '--',
     `Unsubscribe with one click: ${url}`,
     'Or reply to this email with "opt out" and we will not follow up.',
-    'You are getting this because you used AccessBell at accessbell.co and gave us this email address.',
+    reason,
     `AccessBell, ${address}`,
   ].join('\n');
 }
