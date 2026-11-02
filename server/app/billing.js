@@ -10,6 +10,7 @@ import { one } from './db.js';
 import { AppError } from './errors.js';
 import { requireRole, isAdminUser } from './accounts.js';
 import { handleOneTimePayment } from './one-time.js';
+import { sendWelcomeSubscriberEmail } from './email-sequences.js';
 
 const UNDEFINED_COLUMN = '42703';
 
@@ -150,6 +151,29 @@ async function accountForCheckout(session) {
   return null;
 }
 
+/** Email the welcome to the checkout email (or the account owner). Never throws. */
+export async function welcomeOnce(accountId, session, sendWelcome = sendWelcomeSubscriberEmail) {
+  try {
+    let to = session?.customer_details?.email || session?.customer_email || '';
+    if (!to) {
+      const row = await one(
+        `select p.email from app.account_members m join app.profiles p on p.user_id = m.user_id
+          where m.account_id = $1 and m.role = 'owner' order by m.created_at asc limit 1`,
+        [accountId],
+      );
+      to = row?.email || '';
+    }
+    if (!to) return { ok: false, reason: 'no-email' };
+    const res = await sendWelcome({ to: String(to).trim().toLowerCase(), key: accountId });
+    if (!res?.ok) console.error('welcome email not sent', accountId, res?.reason);
+    return res;
+  } catch (err) {
+    // The subscription is already saved; a failed welcome must not fail the webhook.
+    console.error('welcome email failed', accountId, err && err.message);
+    return { ok: false, reason: 'error' };
+  }
+}
+
 async function accountForSubscription(sub) {
   const customer = typeof sub.customer === 'string' ? sub.customer : sub.customer?.id;
   const row = await one(
@@ -164,17 +188,23 @@ async function accountForSubscription(sub) {
  * Stripe, so events arriving out of order cannot leave stale state behind.
  * Returns a short description for logging.
  */
-export async function handleStripeEvent(event, { fetchSubscription = (id) => stripe('GET', `/subscriptions/${encodeURIComponent(id)}`) } = {}) {
+export async function handleStripeEvent(
+  event,
+  {
+    fetchSubscription = (id) => stripe('GET', `/subscriptions/${encodeURIComponent(id)}`),
+    sendWelcome = sendWelcomeSubscriberEmail,
+  } = {},
+) {
   const seen = await one('select 1 from app.stripe_events where id = $1', [event.id]);
   if (seen) return 'duplicate';
-  const result = await processStripeEvent(event, fetchSubscription);
+  const result = await processStripeEvent(event, fetchSubscription, sendWelcome);
   // Recorded only after success, so a failed attempt is retried by Stripe.
   // Processing is idempotent, so a rare concurrent duplicate is harmless.
   await one('insert into app.stripe_events (id, type) values ($1, $2) on conflict do nothing', [event.id, event.type]);
   return result;
 }
 
-async function processStripeEvent(event, fetchSubscription) {
+async function processStripeEvent(event, fetchSubscription, sendWelcome) {
   const obj = event.data?.object || {};
 
   // One-time purchases (Page Report, Domain Audit) never touch subscription
@@ -188,7 +218,11 @@ async function processStripeEvent(event, fetchSubscription) {
     const accountId = await accountForCheckout(obj);
     if (!accountId) return 'unmatched checkout';
     const subId = typeof obj.subscription === 'string' ? obj.subscription : obj.subscription.id;
+    // First subscription on this account? Checked before linking, so a retried
+    // event (or a later resubscribe) never sends the welcome a second time.
+    const prior = await one('select stripe_subscription_id from app.accounts where id = $1', [accountId]);
     await applySubscription(accountId, await fetchSubscription(subId));
+    if (!prior?.stripe_subscription_id) await welcomeOnce(accountId, obj, sendWelcome);
     return 'linked';
   }
 
