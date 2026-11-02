@@ -88,7 +88,7 @@ async function activate(accountId, quantity = 2, { subscriber = true } = {}) {
     type: 'checkout.session.completed',
     data: { object: { mode: 'subscription', client_reference_id: accountId, customer: sub.customer, subscription: sub.id } },
   };
-  const result = await billing.handleStripeEvent(event, { fetchSubscription: async () => sub });
+  const result = await billing.handleStripeEvent(event, { fetchSubscription: async () => sub, isAccessBell: async () => true });
   if (subscriber) await markSubscriber(accountId);
   return { result, sub, event };
 }

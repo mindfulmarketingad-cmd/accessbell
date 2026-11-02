@@ -254,7 +254,7 @@ export const SOLUTIONS: Solution[] = [
         h2: 'A Workflow to Fix Website Accessibility Issues Faster',
         paras: [
           'Most sites reuse templates, so one broken component repeats on hundreds of pages. AccessBell groups failing elements by component, so you can fix the shared header, form or card once. Issues are ranked by severity, and each comes with an explanation, correct and incorrect markup examples and instructions for the specific page.',
-          'AI-assisted suggestions help with wording, such as alt text and labels, but nothing changes on your site until a person approves it. Combined with [continuous monitoring](/solutions/continuous-monitoring), new issues are found daily and the same workflow fixes them.',
+          'Guided fix suggestions help with wording, such as alt text and labels, but nothing changes on your site until a person approves it. Combined with [continuous monitoring](/solutions/continuous-monitoring), new issues are found daily and the same workflow fixes them.',
         ],
       },
       {

@@ -35,3 +35,36 @@ test('dashboard access rule includes a live Stripe subscription', async () => {
   const rules = accessRules('a');
   assert.ok(rules.every((r) => r.includes("a.subscription_status in ('trialing', 'active')")));
 });
+
+test('only AccessBell Pro products count as an AccessBell subscription', async () => {
+  const { subscriptionMatchesProducts } = await import('../server/app/billing.js');
+  const ids = new Set(['prod_ab']);
+  const sub = (p) => ({ items: { data: [{ price: { product: p } }] } });
+  assert.equal(subscriptionMatchesProducts(sub('prod_ab'), ids), true);
+  assert.equal(subscriptionMatchesProducts(sub('prod_other'), ids), false);
+  assert.equal(subscriptionMatchesProducts({ items: { data: [] } }, ids), false);
+});
+
+test('AccessBell products come from the configured Payment Links', async () => {
+  const { accessBellProductIds } = await import('../server/app/billing.js');
+  const { config } = await import('../server/app/config.js');
+  const c = config();
+  const stripeApi = async (_m, path) => {
+    if (path.startsWith('/payment_links?')) {
+      return { data: [{ id: 'plink_m', url: c.stripePaymentLink }, { id: 'plink_x', url: 'https://buy.stripe.com/other' }], has_more: false };
+    }
+    if (path.startsWith('/payment_links/plink_m/')) return { data: [{ price: { product: 'prod_ab' } }] };
+    throw new Error(`unexpected ${path}`);
+  };
+  const ids = await accessBellProductIds({ stripeApi, now: 1 });
+  assert.deepEqual([...ids], ['prod_ab']);
+});
+
+test('only email-link sessions count as a verified email', async () => {
+  const { emailVerifiedSession } = await import('../server/app/billing.js');
+  const tok = (methods) => `x.${Buffer.from(JSON.stringify({ amr: methods.map((method) => ({ method })) })).toString('base64url')}.y`;
+  assert.equal(emailVerifiedSession(tok(['password'])), false);
+  assert.equal(emailVerifiedSession(tok(['recovery'])), true);
+  assert.equal(emailVerifiedSession(tok(['invite'])), true);
+  assert.equal(emailVerifiedSession('garbage'), false);
+});

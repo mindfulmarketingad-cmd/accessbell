@@ -4,7 +4,7 @@ import { createRateLimiter } from '../rate-limit.js';
 import { auth } from './auth-client.js';
 import { readSession, sessionCookies, clearSessionCookies } from './session.js';
 import { ensureUserSetup, getContext, renameAccount, requireRole, isSubscribed, isAdminUser, getOnboarding, completeTour } from './accounts.js';
-import { checkoutUrl, portalUrl, billingSummary, claimSubscriptionForUser } from './billing.js';
+import { checkoutUrl, portalUrl, billingSummary, claimSubscriptionForUser, emailVerifiedSession } from './billing.js';
 import {
   listDomains, createDomain, updateDomainSettings, deleteDomain, addPage, setMonitored, deletePage, discoverPages, domainOverview, selectPages, addPages,
 } from './domains.js';
@@ -102,7 +102,6 @@ const publicRoutes = {
       session ??= await auth.signIn(email, password);
       const user = session.user || (await auth.getUser(session.accessToken));
       await ensureUserSetup(user);
-      await claimSubscriptionForUser(user);
       return { body: { status: 'signed_in' }, cookies: sessionCookies(request, session) };
     }
     const result = await auth.signUp(email, password, `${appOrigin(request)}/app/auth/callback`);
@@ -113,7 +112,6 @@ const publicRoutes = {
     if (!result.session) throw new AppError(503, 'We could not create your account right now. Please try again in a moment.', 'signup_failed');
     const user = result.session.user || (await auth.getUser(result.session.accessToken));
     await ensureUserSetup(user);
-    await claimSubscriptionForUser(user);
     return { body: { status: 'signed_in' }, cookies: sessionCookies(request, result.session) };
   },
 
@@ -126,7 +124,6 @@ const publicRoutes = {
     if (!session) throw unauthorized('Email or password is incorrect.');
     const user = session.user || (await auth.getUser(session.accessToken));
     await ensureUserSetup(user);
-    await claimSubscriptionForUser(user);
     return { body: { status: 'signed_in' }, cookies: sessionCookies(request, session) };
   },
 
@@ -161,7 +158,9 @@ const publicRoutes = {
     const user = await auth.getUser(accessToken).catch(() => null);
     if (!user?.id) throw unauthorized('That link has expired. Please request a new one.');
     await ensureUserSetup(user);
-    await claimSubscriptionForUser(user);
+    // Email-link sign-ins prove the address, so a subscription bought with it
+    // can be linked. Password sign-ins never trigger this (sign-up is unverified).
+    if (emailVerifiedSession(accessToken)) await claimSubscriptionForUser(user);
     const expiresIn = Math.min(Math.max(Number(body?.expires_in) || 3600, 60), 3600);
     return { body: { status: 'signed_in' }, cookies: sessionCookies(request, { accessToken, refreshToken, expiresIn }) };
   },
@@ -178,7 +177,7 @@ const publicRoutes = {
     if (!session) throw unauthorized('That link has expired. Please request a new one.');
     const user = session.user || (await auth.getUser(session.accessToken));
     await ensureUserSetup(user);
-    await claimSubscriptionForUser(user);
+    await claimSubscriptionForUser(user); // a verified token_hash proves the address
     return { body: { status: 'signed_in' }, cookies: sessionCookies(request, session) };
   },
 
@@ -434,7 +433,6 @@ export async function handle(request) {
     let ctx = await getContext(session.user);
     if (!ctx) {
       await ensureUserSetup(session.user);
-      await claimSubscriptionForUser(session.user);
       ctx = await getContext(session.user);
     }
     // Until the site owner marks the account as a Subscriber in Supabase, only

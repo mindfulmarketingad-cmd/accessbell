@@ -34,7 +34,7 @@ export function softwareSchema() {
       {
         '@type': 'Offer',
         name: `${PLAN.name} plan`,
-        description: `Up to ${PLAN.urlsPerDomain} URLs per domain, unlimited rescans and AI-assisted fixes`,
+        description: `Up to ${PLAN.urlsPerDomain} URLs per domain, unlimited rescans and guided fix suggestions`,
         price: String(PLAN.price),
         priceCurrency: PLAN.currency,
         url: `${SITE.url}/pricing`,
@@ -49,7 +49,7 @@ export function softwareSchema() {
       {
         '@type': 'Offer',
         name: `${PLAN.name} plan, billed annually`,
-        description: `Up to ${PLAN.urlsPerDomain} URLs per domain, unlimited rescans and AI-assisted fixes`,
+        description: `Up to ${PLAN.urlsPerDomain} URLs per domain, unlimited rescans and guided fix suggestions`,
         price: String(PLAN.annualPrice),
         priceCurrency: PLAN.currency,
         url: `${SITE.url}/pricing`,

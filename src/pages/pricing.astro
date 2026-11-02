@@ -13,7 +13,7 @@ import { faqSchema, softwareSchema, type FaqItem } from '../lib/schema';
 const steps = [
   { tag: 'Step 1', title: 'Automatic Crawl', text: 'We discover pages on your domain, subdomains and XML sitemap, then keep the list current as you publish. You choose which URLs to monitor, up to 500.' },
   { tag: 'Step 2', title: 'Scan', text: 'Each page is tested in a real browser on desktop and mobile against the WCAG level you choose, up to WCAG 2.2 AAA. Issues are ranked by how much they block users.' },
-  { tag: 'Step 3', title: 'Improve', text: 'Your team gets the failing elements, grouped by component, with detailed fixing instructions and AI-assisted fix suggestions to review.' },
+  { tag: 'Step 3', title: 'Improve', text: 'Your team gets the failing elements, grouped by component, with detailed fixing instructions and guided fix suggestions to review.' },
   { tag: 'Step 4', title: 'Keep Monitoring', text: 'Unlimited rescans and continuous monitoring help you catch regressions as soon as they ship. Your accessibility statement and the record of your work update automatically.' },
 ];
 
@@ -58,7 +58,7 @@ const faqs: FaqItem[] = [
 ---
 <BaseLayout
   title="Pricing - Website Accessibility Checker | AccessBell"
-  description={`Start a 3-day free trial of AccessBell Pro: continuous WCAG monitoring of up to ${PLAN.urlsPerDomain} URLs per domain, unlimited rescans and AI-assisted fixes.`}
+  description={`Start a 3-day free trial of AccessBell Pro: continuous WCAG monitoring of up to ${PLAN.urlsPerDomain} URLs per domain, unlimited rescans and guided fix suggestions.`}
   breadcrumbs={[{ label: 'Pricing', href: '/pricing' }]}
   schema={[softwareSchema(), faqSchema(faqs)]}
 >
@@ -193,8 +193,8 @@ const faqs: FaqItem[] = [
   <section class="section section-surface" aria-labelledby="ai-title">
     <div class="container grid-2">
       <div class="feature-copy">
-        <span class="eyebrow">AI-assisted fixes</span>
-        <h2 id="ai-title">AI-Assisted Fixes, <span class="accent">Done Responsibly</span></h2>
+        <span class="eyebrow">Guided fix suggestions</span>
+        <h2 id="ai-title">Guided Fix Suggestions, <span class="accent">Done Responsibly</span></h2>
         <p class="lead">Suggestions speed up remediation. Your team stays in control of every change.</p>
         <ul class="check-list">
           <li><Icon name="check" /><span><strong>Grounded in WCAG.</strong> Every suggestion cites the <a href="https://www.w3.org/TR/WCAG22/" rel="noopener noreferrer">WCAG 2.2</a> success criterion it resolves.</span></li>
