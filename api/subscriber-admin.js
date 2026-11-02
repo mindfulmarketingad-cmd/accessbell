@@ -10,6 +10,10 @@
 //   active Stripe subscription found by email. Sends the welcome once linked.
 // - "funnel-preview": read-only list of who each drip email would go to
 //   if FUNNEL_EMAIL_LIVE were on today, plus free-scan counts. Sends nothing.
+// - "free-scan-sites": read-only list of scanned sites with latest counts.
+// - "outreach-send": owner-approved outreach batch { items:[{email,hostname,
+//   subject,body}], confirm:"SEND" } (or dryRun:true). Footer, unsubscribe
+//   headers and suppression checks are applied. Never scheduled.
 // - "unsuppress": remove one address from app.funnel_suppressions.
 // - "welcome": send the subscriber welcome email (Resend dedupes per account
 //   for 24h). Only to an account that has dashboard access.
@@ -21,9 +25,9 @@ import { auth } from '../server/app/auth-client.js';
 import { withAccessRule } from '../server/app/access.js';
 import { isAdminUser } from '../server/app/accounts.js';
 import { accountFromInvite, claimSubscriptionForUser, stripe, isAccessBellSubscription } from '../server/app/billing.js';
-import { sendWelcomeSubscriberEmail } from '../server/app/email-sequences.js';
+import { sendWelcomeSubscriberEmail, sendOutreachEmail } from '../server/app/email-sequences.js';
 import { json, readJson, methodNotAllowed } from '../server/http.js';
-import { funnelPreview, removeFunnelSuppression } from '../server/app/funnel.js';
+import { funnelPreview, removeFunnelSuppression, freeScanSites, runOutreach, fetchSuppressedEmails } from '../server/app/funnel.js';
 
 function tokenOk(given, expected) {
   if (!given || !expected) return false;
@@ -77,7 +81,7 @@ export async function POST(request) {
   const expected = process.env.SUBSCRIBER_ADMIN_TOKEN;
   if (!expected) return json(404, { error: 'Not found.' });
   if (!tokenOk(request.headers.get('x-admin-token'), expected)) return json(403, { error: 'Forbidden.' });
-  const body = await readJson(request, 2048);
+  const body = await readJson(request, 262_144);
   const email = typeof body?.email === 'string' ? body.email.trim().toLowerCase() : '';
   const action = String(body?.action || 'status');
   // Read-only: who the drip would email if it were live today. Sends nothing.
@@ -86,6 +90,29 @@ export async function POST(request) {
       return json(200, await funnelPreview());
     } catch (err) {
       console.error('funnel-preview failed', err?.code || err?.message);
+      return json(500, { error: 'failed', code: err?.code || null });
+    }
+  }
+  if (action === 'free-scan-sites') {
+    try {
+      return json(200, { sites: await freeScanSites() });
+    } catch (err) {
+      return json(500, { error: 'failed', code: err?.code || null });
+    }
+  }
+  // Owner-approved outreach. Sends only with confirm: "SEND"; dryRun: true checks the batch.
+  if (action === 'outreach-send') {
+    try {
+      const out = await runOutreach({
+        items: body?.items,
+        confirm: body?.confirm,
+        dryRun: body?.dryRun === true,
+        send: sendOutreachEmail,
+        suppressedEmails: await fetchSuppressedEmails(),
+      });
+      return json(out.error ? 400 : 200, out);
+    } catch (err) {
+      console.error('outreach failed', err?.code || err?.message);
       return json(500, { error: 'failed', code: err?.code || null });
     }
   }

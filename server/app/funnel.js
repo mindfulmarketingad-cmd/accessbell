@@ -320,3 +320,41 @@ export async function funnelPreview({ now = new Date() } = {}) {
     counts: counts[0] || {},
   };
 }
+
+/** Read-only: every site in the free scan log with its latest completed scan. */
+export async function freeScanSites() {
+  return query(
+    `select distinct on (hostname) hostname, url, final_url, issues, critical, serious, created_at
+       from app.free_scans
+      where hostname is not null and issues is not null
+      order by hostname, created_at desc`,
+  );
+}
+
+const OUTREACH_EMAIL = /^[^\s@<>()[\]\\,;:"]{1,64}@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)+$/i;
+
+/**
+ * Owner-approved outreach batch. Never runs on a schedule: only the explicit
+ * admin action calls it, with confirm === 'SEND'. Skips suppressed addresses,
+ * excluded hostnames and invalid rows; one send per address+site (Resend
+ * idempotency key) so a retried batch does not double-send within 24h.
+ */
+export async function runOutreach({ items, confirm, send, suppressedEmails, dryRun = false }) {
+  if (confirm !== 'SEND' && !dryRun) return { error: 'confirm must be "SEND"' };
+  const suppressed = new Set((suppressedEmails || []).map(normalizeEmail));
+  const log = [];
+  let sent = 0;
+  for (const it of (items || []).slice(0, 200)) {
+    const to = normalizeEmail(it?.email);
+    const hostname = normalizeHostname(it?.hostname);
+    const entry = { to, hostname };
+    if (!OUTREACH_EMAIL.test(to) || !it?.subject || !it?.body) { log.push({ ...entry, action: 'skipped', reason: 'invalid' }); continue; }
+    if (isExcludedHostname(hostname)) { log.push({ ...entry, action: 'skipped', reason: 'excluded-hostname' }); continue; }
+    if (suppressed.has(to)) { log.push({ ...entry, action: 'skipped', reason: 'suppressed' }); continue; }
+    if (dryRun) { log.push({ ...entry, action: 'dry-run' }); continue; }
+    const res = await send({ to, subject: String(it.subject).slice(0, 150), body: String(it.body).slice(0, 5000), key: `${to}/${hostname}` });
+    if (res?.ok) { sent++; log.push({ ...entry, action: 'sent', id: res.id || null }); }
+    else log.push({ ...entry, action: 'failed', reason: res?.reason || 'send-failed' });
+  }
+  return { sent, checked: log.length, log };
+}
