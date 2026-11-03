@@ -1,10 +1,18 @@
 ---
 import AuthLayout from '../../layouts/AuthLayout.astro';
 import Icon from '../../components/Icon.astro';
+import { PLAN, ONE_TIME } from '../../data/pricing';
 ---
-<AuthLayout title="Create your account">
-  <h1 data-auth-intro>Create Your AccessBell Account</h1>
-  <p data-auth-intro>Sign up with your email to scan your websites, see every accessibility issue and track your fixes in one dashboard.</p>
+<AuthLayout title="Start your 3-day free trial">
+  <h1 data-auth-intro>Start Your 3-Day Free Trial</h1>
+  <p data-auth-intro>Create your account to start a 3-day free trial of AccessBell Pro. After the trial, Pro is ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. Cancel before the trial ends and you will not be charged.</p>
+  <div class="trial-offer">
+    <p id="trial-plan">No card on this form. You choose monthly (${PLAN.price} per domain) or yearly (${PLAN.annualPrice} per domain) at checkout. Both include the same 3-day free trial.</p>
+    <ul>
+      <li>Up to {PLAN.urlsPerDomain} URLs per domain, rescanned every day</li>
+      <li>Guided fix suggestions you review before anything changes</li>
+    </ul>
+  </div>
   <form class="form" data-auth-form="signup" novalidate>
     <div class="field">
       <label for="email">Email <span class="req" aria-hidden="true">*</span></label>
@@ -22,10 +30,21 @@ import Icon from '../../components/Icon.astro';
       <span>I agree to the <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>.</span>
     </label>
     <p class="status-line" data-status role="status" aria-live="polite"></p>
-    <button class="btn btn-lg auth-submit" type="submit">Get Started</button>
+    <button class="btn btn-lg auth-submit" type="submit">Start 3-day free trial</button>
   </form>
   <p class="auth-alt">Already have an account? <a href="/app/login">Sign in</a></p>
+  <p class="auth-alt">Not ready to subscribe? A <a href={ONE_TIME.pageReport.href}>Page Report</a> is ${ONE_TIME.pageReport.price} for one page, and a <a href={ONE_TIME.domainAudit.href}>Domain Audit</a> is ${ONE_TIME.domainAudit.price} for up to {PLAN.urlsPerDomain} pages. Neither renews.</p>
 </AuthLayout>
 <script>
   import '../../scripts/app/auth.js';
+  import { PLAN } from '../../data/pricing';
+
+  // External script: the site Content-Security-Policy does not allow inline scripts.
+  const note = document.getElementById('trial-plan');
+  const plan = new URLSearchParams(location.search).get('plan');
+  if (note && plan === 'annual') {
+    note.textContent = `You chose yearly billing: $${PLAN.annualPrice} per domain per year after the 3-day free trial. No card on this form. You can still pick monthly at checkout.`;
+  } else if (note && plan === 'monthly') {
+    note.textContent = `You chose monthly billing: $${PLAN.price} per domain per month after the 3-day free trial. No card on this form. You can still pick yearly at checkout.`;
+  }
 </script>

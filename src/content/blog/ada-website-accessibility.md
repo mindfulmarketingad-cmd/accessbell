@@ -44,7 +44,7 @@ The ADA was written before most businesses had websites, so the law itself does 
 
 Federal courts have not all agreed on how far that reaches:
 
-- In **Robles v. Domino's Pizza** (9th Circuit, 2019), the court held that the ADA applied to Domino's website and app because they connected customers to its physical restaurants. The Supreme Court declined to review the case. Restaurant sites can start with the [restaurant accessibility checker](/industries/restaurants).
+- In **Robles v. Domino's Pizza** (9th Circuit, 2019), the court held that the ADA applied to Domino's website and app because they connected customers to its physical restaurants. The Supreme Court declined to review the case. Restaurant sites can start with the [restaurant accessibility checker](/industries/restaurants). Hotel sites can start with the [hotel accessibility checker](/industries/hotels).
 - In **Gil v. Winn-Dixie** (11th Circuit, 2021), the court held that a website was not itself a place of public accommodation, but that decision was later vacated.
 - Some courts, especially federal courts in New York, have allowed claims against websites even without a physical store.
 

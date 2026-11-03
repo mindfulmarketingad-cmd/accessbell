@@ -236,6 +236,50 @@ export const INDUSTRIES: Industry[] = [
       { href: 'https://www.w3.org/TR/WCAG22/', label: 'W3C: Web Content Accessibility Guidelines (WCAG) 2.2' },
     ],
   },
+  {
+    slug: 'hotels',
+    name: 'Hotel',
+    seoTitle: 'Hotel Accessibility Checker',
+    description: 'Free hotel accessibility checker. Scan booking, room and contact pages for the WCAG issues that block a reservation and show up in ADA website claims.',
+    lead: 'Scan your hotel website with a free hotel accessibility checker. It finds the WCAG failures on booking, room and contact pages that can stop a guest from reserving, and that ADA website complaints often name.',
+    stat: {
+      text: 'The Department of Justice’s March 18, 2022 web guidance lists hotels, inns and motels among the businesses open to the public, and says the ADA applies to the goods, services and privileges those businesses offer on the web.',
+      href: 'https://www.ada.gov/resources/web-guidance/',
+      label: 'ADA.gov: Guidance on Web Accessibility and the ADA (March 18, 2022)',
+    },
+    whatIs: [
+      'A hotel accessibility checker scans the pages a guest uses to choose a room and book it: the booking form, a room page, photos and the contact form. The ADA lists an inn, hotel, motel or other place of lodging as a public accommodation when its operations affect commerce. A narrow exception covers a place inside a building with five or fewer rooms for rent when the owner lives there. The Department of Justice’s web guidance names hotels, inns and motels as businesses that must make the goods and services they offer online accessible.',
+      'Hotels also have a reservation rule that is separate from WCAG. Under 28 C.F.R. § 36.302(e), a place of lodging must let people reserve accessible guest rooms in the same manner as other rooms, and describe accessible features in enough detail for a guest to decide whether a room meets their needs. A booking page that hides those features in an unlabeled image fails that practical need. There is still no Title III regulation that sets a technical standard for business websites. The Department of Justice says businesses have flexibility in how they comply, and it points to the Web Content Accessibility Guidelines (WCAG) as helpful guidance. A 2010 consent decree required Hilton’s websites on hilton.com to meet WCAG 2.0 Level A for the term of that decree, which has ended. The decree bound Hilton, not every hotel. AccessBell’s ADA preset tests WCAG 2.1 Level AA. A hotel accessibility checker shows the automated failures on a live page so you can fix the booking flow, then keep checking as rates and photos change.',
+    ],
+    commonIssues: [
+      { title: 'Booking calendars that need a mouse', text: 'Date pickers built as clickable grids often have no keyboard support and no accessible name for each day, so a guest cannot choose arrival and departure without a mouse. That is a WCAG 2.1.1 and 4.1.2 failure.' },
+      { title: 'Room photos with no text alternative', text: 'A gallery of room and amenity photos with empty alt text tells a screen reader user nothing about the bed, the bathroom or the entrance. WCAG 1.1.1 requires a text alternative. The reservation rule also asks lodging sites to describe accessible features in enough detail for a guest to judge the room.' },
+      { title: 'Guest details and request forms', text: 'Name, phone and accessible-room fields are frequently unlabeled, and an error such as “choose a date” is not announced. WCAG 3.3.2 and 3.3.1 cover labels and error identification. The Department of Justice’s web guidance calls out inaccessible online forms as a barrier.' },
+      { title: 'Rates and availability shown only by color', text: 'A red label for sold out, or a green badge for an accessible room, conveys nothing to someone who cannot see that color and nothing to a screen reader. WCAG 1.4.1 requires the information in text as well.' },
+      { title: 'Embedded booking engines', text: 'Third-party booking, review and chat widgets add their own markup. One unlabeled button or focus trap in the widget is on every page that loads it, and your theme cannot fix code the widget owns.' },
+    ],
+    fixNotes: [
+      'Start with the booking path: dates, room choice, guest details and the confirmation. A guest who cannot pick a date or submit a reservation cannot stay with you, and those are the journeys hotel website complaints describe.',
+      'Describe accessible room features in text, not only in a photo or an icon. Put details a guest needs in order to decide, such as a roll-in shower or a visual alarm, in the same booking flow as other rooms.',
+      'Name every booking control in text, such as “Check-in date” and “Select king room”, and check the flow with the keyboard: Tab to each control, activate it with Enter or Space, and leave calendars and pop-ups with Escape.',
+      'Rescan after every theme, booking-engine or photo update. A new widget can add unlabeled buttons to every room page overnight.',
+    ],
+    faqs: [
+      { q: 'Does the ADA apply to my hotel website?', a: 'If you operate an inn, hotel, motel or other place of lodging and your operations affect commerce, the ADA lists you as a public accommodation, with a narrow exception for a place inside a building with five or fewer rooms for rent when the owner lives there. The Department of Justice says the ADA applies to the goods and services those businesses offer on the web, which includes online booking. A separate rule, 28 C.F.R. § 36.302(e), requires places of lodging to let guests reserve accessible rooms in the same manner as other rooms and to describe accessible features in enough detail. This is general information, not legal advice.' },
+      { q: 'What should a hotel accessibility checker look at first?', a: 'The booking flow, one room page and the contact form. Those are the pages a guest needs to reserve a stay. Run the free scan above on each of them, then fix critical and serious issues before the rest of the site.' },
+      { q: 'Will an overlay make my hotel website compliant?', a: 'No. An overlay runs in the visitor’s browser and does not change your booking form, room descriptions or photos. The hotel accessibility checker shows the failing markup so it can be fixed at the source. Guided fix suggestions can speed up specific edits, such as missing alt text and unnamed buttons. They do not make a site conform to WCAG on their own, and no tool can guarantee you will not be sued.' },
+      { q: 'Can I scan my booking page for free?', a: 'Yes. The scan on this page is free and needs no account. It tests one public URL. To see the failing code and the fix for every issue on that page, buy a Page Report for $19. A Domain Audit is $79 for up to 500 pages, once. Pro monitors up to 500 URLs per domain every day and starts with a 3-day free trial, then $29 per domain per month or $199 per domain per year.' },
+    ],
+    related: ['ada-title-iii-law-for-businesses', 'ada-website-compliance-guide', 'ada-demand-letter', 'wcag-3-3-2-labels-or-instructions'],
+    checkers: ['ada-compliance-checker', 'wcag-2-2-aa-checker'],
+    reviewed: new Date('2026-11-03'),
+    sources: [
+      { href: 'https://www.law.cornell.edu/uscode/text/42/12181', label: '42 U.S.C. § 12181: an inn, hotel, motel, or other place of lodging is a public accommodation' },
+      { href: 'https://www.law.cornell.edu/cfr/text/28/36.302', label: '28 C.F.R. § 36.302(e): reservations made by places of lodging' },
+      { href: 'https://archive.ada.gov/hilton/hilton.htm', label: 'United States v. Hilton Worldwide Inc. consent decree (November 29, 2010): WCAG 2.0 Level A on hilton.com for the term of the decree' },
+      { href: 'https://www.w3.org/TR/WCAG22/', label: 'W3C: Web Content Accessibility Guidelines (WCAG) 2.2' },
+    ],
+  },
 ];
 
 export const industryPath = (i: Industry) => `/industries/${i.slug}`;
