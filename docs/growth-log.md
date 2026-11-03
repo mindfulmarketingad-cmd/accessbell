@@ -2,6 +2,14 @@
 
 A running record of shipped pages and conversion changes. One page and one site improvement per entry.
 
+## 2026-11-03
+
+**New page:** `/industries/hotels` — Hotel accessibility checker. Hotel operators search for booking and room-page fixes, and that page did not exist. It cites the ADA’s lodging definition, ADA.gov’s web guidance (which names hotels), the lodging reservation rule in 28 C.F.R. § 36.302(e), and the expired Hilton consent decree, then offers a free scan, the 3-day Pro trial, the $19 Page Report and the $79 Domain Audit.
+
+**Site improvement:** The signup page now states the offer before the form. The heading and button say “3-day free trial,” the price is $29 per domain per month or $199 per year, and the page says no card is collected on the form and that canceling before the trial ends means no charge. A plan chosen on pricing (`?plan=monthly` or `?plan=annual`) is repeated on the form. People who do not want a subscription see the $19 Page Report and the $79 Domain Audit on the same page.
+
+**Why:** The trial call to action sent people to a form that said “Get Started” and never named the price, the trial length or when a card is required. Hotels are a Title III audience the industry hub did not cover.
+
 ## 2026-11-02
 
 **New page:** `/industries/restaurants` — Restaurant accessibility checker. Restaurant owners search for menu, online-ordering and reservation fixes, and that page did not exist. It cites the ADA’s public-accommodation definition, ADA.gov’s web guidance and *Robles v. Domino’s Pizza*, then offers a free scan, the 3-day Pro trial, the $19 Page Report and the $79 Domain Audit.

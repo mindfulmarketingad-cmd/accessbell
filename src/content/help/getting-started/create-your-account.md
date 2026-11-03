@@ -2,7 +2,7 @@
 title: 'Create Your AccessBell Account'
 description: 'Sign up for AccessBell, confirm your email address and sign in to your dashboard for the first time. Includes what to do if the email does not arrive.'
 order: 3
-updatedDate: 2026-09-28
+updatedDate: 2026-11-03
 sources: ['wai-intro']
 ---
 
@@ -10,9 +10,11 @@ You need an account to monitor domains, save scan history and invite your team.
 
 ## Sign Up
 
-1. Go to [Create your account](/app/signup).
+1. Go to [Start your 3-day free trial](/app/signup).
 2. Enter your work email and a password of at least 8 characters.
-3. Select **Create account**.
+3. Select **Start 3-day free trial**.
+
+This step creates the account. It does not ask for a card. After you sign in, checkout is where you choose monthly ($29 per domain) or yearly ($199 per domain). Both include the 3-day free trial. Cancel before the trial ends and you will not be charged.
 
 We send a confirmation link to your email address. Open it to finish creating your account. The link signs you in and takes you to your dashboard.
 
