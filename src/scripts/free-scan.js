@@ -262,7 +262,7 @@ function showResults(r, url, form) {
   const verdict = el('div', { class: `scan-verdict scan-verdict-${v.tone}` }, [
     el('p', { class: 'scan-verdict-text' }, [el('strong', { text: v.text })]),
     el('div', { class: 'scan-verdict-actions' }, [el('a', { class: 'btn btn-accent', href: trial, text: 'Start 3-day free trial' })]),
-    el('p', { class: 'scan-proof' }, [proofCount, `Monitors up to 500 pages on ${host} with guided fix suggestions. Cancel anytime.`]),
+    el('p', { class: 'scan-proof' }, [proofCount, `Monitors up to 500 pages on ${host} with guided fix suggestions. Cancel anytime. 14-day money-back guarantee.`]),
     el('p', { class: 'scan-verdict-alt' }, [oneTimeLink()]),
   ]);
   const label = r.standard?.label || 'WCAG';
@@ -408,7 +408,7 @@ function showResults(r, url, form) {
       el('li', { text: 'A dated record of your fixes, in case you ever need proof' }),
     ]),
     el('div', { class: 'scan-cta-actions' }, [el('a', { class: 'btn btn-outline', href: trial, text: 'Start 3-day free trial' }), oneTimeLink()]),
-    el('p', { class: 'scan-cta-note' }, ['3-day free trial, then $29/mo or $199/year per domain. Cancel anytime. One-time reports need no account. Already subscribed? ', el('a', { href: '/app/login', text: 'Log in to your dashboard' }), '.']),
+    el('p', { class: 'scan-cta-note' }, ['3-day free trial, then $29/mo or $199/year per domain. Cancel anytime. 14-day money-back guarantee. One-time reports need no account. Already subscribed? ', el('a', { href: '/app/login', text: 'Log in to your dashboard' }), '.']),
   ]);
   mount.replaceChildren(
     el('div', { class: 'results-card scan-result', role: 'region', 'aria-labelledby': 'scan-result-title' }, [
