@@ -40,4 +40,5 @@ const { id, buttonLabel = 'Check accessibility', standard } = Astro.props;
   </button>
 </form>
 <p class="scan-error" id={`${id}-error`} role="alert" data-scan-error hidden></p>
+<p class="scan-proof scan-proof-form"><span data-scan-proof-count hidden></span><span>Free scan, no signup. Pro monitoring starts with a 3-day free trial. Cancel anytime.</span></p>
 <noscript><p class="scan-error">The free checker needs JavaScript enabled to display results.</p></noscript>

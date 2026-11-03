@@ -1,9 +1,9 @@
 // "Your Domains": every domain with its latest result, and adding new ones.
-import { api, boot, el, icon, avatar, fmtDate, can, setStatus } from './core.js';
+import { api, boot, el, icon, avatar, fmtDate, can, setStatus, pendingDomain, clearPendingDomain } from './core.js';
 import { scoreRing } from './charts.js';
 import { setupTour } from './onboarding.js';
 import { setupAddDomain } from './add-domain.js';
-import { domainMenu, rescanDomain, scanMessage, relative, nextScheduledScan } from './domain-actions.js';
+import { domainMenu, rescanDomain, scanMessage, relative, nextScheduledScan, scanDomainWithDialog } from './domain-actions.js';
 
 const me = await boot();
 const $ = (s) => document.querySelector(s);
@@ -150,15 +150,42 @@ function render() {
   );
 }
 
+/**
+ * First visit after a trial that started from the free scan: add the scanned
+ * domain (its home page is monitored straight away), run its first scan and
+ * open its report. Runs once: the stored domain is cleared before trying.
+ */
+async function firstDomainFromScan() {
+  const host = pendingDomain();
+  if (!host || !can(me, 'admin')) return false;
+  clearPendingDomain();
+  const existing = me.domainList.domains.find((d) => d.hostname === host || d.hostname === `www.${host}`);
+  if (existing) return false;
+  try {
+    setStatus(listStatus, '', `Adding ${host} and running its first scan...`);
+    const { domain } = await api('domains', { method: 'POST', body: { url: host } });
+    // Find the rest of the site's pages in the background for "Select pages".
+    api('domain/discover', { method: 'POST', body: { id: domain.id } }).catch(() => {});
+    await scanDomainWithDialog(domain.id);
+    location.assign(`/app/domain?id=${encodeURIComponent(domain.id)}`);
+    return true;
+  } catch (err) {
+    await reload().catch(() => {});
+    setStatus(listStatus, 'error', `We could not add ${host} automatically: ${err.message} You can add it with Add Domain.`);
+    return true;
+  }
+}
+
 openButton.addEventListener('click', () => openAdd());
 search.addEventListener('input', render);
 render();
+const startedFromScan = await firstDomainFromScan();
 const params = new URLSearchParams(location.search);
 if (params.get('add') === '1' && can(me, 'admin')) {
   history.replaceState(null, '', location.pathname);
   openAdd(params.get('sub') ? `.${params.get('sub')}` : '');
 }
-setupTour(me, 'dashboard', { openAdd: () => openAdd() });
+if (!startedFromScan) setupTour(me, 'dashboard', { openAdd: () => openAdd() });
 // Back from Found Pages after a scan.
 if (params.get('scanmsg')) {
   setStatus(listStatus, params.get('tone') === 'error' ? 'error' : 'success', params.get('scanmsg').slice(0, 300));

@@ -144,6 +144,12 @@ export async function boot() {
     renderPending(me);
     return new Promise(() => {}); // the page stays on the activation screen
   }
+  // Back from checkout on another dashboard page: the first-domain setup runs on the domain list.
+  const onList = /^\/app\/?(index(\.html)?)?$/.test(location.pathname);
+  if (!onList && pendingDomain() && can(me, 'admin')) {
+    location.replace('/app');
+    return new Promise(() => {});
+  }
   const list = await api('domains');
   me.domainList = list;
   renderSideDomains(list.domains, me);
@@ -175,6 +181,7 @@ function renderPending(me) {
     el('div', { class: 'pending' }, [
       el('h1', { text: 'Activate Your Dashboard' }),
       el('p', { class: 'pending-lead', text: `You are signed in as ${me.user.email}. Two steps and your dashboard is ready:` }),
+      pendingDomain() ? el('p', { class: 'signup-domain', text: `As soon as your trial starts, we add ${pendingDomain()} and run its first scan.` }) : null,
       el('ol', { class: 'pending-steps' }, [
         el('li', { class: paid ? 'is-done' : null }, [
           el('h2', { text: 'Start your 3-day free trial' }),
@@ -286,6 +293,48 @@ export function disclosure(button, panel) {
     if (e.key === 'Escape') set(false);
   });
   return set;
+}
+
+// ---------- First domain from the free scan ----------
+// The free scan's trial link carries ?domain=; signup stores it here (local
+// storage, so it survives the confirmation-email tab), and the dashboard adds
+// that domain and runs its first scan as soon as the trial is active.
+const FIRST_DOMAIN_KEY = 'ab_first_domain';
+const FIRST_DOMAIN_TTL = 14 * 86400000;
+
+/** A bare hostname such as example.com or shop.example.co.uk, or '' when invalid. */
+export function cleanDomain(raw) {
+  let v = String(raw || '').trim().toLowerCase();
+  if (!v) return '';
+  try {
+    v = new URL(/^https?:\/\//.test(v) ? v : `https://${v}`).hostname;
+  } catch {
+    return '';
+  }
+  v = v.replace(/\.$/, '').replace(/^www\./, '');
+  return /^(?=.{4,253}$)([a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9-]{2,63}$/.test(v) ? v : '';
+}
+
+export function setPendingDomain(raw) {
+  const host = cleanDomain(raw);
+  try {
+    if (host) localStorage.setItem(FIRST_DOMAIN_KEY, JSON.stringify({ host, at: Date.now() }));
+  } catch {}
+  return host;
+}
+
+export function pendingDomain() {
+  try {
+    const v = JSON.parse(localStorage.getItem(FIRST_DOMAIN_KEY) || 'null');
+    if (v && v.host && Date.now() - v.at < FIRST_DOMAIN_TTL) return cleanDomain(v.host);
+  } catch {}
+  return '';
+}
+
+export function clearPendingDomain() {
+  try {
+    localStorage.removeItem(FIRST_DOMAIN_KEY);
+  } catch {}
 }
 
 /** The plan picked on the pricing page before signing up, if any. */

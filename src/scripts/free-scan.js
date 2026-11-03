@@ -5,6 +5,7 @@
 // and daily monitoring is what a free trial adds.
 // All data is inserted as text, never HTML.
 import { el } from './shared/report-view.js';
+import { pagesScanned, scannedText, fillScanProof } from './shared/scan-stats.js';
 
 const forms = document.querySelectorAll('[data-scan-form]');
 const section = document.getElementById('scan-results');
@@ -164,6 +165,34 @@ const SEVERITIES = [
   ['minor', 'Minor'],
 ];
 
+/**
+ * Trial signup link with the scanned domain carried through, so signup is
+ * prefilled and the first monitored scan runs for this site. Keeps any
+ * ?plan= picked earlier on this page's URL.
+ */
+export function trialHref(host) {
+  const q = new URLSearchParams();
+  if (host) q.set('domain', host.replace(/^www\./, ''));
+  const plan = new URLSearchParams(location.search).get('plan');
+  if (plan === 'annual' || plan === 'monthly') q.set('plan', plan);
+  const qs = q.toString();
+  return `/app/signup${qs ? `?${qs}` : ''}`;
+}
+
+/**
+ * One plain verdict for the page. Accurate by design: it reports what the
+ * automated checks found and never claims compliance or legal safety.
+ */
+export function verdictFor(summary = {}) {
+  const critical = summary.critical || 0;
+  const serious = summary.serious || 0;
+  const total = summary.issues || 0;
+  if (critical) return { tone: 'bad', text: `Not accessible: ${plural(critical, 'critical barrier')} of the kind commonly cited in ADA lawsuits found on this page` };
+  if (serious) return { tone: 'bad', text: `Needs work: ${plural(serious, 'serious barrier')} found on this page, and no critical ones` };
+  if (total) return { tone: 'warn', text: `Needs work: ${plural(total, 'lower-severity issue')} found on this page, and no critical or serious barriers` };
+  return { tone: 'good', text: 'No automated barriers found on this page. Automated checks cover only part of WCAG, so this is not proof of compliance.' };
+}
+
 const IMPACT_LABEL = { critical: 'Critical', serious: 'Serious', moderate: 'Moderate', minor: 'Minor' };
 const URGENT = new Set(['critical', 'serious']);
 
@@ -177,7 +206,7 @@ const RISK_STATS = [
 ];
 
 /** Shown when the page has critical or serious issues: what leaving them unfixed can cost. */
-function riskPanel(urgent, url) {
+function riskPanel(urgent, url, trial) {
   if (!urgent) return null;
   return el('section', { class: 'scan-risk', 'aria-labelledby': 'scan-risk-title' }, [
     el('span', { class: 'scan-risk-kicker', text: 'Lawsuit risk' }),
@@ -195,8 +224,7 @@ function riskPanel(urgent, url) {
       ),
     ),
     el('div', { class: 'scan-risk-actions' }, [
-      el('a', { class: 'btn btn-accent', href: '/app/signup', text: 'Start a 3-day free trial' }),
-      el('a', { href: `/solutions/page-report?url=${encodeURIComponent(url)}`, text: 'Full report for this page, $19' }),
+      el('a', { href: trial, text: 'Find these on every page with a 3-day free trial' }),
       el('a', { href: '/blog/ada-lawsuit-payouts', text: 'See what real ADA cases cost' }),
     ]),
     el('p', { class: 'scan-risk-note', text: 'Figures come from public sources and vary widely by case and state. They are not a prediction for your site and not legal advice.' }),
@@ -218,6 +246,25 @@ function showResults(r, url, form) {
   })();
   const total = r.summary?.issues || 0;
   const list = r.issues || [];
+  const trial = trialHref(host);
+  const oneTimeLink = () =>
+    el('a', { class: 'scan-onetime-link', href: `/solutions/page-report?url=${encodeURIComponent(url)}` }, [
+      'Prefer no subscription? One-time reports: $19 for this page or $79 for your whole domain',
+    ]);
+  const v = verdictFor(r.summary);
+  const proofCount = el('span', { class: 'scan-proof-count', hidden: true });
+  pagesScanned().then((n) => {
+    if (n) {
+      proofCount.textContent = scannedText(n) + ' · ';
+      proofCount.hidden = false;
+    }
+  });
+  const verdict = el('div', { class: `scan-verdict scan-verdict-${v.tone}` }, [
+    el('p', { class: 'scan-verdict-text' }, [el('strong', { text: v.text })]),
+    el('div', { class: 'scan-verdict-actions' }, [el('a', { class: 'btn btn-accent', href: trial, text: 'Start 3-day free trial' })]),
+    el('p', { class: 'scan-proof' }, [proofCount, `Monitors up to 500 pages on ${host} with guided fix suggestions. Cancel anytime.`]),
+    el('p', { class: 'scan-verdict-alt' }, [oneTimeLink()]),
+  ]);
   const label = r.standard?.label || 'WCAG';
   const heading = el('h2', { id: 'scan-result-title', tabindex: '-1', text: total ? `${plural(total, 'issue')} found on this URL ${page}` : `No automated issues found on this URL ${page}` });
   const lead = total
@@ -247,11 +294,11 @@ function showResults(r, url, form) {
       ]),
     ]),
     el('p', { text: `Product pages, cart and checkout, forms and blog posts often have issues this page does not, and they are the pages customers use to buy from or contact you.` }),
-    el('div', { class: 'scan-scope-actions' }, [el('a', { class: 'btn btn-accent btn-sm', href: '/app/signup', text: 'Start 3-day free trial' }), again]),
+    el('div', { class: 'scan-scope-actions' }, [again]),
     el('p', { class: 'scan-cta-note' }, [
       'The trial covers up to 500 pages on this domain, rescanned every day. Then $29 per domain per month or $199 per year. Cancel before the trial ends and you will not be charged. ',
-      el('a', { href: `/solutions/domain-audit?url=${encodeURIComponent(url)}`, text: 'Or buy a $79 Domain Audit' }),
-      ', once, with no subscription.',
+      el('a', { href: trial, text: `Start your trial for ${host}` }),
+      '.',
     ]),
   ]);
   const tiles = total
@@ -275,7 +322,7 @@ function showResults(r, url, form) {
               el('span', { class: `tag tag-${i.impact}`, text: IMPACT_LABEL[i.impact] || i.impact }),
               // The most urgent problems get a direct route to a plan that fixes them.
               URGENT.has(i.impact)
-                ? el('a', { class: 'btn btn-sm btn-resolve', href: `/solutions/page-report?url=${encodeURIComponent(url)}` }, ['Get the fix', el('span', { class: 'visually-hidden', text: `: ${i.title}. Opens the $19 Page Report for this URL.` })])
+                ? el('a', { class: 'scan-fix-link', href: trial }, ['Get the fix', el('span', { class: 'visually-hidden', text: `: ${i.title}. Starts a 3-day free trial with guided fix suggestions for ${host}.` })])
                 : null,
             ]),
           ]),
@@ -289,7 +336,7 @@ function showResults(r, url, form) {
     ? el('section', { class: 'scan-teaser', 'aria-labelledby': 'scan-teaser-title' }, [
         el('span', { class: 'scan-teaser-kicker', text: 'See the worst issues in full' }),
         el('h3', { id: 'scan-teaser-title', text: 'The exact problem, and the exact fix' }),
-        el('p', { text: 'The list above names every issue. Here are the most severe ones in full: the failing code and how to fix it. A one-time report gives you this detail for every issue.' }),
+        el('p', { text: 'The list above names every issue. Here are the most severe ones in full: the failing code and how to fix it. The free trial gives you this detail for every issue on every page.' }),
         el(
           'ol',
           { class: 'scan-teaser-list' },
@@ -306,10 +353,7 @@ function showResults(r, url, form) {
             ]),
           ),
         ),
-        el('div', { class: 'scan-teaser-actions' }, [
-          el('a', { class: 'btn btn-accent btn-sm', href: `/solutions/page-report?url=${encodeURIComponent(url)}`, text: 'Full report for this page — $19' }),
-          el('a', { class: 'btn btn-outline btn-sm', href: `/solutions/domain-audit?url=${encodeURIComponent(url)}`, text: 'Audit my whole domain — $79' }),
-        ]),
+        el('div', { class: 'scan-teaser-actions' }, [el('a', { href: trial, text: 'See the fix for every issue: start a 3-day free trial' })]),
       ])
     : null;
   // Email capture shown with the results, never a gate in front of them.
@@ -321,7 +365,7 @@ function showResults(r, url, form) {
     el('p', { text: 'Get a copy of this scan summary in your inbox, with links to the full fix details. Free, no account needed.' }),
     el('label', { for: 'scan-lead-email', text: 'Email' }),
     el('input', { id: 'scan-lead-email', name: 'email', type: 'email', autocomplete: 'email', required: true, maxlength: 254, placeholder: 'you@example.com', 'aria-describedby': 'scan-lead-consent' }),
-    el('button', { type: 'submit', class: 'btn btn-accent btn-sm', text: 'Email me my results' }),
+    el('button', { type: 'submit', class: 'btn btn-outline btn-sm', text: 'Email me my results' }),
     el('p', { id: 'scan-lead-consent', class: 'scan-lead-consent', text: "We'll email your results and occasional follow-ups; unsubscribe anytime." }),
     leadNote,
   ]);
@@ -363,19 +407,16 @@ function showResults(r, url, form) {
       el('li', { text: 'Your entire website scanned, not just one URL: up to 500 pages per domain' }),
       el('li', { text: 'A dated record of your fixes, in case you ever need proof' }),
     ]),
-    el('div', { class: 'scan-cta-actions' }, [
-      el('a', { class: 'btn btn-accent', href: '/app/signup', text: 'Start 3-day free trial' }),
-      el('a', { class: 'btn btn-outline', href: `/solutions/page-report?url=${encodeURIComponent(url)}`, text: 'Full report for this page — $19 one-time' }),
-      el('a', { class: 'btn btn-outline', href: `/solutions/domain-audit?url=${encodeURIComponent(url)}`, text: 'Audit my whole domain — $79 one-time' }),
-    ]),
-    el('p', { class: 'scan-cta-note' }, ['One-time reports need no account. Pro monitoring is $29/mo or $199/year per domain. Already subscribed? ', el('a', { href: '/app/login', text: 'Log in to your dashboard' }), '.']),
+    el('div', { class: 'scan-cta-actions' }, [el('a', { class: 'btn btn-outline', href: trial, text: 'Start 3-day free trial' }), oneTimeLink()]),
+    el('p', { class: 'scan-cta-note' }, ['3-day free trial, then $29/mo or $199/year per domain. Cancel anytime. One-time reports need no account. Already subscribed? ', el('a', { href: '/app/login', text: 'Log in to your dashboard' }), '.']),
   ]);
   mount.replaceChildren(
     el('div', { class: 'results-card scan-result', role: 'region', 'aria-labelledby': 'scan-result-title' }, [
       el('div', { class: 'scan-result-head' }, [el('span', { class: 'scan-result-kicker', text: 'Free scan results' }), heading, el('p', { text: lead })]),
-      scope,
+      verdict,
       tiles,
-      riskPanel((r.summary?.critical || 0) + (r.summary?.serious || 0), url),
+      scope,
+      riskPanel((r.summary?.critical || 0) + (r.summary?.serious || 0), url, trial),
       leadForm,
       rows,
       teaser,
@@ -386,6 +427,8 @@ function showResults(r, url, form) {
   heading.focus({ preventScroll: true });
   mount.firstChild.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' });
 }
+
+fillScanProof();
 
 for (const form of forms) {
   form.addEventListener('submit', async (e) => {

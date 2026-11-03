@@ -16,6 +16,7 @@ import { UnsafeUrlError } from '../server/net-guard.js';
 import { createRateLimiter } from '../server/rate-limit.js';
 import { json, checkOrigin, clientIp, readJson, methodNotAllowed } from '../server/http.js';
 import { recordFreeScan } from '../server/app/free-scans.js';
+import { query } from '../server/app/db.js';
 
 const perMinute = createRateLimiter({ limit: 5, windowMs: 60_000 });
 const perHour = createRateLimiter({ limit: 30, windowMs: 60 * 60_000 });
@@ -123,6 +124,26 @@ export async function POST(request) {
   }
 }
 
-export function GET() {
-  return methodNotAllowed('POST');
+/**
+ * GET /api/scan?stats=1 -> { pagesScanned }: the real number of completed
+ * page scans (free scans plus monitored scans) in the database, for the
+ * social-proof line. Cached at the edge for an hour. Returns null when the
+ * database is unavailable, and the page then shows no count at all.
+ */
+export async function GET(request) {
+  const url = new URL(request.url);
+  if (url.searchParams.get('stats') !== '1') return methodNotAllowed('POST');
+  let pagesScanned = null;
+  if (process.env.DATABASE_URL) {
+    try {
+      const [row] = await query(
+        `select (select count(*) from app.free_scans where status = 'done')::int
+              + (select count(*) from app.scans where status = 'done')::int as n`,
+      );
+      pagesScanned = Number.isInteger(row?.n) ? row.n : null;
+    } catch (err) {
+      console.warn('scan stats unavailable', err?.code || err?.name);
+    }
+  }
+  return json(200, { pagesScanned }, { 'Cache-Control': pagesScanned == null ? 'no-store' : 'public, max-age=300, s-maxage=3600, stale-while-revalidate=86400' });
 }

@@ -205,3 +205,60 @@ test('upsell templates carry an opt-out line and the right offer', () => {
   assert.match(audit.text, /\$29/);
   assert.match(audit.text, /opt out/);
 });
+
+// ---------- Free-scan sequence: day 1 and day 3 ----------
+import { scanRescanCandidates, isExcludedLead } from '../server/app/funnel.js';
+import { scanFollowupEmail, scanRescanEmail } from '../server/app/email-sequences.js';
+
+const NOW = new Date('2026-11-10T07:00:00Z');
+const hoursAgo = (h) => new Date(NOW - h * 3600000).toISOString();
+
+test('customer, outreach-opted-out and account holders never get the scan sequence', () => {
+  assert.equal(isExcludedLead({ hostname: 'foxwoodengraving.com', email: 'a@b.com' }), true);
+  assert.equal(isExcludedLead({ hostname: 'www.jonathangross.law', email: 'a@b.com' }), true);
+  assert.equal(isExcludedLead({ hostname: 'other.com', email: 'joanna@foxwoodengraving.com' }), true);
+  const leads = [
+    { ...baseLead, id: 1, created_at: hoursAgo(30) },
+    { ...baseLead, id: 2, email: 'owner@shop.com', created_at: hoursAgo(30) },
+    { ...baseLead, id: 3, email: 'x@y.com', hostname: 'customer.com', created_at: hoursAgo(30) },
+  ];
+  const out = scanFollowupCandidates({ leads, paidEmails: [], suppressedEmails: [], customerEmails: ['OWNER@shop.com'], customerHostnames: ['www.customer.com'], now: NOW });
+  assert.deepEqual(out.map((l) => l.id), [1]);
+});
+
+test('day 1 waits 20 hours and never mails leads older than 7 days (no backlog blast)', () => {
+  const leads = [
+    { ...baseLead, id: 1, created_at: hoursAgo(5) },
+    { ...baseLead, id: 2, created_at: hoursAgo(30) },
+    { ...baseLead, id: 3, created_at: hoursAgo(24 * 8) },
+  ];
+  const out = scanFollowupCandidates({ leads, paidEmails: [], suppressedEmails: [], now: NOW });
+  assert.deepEqual(out.map((l) => l.id), [2]);
+});
+
+test('day 3 goes out once: only in the 47-71h window after day 1, and never when suppressed', () => {
+  const leads = [
+    { ...baseLead, id: 1, followup_sent_at: null },
+    { ...baseLead, id: 2, followup_sent_at: hoursAgo(24) },
+    { ...baseLead, id: 3, followup_sent_at: hoursAgo(48) },
+    { ...baseLead, id: 4, followup_sent_at: hoursAgo(72) },
+    { ...baseLead, id: 5, email: 'gone@example.com', followup_sent_at: hoursAgo(48) },
+  ];
+  const out = scanRescanCandidates({ leads, paidEmails: [], suppressedEmails: ['gone@example.com'], now: NOW });
+  assert.deepEqual(out.map((l) => l.id), [3]);
+});
+
+test('day 1 and day 3 emails link to signup with the domain, carry the footer, and never promise compliance', () => {
+  process.env.FUNNEL_MAILING_ADDRESS ||= '1 Test St, Testville';
+  const d1 = scanFollowupEmail({ to: 'a@example.com', hostname: 'example.com', url: 'https://example.com/', issues: 3, critical: 1, serious: 1, topIssue: { title: 'Images must have alternative text', impact: 'critical', count: 2, wcag: [{ sc: '1.1.1', name: 'Non-text Content' }], fix: 'Add an alt attribute.' } });
+  const d3 = scanRescanEmail({ to: 'a@example.com', hostname: 'example.com', url: 'https://example.com/', issues: 3, recheck: { issues: 2, critical: 1, serious: 0 } });
+  const d3clean = scanRescanEmail({ to: 'a@example.com', hostname: 'example.com', url: 'https://example.com/', recheck: { issues: 0 } });
+  for (const e of [d1, d3, d3clean]) {
+    assert.match(e.text, /\/app\/signup\?domain=example\.com/);
+    assert.match(e.text, /unsubscribe/i);
+    assert.doesNotMatch(e.text, /AI-assisted/i);
+    assert.doesNotMatch(e.text, /you are (now )?compliant|guarantee(d)? compliance/i);
+  }
+  assert.match(d1.text, /How to fix it: Add an alt attribute\./);
+  assert.match(d3.text, /still has 2 automated issues/);
+});

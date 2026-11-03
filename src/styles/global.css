@@ -8417,3 +8417,69 @@ img.platform-logo-lg {
   color: var(--ink-500);
   font-size: 0.9375rem;
 }
+
+/* ---------- Free scan: verdict, single primary CTA, social proof ---------- */
+.scan-verdict {
+  display: grid;
+  justify-items: start;
+  gap: 10px;
+  padding: clamp(16px, 3vw, 22px);
+  border: 2px solid var(--sage-700);
+  border-left-width: 6px;
+  border-radius: var(--radius-lg);
+  background: var(--sage-50);
+}
+.scan-verdict-bad {
+  border-color: #f4c7c3;
+  border-left-color: var(--danger);
+  background: var(--danger-bg);
+}
+.scan-verdict-warn {
+  border-color: #f0d9a8;
+  border-left-color: var(--warn);
+  background: var(--warn-bg);
+}
+.scan-verdict-text {
+  margin: 0;
+  font-size: 1.125rem;
+  color: var(--ink-800);
+}
+.scan-verdict-bad .scan-verdict-text strong {
+  color: var(--danger);
+}
+.scan-verdict-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.scan-proof,
+.scan-verdict-alt {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--ink-700);
+}
+.scan-proof-form {
+  margin-top: 10px;
+  text-align: center;
+}
+.scan-proof-count {
+  font-weight: 600;
+}
+.scan-proof [data-scan-proof-count]:not([hidden])::after {
+  content: " · ";
+}
+.scan-onetime-link,
+.scan-fix-link {
+  font-size: 0.875rem;
+}
+.scan-fix-link {
+  white-space: nowrap;
+  font-weight: 600;
+}
+.signup-domain {
+  margin: 0 0 12px;
+  padding: 10px 14px;
+  border-radius: var(--radius-md, 8px);
+  background: var(--sage-50);
+  border: 1px solid var(--sage-100);
+}
