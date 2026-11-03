@@ -13,7 +13,13 @@ import { PLAN, ONE_TIME } from '../../data/pricing';
       <li>Guided fix suggestions you review before anything changes</li>
     </ul>
   </div>
+  <p class="signup-domain" data-signup-domain-note hidden></p>
   <form class="form" data-auth-form="signup" novalidate>
+    <div class="field">
+      <label for="domain">Website to monitor <span class="hint">(optional)</span></label>
+      <input id="domain" name="domain" type="text" inputmode="url" autocomplete="url" spellcheck="false" autocapitalize="off" maxlength="253" placeholder="example.com" data-signup-domain aria-describedby="domain-help" />
+      <span class="help" id="domain-help">We add it and run its first scan as soon as your trial starts.</span>
+    </div>
     <div class="field">
       <label for="email">Email <span class="req" aria-hidden="true">*</span></label>
       <input id="email" name="email" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com" />
@@ -32,12 +38,16 @@ import { PLAN, ONE_TIME } from '../../data/pricing';
     <p class="status-line" data-status role="status" aria-live="polite"></p>
     <button class="btn btn-lg auth-submit" type="submit">Start 3-day free trial</button>
   </form>
+  <p class="scan-proof"><span class="scan-proof-count" data-scan-proof-count hidden></span> <span>3-day free trial. Cancel anytime before it ends and you will not be charged.</span></p>
   <p class="auth-alt">Already have an account? <a href="/app/login">Sign in</a></p>
   <p class="auth-alt">Not ready to subscribe? A <a href={ONE_TIME.pageReport.href}>Page Report</a> is ${ONE_TIME.pageReport.price} for one page, and a <a href={ONE_TIME.domainAudit.href}>Domain Audit</a> is ${ONE_TIME.domainAudit.price} for up to {PLAN.urlsPerDomain} pages. Neither renews.</p>
 </AuthLayout>
 <script>
   import '../../scripts/app/auth.js';
   import { PLAN } from '../../data/pricing';
+  import { fillScanProof } from '../../scripts/shared/scan-stats.js';
+
+  fillScanProof();
 
   // External script: the site Content-Security-Policy does not allow inline scripts.
   const note = document.getElementById('trial-plan');

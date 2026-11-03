@@ -1,5 +1,5 @@
 // Sign in, sign up, password reset and email-link callback.
-import { api, setStatus } from './core.js';
+import { api, setStatus, setPendingDomain, cleanDomain } from './core.js';
 
 /** Only allow redirects back into the dashboard (no open redirects). */
 function safeNext(fallback = '/app') {
@@ -13,6 +13,22 @@ try {
   if (plan === 'annual' || plan === 'monthly') sessionStorage.setItem('ab_plan', plan);
 } catch {
   // Storage blocked: checkout simply offers monthly first.
+}
+
+// The site scanned on the free checker (?domain=): prefill it on signup and
+// remember it, so the first monitored scan runs for it once the trial starts.
+{
+  const field = document.querySelector('[data-signup-domain]');
+  const fromUrl = cleanDomain(new URLSearchParams(location.search).get('domain'));
+  if (fromUrl) {
+    setPendingDomain(fromUrl);
+    if (field) field.value = fromUrl;
+    const note = document.querySelector('[data-signup-domain-note]');
+    if (note) {
+      note.textContent = `Your trial starts with ${fromUrl}: we add it and run its first full scan as soon as you finish checkout.`;
+      note.hidden = false;
+    }
+  }
 }
 
 // Show or hide the password. The button keeps its name and reports its state.
@@ -59,6 +75,12 @@ if (form) {
         await api('auth/login', { method: 'POST', body: { email, password }, redirectOn401: false });
         location.assign(safeNext());
       } else if (mode === 'signup') {
+        const site = form.elements.domain?.value.trim();
+        if (site && !setPendingDomain(site)) {
+          setStatus(status, 'error', 'Enter your website as a domain, such as example.com, or leave it empty.');
+          form.elements.domain.focus();
+          return;
+        }
         const res = await api('auth/signup', { method: 'POST', body: { email, password }, redirectOn401: false });
         if (res.status === 'confirm_email') {
           setStatus(status, 'success', `Almost done. We sent a confirmation link to ${email}. Open it to finish creating your account. Not there in a few minutes? Check your spam folder, or use the button below to send it again. Already have an account? Sign in instead.`);

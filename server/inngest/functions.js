@@ -7,16 +7,19 @@ import { sendReportReadyEmail } from '../app/email-sequences.js';
 import { query } from '../app/db.js';
 import {
   funnelLiveStatus,
-  scanFollowupCandidates,
   upsellCandidates,
+  scanSequenceCandidates,
+  markScanFollowupSent,
   runScanFollowups,
   runUpsells,
   abandonedReminderSender,
   fetchSuppressedEmails,
 } from '../app/funnel.js';
 import { sendAbandonedCheckoutReminders } from '../app/one-time.js';
+import { recheckLeadPage } from '../app/lead-recheck.js';
 import {
   sendScanFollowup,
+  sendScanRescan,
   sendAbandonedCheckoutReminder,
   sendAuditUpsell,
   sendPageReportUpsell,
@@ -38,37 +41,48 @@ function logDryRun(entries) {
   for (const e of entries) console.log('[funnel dry-run]', JSON.stringify(e));
 }
 
-/** Daily: one scan follow-up per emailed lead with no paid purchase yet. */
+/**
+ * Daily free-scan sequence (day 0, the requested results email, is sent by
+ * /api/scan-lead): day 1 "top issue and how to fix it" for leads 20h-7d old,
+ * day 3 "still failing?" 47-71h after day 1. Each lead's page is re-checked
+ * (HTML audit) in its own step, so one slow site cannot time out the run.
+ */
 export const funnelScanFollowupFn = inngest.createFunction(
   { id: 'funnel-scan-followup', triggers: [{ cron: 'TZ=UTC 0 7 * * *' }] },
   async ({ step }) => {
     if (noDatabase()) return { skipped: 'DATABASE_URL is not set' };
     const { live } = funnelLiveStatus();
-    const result = await step.run('followups', async () => {
-      const leads = await query(
-        `select l.id, l.email, l.hostname, l.url, l.followup_sent_at,
-                fs.issues, fs.critical, fs.serious
-           from app.scan_leads l
-           left join lateral (
-             select issues, critical, serious from app.free_scans
-              where hostname = l.hostname order by created_at desc limit 1
-           ) fs on true
-          where l.email is not null and l.email <> '' and l.followup_sent_at is null
-          order by l.created_at asc limit 100`,
-      );
-      const paidRows = await query(`select distinct lower(email) as email from app.one_time_purchases where status = 'paid'`);
-      const candidates = scanFollowupCandidates({
-        leads,
-        paidEmails: paidRows.map((r) => r.email),
-        suppressedEmails: await fetchSuppressedEmails(),
+    const { followups, rescans } = await step.run('select-leads', () => scanSequenceCandidates());
+    const log = [];
+    let sent = 0;
+    for (const lead of followups) {
+      const r = await step.run(`day1-${lead.id}`, async () => {
+        const check = live ? await recheckLeadPage(lead.url) : null;
+        return runScanFollowups({
+          candidates: [lead],
+          sendScanFollowup: (a) => sendScanFollowup({ ...a, topIssue: check?.topIssue || null }),
+          markFollowupSent: (_id, email) => markScanFollowupSent(email),
+          live,
+        });
       });
-      return runScanFollowups({
-        candidates,
-        sendScanFollowup,
-        markFollowupSent: (id) => query('update app.scan_leads set followup_sent_at = now() where id = $1', [id]),
-        live,
+      sent += r.sent;
+      log.push(...r.log);
+    }
+    for (const lead of rescans) {
+      const r = await step.run(`day3-${lead.id}`, async () => {
+        const check = live ? await recheckLeadPage(lead.url) : null;
+        return runScanFollowups({
+          candidates: [lead],
+          sendScanFollowup: (a) => sendScanRescan({ ...a, recheck: check }),
+          markFollowupSent: null,
+          live,
+          template: 'scanRescanEmail',
+        });
       });
-    });
+      sent += r.sent;
+      log.push(...r.log);
+    }
+    const result = { live, checked: followups.length + rescans.length, sent, log };
     if (!live) logDryRun(result.log);
     return result;
   },
