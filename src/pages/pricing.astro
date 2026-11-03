@@ -40,7 +40,7 @@ const faqs: FaqItem[] = [
   },
   {
     q: 'Is there a free trial?',
-    a: 'Yes. Both monthly and annual billing start with a 3-day free trial. Cancel before it ends and you will not be charged. See <a href="/resources/help-center/getting-started/start-your-free-trial">how the free trial works</a>.',
+    a: 'Yes. Both monthly and annual billing start with a 3-day free trial. Cancel before it ends and you will not be charged. After that, your first charge is covered by a 14-day money-back guarantee: ask within 14 days of it for a full refund. See <a href="/resources/help-center/getting-started/start-your-free-trial">how the free trial works</a>.',
   },
   {
     q: 'Can I cancel at any time?',
@@ -86,12 +86,12 @@ const faqs: FaqItem[] = [
           </fieldset>
           <div class="billing-panel" data-billing="monthly">
             <p class="plan-price"><strong>${PLAN.price}</strong><span>/mo per domain</span></p>
-            <p class="plan-billed">Billed monthly. Cancel anytime.</p>
+            <p class="plan-billed">Billed monthly. Cancel anytime. 14-day money-back guarantee.</p>
             <a class="btn btn-accent btn-block btn-lg" href={`${PLAN.ctaHref}?plan=monthly`}>{PLAN.cta} <Icon name="arrow" /></a>
           </div>
           <div class="billing-panel" data-billing="annual">
             <p class="plan-price"><strong>${PLAN.annualPrice}</strong><span>/year per domain</span></p>
-            <p class="plan-billed">Billed yearly. Works out to ${(PLAN.annualPrice / 12).toFixed(2)}/mo, saving ${PLAN.price * 12 - PLAN.annualPrice} a year.</p>
+            <p class="plan-billed">Billed yearly. Works out to ${(PLAN.annualPrice / 12).toFixed(2)}/mo, saving ${PLAN.price * 12 - PLAN.annualPrice} a year. Cancel anytime. 14-day money-back guarantee.</p>
             <a class="btn btn-accent btn-block btn-lg" href={PLAN.annualCtaHref}>{PLAN.cta} <Icon name="arrow" /></a>
           </div>
           <p class="plan-blurb">{PLAN.blurb}</p>
