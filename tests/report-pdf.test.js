@@ -36,3 +36,11 @@ test('report PDF is a valid PDF containing the report text', async () => {
   assert.ok(text.includes('Page Report'), 'PDF names the product');
   assert.ok(text.includes('example.com'), 'PDF names the hostname');
 });
+
+test('PDF renders samples with characters the standard font cannot encode', async () => {
+  const { buildReportPdf, pdfSafe } = await import('../server/report-pdf.js');
+  assert.equal(pdfSafe('a → b ’ “x” – — … 日'), "a -> b ' \"x\" - - ... ?");
+  const report = { url: 'https://www.springrose.co/', hostname: 'springrose.co', pages: [{ url: 'https://www.springrose.co/', score: 50, issues: 1, serious: 0, critical: 0 }], issues: [{ id: 'heading-order', title: 'Heading levels are skipped', impact: 'moderate', fix: 'Use heading levels in order – don’t skip…', wcag: [{ sc: '1.3.1' }], samples: ['<h3>Scroll to see all styles →', '<a>Article: What’s “new” — 日本</a>'], pagesAffected: 1, elementsAffected: 1 }], summary: { issues: 1, critical: 0, serious: 0, moderate: 1, minor: 0, rulesFailed: 1 }, scannedAt: '2026-11-04T18:01:50.115Z', pagesScanned: 1 };
+  const pdf = await buildReportPdf({ product: 'domain_audit', hostname: 'springrose.co' }, report);
+  assert.ok(pdf.length > 1000);
+});
