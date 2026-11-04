@@ -8501,3 +8501,16 @@ img.platform-logo-lg {
   background: var(--sage-50);
   border: 1px solid var(--sage-100);
 }
+
+/* Domain Audit demo video: stay inside the prose container at every width */
+.demo-video {
+  display: block;
+  width: 100%;
+  max-width: 960px;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  margin: 0 auto;
+  border-radius: 12px;
+  background: #22262f;
+}
+.cc-prose details { max-width: 100%; overflow-wrap: anywhere; }
