@@ -280,6 +280,49 @@ export const INDUSTRIES: Industry[] = [
       { href: 'https://www.w3.org/TR/WCAG22/', label: 'W3C: Web Content Accessibility Guidelines (WCAG) 2.2' },
     ],
   },
+  {
+    slug: 'dental-practices',
+    name: 'Dental Practice',
+    seoTitle: 'Dental Practice Accessibility Checker',
+    description: 'Free dental practice accessibility checker. Scan appointment, new-patient and contact pages for the WCAG issues that block patients and show up in ADA claims.',
+    lead: 'Scan your dental practice website with a free dental practice accessibility checker. It finds the WCAG failures on appointment, new-patient and contact pages that can stop a patient from booking, and that ADA website complaints often name.',
+    stat: {
+      text: 'The Department of Justice, in its March 18, 2022 web guidance, lists hospitals and medical offices among the businesses open to the public, and says the ADA applies to the goods, services and privileges those businesses offer on the web.',
+      href: 'https://www.ada.gov/resources/web-guidance/',
+      label: 'ADA.gov: Guidance on Web Accessibility and the ADA (March 18, 2022)',
+    },
+    whatIs: [
+      'A dental practice accessibility checker scans the pages a patient uses to book care: the appointment form, new-patient paperwork and the contact page. The ADA lists a professional office of a health care provider as a public accommodation when its operations affect commerce. A dental office is that kind of office. The Department of Justice web guidance names hospitals and medical offices as businesses that must make the goods and services they offer online accessible.',
+      'There is no Title III regulation that sets a technical standard for business websites. The Department of Justice says businesses have flexibility in how they comply, and it points to the Web Content Accessibility Guidelines (WCAG) and the Section 508 standards as helpful guidance. The same guidance lists barriers that show up on practice sites: poor color contrast, information shown by color alone, images without text alternatives, videos without captions, forms without labels or error messages, and mouse-only navigation. The AccessBell ADA preset tests WCAG 2.1 Level AA. A dental practice accessibility checker shows the automated failures on a live page so the booking path can be fixed, then checked again as hours and forms change.',
+    ],
+    commonIssues: [
+      { title: 'Appointment forms without labels or error messages', text: 'Name, phone, insurance and reason-for-visit fields are frequently unlabeled, and an error such as "pick a time" is not announced. The Department of Justice web guidance calls out inaccessible online forms, including missing labels, unclear instructions and missing error indicators. WCAG 3.3.2 and 3.3.1 cover labels and error identification.' },
+      { title: 'Date and time controls that need a mouse', text: 'Calendars built as clickable grids often have no keyboard support and no accessible name for each day, so a patient cannot choose a visit without a mouse. The web guidance names mouse-only navigation as a barrier. That is a WCAG 2.1.1 and 4.1.2 failure.' },
+      { title: 'Office, team and treatment photos with no text alternative', text: 'A gallery with empty alt text tells a screen reader user nothing about the office, the clinician or the treatment shown. The web guidance says people who are blind will not understand the content and purpose of an image when no text alternative is provided. WCAG 1.1.1 requires one.' },
+      { title: 'Hours and new-patient notes shown only by color or low contrast', text: 'A green badge for accepting new patients, or light gray text for office hours, fails people who cannot see that color or that faint type. The web guidance lists poor color contrast and the use of color alone to give information. WCAG 1.4.3 and 1.4.1 cover contrast and color.' },
+      { title: 'Embedded scheduling, review and chat widgets', text: 'Third-party scheduling, review and chat widgets add their own markup. One unlabeled button or focus trap in the widget is on every page that loads it, and the theme cannot fix code the widget owns.' },
+    ],
+    fixNotes: [
+      'Start with the appointment path: date, time, patient details and the confirmation. A patient who cannot pick a time or submit the form cannot book.',
+      'Label every field in text, such as "Phone number" and "Preferred date", and make sure an error says what is wrong and how to fix it. Do not rely on placeholder text or a red border alone.',
+      'Name every scheduling control in text, and check the flow with the keyboard: Tab to each control, activate it with Enter or Space, and leave calendars and pop-ups with Escape.',
+      'Rescan after every scheduling-widget, theme or form update. A new widget can add unlabeled buttons to the appointment page overnight.',
+    ],
+    faqs: [
+      { q: 'Does the ADA apply to my dental practice website?', a: 'If you operate a dental office and your operations affect commerce, the ADA lists a professional office of a health care provider as a public accommodation. The Department of Justice web guidance includes hospitals and medical offices among businesses open to the public, and says the ADA applies to the goods and services those businesses offer on the web, which includes online appointment booking. There is no Title III regulation that names a technical standard for business websites. This is general information, not legal advice.' },
+      { q: 'What should a dental practice accessibility checker look at first?', a: 'The appointment page, one new-patient form and the contact page. Those are the pages a patient needs in order to become a patient. Run the free scan above on each of them, then fix critical and serious issues before the rest of the site.' },
+      { q: 'Will an overlay make my dental practice website compliant?', a: 'No. An overlay runs in the browser and does not change the appointment form, patient forms or photos. The dental practice accessibility checker shows the failing markup so it can be fixed at the source. Guided fix suggestions can speed up specific edits, such as missing alt text and unnamed buttons. They do not make a site conform to WCAG on their own, and no tool can guarantee you will not be sued.' },
+      { q: 'Can I scan my appointment page for free?', a: 'Yes. The scan on this page is free and needs no account. It tests one public URL. To see the failing code and the fix for every issue on that page, buy a <a href="/solutions/page-report">Page Report</a> for $19. A <a href="/solutions/domain-audit">Domain Audit</a> is $79 for up to 500 pages, once. <a href="/app/signup">Pro</a> monitors up to 500 URLs per domain every day and starts with a 3-day free trial, then $29 per domain per month or $199 per domain per year. Cancel before the trial ends and you will not be charged.' },
+    ],
+    related: ['ada-title-iii-law-for-businesses', 'ada-website-compliance-guide', 'ada-demand-letter', 'wcag-3-3-2-labels-or-instructions'],
+    checkers: ['ada-compliance-checker', 'wcag-2-2-aa-checker'],
+    reviewed: new Date('2026-11-04'),
+    sources: [
+      { href: 'https://www.law.cornell.edu/uscode/text/42/12181', label: '42 U.S.C. § 12181(7)(F): a professional office of a health care provider is a public accommodation' },
+      { href: 'https://www.ada.gov/resources/web-guidance/', label: 'ADA.gov: Guidance on Web Accessibility and the ADA (March 18, 2022), listing hospitals and medical offices' },
+      { href: 'https://www.w3.org/TR/WCAG22/', label: 'W3C: Web Content Accessibility Guidelines (WCAG) 2.2' },
+    ],
+  },
 ];
 
 export const industryPath = (i: Industry) => `/industries/${i.slug}`;

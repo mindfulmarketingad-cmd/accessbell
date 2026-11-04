@@ -1897,10 +1897,18 @@ body:has(.sticky-cta) {
   line-height: 1.2 !important;
 }
 .plan-billed {
-  font-size: 0.8125rem;
-  color: var(--ink-500);
-  margin-bottom: 14px;
-  min-height: 1.4em;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--ink-700);
+  margin: 0 auto 14px;
+  max-width: 36rem;
+}
+.plan-alt {
+  max-width: 36rem;
+  margin: 0 auto 8px;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--ink-700);
 }
 .plan-blurb {
   font-size: 0.9375rem;
@@ -6686,6 +6694,16 @@ h2[tabindex='-1']:focus {
 .billing-toggle input:focus-visible + span {
   outline: 3px solid var(--sage-700);
   outline-offset: 2px;
+}
+@media (max-width: 420px) {
+  .billing-toggle {
+    max-width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .billing-toggle label > span {
+    padding: 8px 12px;
+  }
 }
 .plan-save {
   white-space: nowrap;

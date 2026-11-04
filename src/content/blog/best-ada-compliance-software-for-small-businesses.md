@@ -68,7 +68,7 @@ We looked for tools a small business can buy without a sales call and compared t
 
 - **An online store adds new products every week.** Monitoring flags the new product photos that went up without alt text. The owner approves alt text in AccessBellFix the same day, and the fix is logged in the Compliance Vault.
 - **A restaurant posts its menu as a PDF.** AccessBell finds the PDF on the menu page, reports that it has no title or language, fixes both and flags that it needs tags from the source file.
-- **A dental practice receives a demand letter.** The office manager exports an evidence package showing months of scan history and the fixes made, and hands it to their lawyer.
+- **A dental practice receives a demand letter.** The office manager exports an evidence package showing months of scan history and the fixes made, and hands it to their lawyer. A practice can start with the [dental practice accessibility checker](/industries/dental-practices), which scans an appointment, new-patient or contact page.
 - **A web agency looks after 12 client sites.** Each client gets its own domain, scans run automatically and the agency sends each client a monthly PDF report.
 
 ### AccessBell Pricing
