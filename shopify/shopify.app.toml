@@ -1,7 +1,7 @@
 # Shopify app config for AccessBell. Deploy with Shopify CLI from this folder:
 #   cd shopify && npx @shopify/cli app deploy
 # client_id comes from the app David creates in the Shopify Dev Dashboard.
-client_id = "REPLACE_WITH_SHOPIFY_CLIENT_ID"
+client_id = "5e3af4afc86ca0a67f5a411a6dfa3eaa"
 name = "AccessBell"
 handle = "accessbell"
 application_url = "https://www.accessbell.co/shopify"
