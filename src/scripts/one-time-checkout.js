@@ -1,6 +1,7 @@
 // One-time report checkout forms (landing pages): POST the email and URL to
 // /api/one-time-checkout, then send the buyer to the Stripe Payment Link.
 // The URL field is prefilled from ?url= when the visitor arrives from a free scan.
+import { rememberCheckout } from './shared/ads-conversions.js';
 const forms = document.querySelectorAll('[data-checkout-form]');
 
 const params = new URLSearchParams(location.search);
@@ -33,6 +34,10 @@ for (const form of forms) {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data.checkoutUrl) throw new Error(data.error || 'Checkout could not be started. Please try again.');
+      try {
+        const ref = new URL(data.checkoutUrl).searchParams.get('client_reference_id');
+        if (ref) rememberCheckout({ kind: 'one_time', token: ref, product: form.dataset.product });
+      } catch { /* not a URL */ }
       location.href = data.checkoutUrl;
     } catch (err) {
       if (errorBox) {

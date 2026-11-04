@@ -4,6 +4,7 @@
 // teaser; the full detail for every issue is what a one-time report adds,
 // and daily monitoring is what a free trial adds.
 // All data is inserted as text, never HTML.
+import { trackFreeScan } from './shared/ads-conversions.js';
 import { el } from './shared/report-view.js';
 import { pagesScanned, scannedText, fillScanProof } from './shared/scan-stats.js';
 
@@ -459,6 +460,7 @@ for (const form of forms) {
       if (!res.ok) throw new Error(data.error || 'The scan could not be completed. Please try again.');
       await scan.toLastStep();
       showResults(data, parsed.url, form);
+      trackFreeScan();
     } catch (err) {
       scan.stop();
       showFailure(err.name === 'AbortError' ? 'The page took too long to respond. Please try again later.' : err.message);
