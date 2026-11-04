@@ -11,8 +11,21 @@ const MARGIN = 48;
 const BODY = 11;
 const SMALL = 9;
 
+// The standard PDF fonts only encode WinAnsi. Map common typographic
+// characters to ASCII and replace anything else unencodable with '?', so
+// scraped page text can never crash PDF rendering.
+const SAFE_MAP = { '\u2192': '->', '\u2190': '<-', '\u2018': "'", '\u2019': "'", '\u201C': '"', '\u201D': '"', '\u2013': '-', '\u2014': '-', '\u2026': '...', '\u00A0': ' ', '\u2022': '*' };
+export function pdfSafe(text) {
+  return Array.from(String(text ?? ''), (ch) => {
+    if (SAFE_MAP[ch] !== undefined) return SAFE_MAP[ch];
+    const c = ch.codePointAt(0);
+    if (c === 9 || c === 10 || c === 13 || (c >= 32 && c <= 126) || (c >= 160 && c <= 255)) return ch;
+    return '?';
+  }).join('');
+}
+
 function wrap(text, font, size, maxWidth) {
-  const words = String(text || '').split(/\s+/).filter(Boolean);
+  const words = pdfSafe(text || '').split(/\s+/).filter(Boolean);
   const lines = [];
   let line = '';
   for (const word of words) {
