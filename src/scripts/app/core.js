@@ -1,5 +1,6 @@
 // Shared helpers for dashboard pages. All data is inserted with textContent
 // or DOM APIs, never as HTML.
+import { rememberCheckout, pendingCheckout, clearPendingCheckout, trackTrial, trackPurchase } from '../shared/ads-conversions.js';
 import { ICONS } from '../../lib/icons.js';
 
 export class ApiError extends Error {
@@ -140,6 +141,7 @@ export async function boot() {
     await api('auth/logout', { method: 'POST', redirectOn401: false }).catch(() => {});
     location.assign('/app/login');
   });
+  trackSubscriptionConversion(me);
   if (!me.subscribed) {
     renderPending(me);
     return new Promise(() => {}); // the page stays on the activation screen
@@ -348,6 +350,7 @@ export function preferredPlan() {
 
 export async function startCheckout(plan = 'monthly') {
   const { url } = await api(`billing/checkout?plan=${plan === 'annual' ? 'annual' : 'monthly'}`);
+  rememberCheckout({ kind: 'subscription', plan: plan === 'annual' ? 'annual' : 'monthly' });
   location.assign(url);
 }
 
@@ -422,4 +425,17 @@ export async function pool(items, limit, worker, onProgress) {
   };
   await Promise.all(Array.from({ length: Math.min(limit, items.length) }, run));
   return results;
+}
+
+/** Google Ads: Trial Start (or Purchase for a no-trial restart) once the checkout started here shows up as subscribed. */
+function trackSubscriptionConversion(me) {
+  const p = pendingCheckout();
+  if (!p || p.kind !== 'subscription' || !me.subscribed) return;
+  const status = me.billing?.status;
+  const acct = me.account?.id || me.user?.email || 'acct';
+  const unit = p.plan === 'annual' ? 199 : 29;
+  if (status === 'trialing') trackTrial(`trial-${acct}`, 29);
+  else if (status === 'active') trackPurchase(`sub-${acct}-${p.at}`, unit * Math.max(me.billing?.domainQuota || 1, 1));
+  else return;
+  clearPendingCheckout();
 }

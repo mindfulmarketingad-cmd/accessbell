@@ -1,6 +1,8 @@
 // Buyer report page (/report?token=...): fetches the one-time report and
 // renders it. No account is required; the emailed token is the access
 // control. All report data is inserted as text, never HTML.
+import { pendingCheckout, clearPendingCheckout, trackPurchase } from './shared/ads-conversions.js';
+
 const mount = document.getElementById('report-mount');
 const token = new URLSearchParams(location.search).get('token') || '';
 
@@ -153,9 +155,30 @@ function showReport(data) {
   mount.append(card);
 }
 
+// Google Ads Purchase: Stripe sends buyers back to /report (no token in the URL),
+// so confirm the checkout started in this browser is paid, then send it once.
+const PRICES = { domain_audit: 79, page_report: 19 };
+function sendPurchase(t, product) {
+  trackPurchase(`ot-${t}`, PRICES[product] || 0);
+  clearPendingCheckout();
+}
+async function trackPendingPurchase() {
+  const p = pendingCheckout();
+  if (!p || p.kind !== 'one_time' || !/^[a-f0-9]{32}$/i.test(p.token || '')) return;
+  for (let i = 0; i < 6; i += 1) {
+    try {
+      const r = await fetch(`/api/one-time-report?token=${p.token.toLowerCase()}`, { credentials: 'same-origin' });
+      const d = await r.json().catch(() => ({}));
+      if (r.ok && d.status === 'paid') return sendPurchase(p.token.toLowerCase(), d.product || p.product);
+    } catch { /* retry */ }
+    await new Promise((ok) => setTimeout(ok, 5000)); // the webhook may land a few seconds after the redirect
+  }
+}
+
 async function main() {
   if (!/^[a-f0-9]{32}$/i.test(token)) {
     showTokenForm('');
+    trackPendingPurchase();
     return;
   }
   mount.replaceChildren(text('p', 'Loading your report…'));
@@ -171,6 +194,8 @@ async function main() {
     showTokenForm('That report link was not recognized. Check the token from your email and try again.');
     return;
   }
+  const pend = pendingCheckout();
+  if (data.status === 'paid' && pend?.kind === 'one_time' && pend.token?.toLowerCase() === token.toLowerCase()) sendPurchase(token.toLowerCase(), data.product);
   if (data.status !== 'paid') {
     showTokenForm('This report has not been paid for yet. Finish checkout from the email link, then open the report again.');
     return;
