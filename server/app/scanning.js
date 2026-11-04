@@ -92,6 +92,8 @@ export async function scanPage(page, { accountId, trigger = 'manual', userId = n
       }
     } catch (err) {
       const message = err?.expose ? err.message : 'The page could not be scanned.';
+      // Log the real cause so failed scans can be diagnosed (the stored message stays generic).
+      console.error('scan failed', JSON.stringify({ pageId: page.id, accountId, device, trigger, url: page.url, error: String(err?.message || err).split('\n')[0].replace(/(token|apiKey|key)=[^&\s]+/gi, '$1=***').slice(0, 300) }));
       row = await one(
         `insert into app.scans (account_id, domain_id, page_id, device, status, error, trigger, created_by)
          values ($1, $2, $3, $4, 'failed', $5, $6, $7)
