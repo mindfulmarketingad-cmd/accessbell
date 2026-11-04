@@ -68,7 +68,7 @@ const faqs: FaqItem[] = [
         <span class="h1-kicker">Website Accessibility Checker Pricing</span>
         Accessibility on <span class="accent">Autopilot</span>
       </h1>
-      <p class="lead">One plan for developers, QA and content teams: test every template, track fixes and catch regressions before they ship. Pay per domain, cancel anytime.</p>
+      <p class="lead">Pro is ${PLAN.price} per domain per month, or ${PLAN.annualPrice} per year, after a 3-day free trial. You add a card at checkout and are not charged until the trial ends. Cancel before then and you will not be charged.</p>
       <DemoVideo class="demo-cta-center" />
     </div>
   </section>
@@ -86,14 +86,15 @@ const faqs: FaqItem[] = [
           </fieldset>
           <div class="billing-panel" data-billing="monthly">
             <p class="plan-price"><strong>${PLAN.price}</strong><span>/mo per domain</span></p>
-            <p class="plan-billed">Billed monthly. Cancel anytime. 14-day money-back guarantee.</p>
+            <p class="plan-billed">3-day free trial. You are not charged until it ends. 14-day money-back guarantee on the first charge. <a href="/resources/help-center/getting-started/start-your-free-trial">How the trial works</a>.</p>
             <a class="btn btn-accent btn-block btn-lg" href={`${PLAN.ctaHref}?plan=monthly`}>{PLAN.cta} <Icon name="arrow" /></a>
           </div>
           <div class="billing-panel" data-billing="annual">
             <p class="plan-price"><strong>${PLAN.annualPrice}</strong><span>/year per domain</span></p>
-            <p class="plan-billed">Billed yearly. Works out to ${(PLAN.annualPrice / 12).toFixed(2)}/mo, saving ${PLAN.price * 12 - PLAN.annualPrice} a year. Cancel anytime. 14-day money-back guarantee.</p>
+            <p class="plan-billed">3-day free trial, then billed yearly. Works out to ${(PLAN.annualPrice / 12).toFixed(2)}/mo, saving ${PLAN.price * 12 - PLAN.annualPrice} a year. You are not charged until the trial ends. 14-day money-back guarantee on the first charge. <a href="/resources/help-center/getting-started/start-your-free-trial">How the trial works</a>.</p>
             <a class="btn btn-accent btn-block btn-lg" href={PLAN.annualCtaHref}>{PLAN.cta} <Icon name="arrow" /></a>
           </div>
+          <p class="plan-alt">Not ready for a subscription? A <a href={ONE_TIME.pageReport.href}>Page Report</a> is ${ONE_TIME.pageReport.price} for one page, and a <a href={ONE_TIME.domainAudit.href}>Domain Audit</a> is ${ONE_TIME.domainAudit.price} for up to {PLAN.urlsPerDomain} pages. No account, and neither renews.</p>
           <p class="plan-blurb">{PLAN.blurb}</p>
           <ul class="check-list">
             {PLAN.highlights.map((h) => <li><Icon name="check" />{h}</li>)}
