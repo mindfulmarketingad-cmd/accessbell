@@ -1,7 +1,7 @@
 /**
  * /comparisons/<competitor>-vs-accessbell pages. Competitor facts come only
  * from the linked sources (vendor pages, software directories and press
- * releases), checked October 2026. Where a vendor does not publish something,
+ * releases). Each comparison has its own `checked` date. Where a vendor does not publish something,
  * the page says so instead of guessing. Update `checked` when you re-verify.
  */
 /** A table cell: true = yes, false = no, or a short text answer. */
@@ -99,7 +99,7 @@ export const COMPARISONS: Comparison[] = [
     ],
     short: 'Both scan for accessibility issues. AudioEye fixes in the visitor’s browser with a script and sells managed services on top. AccessBell shows the exact code fix, monitors 500 URLs per domain daily and keeps legal-grade evidence, for one published price.',
     cells: {
-      price: 'Several tiers; entry plans listed from about $49/month (Capterra)',
+      price: 'No dollar amount on AudioEye’s plans page. Directories list Automated at about $49/month',
       free: 'Free website scan',
       monitoring: 'Ongoing detection through an installed script',
       approvedFix: 'Automatic fixes applied by its script',
@@ -115,15 +115,17 @@ export const COMPARISONS: Comparison[] = [
     chooseUs: ['You want issues fixed in your own code, with the exact fix shown.', 'You want daily monitoring of up to 500 URLs and a dated evidence trail for a flat price.', 'You want to avoid relying on an overlay.'],
     faqs: [
       { q: 'Is AudioEye an overlay?', a: 'AudioEye applies automatic fixes through a script that runs on your site, and accessibility professionals list it on the Overlay Fact Sheet. It also sells human testing and remediation services.' },
-      { q: 'How much does AudioEye cost compared with AccessBell?', a: 'AccessBell is $29 per domain per month or $199 per year. AudioEye sells several tiers; directories such as Capterra list entry plans from about $49 per month, and managed tiers cost more. Check AudioEye for current prices.' },
+      { q: 'How much does AudioEye cost compared with AccessBell?', a: 'AccessBell is $29 per domain per month or $199 per year. AudioEye’s own plans page does not publish dollar amounts. Directories such as GetApp, Capterra and SoftwareAdvice list the Automated tier at about $49 per month, which is not an AudioEye-published price. Self-Managed and Managed say “Talk to an Expert.”' },
       { q: 'Can I switch from AudioEye to AccessBell?', a: 'Yes. Run a free AccessBell scan on a few pages to see what your code still fails with the AudioEye script removed, then start a 3-day free trial to monitor the whole domain.' },
     ],
     sources: [
-      { label: 'Capterra: AudioEye pricing and reviews', href: 'https://www.capterra.com/p/214283/Audioeye/' },
+      { label: 'AudioEye: plans and pricing', href: 'https://www.audioeye.com/plans-and-pricing/' },
+      { label: 'Capterra: AudioEye pricing and reviews (directory figure)', href: 'https://www.capterra.com/p/214283/Audioeye/' },
+      { label: 'Software Advice: AudioEye (directory figure)', href: 'https://www.softwareadvice.com/compliance/audioeye-profile/' },
       OVERLAY_FACT_SHEET,
     ],
     related: ['best-ada-compliance-software-for-small-businesses', '5-accessibe-alternatives'],
-    checked: '2026-10-01',
+    checked: '2026-11-05',
   },
   {
     slug: 'aaardvark-vs-accessbell',
@@ -137,11 +139,11 @@ export const COMPARISONS: Comparison[] = [
     ],
     short: 'Neither is an overlay: both find issues so you can fix them. AAArdvark leans into manual auditing and multi-site plans. AccessBell gives one site 500 URLs of daily monitoring, a code fix for every issue, PDF checks and a legal evidence package for less per month.',
     cells: {
-      price: '$49/month for 1 site and 100 pages; up to $499/month for 50 sites',
+      price: '$49/month for 1 site and 100 pages, up to $499/month. Annual paid tiers: $549, $1,099, $2,749 and $5,499',
       free: 'Free plan: 1 site, 1 page',
       selfServe: true,
       urls: '100 to 10,000 pages, by plan',
-      standards: 'WCAG 2.1 and 2.2',
+      standards: 'WCAG 2.0, 2.1 and 2.2, Levels A, AA and AAA',
       codeFix: 'Remediation guidance',
       overlay: 'No',
       manual: 'Manual testing tools and visual mode',
@@ -156,15 +158,16 @@ export const COMPARISONS: Comparison[] = [
     chooseUs: ['You want 500 URLs on one domain monitored daily for $29 a month.', 'You want a corrected code example for every issue and optional approved fixes.', 'You want PDF checks and a legal evidence package.'],
     faqs: [
       { q: 'Is AAArdvark an overlay?', a: 'No. Like AccessBell, it is a testing tool that helps you find and fix issues in your site rather than a widget that changes the page in the browser.' },
-      { q: 'How does AAArdvark pricing compare with AccessBell?', a: 'AAArdvark lists plans from $49 a month for one site and 100 pages, up to $499 a month for 50 sites. AccessBell is $29 per domain per month, or $199 a year, for up to 500 URLs on each domain.' },
+      { q: 'How does AAArdvark pricing compare with AccessBell?', a: 'AAArdvark publishes plans from $49 a month for one site and 100 pages, up to $499 a month for 50 sites and 10,000 pages. Annual prices for the paid tiers are $549, $1,099, $2,749 and $5,499. AccessBell is $29 per domain per month, or $199 a year, for up to 500 URLs on each domain.' },
       { q: 'Can I use both?', a: 'Yes. Some teams run detailed manual audits in one tool and use AccessBell for daily monitoring and evidence.' },
     ],
     sources: [
       { label: 'AAArdvark: pricing', href: 'https://aaardvarkaccessibility.com/pricing/' },
+      { label: 'AAArdvark: FAQ', href: 'https://aaardvarkaccessibility.com/faq/' },
       { label: 'G2: AAArdvark reviews', href: 'https://www.g2.com/products/aaardvark/reviews' },
     ],
     related: ['best-website-accessibility-testing-software', 'automated-vs-manual-accessibility-testing'],
-    checked: '2026-10-01',
+    checked: '2026-11-05',
   },
   {
     slug: 'accessibe-vs-accessbell',
@@ -287,7 +290,7 @@ export const COMPARISONS: Comparison[] = [
     ],
     short: 'Siteimprove is a broad enterprise suite sold by quote. AccessBell is focused accessibility software with a published price: 500 URLs per domain monitored daily, a code fix for every issue and a legal evidence package.',
     cells: {
-      price: 'Not published; by quote, per module and site size',
+      price: 'Not published on siteimprove.com. Texas DIR list from $7,100/year; UK G-Cloud £8,000 to £28,700 a licence',
       free: 'Demo on request',
       selfServe: false,
       crawl: true,
@@ -304,23 +307,26 @@ export const COMPARISONS: Comparison[] = [
       {
         h: 'What Siteimprove Costs',
         paras: [
-          'Siteimprove does not publish pricing; directories such as G2 and Capterra list it as contact vendor. Independent analyses put small accessibility-only contracts around $11,000 a year for about 1,000 pages, mid-market bundles at roughly $8,000 to $20,000, and full-platform enterprise contracts at $30,000 to $80,000 or more ([independent pricing analysis](https://ratedwithai.com/blog/siteimprove-pricing-2026), [WebYes](https://www.webyes.com/blogs/siteimprove-pricing/)). Pricing scales with page count, modules and contract length, and is agreed through sales.',
+          'Siteimprove does not publish a self-serve price. You contact sales. Public reference ranges, checked November 2026, are not a checkout price. The Texas DIR list price for the Accessibility Complete Package is $7,100 a year for 1,000 pages, $11,600 for 5,000, $15,300 for 10,000, $22,800 for 25,000, $34,100 for 50,000 and $51,300 for 100,000. The [UK G-Cloud Inclusivity licence](https://www.applytosupply.digitalmarketplace.service.gov.uk/g-cloud/services/271405559589250) is £8,000 to £28,700, with no free trial, and implementation is often separate. [Vendr](https://www.vendr.com/marketplace/siteimprove) reports observed contracts of about $15,000 to $150,000 or more a year, depending on modules and pages.',
         ],
       },
     ],
     chooseThem: ['You need SEO, analytics and content governance in the same platform.', 'You run many sites with large editorial teams and an enterprise budget.'],
     chooseUs: ['You want accessibility monitoring without an enterprise contract.', 'You want a published, flat price per domain.', 'You want legal evidence built in.'],
     faqs: [
-      { q: 'How much does Siteimprove cost?', a: 'Siteimprove does not publish prices. It quotes by module and site size, and third-party estimates put contracts in the tens of thousands of dollars a year. AccessBell is $29 per domain per month.' },
+      { q: 'How much does Siteimprove cost?', a: 'Siteimprove does not publish a self-serve price. Public reference ranges include a Texas DIR list price of $7,100 a year for 1,000 pages and a UK G-Cloud Inclusivity licence of £8,000 to £28,700. AccessBell is $29 per domain per month.' },
       { q: 'Is AccessBell a Siteimprove alternative?', a: 'For accessibility, yes. AccessBell does not include SEO, analytics or content governance, so teams that rely on those modules may keep Siteimprove for them.' },
       { q: 'Do they use the same testing engine?', a: 'No. AccessBell runs the open-source axe-core engine in a real Chrome browser. Siteimprove uses its own engine, so results can differ slightly.' },
     ],
     sources: [
-      { label: 'WebYes: Siteimprove pricing in 2026 (third-party estimate)', href: 'https://www.webyes.com/blogs/siteimprove-pricing/' },
+      { label: 'Siteimprove pricing page (no self-serve price)', href: 'https://www.siteimprove.com/pricing/' },
+      { label: 'UK G-Cloud 14: Siteimprove Inclusivity', href: 'https://www.applytosupply.digitalmarketplace.service.gov.uk/g-cloud/services/271405559589250' },
+      { label: 'Texas DIR contract DIR-CPO-5112 (Siteimprove)', href: 'https://dir.texas.gov/contracts/dir-cpo-5112' },
+      { label: 'Vendr: Siteimprove buyer-reported contracts', href: 'https://www.vendr.com/marketplace/siteimprove' },
       { label: 'Deque: axe-core on GitHub', href: 'https://github.com/dequelabs/axe-core' },
     ],
     related: ['best-website-accessibility-testing-software', 'digital-accessibility-platforms'],
-    checked: '2026-10-01',
+    checked: '2026-11-05',
   },
   {
     slug: 'level-access-vs-accessbell',
@@ -334,7 +340,7 @@ export const COMPARISONS: Comparison[] = [
     ],
     short: 'Level Access is an enterprise platform with a large team of experts, sold by quote. AccessBell is self-serve software for teams who fix their own sites: daily monitoring, code fixes and an evidence trail for $29 per domain.',
     cells: {
-      price: 'Not published; custom quote',
+      price: 'Custom quote. AWS Marketplace Basic is $5,000 for 12 months. Missouri MOCAP lists AMP at $13,495/year',
       free: 'Demo on request',
       selfServe: false,
       monitoring: 'Automated monitoring in the platform',
@@ -344,23 +350,26 @@ export const COMPARISONS: Comparison[] = [
     },
     differences: [
       { h: 'Services vs self-serve', text: 'Level Access’s strength is its people: specialists who audit with assistive technology and help run an accessibility program. AccessBell gives your own team the tools, without a services contract.' },
-      { h: 'Price', text: 'Level Access quotes each customer. AccessBell publishes one price of $29 per domain per month and lets you start a trial online.' },
+      { h: 'Price', text: 'Level Access quotes each enterprise customer. Public reference points, which are not a self-serve checkout price, include AWS Marketplace Basic at $5,000 for 12 months and a Missouri MOCAP listing of $13,495 a year for AMP. AccessBell publishes one price of $29 per domain per month and lets you start a trial online.' },
       { h: 'Using both', text: 'Many organizations buy a third-party expert audit once, then use AccessBell to monitor every day and record fixes between audits.' },
     ],
     chooseThem: ['You need expert manual audits or a third-party conformance report.', 'You want a managed accessibility program across many products.'],
     chooseUs: ['You want daily monitoring and code fixes without a services contract.', 'You want a published price and a self-serve trial.', 'You want evidence of every scan and fix between audits.'],
     faqs: [
       { q: 'Does AccessBell offer expert audits like Level Access?', a: 'No. AccessBell runs automated scans, gives manual test procedures and records your work. If you need a third-party audit by specialists, Level Access is one of the providers that offer it.' },
-      { q: 'How much does Level Access cost?', a: 'Level Access does not publish prices; it quotes each customer. AccessBell is $29 per domain per month or $199 per year.' },
+      { q: 'How much does Level Access cost?', a: 'Level Access does not publish a self-serve price; it quotes each enterprise customer. Public reference ranges include AWS Marketplace Basic at $5,000 for 12 months and Missouri MOCAP fees of $13,495 a year for AMP (up to 5 users) and $14,995 a year for Access Advisor Enterprise. AccessBell is $29 per domain per month or $199 per year.' },
       { q: 'Is UserWay part of Level Access?', a: 'Yes. Level Access completed its acquisition of UserWay in March 2024, and UserWay operates as its own brand.' },
     ],
     sources: [
       { label: 'Level Access: platform and services', href: 'https://www.levelaccess.com/platform-services-overview/' },
       { label: 'Level Access: auditing and testing', href: 'https://www.levelaccess.com/auditing-and-testing/' },
+      { label: 'Level Access on AWS Marketplace', href: 'https://aws.amazon.com/marketplace/pp/prodview-v5ysxfyyrupw6' },
+      { label: 'Missouri MOCAP: Level Access evaluator fees', href: 'https://mocap.mo.gov/levelaccess-eval/' },
+      { label: 'Vendr: Level Access buyer-reported contracts', href: 'https://www.vendr.com/marketplace/level-access' },
       { label: 'Level Access: acquisition of UserWay completed', href: 'https://www.levelaccess.com/blog/level-access-completes-acquisition-of-userway/' },
     ],
     related: ['digital-accessibility-platforms', 'automated-vs-manual-accessibility-testing'],
-    checked: '2026-10-01',
+    checked: '2026-11-05',
   },
   {
     slug: 'acquia-vs-accessbell',

@@ -3,42 +3,64 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
 import Faq from '../../components/Faq.astro';
 import CtaBand from '../../components/CtaBand.astro';
-import CompareCell from '../../components/CompareCell.astro';
 import { SITE } from '../../config/site';
 import { faqSchema } from '../../lib/schema';
+import { PLAN } from '../../data/pricing';
 import { COMPARISONS, comparisonPath } from '../../data/comparisons';
+import { MATRIX_CHECKED, MATRIX_GROUPS, MATRIX_SOURCES, MATRIX_VENDORS } from '../../data/comparison-matrix';
 
 const PATH = '/comparisons';
 const url = `${SITE.url}${PATH}`;
+const featuredSlugs = ['audioeye-vs-accessbell', 'aaardvark-vs-accessbell', 'siteimprove-vs-accessbell', 'level-access-vs-accessbell'];
+const featured = featuredSlugs.flatMap((slug) => {
+  const match = COMPARISONS.find((c) => c.slug === slug);
+  return match ? [match] : [];
+});
+const otherWriteups = COMPARISONS.filter((c) => !featuredSlugs.includes(c.slug));
 const faqs = [
-  { q: 'How is AccessBell different from accessibility overlays?', a: 'Overlays such as accessiBe and UserWay change your page in the visitor’s browser. AccessBell finds issues in your code, shows the corrected code and confirms each fix on the next scan, so the fix works for every visitor and tool.' },
-  { q: 'How is AccessBell different from enterprise platforms?', a: 'Enterprise platforms such as Siteimprove, Level Access and Acquia are sold by quote, often with services or extra modules. AccessBell is self-serve accessibility software with one published price of $29 per domain per month.' },
-  { q: 'Where do the competitor facts come from?', a: 'From each vendor’s public pages, software directories such as Capterra and G2, press releases and court or regulator records. Each comparison lists its sources and the date it was checked. Where a vendor does not publish something, we say so.' },
-  { q: 'Does AccessBell offer expert audits?', a: 'No. AccessBell runs automated monitoring, gives manual testing procedures and records your work. If you need a third-party audit by specialists, providers such as Level Access offer one, and many teams pair it with AccessBell monitoring.' },
+  {
+    q: 'How is AccessBell different from accessibility overlays?',
+    a: 'Overlays such as accessiBe and UserWay change your page in the visitor’s browser. AudioEye is a hybrid: a script applies automated fixes, and higher tiers add services. AccessBell finds issues in your code, shows the corrected code and confirms each fix on the next scan. The optional PageAssist toolbar does not claim to make a site compliant.',
+  },
+  {
+    q: 'How is AccessBell different from enterprise platforms?',
+    a: `Siteimprove and Level Access do not publish a self-serve price. The table cites public reference ranges with source labels, including Texas DIR list prices, UK G-Cloud licences, the AWS Marketplace Basic tier and Missouri MOCAP fees. Those ranges are not a checkout price. AccessBell is self-serve at $${PLAN.price} per domain per month or $${PLAN.annualPrice} per year.`,
+  },
+  {
+    q: 'Where do the prices in this accessibility tool comparison come from?',
+    a: `AccessBell prices are from the <a href="/pricing">AccessBell pricing page</a>. AAArdvark publishes its plans. AudioEye, Siteimprove and Level Access do not publish a full self-serve price, so the table says so and quotes a labeled public range. Figures were checked ${MATRIX_CHECKED}.`,
+  },
+  {
+    q: 'Does AccessBell offer expert audits or a legal guarantee?',
+    a: 'No. AccessBell runs automated monitoring, gives manual testing procedures and records your work in the Compliance Vault. A full human expert audit is not included, and AccessBell does not guarantee legal compliance or promise that you will not be sued. Providers such as Level Access sell expert audits.',
+  },
 ];
 const schema = [
   {
     '@type': 'CollectionPage',
     '@id': `${url}#webpage`,
-    name: 'AccessBell Comparisons',
+    name: 'Accessibility Tool Comparison',
     url,
+    description: `Cost and feature comparison of AccessBell, AudioEye, AAArdvark, Siteimprove and Level Access. Checked ${MATRIX_CHECKED}.`,
+    dateModified: '2026-11-05',
     isPartOf: { '@id': `${SITE.url}/#website` },
     hasPart: COMPARISONS.map((c) => ({ '@type': 'WebPage', name: `${c.name} vs. AccessBell`, url: `${SITE.url}${comparisonPath(c)}` })),
   },
   faqSchema(faqs),
 ];
+const external = (href: string) => href.startsWith('http');
 ---
 <BaseLayout
-  title="Accessibility Tool Comparisons | AccessBell"
-  description="Compare AccessBell with AudioEye, accessiBe, UserWay, Siteimprove, Level Access, Acquia and AAArdvark on features, pricing, overlays and legal evidence."
+  title="Accessibility Tool Comparison | AccessBell"
+  description="Accessibility tool comparison of cost and features for AccessBell, AudioEye, AAArdvark, Siteimprove and Level Access. Checked November 2026."
   breadcrumbs={[{ label: 'Comparisons', href: PATH }]}
   schema={schema}
 >
   <section class="cmp-hero" aria-labelledby="cmp-hub-title">
     <div class="container">
       <span class="cmp-eyebrow">Comparisons</span>
-      <h1 id="cmp-hub-title">How AccessBell <span class="cmp-accent">Compares</span></h1>
-      <p class="cmp-lead">Side-by-side comparisons of AccessBell and other accessibility tools, from overlay widgets to enterprise platforms. Every comparison uses public sources, and says so when a vendor does not publish something.</p>
+      <h1 id="cmp-hub-title">Accessibility Tool <span class="cmp-accent">Comparison</span></h1>
+      <p class="cmp-lead">This accessibility tool comparison puts AccessBell next to AudioEye, AAArdvark, Siteimprove and Level Access on cost and features. AccessBell is scanning, monitoring and evidence: it is not an overlay, and it does not guarantee legal compliance. Pro is ${PLAN.price} per domain per month or ${PLAN.annualPrice} per domain per year on the <a href="/pricing">pricing page</a>. Where a vendor does not publish a price, the table says so and cites a public reference range.</p>
       <div class="cmp-cta">
         <a class="btn btn-accent" href="/app/signup">Start 3-day free trial <Icon name="arrow" /></a>
         <a class="btn cmp-btn-ghost" href="/#scan">Run a free scan</a>
@@ -46,49 +68,98 @@ const schema = [
     </div>
   </section>
 
-  <section class="section-tight" aria-labelledby="cmp-list">
+  <section class="section-tight" aria-labelledby="cmp-table-title">
     <div class="container">
       <div class="section-head section-head-left">
-        <h2 id="cmp-list">Accessibility Tool Comparisons</h2>
+        <h2 id="cmp-table-title">Accessibility Tool Comparison of Cost and Features</h2>
+        <p>Five tools, one row per pricing or capability question. The AccessBell column is highlighted. Scroll sideways to see every column. The feature names stay pinned.</p>
+      </div>
+      <div class="table-scroll cmp-table-wrap cmp-matrix" tabindex="0" role="region" aria-label="Accessibility tool comparison of cost and features for AccessBell, AudioEye, AAArdvark, Siteimprove and Level Access">
+        <table class="cmp-table">
+          <caption class="visually-hidden">Cost and features of AccessBell, AudioEye, AAArdvark, Siteimprove and Level Access. Checked {MATRIX_CHECKED}.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Feature</th>
+              {MATRIX_VENDORS.map((vendor) => (
+                <th scope="col" class={vendor.us ? 'cmp-us' : undefined}>
+                  <a href={vendor.href}>{vendor.name}</a>
+                  {vendor.us && <span class="visually-hidden"> (highlighted column)</span>}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          {MATRIX_GROUPS.map((group) => (
+            <tbody>
+              <tr class="cmp-group">
+                <th scope="row">{group.title}</th>
+                <td colspan={MATRIX_VENDORS.length}></td>
+              </tr>
+              {group.rows.map((row) => (
+                <tr>
+                  <th scope="row">{row.label}</th>
+                  {MATRIX_VENDORS.map((vendor) => (
+                    <td class={vendor.us ? 'cmp-us' : undefined}>
+                      {row.cells[vendor.key].map((paragraph) => <p>{paragraph}</p>)}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          ))}
+        </table>
+      </div>
+      <p class="cmp-note">Checked {MATRIX_CHECKED}, and subject to change. A directory listing or a buyer-reported range is not the vendor’s own price. AudioEye’s FY2025 Form 10-K blended figure of about $305 per customer per year is average revenue, not a plan price. Duda reseller SKUs at $9.99 and $99 are channel-specific, not AudioEye’s primary list price. AccessBell Pro also includes email support and role-based permissions. Read the guides to the <a href="/blog/best-ada-compliance-software-for-small-businesses">best ADA compliance software</a> and the <a href="/blog/best-website-accessibility-testing-software">best accessibility testing software</a>.</p>
+    </div>
+  </section>
+
+  <section class="section-tight section-surface" aria-labelledby="cmp-read">
+    <div class="container cc-prose">
+      <h2 id="cmp-read">How to Read This Accessibility Tool Comparison</h2>
+      <p>Use the highlighted column when you want a published price for <a href="/solutions/continuous-monitoring">continuous monitoring</a>, <a href="/solutions/automated-fixes">guided fixes you approve</a> and a <a href="/solutions/compliance-vault">Compliance Vault</a>. AccessBell monitors up to {PLAN.urlsPerDomain} URLs per domain. It does not include a human expert audit, and the evidence package does not mean a lawsuit cannot be filed.</p>
+      <p>AAArdvark publishes every plan, so those prices are the vendor’s. AudioEye’s plans page has no dollar amounts. The about $49 per month line is what GetApp, Capterra and SoftwareAdvice list, and it is labeled that way. Siteimprove and Level Access are quote-first. The Texas DIR list, UK G-Cloud licence band, AWS Marketplace Basic tier, Missouri MOCAP fees and Vendr ranges are the best public references, with the source named in the cell.</p>
+      <p>Open a column heading for the longer write-up. accessiBe, UserWay and Acquia are not in this table. Their write-ups are linked below.</p>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="cmp-sources">
+    <div class="container">
+      <div class="section-head section-head-left">
+        <h2 id="cmp-sources">Sources for This Accessibility Tool Comparison</h2>
+        <p>Every price above is tied to one of these pages. Last checked {MATRIX_CHECKED}.</p>
+      </div>
+      <ul class="cmp-sources">
+        {MATRIX_SOURCES.map((source) => (
+          <li>
+            <a href={source.href} rel={external(source.href) ? 'noopener noreferrer' : undefined} target={external(source.href) ? '_blank' : undefined}>
+              {source.label}
+              {external(source.href) && <span class="visually-hidden"> (opens in a new tab)</span>}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight section-surface" aria-labelledby="cmp-list">
+    <div class="container">
+      <div class="section-head section-head-left">
+        <h2 id="cmp-list">Detailed Accessibility Tool Comparisons</h2>
+        <p>Longer write-ups for the four tools in the table, then the other comparisons already on this site.</p>
       </div>
       <ul class="cmp-links">
-        {COMPARISONS.map((c) => (
+        {featured.map((c) => (
+          <li><a href={comparisonPath(c)}>{c.name} vs. AccessBell</a> <span>{c.kind}</span></li>
+        ))}
+        {otherWriteups.map((c) => (
           <li><a href={comparisonPath(c)}>{c.name} vs. AccessBell</a> <span>{c.kind}</span></li>
         ))}
       </ul>
     </div>
   </section>
 
-  <section class="section-tight section-surface" aria-labelledby="cmp-glance">
-    <div class="container">
-      <div class="section-head">
-        <h2 id="cmp-glance">Accessibility Tools at a Glance</h2>
-        <p>How each tool is priced and whether it relies on an overlay. Open a comparison for the full table and sources.</p>
-      </div>
-      <div class="table-scroll cmp-table-wrap" tabindex="0" role="region" aria-label="Comparison table: type, price and overlay use">
-        <table class="cmp-table">
-          <caption class="visually-hidden">Accessibility tools compared by type, price and overlay use</caption>
-          <thead><tr><th scope="col">Tool</th><th scope="col">Type</th><th scope="col">Price</th><th scope="col">Overlay</th></tr></thead>
-          <tbody>
-            <tr class="cmp-us-row"><th scope="row">AccessBell</th><td>Scanner, monitoring and evidence</td><td>$29 per domain per month, or $199 per year</td><td>No</td></tr>
-            {COMPARISONS.map((c) => (
-              <tr>
-                <th scope="row"><a href={comparisonPath(c)}>{c.name}</a></th>
-                <td>{c.kind}</td>
-                <td><CompareCell value={c.cells.price} /></td>
-                <td><CompareCell value={c.cells.overlay} /></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <p class="cmp-note">Based on public information checked October 2026, and subject to change. Read our guides to the <a href="/blog/best-ada-compliance-software-for-small-businesses">best ADA compliance software</a>, <a href="/blog/best-website-accessibility-testing-software">best accessibility testing software</a> and <a href="/blog/5-accessibe-alternatives">accessiBe alternatives</a>, and the <a href="https://overlayfactsheet.com/en/" rel="noopener noreferrer" target="_blank">Overlay Fact Sheet<span class="visually-hidden"> (opens in a new tab)</span></a>.</p>
-    </div>
-  </section>
-
   <section class="section-tight" aria-labelledby="faq-title">
     <div class="container cc-prose">
-      <h2 id="faq-title">AccessBell Comparisons: Frequently Asked Questions</h2>
+      <h2 id="faq-title">Accessibility Tool Comparison Questions</h2>
       <Faq items={faqs} />
       <p>See what AccessBell includes in our <a href="/solutions">solutions</a> and <a href="/pricing">pricing</a>.</p>
     </div>

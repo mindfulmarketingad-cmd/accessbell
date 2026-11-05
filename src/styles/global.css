@@ -8255,6 +8255,67 @@ img.platform-logo-lg {
 .cmp-links span::before {
   content: '— ';
 }
+.cmp-matrix {
+  margin-top: 0;
+  background: #fff;
+}
+.cmp-matrix .cmp-table {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+.cmp-matrix .cmp-table th,
+.cmp-matrix .cmp-table td {
+  min-width: 15.5rem;
+  max-width: 18.5rem;
+}
+.cmp-matrix .cmp-table thead th:first-child,
+.cmp-matrix .cmp-table tbody th[scope='row'] {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  min-width: 11.25rem;
+  max-width: 13rem;
+  background: #fff;
+  box-shadow: 1px 0 0 var(--border);
+}
+.cmp-matrix .cmp-table thead th:first-child {
+  z-index: 3;
+  background: var(--ink-900);
+}
+.cmp-matrix .cmp-table td.cmp-us {
+  background: var(--sage-50);
+  font-weight: 500;
+}
+.cmp-matrix .cmp-table thead a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.cmp-matrix .cmp-table tr.cmp-group th,
+.cmp-matrix .cmp-table tr.cmp-group td {
+  background: var(--surface);
+  font-weight: 700;
+}
+.cmp-matrix .cmp-table p {
+  margin: 0 0 0.45em;
+}
+.cmp-matrix .cmp-table p:last-child {
+  margin-bottom: 0;
+}
+.cmp-sources {
+  margin: 0;
+  padding-left: 1.25em;
+}
+.cmp-sources li {
+  margin-bottom: 0.4em;
+}
+.cmp-sources a {
+  font-weight: 600;
+}
 .brand {
   flex-shrink: 0;
 }
