@@ -11,7 +11,7 @@ import { handleWebhook } from '../server/shopify/webhooks.js';
 import { appPage, frameAncestors } from '../server/shopify/app-page.js';
 import { createShopifyHandler, summarize } from '../server/shopify/handler.js';
 import { exchangeIdToken } from '../server/shopify/admin-api.js';
-import { PLANS, TRIAL_DAYS, planFromSubscriptions, planFromWebhook, accountStatusFor, nextManualScan, scheduleFilterSql, FREE_DUE_SQL } from '../server/shopify/plans.js';
+import { APP_HANDLE, PLANS, TRIAL_DAYS, planFromSubscriptions, planFromWebhook, accountStatusFor, nextManualScan, pricingPageUrl, scheduleFilterSql, FREE_DUE_SQL } from '../server/shopify/plans.js';
 import { embedEnabledInSettings, fixSeenRecently } from '../server/shopify/embed.js';
 
 const API_KEY = 'test-client-id';
@@ -180,7 +180,7 @@ test('session: first open exchanges an expiring token, provisions, syncs the Fre
   assert.equal(body.plan.monitoredPages, 1);
   assert.equal(body.embed.enabled, true);
   assert.match(body.embed.activateUrl, /activateAppId=test-client-id%2Faccessbell-fix|activateAppId=test-client-id\/accessbell-fix/);
-  assert.equal(body.pricingUrl, 'https://admin.shopify.com/store/foxwood-test/charges/accessbell/pricing_plans');
+  assert.equal(body.pricingUrl, 'https://admin.shopify.com/store/foxwood-test/charges/accessbell-co/pricing_plans');
   assert.deepEqual(body.plans.map((p) => [p.key, p.monthly, p.yearly, p.trialDays]), [['free', 0, null, 0], ['starter', 12, null, 3], ['pro', 29, 290, 3]]);
   assert.equal(store.applied[0].tier, 'free');
   assert.equal(store.saved[0][1].refreshToken, 'shprt_x');
@@ -344,12 +344,22 @@ test('theme app embed targets head and loads fix.js with the site key', () => {
   assert.match(liquid, /app\.metafields\.accessbell\.site_key/);
 });
 
+test('Managed Pricing links use the deployed app handle', () => {
+  assert.equal(APP_HANDLE, 'accessbell-co');
+  assert.equal(pricingPageUrl('foxwood-test.myshopify.com'), 'https://admin.shopify.com/store/foxwood-test/charges/accessbell-co/pricing_plans');
+  assert.equal(pricingPageUrl('Other-Store'), 'https://admin.shopify.com/store/Other-Store/charges/accessbell-co/pricing_plans');
+  const toml = readFileSync(new URL('../shopify/shopify.app.toml', import.meta.url), 'utf8');
+  const handle = /^handle\s*=\s*"([^"]+)"/m.exec(toml)?.[1];
+  assert.equal(handle, APP_HANDLE, 'shopify.app.toml handle and APP_HANDLE must stay the same');
+});
+
 test('app config declares the mandatory compliance webhooks', () => {
   const toml = readFileSync(new URL('../shopify/shopify.app.toml', import.meta.url), 'utf8');
   assert.match(toml, /compliance_topics = \["customers\/data_request", "customers\/redact", "shop\/redact"\]/);
   assert.match(toml, /topics = \["app\/uninstalled"\]/);
   assert.match(toml, /topics = \["app_subscriptions\/update"\]/);
   assert.match(toml, /embedded = true/);
+  assert.match(toml, /handle = "accessbell-co"/);
 });
 
 test('vercel: /shopify is framable (not under the global frame-ancestors none rule) and routed', () => {

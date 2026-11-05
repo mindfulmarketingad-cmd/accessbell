@@ -6,6 +6,12 @@
 // "Pro" (Pro has a monthly and a yearly price): planFromSubscriptions maps
 // Shopify's subscription name back to these keys.
 
+// Shopify app handle. Must match `handle` in shopify/shopify.app.toml.
+// Managed Pricing plan pages are /charges/<APP_HANDLE>/pricing_plans.
+// The metafield namespace `accessbell` and the theme block `accessbell-fix`
+// are not this handle.
+export const APP_HANDLE = 'accessbell-co';
+
 export const PLANS = {
   free: {
     key: 'free', name: 'Free', monthly: 0, yearly: null,
@@ -112,7 +118,7 @@ export function nextManualScan(tier, lastScannedAt, now = Date.now()) {
 }
 
 /** Managed Pricing: Shopify's hosted plan page for this store. */
-export function pricingPageUrl(shop, appHandle = 'accessbell') {
+export function pricingPageUrl(shop, appHandle = APP_HANDLE) {
   const store = String(shop).replace(/\.myshopify\.com$/, '');
   return `https://admin.shopify.com/store/${encodeURIComponent(store)}/charges/${encodeURIComponent(appHandle)}/pricing_plans`;
 }
