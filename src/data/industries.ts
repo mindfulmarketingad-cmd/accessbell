@@ -323,6 +323,51 @@ export const INDUSTRIES: Industry[] = [
       { href: 'https://www.w3.org/TR/WCAG22/', label: 'W3C: Web Content Accessibility Guidelines (WCAG) 2.2' },
     ],
   },
+  {
+    slug: 'law-firms',
+    name: 'Law Firm',
+    seoTitle: 'Law Firm ADA Website Accessibility Checker',
+    description: 'Free law firm accessibility checker. Scan intake forms, attorney bios and booking pages for WCAG issues that block clients and show up in ADA website claims.',
+    lead: 'Scan your law firm website with a free law firm accessibility checker. It finds the WCAG failures on contact and intake forms, attorney bios and booking pages that can stop a client from reaching the firm, and that ADA website complaints often name.',
+    stat: {
+      text: 'Title III of the ADA defines places of public accommodation to include the “office of an accountant or lawyer” when the operations of that office affect commerce. 42 U.S.C. § 12181(7)(F).',
+      href: 'https://www.law.cornell.edu/uscode/text/42/12181',
+      label: '42 U.S.C. § 12181(7)(F): the office of an accountant or lawyer is a public accommodation',
+    },
+    whatIs: [
+      'A law firm accessibility checker scans the pages a prospective client uses to reach the firm: the contact or intake form, attorney biography pages and any public page that links a consultation booking. Title III of the ADA defines a place of public accommodation to include the office of an accountant or lawyer when its operations affect commerce. A law office is that kind of office.',
+      'There is no Title III regulation that sets a technical standard for business websites. The Department of Justice, in its March 18, 2022 web guidance, says the ADA applies to the goods, services, privileges and activities that public accommodations offer on the web, and that businesses have flexibility in how they comply. It points to the Web Content Accessibility Guidelines (WCAG) and the Section 508 standards as helpful guidance. The same guidance lists barriers that show up on firm sites: poor color contrast, information shown by color alone, images without text alternatives, videos without captions, forms without labels or error messages, and mouse-only navigation. The AccessBell ADA preset tests WCAG 2.1 Level AA. A law firm accessibility checker shows the automated failures on a public page so the intake path can be fixed, then checked again as bios and forms change.',
+    ],
+    commonIssues: [
+      { title: 'Contact and intake forms without labels', text: 'Name, phone, email and matter-type fields are frequently unlabeled, and an error such as "enter a phone number" is not announced. The Department of Justice web guidance calls out inaccessible online forms, including missing labels, unclear instructions and missing error indicators. WCAG 3.3.2 and 3.3.1 cover labels and error identification.' },
+      { title: 'Attorney bio images with no text alternative', text: 'Headshots and office photos with empty alt text tell a screen reader user nothing about the attorney or the office shown. The web guidance says people who are blind will not understand the content and purpose of an image when no text alternative is provided. WCAG 1.1.1 requires a text alternative for an image that conveys information.' },
+      { title: 'Retainer and agreement PDFs', text: 'Engagement letters, retainers and fee agreements posted only as an untagged PDF have no reading order a screen reader can follow. The W3C PDF techniques for WCAG describe tags, a document title and text alternatives for figures. A scan of the HTML page does not open the file.' },
+      { title: 'Calendar and booking widgets', text: 'Consultation calendars built as clickable grids often have no keyboard support and no accessible name for each day, so a visitor cannot choose a time without a mouse. The web guidance names mouse-only navigation as a barrier. That is a WCAG 2.1.1 and 4.1.2 failure. A third-party booking widget adds its own markup, and the theme cannot fix code the widget owns.' },
+      { title: 'Client portal login and documents', text: 'Login, document and message screens in a client portal often have unlabeled fields and controls that only work with a mouse. WCAG 3.3.2 and 2.1.1 cover labels and keyboard access. The free scan tests one public URL, so a page that requires a login is outside that scan.' },
+      { title: 'Navigation and keyboard traps', text: 'A menu, chat widget or booking pop-up that keeps keyboard focus inside it, with no way to move on, is a keyboard trap. WCAG 2.1.2 requires a keyboard way out. WCAG 2.1.1 requires the menu itself to work without a mouse. Finding a trap takes a person: Tab through the header, the chat window and the booking pop-up, and confirm Tab or Escape leaves each one.' },
+    ],
+    fixNotes: [
+      'Start with the contact and intake path: labels, errors and the confirmation. A person who cannot submit the form cannot hire the firm.',
+      'Label every field in text, such as "Phone number" and "Type of matter", and make sure an error says what is wrong and how to fix it. Do not rely on placeholder text or a red border alone.',
+      'Give each informative attorney photo a short text alternative, such as the attorney name. Publish retainers and fee agreements as HTML or as a tagged PDF, and give the link a name that says it opens a PDF.',
+      'Check booking widgets and menus with the keyboard: Tab to each control, activate it with Enter or Space, and leave calendars and pop-ups with Escape.',
+      'Use the code example on an issue, such as a missing label or empty alt text, as the guide for the edit in your own templates. A guided fix suggestion does not change the site by itself and does not make the site conform to WCAG.',
+    ],
+    faqs: [
+      { q: 'Does the ADA apply to my law firm website?', a: 'If you operate an office of a lawyer and your operations affect commerce, Title III of the ADA lists that office as a public accommodation in 42 U.S.C. § 12181(7)(F), in the same clause as the office of an accountant and other service establishments. The Department of Justice web guidance says the ADA applies to the goods, services, privileges and activities public accommodations offer on the web, which includes online contact and intake. There is no Title III regulation that names a technical standard for business websites. This is general information, not legal advice.' },
+      { q: 'What should a law firm accessibility checker look at first?', a: 'The contact or intake form, one attorney biography and any public page that links a consultation booking. Those are the pages a prospective client needs in order to reach the firm. Run the free scan above on each public URL, then fix critical and serious issues before the rest of the site. A retainer posted as a PDF can be checked with the <a href="/tools/pdf-accessibility-checker">free PDF accessibility checker</a>. A client portal behind a login is not part of that public scan. <a href="/resources/help-center/domains/scan-staging-and-protected-sites">Pro can send custom HTTP headers</a> for staging sites and pages behind basic authentication or a login.' },
+      { q: 'Will an overlay make my law firm website compliant?', a: 'No. An overlay runs in the browser and does not change the intake form, attorney photos, PDFs or booking widget. The law firm accessibility checker shows the failing markup so it can be fixed at the source. Guided fix suggestions and code examples can speed up specific edits, such as missing alt text and unnamed buttons. They do not make a site conform to WCAG on their own, and no tool can guarantee you will not be sued.' },
+      { q: 'Can I scan my intake page for free?', a: 'Yes. The scan on this page is free and needs no account. It tests one public URL. To see the failing code and the fix for every issue on that page, buy a <a href="/solutions/page-report">Page Report</a> for $19. A <a href="/solutions/domain-audit">Domain Audit</a> is $79 for up to 500 pages, once. <a href="/app/signup">Pro</a> monitors up to 500 URLs per domain every day and starts with a 3-day free trial, then $29 per domain per month or $199 per domain per year. Cancel before the trial ends and you will not be charged.' },
+    ],
+    related: ['ada-title-iii-law-for-businesses', 'ada-compliance-report-for-lawyer', 'wcag-3-3-2-labels-or-instructions', 'wcag-1-1-1-non-text-content'],
+    checkers: ['ada-compliance-checker', 'wcag-2-2-aa-checker'],
+    reviewed: new Date('2026-11-05'),
+    sources: [
+      { href: 'https://www.ada.gov/resources/web-guidance/', label: 'ADA.gov: Guidance on Web Accessibility and the ADA (March 18, 2022)' },
+      { href: 'https://www.w3.org/TR/WCAG22/', label: 'W3C: Web Content Accessibility Guidelines (WCAG) 2.2' },
+      { href: 'https://www.w3.org/WAI/WCAG22/Techniques/#pdf', label: 'W3C: PDF Techniques for WCAG 2.2' },
+    ],
+  },
 ];
 
 export const industryPath = (i: Industry) => `/industries/${i.slug}`;
