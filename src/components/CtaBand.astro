@@ -1,6 +1,7 @@
 ---
 import ScanForm from './ScanForm.astro';
 import Icon from './Icon.astro';
+import { PLAN } from '../data/pricing';
 
 interface Props {
   title?: string;
@@ -27,7 +28,7 @@ const {
             <li><Icon name="check" />Results in under 30 seconds</li>
             <li><Icon name="check" />Mapped to WCAG success criteria</li>
           </ul>
-          <p class="cta-note">Want every page monitored? <a href="/app/signup">Start a 3-day free trial</a>.</p>
+          <p class="cta-note">Want every page monitored? <a href="/app/signup">Start a 3-day free trial</a>, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends.</p>
         </>
       ) : (
         <>

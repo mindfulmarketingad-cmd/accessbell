@@ -5113,8 +5113,15 @@ h2[tabindex='-1']:focus {
 .hero-split .compliance-row ul {
   justify-content: center;
 }
-.hero-split .scan-error {
+.hero-split .scan-error,
+.hero-split .scan-proof-form {
   margin-inline: auto;
+}
+.hero-split .scan-proof-form {
+  max-width: 640px;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--ink-800);
 }
 @media (min-width: 1000px) {
   .hero-grid {
@@ -5145,8 +5152,10 @@ h2[tabindex='-1']:focus {
   .hero-split .compliance-row ul {
     justify-content: flex-start;
   }
-  .hero-split .scan-error {
+  .hero-split .scan-error,
+  .hero-split .scan-proof-form {
     margin-inline: 0;
+    text-align: left;
   }
 }
 
