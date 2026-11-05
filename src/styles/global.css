@@ -6745,7 +6745,7 @@ h2[tabindex='-1']:focus {
 .scan-result {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 20px;
+  gap: 16px;
   padding: clamp(20px, 4vw, 32px);
 }
 .scan-result-head > * {
@@ -6793,8 +6793,21 @@ h2[tabindex='-1']:focus {
   line-height: 1.2;
 }
 .scan-result-sev span {
-  color: var(--ink-500);
+  color: var(--ink-700);
   font-size: 0.8125rem;
+  font-weight: 600;
+}
+.scan-result-sev small {
+  color: var(--ink-500);
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+.scan-verdict .scan-result-sev {
+  width: 100%;
+}
+.scan-verdict .scan-result-sev li {
+  background: #fff;
 }
 .scan-result-sev [data-sev='critical'] strong {
   color: var(--danger);
@@ -6828,16 +6841,35 @@ h2[tabindex='-1']:focus {
 }
 .scan-result-main {
   display: grid;
-  gap: 2px;
+  gap: 4px;
   min-width: 0;
 }
 .scan-result-main strong {
   color: var(--ink-900);
   overflow-wrap: anywhere;
 }
+.scan-result-why {
+  margin: 0;
+  color: var(--ink-700);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
 .scan-result-meta {
   color: var(--ink-500);
   font-size: 0.8125rem;
+}
+.scan-result-tech {
+  color: var(--ink-500);
+  font-size: 0.75rem;
+  overflow-wrap: anywhere;
+}
+.scan-issues {
+  display: grid;
+  gap: 8px;
+}
+.scan-issues h3 {
+  margin: 0;
+  font-size: 1.0625rem;
 }
 .scan-result-list .tag {
   flex: none;
@@ -6983,6 +7015,7 @@ h2[tabindex='-1']:focus {
 .scan-result-list > li:has(.scan-teaser-code, .scan-teaser-fix) .scan-result-main {
   flex: 1 1 240px;
 }
+.scan-teaser-code-wrap,
 .scan-teaser-code,
 .scan-teaser-fix,
 .scan-teaser-list > li > a,
@@ -6991,6 +7024,18 @@ h2[tabindex='-1']:focus {
 .scan-result-list > li:has(.scan-teaser-fix) > a {
   flex: 1 1 100%;
   min-width: 0;
+}
+.scan-teaser-code-wrap {
+  display: grid;
+  gap: 4px;
+}
+.scan-teaser-code-label {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-500);
 }
 .scan-teaser-code {
   margin: 0;
@@ -7053,7 +7098,7 @@ h2[tabindex='-1']:focus {
   max-width: none;
   border: 2px solid var(--sage-700);
   background: var(--sage-50);
-  margin: 16px 0;
+  margin: 0;
 }
 .scan-lead p.scan-lead-consent {
   font-size: 0.875rem;
@@ -7097,7 +7142,7 @@ h2[tabindex='-1']:focus {
 }
 /* Free scan: lawsuit risk for critical and serious issues */
 .scan-risk {
-  margin: 20px 0;
+  margin: 0;
   padding: clamp(18px, 3vw, 24px);
   border: 1px solid #f0d9a8;
   border-left: 4px solid var(--warn);
