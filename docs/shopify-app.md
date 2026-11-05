@@ -39,9 +39,11 @@ Stripe billing, Supabase auth or the existing dashboard changes.
    token** (`expiring=1`, required for new public apps), stores it encrypted,
    and on first open creates the account, domain and home page, then writes the
    domain's site key to an app-data metafield (`accessbell.site_key`).
-4. The theme app embed reads that metafield and loads
-   `https://www.accessbell.co/fix.js` with `data-site`. Merchant turns it on in
-   Theme editor > App embeds.
+4. The theme app embed reads that metafield and loads the extension asset
+   `fix.js` (`{{ 'fix.js' | asset_url }}`, served from Shopify's CDN) with
+   `data-site`. That copy is `public/fix.js` with the API origin pinned to
+   `https://www.accessbell.co`, because a CDN script URL would otherwise send
+   `/api/app/fix` to Shopify. Merchant turns it on in Theme editor > App embeds.
 
 `vercel.json`: the global security headers rule now skips `/shopify` (the
 embedded page must be framable by `https://{shop}` and
