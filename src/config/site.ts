@@ -33,6 +33,7 @@ export const FOOTER_GROUPS = [
     links: [
       { label: 'Pricing', href: '/pricing' },
       { label: 'Solutions', href: '/solutions' },
+      { label: 'Ads landing pages', href: '/solutions/google-ads-accessibility' },
       { label: 'Comparisons', href: '/comparisons' },
       { label: 'Use Cases', href: '/use-cases' },
       { label: 'Platform Checkers', href: '/platforms' },

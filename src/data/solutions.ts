@@ -41,7 +41,7 @@ export const SOLUTIONS: Solution[] = [
     description: 'Continuous website accessibility monitoring with scheduled daily scans of up to 500 pages per domain, email alerts for new serious issues and score history.',
     icon: 'refresh',
     eyebrow: 'Scheduled monitoring',
-    lead: 'Continuous website accessibility monitoring means your site is tested every day, not once a year. AccessBell rescans up to 500 pages per domain on a schedule, compares each scan with the last one and emails you when a new critical or serious issue appears, so a bad release is caught in a day instead of in a demand letter.',
+    lead: 'Continuous website accessibility monitoring means your site is tested every day, not once a year. AccessBell is an accessibility monitoring tool for that job: it rescans up to 500 pages per domain on a schedule, compares each scan with the last one and emails you when a new critical or serious issue appears, so a bad release is caught in a day instead of in a demand letter. That is continuous accessibility monitoring, not a one-time audit and not an overlay.',
     summary: 'Scheduled daily scans of up to 500 pages per domain, with email alerts when a new critical or serious issue appears.',
     highlights: [
       { title: 'Scheduled daily scans', text: 'Every monitored page on every domain is rescanned once a day, starting at 06:00 UTC, using the settings you chose for that domain.' },
@@ -62,6 +62,14 @@ export const SOLUTIONS: Solution[] = [
         paras: [
           'A site that passed a test in January can fail in March. A new plugin adds an unlabeled form field, a marketing team uploads images without alt text, a theme update changes the focus styles. None of these are decisions anyone made about accessibility, and a one-time audit cannot catch them.',
           'The W3C’s overview of evaluating web accessibility treats testing as something you plan for as part of building and maintaining a site, not a single event ([W3C WAI](https://www.w3.org/WAI/test-evaluate/)). Scheduled monitoring is the practical version of that for small teams: a regular, automatic check with a record of the results.',
+        ],
+      },
+      {
+        id: 'monitoring-tool',
+        h2: 'What an Accessibility Monitoring Tool Should Check Every Day',
+        paras: [
+          'Continuous accessibility monitoring is the same pages, the same standard, every day, with an email only when something new and serious appears. An accessibility monitoring tool is useful when it tells you what broke, where, and how to fix accessibility issues, then checks that the fix held.',
+          'AccessBell does that for up to 500 URLs per domain. It does not guarantee legal compliance. If a Google Ads destination was disapproved, read the policy name first. A WCAG scan does not clear a crawl or location block. The landing-page issues people hit after they click are covered in [fix ads compliance issues](/solutions/google-ads-accessibility).',
         ],
       },
       {
@@ -229,6 +237,15 @@ export const SOLUTIONS: Solution[] = [
       'Rescan. The issue moves to resolved, and the fix appears in the fix log.',
     ],
     sections: [
+      {
+        id: 'fix-my-website',
+        h2: 'How to Fix Accessibility Issues on My Website',
+        paras: [
+          'How to fix accessibility issues on my website: start with the pages people actually use, the home page, a form, checkout, and one example of each template. A free scan names the issues on one URL. Pro shows the failing code and a corrected example for every issue, and groups shared components so one fix clears many pages.',
+          'Some fixes you paste into your theme. For missing alt text, an unnamed button or a missing page language, AccessBellFix can apply the text you approve without a deploy. Either way, the next scan checks the result. AccessBell does not inject an overlay, and it cannot promise the site is legally compliant.',
+          'If the page is a Google Ads landing page, read [how to fix ads compliance issues](/solutions/google-ads-accessibility) before you treat a WCAG finding as the reason an ad was disapproved.',
+        ],
+      },
       {
         id: 'what-it-fixes',
         h2: 'What AccessBellFix Can Automatically Fix',

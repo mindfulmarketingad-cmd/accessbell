@@ -214,6 +214,14 @@ const faqs: FaqItem[] = [
     q: 'How often should I scan my website for accessibility issues?',
     a: 'Scan at least weekly and after every major release. Websites change constantly, and new content is the most common source of regressions. The Pro plan monitors your pages continuously and includes unlimited rescans.',
   },
+  {
+    q: 'Is AccessBell an accessibility monitoring tool?',
+    a: 'Yes. The free scan checks one public page. Pro is continuous accessibility monitoring: up to 500 URLs per domain, rescanned every day, with an email when a new critical or serious issue appears. It shows the failing code and a guided fix. It is not an overlay, and it does not guarantee legal compliance.',
+  },
+  {
+    q: 'Can AccessBell fix a Google Ads disapproval?',
+    a: 'It helps you fix accessibility issues on the landing page. It cannot clear a Google Ads “Destination not accessible” disapproval, which is about whether Google can reach and crawl the page. Read <a href="/solutions/google-ads-accessibility">how to fix ads compliance issues</a>, then scan the URL your ad uses.',
+  },
 ];
 const challenges = [
   {
@@ -285,28 +293,28 @@ const HUBS = [
 ---
 <BaseLayout
   title="Website Accessibility Checker Free ADA & WCAG Compliance Scan"
-  description="Free website accessibility checker. Scan any page against WCAG 2.2, ADA and Section 508 to see how many issues it has, then get code-level fixes with Pro."
+  description="Free website accessibility checker with fixes. Scan any page for WCAG 2.2 and ADA issues, then monitor the site and fix what the scan finds."
   schema={[softwareSchema(), faqSchema(faqs)]}
 >
-  <section class="hero hero-split" id="scan" aria-labelledby="hero-title">
-    <div class="container hero-grid">
-      <div class="hero-copy">
-        <h1 id="hero-title">
-          Website Accessibility Checker <span class="accent">- Scan Your Website</span>
-        </h1>
-        <p class="lead">
-          Built for <a href="/industries/ecommerce">e-commerce store owners</a>. AccessBell scans your product pages, cart and checkout against WCAG 2.2, flags the barriers named in ADA website lawsuits, such as missing alt text, unlabeled checkout fields and unnamed buttons, shows the exact fix, and rescans on a schedule so new issues are caught early. Run a free scan to see how many issues your store has.
-        </p>
-        <ScanForm id="hero">
+  <section class="hero hero-scan" id="scan" aria-labelledby="hero-title">
+    <div class="container">
+      <h1 id="hero-title">
+        Website Accessibility Checker <span class="accent">- Scan Your Website</span>
+      </h1>
+      <p class="lead">
+        AccessBell is a website accessibility checker built for <a href="/industries/ecommerce">e-commerce store owners</a>. Paste a product, cart or checkout URL and scan it against WCAG 2.2. The free scan shows how many issues that page has.
+      </p>
+      <div class="hero-checker">
+        <ScanForm id="hero" buttonLabel="Scan my website">
           <span slot="proof">Free scan, no account. <a href="/app/signup">Start a 3-day free trial</a>, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. Cancel before then and you will not be charged. 14-day money-back guarantee on the first charge.</span>
         </ScanForm>
-        <DemoVideo class="demo-cta-hero" />
-        <div class="compliance-row">
-          <span id="compliance-label">Tests your site against:</span>
-          <ul aria-labelledby="compliance-label">
-            {compliance.map((s) => <li><Flag code={s.flag} eager />{s.href ? <a href={s.href}>{s.name}</a> : s.name}</li>)}
-          </ul>
-        </div>
+      </div>
+      <DemoVideo class="demo-cta-hero" />
+      <div class="compliance-row">
+        <span id="compliance-label">Tests your site against:</span>
+        <ul aria-labelledby="compliance-label">
+          {compliance.map((s) => <li><Flag code={s.flag} eager />{s.href ? <a href={s.href}>{s.name}</a> : s.name}</li>)}
+        </ul>
       </div>
       <HeroDemo />
     </div>
@@ -397,7 +405,32 @@ const HUBS = [
     </div>
   </section>
 
-  <section class="section pt-0" aria-labelledby="eval-title">
+  <section class="section section-surface" aria-labelledby="fix-site-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">From the scan to the change</span>
+        <h2 id="fix-site-title">Fix Accessibility Issues on My Website</h2>
+        <p>The free scan names what is wrong on one page. To fix accessibility issues on your website, you need the failing code, a change you can make, and a rescan that shows the issue is gone.</p>
+      </div>
+      <div class="grid-3">
+        <article class="card">
+          <h3>See the failing code</h3>
+          <p>Pro and the one-time reports show the element that failed and a corrected example, mapped to the WCAG criterion. The free scan shows the most severe issues in full.</p>
+        </article>
+        <article class="card">
+          <h3>Change it at the source</h3>
+          <p>Paste the correction into your theme, or approve alt text, a button name or the page language and let <a href="/solutions/automated-fixes">AccessBellFix</a> apply it. Nothing is applied until you approve it. This is not an overlay.</p>
+        </article>
+        <article class="card">
+          <h3>Check that it held</h3>
+          <p>The next scan confirms the fix. <a href="/solutions/continuous-monitoring">Continuous accessibility monitoring</a> then watches up to 500 URLs per domain so the next edit does not bring the issue back.</p>
+        </article>
+      </div>
+      <p class="guide-note">AccessBell is a website accessibility checker with fixes. It does not guarantee legal compliance. A <a href="/solutions/page-report">Page Report is $19</a> for one page, a <a href="/solutions/domain-audit">Domain Audit is $79</a>, and Pro is $29 per domain per month or $199 per year after a 3-day free trial. Read the <a href="/disclaimer">disclaimer</a>.</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="eval-title">
     <div class="container">
       <div class="section-head eval-head">
         <span class="eyebrow">Thorough by design</span>
@@ -716,9 +749,9 @@ const HUBS = [
       </figure>
       <div class="feature-copy">
         <span class="eyebrow">Scales with you</span>
-        <h2 id="scale-title">Monitoring for <span class="accent">Every Domain You Run</span></h2>
+        <h2 id="scale-title">An Accessibility Monitoring Tool for <span class="accent">Every Domain You Run</span></h2>
         <p class="lead">
-          Start with a free scan of a single page. When you are ready, monitor every domain you manage from one dashboard, with continuous monitoring, alerts and team permissions. Or buy the detail once: a <a href="/solutions/page-report">Page Report for $19</a> or a <a href="/solutions/domain-audit">Domain Audit for $79</a>.
+          Start with a free scan of a single page. When you are ready, continuous accessibility monitoring covers every domain you manage from one dashboard, with alerts and team permissions. Or buy the detail once: a <a href="/solutions/page-report">Page Report for $19</a> or a <a href="/solutions/domain-audit">Domain Audit for $79</a>.
         </p>
         <ul class="check-list">
           <li><Icon name="check" />3-day free trial, then $29 per domain per month or $199 per year. A card is added at checkout and you are not charged until the trial ends.</li>
@@ -727,6 +760,14 @@ const HUBS = [
         </ul>
         <a class="btn" href="/pricing">See pricing <Icon name="arrow" /></a>
       </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="ads-home-title">
+    <div class="container cc-prose">
+      <h2 id="ads-home-title">Fix Ads Compliance Issues on the Page People Click</h2>
+      <p>Google Ads can disapprove a destination when the page cannot be reached, cannot be crawled, or is hard to use. The policy name “Destination not accessible” is about location and Google’s crawler, not a WCAG failure. AccessBell does not unblock that crawler, and it does not guarantee an ad will be approved.</p>
+      <p>It does help you fix accessibility issues on the landing page: unlabeled forms, unnamed buttons, missing alt text and low contrast. Scan the final URL above, then read <a href="/solutions/google-ads-accessibility">how to fix ads compliance issues</a> before you resubmit the ad. Google’s <a href="https://support.google.com/adspolicy/answer/6368661" rel="noopener noreferrer">destination requirements</a> explain what that disapproval means.</p>
     </div>
   </section>
 

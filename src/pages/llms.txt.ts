@@ -61,6 +61,7 @@ export const GET: APIRoute = async () => {
       [
         ...Object.values(CRITERIA).map((c) => link(`WCAG ${c.sc} ${c.name}`, criterionPath(c.sc), `Level ${c.level}, added in WCAG ${c.version}.`)),
         link('Solutions: monitoring, automated fixes and the Compliance Vault', '/solutions'),
+        link('Fix ads compliance issues on ad landing pages', '/solutions/google-ads-accessibility', 'Google Ads destination policies are not a WCAG checklist. Scan the landing page, then fix the accessibility issues in the code.'),
         link('Comparisons: AccessBell vs other accessibility tools', '/comparisons'),
         ...COMPARISONS.map((c) => link(`${c.name} vs. AccessBell`, comparisonPath(c))),
         ...SOLUTIONS.map((x) => link(x.h1, solutionPath(x))),
