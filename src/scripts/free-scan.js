@@ -5,8 +5,11 @@
 // and daily monitoring is what a free trial adds.
 // All data is inserted as text, never HTML.
 import { trackFreeScan } from './shared/ads-conversions.js';
+import { countLabel, explainIssue, SEVERITY_HINT, verdictFor, wcagSummary } from './shared/plain-issue.js';
 import { el } from './shared/report-view.js';
 import { pagesScanned, scannedText, fillScanProof } from './shared/scan-stats.js';
+
+export { verdictFor };
 
 const forms = document.querySelectorAll('[data-scan-form]');
 const section = document.getElementById('scan-results');
@@ -54,7 +57,7 @@ const TARGETS = {
 function scanSteps(standard) {
   const t = TARGETS[standard] || TARGETS.wcag22;
   return [
-    ['Loading the page in a real Chrome browser', 'Runs your scripts so the real, rendered page is tested'],
+    ['Loading the page the way a visitor sees it', 'Includes scripts, so the real page is checked'],
     ['Images and alternative text', 'WCAG 1.1.1'],
     ['Text color contrast', 'WCAG 1.4.3'],
     ['Form fields, labels and autocomplete', t.v20 ? 'WCAG 1.3.1, 3.3.2, 4.1.2' : 'WCAG 1.3.1, 1.3.5, 3.3.2, 4.1.2'],
@@ -65,7 +68,7 @@ function scanSteps(standard) {
     ['ARIA roles, states and properties', 'WCAG 4.1.2'],
     [t.v22 ? 'Zoom, text spacing and touch target size' : t.v20 ? 'Zoom and text resizing' : 'Zoom and text spacing', t.v22 ? 'WCAG 1.4.4, 1.4.12, 2.5.8' : t.v20 ? 'WCAG 1.4.4' : 'WCAG 1.4.4, 1.4.12'],
     ['Video, audio and moving content', 'WCAG 1.2.2, 1.4.2, 2.2.2'],
-    ['Mapping results to ' + t.label + ' and ranking by severity', 'Your report is almost ready'],
+    ['Sorting what we found by how much it blocks visitors', 'Your results are almost ready'],
   ];
 }
 
@@ -180,20 +183,6 @@ export function trialHref(host) {
   return `/app/signup${qs ? `?${qs}` : ''}`;
 }
 
-/**
- * One plain verdict for the page. Accurate by design: it reports what the
- * automated checks found and never claims compliance or legal safety.
- */
-export function verdictFor(summary = {}) {
-  const critical = summary.critical || 0;
-  const serious = summary.serious || 0;
-  const total = summary.issues || 0;
-  if (critical) return { tone: 'bad', text: `Not accessible: ${plural(critical, 'critical barrier')} of the kind commonly cited in ADA lawsuits found on this page` };
-  if (serious) return { tone: 'bad', text: `Needs work: ${plural(serious, 'serious barrier')} found on this page, and no critical ones` };
-  if (total) return { tone: 'warn', text: `Needs work: ${plural(total, 'lower-severity issue')} found on this page, and no critical or serious barriers` };
-  return { tone: 'good', text: 'No automated barriers found on this page. Automated checks cover only part of WCAG, so this is not proof of compliance.' };
-}
-
 const IMPACT_LABEL = { critical: 'Critical', serious: 'Serious', moderate: 'Moderate', minor: 'Minor' };
 const URGENT = new Set(['critical', 'serious']);
 
@@ -211,8 +200,8 @@ function riskPanel(urgent, url, trial) {
   if (!urgent) return null;
   return el('section', { class: 'scan-risk', 'aria-labelledby': 'scan-risk-title' }, [
     el('span', { class: 'scan-risk-kicker', text: 'Lawsuit risk' }),
-    el('h3', { id: 'scan-risk-title', text: `${plural(urgent, 'critical or serious issue')} on this page could be cited in an ADA demand letter or lawsuit` }),
-    el('p', { text: 'And that is one page. Missing labels, unnamed buttons and images without alt text are among the barriers website accessibility complaints list most often. This is what leaving them unfixed can cost:' }),
+    el('h3', { id: 'scan-risk-title', text: `${plural(urgent, 'issue')} on this page can show up in an ADA complaint` }),
+    el('p', { text: 'Missing labels, buttons with no name, and pictures with no description come up often. What leaving them unfixed can cost:' }),
     el(
       'ul',
       { class: 'scan-risk-stats' },
@@ -229,6 +218,34 @@ function riskPanel(urgent, url, trial) {
       el('a', { href: '/blog/ada-lawsuit-payouts', text: 'See what real ADA cases cost' }),
     ]),
     el('p', { class: 'scan-risk-note', text: 'Figures come from public sources and vary widely by case and state. They are not a prediction for your site and not legal advice.' }),
+  ]);
+}
+
+/** Plain summary first, then the count and WCAG line. Technical title only when it adds jargon. */
+function issueMain(issue) {
+  const plain = explainIssue(issue);
+  const wcag = wcagSummary(issue.wcag);
+  const line = wcag.short ? `${countLabel(issue.count)} · ${wcag.short}` : countLabel(issue.count);
+  const extra = wcag.full && wcag.full !== wcag.short;
+  return {
+    plain,
+    node: el('div', { class: 'scan-result-main' }, [
+      el('strong', { text: plain.name }),
+      el('p', { class: 'scan-result-why', text: plain.why }),
+      el('span', { class: 'scan-result-meta', title: extra ? wcag.full : undefined }, [
+        line,
+        extra ? el('span', { class: 'visually-hidden', text: ` Full list: ${wcag.full}.` }) : null,
+      ]),
+      plain.technical ? el('span', { class: 'scan-result-tech', text: plain.technical }) : null,
+    ]),
+  };
+}
+
+function failingCode(samples) {
+  if (!samples || !samples.length) return null;
+  return el('div', { class: 'scan-teaser-code-wrap' }, [
+    el('p', { class: 'scan-teaser-code-label', text: 'Code that failed' }),
+    el('pre', { class: 'scan-teaser-code' }, [el('code', { text: samples.join('\n') })]),
   ]);
 }
 
@@ -260,17 +277,26 @@ function showResults(r, url, form) {
       proofCount.hidden = false;
     }
   });
+  const tiles = total
+    ? el(
+        'ul',
+        { class: 'scan-result-sev', 'aria-label': 'How serious the issues are. Critical blocks some visitors, serious means hard to use, moderate gets in the way, and minor is a small snag.' },
+        SEVERITIES.map(([key, name]) =>
+          el('li', { 'data-sev': key }, [el('strong', { text: String(r.summary[key] || 0) }), el('span', { text: name }), el('small', { text: SEVERITY_HINT[key] })]),
+        ),
+      )
+    : null;
   const verdict = el('div', { class: `scan-verdict scan-verdict-${v.tone}` }, [
     el('p', { class: 'scan-verdict-text' }, [el('strong', { text: v.text })]),
+    tiles,
     el('div', { class: 'scan-verdict-actions' }, [el('a', { class: 'btn btn-accent', href: trial, text: 'Start 3-day free trial' })]),
     el('p', { class: 'scan-proof' }, [proofCount, `Monitors up to 500 pages on ${host} with guided fix suggestions. Cancel anytime. 14-day money-back guarantee.`]),
     el('p', { class: 'scan-verdict-alt' }, [oneTimeLink()]),
   ]);
   const label = r.standard?.label || 'WCAG';
-  const heading = el('h2', { id: 'scan-result-title', tabindex: '-1', text: total ? `${plural(total, 'issue')} found on this URL ${page}` : `No automated issues found on this URL ${page}` });
-  const lead = total
-    ? `${plural(list.length, 'type')} of problem, tested against ${label}. Here is what needs fixing.`
-    : `This URL passed every automated check against ${label}. Automated testing covers only part of the standard, so review the manual checks too.`;
+  const heading = el('h2', { id: 'scan-result-title', tabindex: '-1', text: total ? `${plural(total, 'issue')} on ${page}` : `No automatic issues on ${page}` });
+  const kinds = `${list.length.toLocaleString('en-US')} ${list.length === 1 ? 'kind of problem' : 'kinds of problems'}`;
+  const lead = total ? `${kinds}, checked against ${label}.` : `Checked against ${label}. Automatic checks do not cover the whole standard.`;
   // One clean page says nothing about the rest of the domain.
   const again = el('button', { type: 'button', class: 'btn btn-outline btn-sm', text: 'Scan another URL' });
   again.addEventListener('click', () => {
@@ -281,7 +307,7 @@ function showResults(r, url, form) {
     input.focus({ preventScroll: true });
   });
   const scope = el('div', { class: 'scan-scope' }, [
-    el('p', { class: 'scan-scope-title' }, [el('strong', { text: `You scanned 1 page, not your whole website.` })]),
+    el('p', { class: 'scan-scope-title' }, [el('strong', { text: 'You checked 1 page, not the whole site.' })]),
     el('div', { class: 'scan-scope-compare' }, [
       el('div', { class: 'scan-scope-col' }, [
         el('span', { class: 'scan-scope-label', text: 'Free scan' }),
@@ -290,11 +316,11 @@ function showResults(r, url, form) {
       ]),
       el('div', { class: 'scan-scope-col scan-scope-pro' }, [
         el('span', { class: 'scan-scope-label', text: 'AccessBell Pro' }),
-        el('strong', { text: 'Your whole website' }),
-        el('span', { text: `Up to 500 pages on ${host}, found automatically and rescanned every day` }),
+        el('strong', { text: 'The whole site' }),
+        el('span', { text: `Up to 500 pages on ${host}, checked every day` }),
       ]),
     ]),
-    el('p', { text: `Product pages, cart and checkout, forms and blog posts often have issues this page does not, and they are the pages customers use to buy from or contact you.` }),
+    el('p', { text: 'Checkout, forms, and other pages can have problems this page does not.' }),
     el('div', { class: 'scan-scope-actions' }, [again]),
     el('p', { class: 'scan-cta-note' }, [
       'The trial covers up to 500 pages on this domain, rescanned every day. Then $29 per domain per month or $199 per year. Cancel before the trial ends and you will not be charged. ',
@@ -302,54 +328,44 @@ function showResults(r, url, form) {
       '.',
     ]),
   ]);
-  const tiles = total
-    ? el(
-        'ul',
-        { class: 'scan-result-sev', 'aria-label': 'Issues by severity' },
-        SEVERITIES.map(([key, name]) => el('li', { 'data-sev': key }, [el('strong', { text: String(r.summary[key] || 0) }), el('span', { text: name })])),
-      )
-    : null;
   const rows = list.length
     ? el(
         'ol',
         { class: 'scan-result-list' },
-        list.map((i) =>
-          el('li', { 'data-sev': i.impact }, [
-            el('div', { class: 'scan-result-main' }, [
-              el('strong', { text: i.title }),
-              el('span', { class: 'scan-result-meta', text: `${plural(i.count, 'element')} on this page${i.wcag.length ? ' · WCAG ' + i.wcag.map((c) => `${c.sc} ${c.name}`).join(', ') : ''}` }),
-            ]),
+        list.map((i) => {
+          const main = issueMain(i);
+          return el('li', { 'data-sev': i.impact }, [
+            main.node,
             el('div', { class: 'scan-result-side' }, [
               el('span', { class: `tag tag-${i.impact}`, text: IMPACT_LABEL[i.impact] || i.impact }),
               // The most urgent problems get a direct route to a plan that fixes them.
               URGENT.has(i.impact)
-                ? el('a', { class: 'scan-fix-link', href: trial }, ['Get the fix', el('span', { class: 'visually-hidden', text: `: ${i.title}. Starts a 3-day free trial with guided fix suggestions for ${host}.` })])
+                ? el('a', { class: 'scan-fix-link', href: trial }, ['Get the fix', el('span', { class: 'visually-hidden', text: `: ${main.plain.name}. Starts a 3-day free trial with guided fix suggestions for ${host}.` })])
                 : null,
             ]),
-          ]),
-        ),
+          ]);
+        }),
       )
     : null;
-  const more = r.summary.rulesFailed > list.length ? el('p', { class: 'scan-result-more', text: `Plus ${r.summary.rulesFailed - list.length} more types of issue.` }) : null;
+  const moreCount = (r.summary.rulesFailed || 0) - list.length;
+  const more = moreCount > 0 ? el('p', { class: 'scan-result-more', text: `Plus ${moreCount} more ${moreCount === 1 ? 'kind of problem' : 'kinds of problems'} not shown in this list.` }) : null;
+  const issues = rows ? el('div', { class: 'scan-issues' }, [el('h3', { text: 'What we found' }), rows, more]) : null;
   // Teaser: the most severe issues in full, failing code and fix included.
   // Everything else stays names-only; the full detail is what the reports sell.
   const teaser = (r.teaser || []).length
     ? el('section', { class: 'scan-teaser', 'aria-labelledby': 'scan-teaser-title' }, [
-        el('span', { class: 'scan-teaser-kicker', text: 'See the worst issues in full' }),
-        el('h3', { id: 'scan-teaser-title', text: 'The exact problem, and the exact fix' }),
-        el('p', { text: 'The list above names every issue. Here are the most severe ones in full: the failing code and how to fix it. The free trial gives you this detail for every issue on every page.' }),
+        el('span', { class: 'scan-teaser-kicker', text: 'The biggest problems' }),
+        el('h3', { id: 'scan-teaser-title', text: 'What is wrong, and how to fix it' }),
+        el('p', { text: 'The most serious issues, with the code and a fix. A free trial includes this for every issue, on every page.' }),
         el(
           'ol',
           { class: 'scan-teaser-list' },
           r.teaser.map((i) =>
             el('li', { 'data-sev': i.impact }, [
-              el('div', { class: 'scan-result-main' }, [
-                el('strong', { text: i.title }),
-                el('span', { class: 'scan-result-meta', text: `${plural(i.count, 'element')} on this page${i.wcag.length ? ' · WCAG ' + i.wcag.map((c) => `${c.sc} ${c.name}`).join(', ') : ''}` }),
-              ]),
+              issueMain(i).node,
               el('span', { class: `tag tag-${i.impact}`, text: IMPACT_LABEL[i.impact] || i.impact }),
-              i.samples && i.samples.length ? el('pre', { class: 'scan-teaser-code' }, [el('code', { text: i.samples.join('\n') })]) : null,
-              i.fix ? el('p', { class: 'scan-teaser-fix' }, [el('strong', { text: 'Fix: ' }), el('span', { text: i.fix })]) : null,
+              failingCode(i.samples),
+              i.fix ? el('p', { class: 'scan-teaser-fix' }, [el('strong', { text: 'What to change: ' }), el('span', { text: i.fix })]) : null,
               i.helpUrl ? el('a', { href: i.helpUrl, rel: 'noopener noreferrer', target: '_blank', text: 'Read the guidance' }) : null,
             ]),
           ),
@@ -363,7 +379,7 @@ function showResults(r, url, form) {
   const leadNote = el('p', { class: 'scan-lead-note', role: 'status', hidden: true });
   const leadForm = el('form', { class: 'scan-lead scan-lead-prominent', 'aria-labelledby': 'scan-lead-title' }, [
     el('h3', { id: 'scan-lead-title', text: 'Email me these results' }),
-    el('p', { text: 'Get a copy of this scan summary in your inbox, with links to the full fix details. Free, no account needed.' }),
+    el('p', { text: 'A copy of this summary, with links to the fixes. Free, and no account needed.' }),
     el('label', { for: 'scan-lead-email', text: 'Email' }),
     el('input', { id: 'scan-lead-email', name: 'email', type: 'email', autocomplete: 'email', required: true, maxlength: 254, placeholder: 'you@example.com', 'aria-describedby': 'scan-lead-consent' }),
     el('button', { type: 'submit', class: 'btn btn-outline btn-sm', text: 'Email me my results' }),
@@ -402,11 +418,11 @@ function showResults(r, url, form) {
     }
   });
   const cta = el('div', { class: 'scan-cta' }, [
-    el('h3', { text: total ? 'Get the fix for every issue' : 'Scan the rest of your website' }),
+    el('h3', { text: total ? 'Get the fix for every issue' : 'Check the rest of your site' }),
     el('ul', {}, [
-      el('li', { text: 'The failing code and a corrected example for each issue' }),
-      el('li', { text: 'Your entire website scanned, not just one URL: up to 500 pages per domain' }),
-      el('li', { text: 'A dated record of your fixes, in case you ever need proof' }),
+      el('li', { text: 'The broken code, and a corrected example, for each issue' }),
+      el('li', { text: 'The whole site, not just this page: up to 500 pages per domain' }),
+      el('li', { text: 'A dated record of what you fixed' }),
     ]),
     el('div', { class: 'scan-cta-actions' }, [el('a', { class: 'btn btn-outline', href: trial, text: 'Start 3-day free trial' }), oneTimeLink()]),
     el('p', { class: 'scan-cta-note' }, ['3-day free trial, then $29/mo or $199/year per domain. Cancel anytime. 14-day money-back guarantee. One-time reports need no account. Already subscribed? ', el('a', { href: '/app/login', text: 'Log in to your dashboard' }), '.']),
@@ -415,13 +431,11 @@ function showResults(r, url, form) {
     el('div', { class: 'results-card scan-result', role: 'region', 'aria-labelledby': 'scan-result-title' }, [
       el('div', { class: 'scan-result-head' }, [el('span', { class: 'scan-result-kicker', text: 'Free scan results' }), heading, el('p', { text: lead })]),
       verdict,
-      tiles,
       scope,
       riskPanel((r.summary?.critical || 0) + (r.summary?.serious || 0), url, trial),
       leadForm,
-      rows,
+      issues,
       teaser,
-      more,
       cta,
     ]),
   );
