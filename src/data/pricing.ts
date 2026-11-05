@@ -82,7 +82,7 @@ export const FEATURE_GROUPS: FeatureGroup[] = [
   },
   {
     title: 'Dashboard and Reporting',
-    features: ['Multi-Domain View', 'Language Support', 'PDF Exports', 'Excel Exports', 'Email Notifications'],
+    features: ['Multi-Domain View', 'Language Support', 'PDF Exports', 'White-label PDF reports (agency or client name)', 'Excel Exports', 'Email Notifications'],
   },
   {
     title: 'Team and Workflow',

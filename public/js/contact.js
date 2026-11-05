@@ -20,6 +20,11 @@
     }
   }
   if (params.get('plan') === 'lite' && form.elements.plan) form.elements.plan.value = 'lite';
+  var site = params.get('site');
+  if (site && form.elements.site && !form.elements.site.value) form.elements.site.value = site.slice(0, 2048);
+  if (topic === 'help' && form.elements.message && !form.elements.message.value) {
+    form.elements.message.value = 'I would rather have help with accessibility issues on my site. Please reply about a quote or a partner introduction. I understand this is not a promise of remediation or a legal outcome.';
+  }
 
   var show = function (state, message) {
     status.hidden = false;

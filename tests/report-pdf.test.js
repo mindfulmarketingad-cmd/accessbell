@@ -31,6 +31,15 @@ const report = {
   ],
 };
 
+test('white-label PDF uses the agency name and drops the AccessBell wordmark', async () => {
+  const pdf = await buildReportPdf({ ...purchase, whiteLabel: { enabled: true, agencyName: 'Northwind Studio' } }, report);
+  const text = pdfText(pdf);
+  assert.ok(text.includes('Northwind Studio Page Report'), 'title uses the agency name');
+  assert.ok(text.includes('Prepared for Northwind Studio'), 'cover line names the agency');
+  assert.ok(!text.includes('AccessBell'), 'AccessBell wordmark is not drawn');
+  assert.ok(text.includes('Lawsuit-common'), 'owner label is drawn for missing alt text');
+});
+
 test('report PDF is a valid PDF containing the report text', async () => {
   const pdf = await buildReportPdf(purchase, report);
   assert.ok(pdf.length > 1000, 'PDF has content');

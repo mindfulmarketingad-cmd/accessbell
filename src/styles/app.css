@@ -3861,6 +3861,34 @@ a.count-pill:hover {
   color: var(--ink-500);
   font-size: 0.8125rem;
 }
+.print-agency {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+@media print {
+  html[data-white-label='on'] .print-agency {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0 0 16px;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+    font-size: 16pt;
+    font-weight: 700;
+  }
+  html[data-white-label='on'] .brand,
+  html[data-white-label='on'] .app-side {
+    display: none !important;
+  }
+}
 @media print {
   .record-doc,
   .cert {

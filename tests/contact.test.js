@@ -18,6 +18,7 @@ test('flags honeypot and too-fast submissions as spam', () => {
 test('rejects invalid fields', () => {
   assert.equal(validateContact({ ...base, email: 'nope' }).ok, false);
   assert.equal(validateContact({ ...base, topic: 'hack' }).ok, false);
+  assert.equal(validateContact({ ...base, topic: 'help' }).ok, true);
   assert.equal(validateContact({ ...base, plan: 'free-forever' }).ok, false);
   assert.equal(validateContact({ ...base, plan: 'lite', domains: '3' }).ok, true);
   assert.equal(validateContact({ ...base, domains: '-1' }).ok, false);

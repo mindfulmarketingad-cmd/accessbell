@@ -17,6 +17,7 @@ import { createRateLimiter } from '../server/rate-limit.js';
 import { json, checkOrigin, clientIp, readJson, methodNotAllowed } from '../server/http.js';
 import { recordFreeScan } from '../server/app/free-scans.js';
 import { query } from '../server/app/db.js';
+import { ownerCounts } from '../src/scripts/shared/owner-priority.js';
 
 const perMinute = createRateLimiter({ limit: 5, windowMs: 60_000 });
 const perHour = createRateLimiter({ limit: 30, windowMs: 60 * 60_000 });
@@ -29,15 +30,19 @@ async function htmlAudit(url, standard) {
 const MAX_ISSUES = 30;
 const MAX_TEASER = 5;
 
+const issueId = (i) => (typeof i.id === 'string' ? i.id.slice(0, 80) : '');
+
 /** Issue names, severities and counts only: nothing that shows an element, its code or a fix. */
 export function preview(report) {
   const s = report.summary || {};
   const n = (v) => (Number.isFinite(v) ? v : 0);
+  const score = Number.isFinite(report.score) ? Math.max(0, Math.min(100, Math.round(report.score))) : null;
   return {
     preview: true,
     finalUrl: report.finalUrl,
     engine: report.engine,
     standard: report.standard ? { id: report.standard.id, label: report.standard.label } : undefined,
+    score,
     summary: {
       issues: n(s.issues),
       critical: n(s.critical),
@@ -46,8 +51,10 @@ export function preview(report) {
       minor: n(s.minor),
       rulesFailed: n(s.rulesFailed),
       rulesPassed: n(s.rulesPassed),
+      owner: ownerCounts(report.issues, report.finalUrl),
     },
     issues: (report.issues || []).slice(0, MAX_ISSUES).map((i) => ({
+      id: issueId(i),
       title: String(i.title || '').slice(0, 200),
       impact: i.impact,
       count: n(i.count),
@@ -67,6 +74,7 @@ export function preview(report) {
 export function teaser(report) {
   const n = (v) => (Number.isFinite(v) ? v : 0);
   return (report.issues || []).slice(0, MAX_TEASER).map((i) => ({
+    id: issueId(i),
     title: String(i.title || '').slice(0, 200),
     impact: i.impact,
     count: n(i.count),

@@ -16,8 +16,10 @@ test('free scan preview lists each issue but drops code, samples and fixes from 
   assert.equal(out.summary.issues, report.summary.issues);
   assert.equal(out.summary.critical + out.summary.serious + out.summary.moderate + out.summary.minor, report.summary.issues);
   assert.equal(out.issues.length, report.issues.length);
-  assert.deepEqual(Object.keys(out).sort(), ['engine', 'finalUrl', 'issues', 'preview', 'standard', 'summary', 'teaser']);
-  for (const issue of out.issues) assert.deepEqual(Object.keys(issue).sort(), ['count', 'impact', 'title', 'wcag']);
+  assert.equal(out.score, report.score);
+  assert.ok(out.summary.owner.lawsuitCommon >= 1, 'the sample page has lawsuit-common elements');
+  assert.deepEqual(Object.keys(out).sort(), ['engine', 'finalUrl', 'issues', 'preview', 'score', 'standard', 'summary', 'teaser']);
+  for (const issue of out.issues) assert.deepEqual(Object.keys(issue).sort(), ['count', 'id', 'impact', 'title', 'wcag']);
   assert.ok(out.issues[0].wcag.every((c) => c.sc && c.name && c.level), 'criteria carry number, name and level');
   const listText = JSON.stringify(out.issues);
   for (const issue of report.issues) {
@@ -38,7 +40,7 @@ test('free scan teaser shows at most the 5 most severe issues in full', () => {
     'teaser follows report order: most severe first',
   );
   for (const item of t) {
-    assert.deepEqual(Object.keys(item).sort(), ['count', 'fix', 'helpUrl', 'impact', 'samples', 'title', 'wcag']);
+    assert.deepEqual(Object.keys(item).sort(), ['count', 'fix', 'helpUrl', 'id', 'impact', 'samples', 'title', 'wcag']);
     assert.ok(item.fix && item.fix.length > 0, 'teaser carries the fix');
     assert.ok(Array.isArray(item.samples), 'teaser carries code samples');
   }

@@ -94,6 +94,9 @@ const schema = [
         {p.commonIssues.map((i) => <li><Icon name="check" /><span><a href={`${platformPath(p)}#common-issues`}>{i.title}</a></span></li>)}
       </ul>
       <p>For context, see <a href={p.stat.href} rel="noopener noreferrer" target="_blank">{p.stat.label}<span class="visually-hidden"> (opens in a new tab)</span></a>.</p>
+      {p.slug === 'shopify-accessibility-checker' && (
+        <p>A planned review of cart and checkout is outlined in the <a href="/resources/shopify-checkout-accessibility-study">Shopify checkout accessibility study</a>. That page is the method only. It does not report results.</p>
+      )}
       {ada && (
         <>
           <p>If you are worried about ADA website claims, these are the {p.name} risks to check first, covered in the <a href={platformAdaPath(p)}>{p.name} ADA Compliance Checker</a>:</p>

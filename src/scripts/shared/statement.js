@@ -78,7 +78,13 @@ export function buildStatement(v) {
     ...(v.links?.length ? [{ type: 'h', text: 'Related Policies' }, { type: 'links', items: v.links }] : []),
     ...(v.notes ? [{ type: 'h', text: 'Additional Information' }, ...v.notes.split(/\n{2,}/).map((t) => ({ type: 'p', text: t.trim() })).filter((b) => b.text)] : []),
     ...(v.lastChecked
-      ? [{ type: 'h', text: 'Ongoing Monitoring' }, { type: 'p', text: `This website is monitored with automated accessibility testing. It was last checked on ${v.lastChecked}.` }]
+      ? [{
+          type: 'h',
+          text: 'Ongoing Monitoring',
+        }, {
+          type: 'p',
+          text: `This website is monitored with automated accessibility testing. It was last checked on ${v.lastChecked}.${Number.isInteger(v.monitoredScore) ? ` The latest monitored pages average ${v.monitoredScore} out of 100 on automated checks. That score is not a legal compliance determination.` : ''}`,
+        }]
       : []),
     { type: 'meta', text: `Last updated: ${v.updated || today()}` },
   ];

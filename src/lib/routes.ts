@@ -23,6 +23,8 @@ const STATIC: Omit<RouteEntry, 'lastmod'>[] = [
   { path: '/solutions/page-report', label: 'Single Page Accessibility Report', note: 'Full issue detail, fixes and a PDF for one page, $19 one-time', group: 'main' },
   { path: '/solutions/domain-audit', label: 'Website Accessibility Audit', note: 'Full audit of up to 500 pages with a PDF evidence pack, $79 one-time', group: 'main' },
   { path: '/solutions/google-ads-accessibility', label: 'Fix Ads Compliance Issues', note: 'What a Google Ads accessibility disapproval means, and how to check the landing page', group: 'main' },
+  { path: '/solutions/live-statement', label: 'Live Accessibility Statement', note: 'A public accessibility statement that shows the standard you follow and the last scan date', group: 'main' },
+  { path: '/resources/shopify-checkout-accessibility-study', label: 'Shopify Checkout Accessibility Study', note: 'Methodology for an upcoming study. No results yet.', group: 'main' },
   { path: '/blog', label: 'Blog', note: 'Accessibility guides and compliance insights', group: 'main' },
   { path: '/comparisons', label: 'Comparisons', note: 'AccessBell compared with other accessibility tools', group: 'main' },
   { path: '/use-cases', label: 'Use Cases', note: 'How customers use AccessBell to monitor accessibility compliance', group: 'main' },

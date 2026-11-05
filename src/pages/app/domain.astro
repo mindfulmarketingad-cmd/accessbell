@@ -33,6 +33,7 @@ import Icon from '../../components/Icon.astro';
     </div>
   </header>
   <p class="progress-note" data-progress role="status" aria-live="polite"></p>
+  <p class="print-agency" data-print-agency></p>
 
   <section class="fix-promo fix-banner" data-fix-promo aria-labelledby="fix-banner-title" hidden>
     <span class="fix-promo-icon" aria-hidden="true"><Icon name="sparkle" /></span>
@@ -228,6 +229,13 @@ import Icon from '../../components/Icon.astro';
         <div class="header-rows" data-header-rows></div>
         <button class="btn btn-outline btn-sm" type="button" data-add-header>Add header</button>
       </fieldset>
+      <fieldset class="field" data-white-label>
+        <legend>White-label PDF reports</legend>
+        <p class="help">For agencies. A printed domain report uses this name instead of the AccessBell wordmark. One-time PDF downloads have the same choice on the report page. Logo upload is not available. Compliance Vault evidence packages still name AccessBell, because they record which tool ran the tests. This does not change the findings.</p>
+        <label class="check-row"><input type="checkbox" name="whiteLabel" /> Use a white-label name on PDF reports</label>
+        <label for="s-agency">Agency or client name</label>
+        <input id="s-agency" name="agencyName" type="text" maxlength="80" autocomplete="organization" placeholder="Northwind Studio" />
+      </fieldset>
       <p class="status-line" data-settings-status role="status" aria-live="polite"></p>
       <button class="btn" type="submit">Save settings</button>
     </form>
@@ -245,8 +253,8 @@ import Icon from '../../components/Icon.astro';
     </section>
 
     <section class="panel" id="statement" aria-labelledby="statement-title" tabindex="-1">
-      <h2 id="statement-title">Accessibility statement</h2>
-      <p class="panel-sub">Your public accessibility statement: your commitment, the standard you follow and how people can report a barrier.</p>
+      <h2 id="statement-title">Live Statement</h2>
+      <p class="panel-sub">Your public accessibility statement, tied to this domain’s scans. It names the standard you follow, the last check date when a scan has run, and how people can report a barrier. <a href="/solutions/live-statement">How Live Statement works</a>.</p>
       <div data-statement><p class="muted">Loading...</p></div>
     </section>
     <section class="panel" aria-labelledby="danger-title" data-danger>

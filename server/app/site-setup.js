@@ -244,11 +244,20 @@ export async function publicStatement(key) {
       [domain.id],
     );
     const settings = domain.settings || {};
+    const scored = await one(
+      `select round(avg(last_score))::int as score
+         from app.pages
+        where domain_id = $1 and last_score is not null`,
+      [domain.id],
+    );
+    const agencyName = String(settings.whiteLabel?.agencyName || '').trim().slice(0, 80);
     return {
       hostname: domain.hostname,
       statement: domain.statement,
       standard: { version: settings.wcagVersion || '2.2', level: settings.wcagLevel || 'AA' },
       lastCheckedAt: last?.checked_at || null,
+      monitoredScore: Number.isInteger(scored?.score) ? scored.score : null,
+      whiteLabel: settings.whiteLabel?.enabled === true && agencyName.length >= 2 ? { agencyName } : null,
     };
   });
 }
