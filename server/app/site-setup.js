@@ -167,7 +167,7 @@ export async function publicFixRules(key) {
   return needsMigration(async () => {
     const domain = await withAccessRule((rule) =>
       one(
-        `select d.id, d.fix_seen_at, d.settings->'toolbar' as toolbar, ${rule} as has_access
+        `select d.id, d.fix_seen_at, d.settings->'toolbar' as toolbar, ${rule} as has_access, to_jsonb(a)->>'plan_tier' as plan_tier
            from app.domains d join app.accounts a on a.id = d.account_id where d.site_key = $1`,
         [key],
       ),
@@ -176,9 +176,10 @@ export async function publicFixRules(key) {
     if (!domain.fix_seen_at || Date.now() - new Date(domain.fix_seen_at).getTime() > 10 * 60 * 1000) {
       await query('update app.domains set fix_seen_at = now() where id = $1', [domain.id]);
     }
-    if (!domain.has_access) return { fixes: [] };
-    const fixes = await query('select kind, selector, value from app.fixes where domain_id = $1 and enabled order by created_at asc', [domain.id]);
     const toolbar = domain.toolbar?.enabled ? { position: domain.toolbar.position === 'left' ? 'left' : 'right' } : null;
+    // Shopify Free plan: the visitor toolbar only, no fixes.
+    if (!domain.has_access) return domain.plan_tier === 'free' && toolbar ? { fixes: [], toolbar } : { fixes: [] };
+    const fixes = await query('select kind, selector, value from app.fixes where domain_id = $1 and enabled order by created_at asc', [domain.id]);
     return toolbar ? { fixes, toolbar } : { fixes };
   });
 }

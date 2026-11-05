@@ -1,0 +1,11 @@
+{
+  "name": "accessbell-shopify",
+  "private": true,
+  "scripts": {
+    "deploy": "shopify app deploy",
+    "info": "shopify app info"
+  },
+  "devDependencies": {
+    "@shopify/cli": "^3"
+  }
+}

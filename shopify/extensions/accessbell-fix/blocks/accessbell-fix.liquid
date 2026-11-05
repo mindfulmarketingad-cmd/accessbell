@@ -1,0 +1,31 @@
+{%- comment -%}
+  AccessBell app embed: loads AccessBellFix (https://www.accessbell.co/fix.js),
+  which applies the fixes the merchant approved in AccessBell (alt text,
+  accessible names, page language) and, if turned on, the PageAssist toolbar.
+  The site key is set by the app as an app-data metafield on install; the
+  setting below is a manual fallback.
+{%- endcomment -%}
+{%- liquid
+  assign key = app.metafields.accessbell.site_key.value
+  if key == blank
+    assign key = block.settings.site_key
+  endif
+-%}
+{%- if key != blank -%}
+  <script src="https://www.accessbell.co/fix.js" data-site="{{ key | escape }}" defer></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "AccessBell fixes",
+  "target": "head",
+  "settings": [
+    {
+      "type": "text",
+      "id": "site_key",
+      "label": "Site key (optional)",
+      "info": "Filled in automatically when you open AccessBell. Only paste a key here if AccessBell support asks you to."
+    }
+  ]
+}
+{% endschema %}
