@@ -48,12 +48,20 @@ import '../styles/global.css';
           site: data.hostname,
           standardText: `WCAG ${data.standard.version} Level ${data.standard.level}`,
           lastChecked: data.lastCheckedAt ? fmt(data.lastCheckedAt) : '',
+          monitoredScore: data.monitoredScore,
           updated: s.updatedAt ? fmt(s.updatedAt) : undefined,
         });
         document.title = `${st.title}`;
         (document.querySelector('[data-st-title]') as HTMLElement).textContent = st.title;
         (document.querySelector('[data-st-site]') as HTMLElement).textContent = `For ${data.hostname}`;
         renderInto(body, st);
+        const foot = document.querySelector('.st-foot');
+        if (foot && data.whiteLabel?.agencyName) {
+          foot.replaceChildren();
+          const line = document.createElement('p');
+          line.textContent = `Statement prepared for ${data.whiteLabel.agencyName}.`;
+          foot.append(line);
+        }
         // Statement headings are sections of this page.
         body.querySelectorAll('h4').forEach((h) => {
           const h2 = document.createElement('h2');

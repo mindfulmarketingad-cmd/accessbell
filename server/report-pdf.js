@@ -5,6 +5,7 @@
 // cannot do, so the PDF never implies a guarantee of compliance.
 import { Encodings } from '@pdf-lib/standard-fonts';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
+import { OWNER_LABELS, ownerLabels } from '../src/scripts/shared/owner-priority.js';
 
 const PAGE_W = 612;
 const PAGE_H = 792;
@@ -128,12 +129,25 @@ function wrap(text, font, size, maxWidth) {
   return lines.length ? lines : [''];
 }
 
+/** Agency name when the caller asked for a white-label PDF. Empty otherwise. */
+export function whiteLabelName(purchase, report) {
+  const fromPurchase = purchase?.whiteLabel?.enabled ? purchase.whiteLabel.agencyName : '';
+  const fromReport = report?.whiteLabel?.enabled ? report.whiteLabel.agencyName : '';
+  const name = String(fromPurchase || fromReport || '')
+    .replace(/[\u0000-\u001F\u007F]/g, '')
+    .trim()
+    .slice(0, 80);
+  return name.length >= 2 ? name : '';
+}
+
 export async function buildReportPdf(purchase, report) {
   const doc = await PDFDocument.create();
   const font = await doc.embedFont(StandardFonts.Helvetica);
   const bold = await doc.embedFont(StandardFonts.HelveticaBold);
   const mono = await doc.embedFont(StandardFonts.Courier);
   const title = purchase.product === 'domain_audit' ? 'Domain Audit' : 'Page Report';
+  const agency = whiteLabelName(purchase, report);
+  const pageUrl = report.url || purchase.url || '';
   const maxWidth = PAGE_W - MARGIN * 2;
 
   let page = doc.addPage([PAGE_W, PAGE_H]);
@@ -165,7 +179,8 @@ export async function buildReportPdf(purchase, report) {
     y -= h;
   };
 
-  line(`AccessBell ${title}`, { size: 20, f: bold, gap: 6 });
+  line(agency ? `${agency} ${title}` : `AccessBell ${title}`, { size: 20, f: bold, gap: 6 });
+  if (agency) line(`Prepared for ${agency}.`, { size: SMALL });
   line(report.hostname || purchase.hostname || '', { size: 13, f: bold });
   line(report.url || purchase.url || '', { size: SMALL });
   line(`Report date: ${(report.scannedAt || purchase.paid_at || new Date().toISOString()).slice(0, 10)}`, { size: SMALL });
@@ -182,8 +197,12 @@ export async function buildReportPdf(purchase, report) {
   for (const issue of report.issues || []) {
     ensure(60);
     line(issue.title || 'Issue', { f: bold });
+    const labels = ownerLabels(issue, issue.url || pageUrl)
+      .map((id) => OWNER_LABELS[id]?.text)
+      .filter(Boolean)
+      .join(', ');
     line(
-      `${issue.impact ? issue.impact[0].toUpperCase() + issue.impact.slice(1) : ''}${issue.count ? ` · ${issue.count} element${issue.count === 1 ? '' : 's'}` : ''}${
+      `${issue.impact ? issue.impact[0].toUpperCase() + issue.impact.slice(1) : ''}${labels ? ` · ${labels}` : ''}${issue.count ? ` · ${issue.count} element${issue.count === 1 ? '' : 's'}` : ''}${
         issue.pagesAffected ? ` · ${issue.pagesAffected} page${issue.pagesAffected === 1 ? '' : 's'}` : ''
       }${issue.wcag?.length ? ` · WCAG ${issue.wcag.map((c) => c.sc).join(', ')}` : ''}`,
       { size: SMALL },

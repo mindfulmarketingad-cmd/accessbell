@@ -1,5 +1,5 @@
 // Validation and delivery for the contact form.
-export const TOPICS = ['general', 'sales', 'support', 'billing', 'accessibility', 'press'];
+export const TOPICS = ['general', 'sales', 'support', 'billing', 'accessibility', 'press', 'help'];
 export const PLAN_IDS = ['', 'lite'];
 
 const EMAIL = /^[^\s@<>()[\]\\,;:"]{1,64}@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)+$/i;

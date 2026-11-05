@@ -8,6 +8,7 @@ import { trackFreeScan } from './shared/ads-conversions.js';
 import { countLabel, explainIssue, SEVERITY_HINT, verdictFor, wcagSummary } from './shared/plain-issue.js';
 import { el } from './shared/report-view.js';
 import { pagesScanned, scannedText, fillScanProof } from './shared/scan-stats.js';
+import { OWNER_LABELS, ownerLabels } from './shared/owner-priority.js';
 
 export { verdictFor };
 
@@ -185,6 +186,112 @@ export function trialHref(host) {
 
 const IMPACT_LABEL = { critical: 'Critical', serious: 'Serious', moderate: 'Moderate', minor: 'Minor' };
 const URGENT = new Set(['critical', 'serious']);
+const pageStarted = Date.now();
+
+function ownerTags(issue, pageUrl) {
+  return ownerLabels(issue, pageUrl).map((id) => {
+    const meta = OWNER_LABELS[id];
+    return el('span', { class: `tag tag-owner tag-owner-${id}`, title: meta.hint, text: meta.text });
+  });
+}
+
+function scoreBlock(score) {
+  if (!Number.isInteger(score)) return null;
+  const band = score >= 90 ? 'high' : score >= 60 ? 'mid' : 'low';
+  const ring = el('div', {
+    class: 'score-ring scan-score-ring',
+    'data-band': band,
+    role: 'img',
+    'aria-label': `Accessibility score ${score} out of 100`,
+  }, [el('span', { 'aria-hidden': 'true', text: String(score) })]);
+  ring.style.setProperty('--pct', String(score));
+  return el('div', { class: 'scan-score' }, [
+    ring,
+    el('div', {}, [
+      el('p', { class: 'scan-score-kicker', text: 'Accessibility Score' }),
+      el('p', { class: 'scan-score-note', text: 'Out of 100, from the automated checks on this page. It is not a legal compliance score.' }),
+    ]),
+  ]);
+}
+
+/** DIY trial vs a note to the existing contact form. AccessBell does not staff a remediation team. */
+function pathSplit(trial, url, { compact = false } = {}) {
+  const note = el('p', { class: 'scan-help-note', role: 'status', hidden: true });
+  const form = el('form', { class: 'scan-help-form' }, [
+    el('label', { for: compact ? 'scan-help-email-2' : 'scan-help-email', text: 'Email' }),
+    el('input', {
+      id: compact ? 'scan-help-email-2' : 'scan-help-email',
+      name: 'email',
+      type: 'email',
+      autocomplete: 'email',
+      required: true,
+      maxlength: 254,
+      placeholder: 'you@example.com',
+    }),
+    el('button', { type: 'submit', class: 'btn btn-outline', text: "I'd rather have help" }),
+    el('p', { class: 'scan-lead-consent' }, ['Sending this agrees we may reply about a quote or a partner introduction, as described in the ', el('a', { href: '/privacy', text: 'Privacy Policy' }), '.']),
+    note,
+  ]);
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const button = form.querySelector('button[type="submit"]');
+    const email = (form.elements.email.value || '').trim();
+    if (!email.includes('@')) {
+      note.textContent = 'Enter a valid email address.';
+      note.hidden = false;
+      form.elements.email.focus();
+      return;
+    }
+    button.disabled = true;
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: 'Website owner',
+          email,
+          company: '',
+          site: url,
+          topic: 'help',
+          plan: '',
+          domains: '',
+          message: `I would rather have help with the accessibility issues on ${url}. Please reply about a quote or a partner introduction. I understand AccessBell does not staff a remediation team and this is not legal help.`,
+          website: '',
+          consent: true,
+          elapsedMs: Date.now() - pageStarted,
+        }),
+        credentials: 'same-origin',
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'Could not send that note.');
+      note.textContent = 'Sent. We will reply within one business day. This is not a promise of remediation or a legal outcome.';
+      button.remove();
+      form.elements.email.setAttribute('readonly', '');
+    } catch (err) {
+      note.textContent = err.message || 'Could not send that note. You can also use the contact page.';
+      button.disabled = false;
+    } finally {
+      note.hidden = false;
+    }
+  });
+  return el('div', { class: compact ? 'scan-paths scan-paths-compact' : 'scan-paths' }, [
+    el('div', { class: 'scan-path' }, [
+      el('h3', { text: 'Fix it myself with AccessBell Pro' }),
+      compact
+        ? null
+        : el('p', { text: 'The failing code and a guided fix, for this page and up to 500 pages on the domain. 3-day free trial, then $29 per domain per month or $199 per year.' }),
+      el('a', { class: 'btn btn-accent', href: trial, text: 'Fix it myself with AccessBell Pro' }),
+    ]),
+    el('div', { class: 'scan-path' }, [
+      el('h3', { text: "I'd rather have help" }),
+      compact
+        ? null
+        : el('p', { text: 'AccessBell does not staff a remediation team and does not guarantee a legal outcome. Leave your email and we will reply about a quote or whether a partner introduction is available.' }),
+      form,
+      el('p', { class: 'scan-path-alt' }, ['Or ', el('a', { href: `/contact?topic=help&site=${encodeURIComponent(url)}`, text: 'use the contact form' }), '.']),
+    ]),
+  ]);
+}
 
 // What an unresolved issue can cost. Every figure is published and linked; there is no
 // reliable public "average" settlement, so these are ranges and counts, not a prediction.
@@ -270,6 +377,13 @@ function showResults(r, url, form) {
       'Prefer no subscription? One-time reports: $19 for this page or $79 for your whole domain',
     ]);
   const v = verdictFor(r.summary);
+  const owner = r.summary?.owner || {};
+  const secondary = [
+    `${(r.summary?.critical || 0).toLocaleString()} critical`,
+    `${(owner.lawsuitCommon || 0).toLocaleString()} lawsuit-common`,
+  ];
+  if (owner.blocksCheckout) secondary.push(`${owner.blocksCheckout.toLocaleString()} blocking checkout`);
+  const biggest = list.reduce((n, i) => Math.max(n, i.count || 0), 0);
   const proofCount = el('span', { class: 'scan-proof-count', hidden: true });
   pagesScanned().then((n) => {
     if (n) {
@@ -287,11 +401,16 @@ function showResults(r, url, form) {
       )
     : null;
   const verdict = el('div', { class: `scan-verdict scan-verdict-${v.tone}` }, [
+    scoreBlock(r.score),
+    el('p', { class: 'scan-score-secondary', text: secondary.join(' · ') }),
     el('p', { class: 'scan-verdict-text' }, [el('strong', { text: v.text })]),
     tiles,
-    el('div', { class: 'scan-verdict-actions' }, [el('a', { class: 'btn btn-accent', href: trial, text: 'Start 3-day free trial' })]),
+    pathSplit(trial, url),
     el('p', { class: 'scan-proof' }, [proofCount, `Accessibility monitoring tool: up to 500 pages on ${host}, with guided fixes. Cancel anytime. 14-day money-back guarantee.`]),
     el('p', { class: 'scan-verdict-alt' }, [oneTimeLink()]),
+    biggest > 1
+      ? el('p', { class: 'scan-pattern', text: `The same pattern shows up ${biggest.toLocaleString()} times on this page. On a monitored site, component grouping treats a shared template as one fix, so one template fix can clear every page that uses it.` })
+      : el('p', { class: 'scan-pattern', text: 'When the same component fails on many pages, Pro groups it. One template fix can clear every page that shares it.' }),
   ]);
   const label = r.standard?.label || 'WCAG';
   const heading = el('h2', { id: 'scan-result-title', tabindex: '-1', text: total ? `${plural(total, 'issue')} on ${page}` : `No automatic issues on ${page}` });
@@ -338,6 +457,7 @@ function showResults(r, url, form) {
             main.node,
             el('div', { class: 'scan-result-side' }, [
               el('span', { class: `tag tag-${i.impact}`, text: IMPACT_LABEL[i.impact] || i.impact }),
+              ...ownerTags(i, r.finalUrl || url),
               // The most urgent problems get a direct route to a plan that fixes them.
               URGENT.has(i.impact)
                 ? el('a', { class: 'scan-fix-link', href: trial }, ['Get the fix', el('span', { class: 'visually-hidden', text: `: ${main.plain.name}. Starts a 3-day free trial with guided fix suggestions for ${host}.` })])
@@ -363,14 +483,20 @@ function showResults(r, url, form) {
           r.teaser.map((i) =>
             el('li', { 'data-sev': i.impact }, [
               issueMain(i).node,
-              el('span', { class: `tag tag-${i.impact}`, text: IMPACT_LABEL[i.impact] || i.impact }),
+              el('span', { class: 'scan-teaser-tags' }, [
+                el('span', { class: `tag tag-${i.impact}`, text: IMPACT_LABEL[i.impact] || i.impact }),
+                ...ownerTags(i, r.finalUrl || url),
+              ]),
               failingCode(i.samples),
               i.fix ? el('p', { class: 'scan-teaser-fix' }, [el('strong', { text: 'What to change: ' }), el('span', { text: i.fix })]) : null,
               i.helpUrl ? el('a', { href: i.helpUrl, rel: 'noopener noreferrer', target: '_blank', text: 'Read the guidance' }) : null,
             ]),
           ),
         ),
-        el('div', { class: 'scan-teaser-actions' }, [el('a', { href: trial, text: 'See the fix for every issue: start a 3-day free trial' })]),
+        el('div', { class: 'scan-teaser-actions' }, [
+          el('a', { class: 'btn btn-accent', href: trial, text: 'Fix it myself with AccessBell Pro' }),
+          el('a', { class: 'btn btn-outline', href: `/contact?topic=help&site=${encodeURIComponent(url)}`, text: "I'd rather have help" }),
+        ]),
       ])
     : null;
   // Email capture shown with the results, never a gate in front of them.
@@ -425,7 +551,8 @@ function showResults(r, url, form) {
       el('li', { text: 'A dated record of what you fixed' }),
       el('li', { text: 'Daily monitoring, so a new page does not bring the problem back' }),
     ]),
-    el('div', { class: 'scan-cta-actions' }, [el('a', { class: 'btn btn-outline', href: trial, text: 'Start 3-day free trial' }), oneTimeLink()]),
+    pathSplit(trial, url, { compact: true }),
+    el('div', { class: 'scan-cta-actions' }, [oneTimeLink()]),
     el('p', { class: 'scan-cta-note' }, ['3-day free trial, then $29/mo or $199/year per domain. Cancel anytime. 14-day money-back guarantee. One-time reports need no account. Already subscribed? ', el('a', { href: '/app/login', text: 'Log in to your dashboard' }), '.']),
   ]);
   mount.replaceChildren(

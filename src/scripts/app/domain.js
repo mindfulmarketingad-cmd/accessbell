@@ -13,6 +13,7 @@ import { domainMenu, scanDomainWithDialog, scanMessage, relative, nextScheduledS
 import { mountFixInstall, mountFixList, mountStatementFlow, statementUrl, mountToolbar } from './site-tools.js';
 import { mountVault } from './vault.js';
 import { mountDocuments } from './documents.js';
+import { OWNER_LABELS, ownerLabelsFor } from '../shared/owner-priority.js';
 
 const me = await boot();
 const id = qs('id');
@@ -265,19 +266,31 @@ function renderCoverage() {
   );
 }
 
+function ownerTags(issue, urls) {
+  return ownerLabelsFor(issue, urls).map((key) => {
+    const meta = OWNER_LABELS[key];
+    return el('span', { class: `tag tag-owner tag-owner-${key}`, title: meta.hint, text: meta.text });
+  });
+}
+
 function renderComponents() {
   const box = $('[data-components]');
   if (!data.components.length) {
-    box.replaceChildren(el('p', { class: 'muted mb-0', text: 'No repeated components found yet. They appear once several pages share the same failing element.' }));
+    box.replaceChildren(el('p', { class: 'muted mb-0', text: 'No repeated components found yet. They appear once several pages share the same failing element. One template fix can then clear every page that uses it.' }));
     return;
   }
+  const shared = data.components.filter((c) => c.pages > 1);
   box.replaceChildren(
+    el('p', { class: 'muted', text: shared.length ? `${shared.length === 1 ? '1 shared template' : `${shared.length} shared templates`}. One template fix clears the pages that use it.` : 'These components were found on a single page so far.' }),
     el(
       'ul',
       { class: 'group-list' },
       data.components.map((c) =>
         el('li', {}, [
-          el('div', { class: 'top' }, [el('strong', { text: c.title }), el('span', { class: `tag tag-${c.impact}`, text: `${c.pages} pages` })]),
+          el('div', { class: 'top' }, [
+            el('strong', { text: c.title }),
+            el('span', { class: `tag tag-${c.impact}`, text: c.pages > 1 ? `1 template fix clears ${c.pages} pages` : '1 page' }),
+          ]),
           el('p', {}, ['Component: ', el('code', { text: c.component })]),
         ]),
       ),
@@ -406,6 +419,7 @@ function issueSummary(r) {
     el('span', { class: 'issue-acc-title', text: r.title }),
     el('span', { class: 'issue-acc-meta' }, [
       el('span', { class: `tag tag-${r.impact}`, text: IMPACT_LABEL[r.impact] }),
+      ...ownerTags(r, r.pageUrls || []),
       el('span', { class: 'tag', text: wcagLabel(r.wcag) }),
       chip('bad', 'alert', String(r.elements)),
     ]),
@@ -463,6 +477,7 @@ function byPageList(filter) {
             el('li', {}, [
               el('div', { class: 'page-issue-main' }, [
                 el('span', { class: `tag tag-${r.impact}`, text: IMPACT_LABEL[r.impact] }),
+                ...ownerTags(r, [p.url]),
                 el('a', { href: issueHref(r.id), text: r.title }),
                 el('span', { class: 'muted', text: ` ${plural(count, 'element')}, ${wcagLabel(r.wcag)}` }),
               ]),
@@ -713,6 +728,32 @@ function headerRow(h = { name: '', value: '' }) {
   return row;
 }
 
+function applyWhiteLabel(label) {
+  const on = label?.enabled === true && String(label.agencyName || '').trim().length >= 2;
+  const root = document.documentElement;
+  const line = $('[data-print-agency]');
+  if (on) {
+    root.dataset.whiteLabel = 'on';
+    root.dataset.agencyName = label.agencyName.trim();
+    if (line) line.textContent = `Report prepared for ${label.agencyName.trim()}.`;
+  } else {
+    delete root.dataset.whiteLabel;
+    delete root.dataset.agencyName;
+    if (line) line.textContent = '';
+  }
+}
+
+let printTitle = '';
+window.addEventListener('beforeprint', () => {
+  if (document.documentElement.dataset.whiteLabel !== 'on') return;
+  printTitle = document.title;
+  document.title = `${document.documentElement.dataset.agencyName} accessibility report`;
+});
+window.addEventListener('afterprint', () => {
+  if (printTitle) document.title = printTitle;
+  printTitle = '';
+});
+
 function renderSettings() {
   const f = $('[data-settings]');
   const s = data.domain.settings;
@@ -725,6 +766,10 @@ function renderSettings() {
   f.elements.sitemapUrl.value = s.sitemapUrl || '';
   f.elements.include.value = (s.include || []).join('\n');
   f.elements.exclude.value = (s.exclude || []).join('\n');
+  const label = s.whiteLabel || { enabled: false, agencyName: '' };
+  f.elements.whiteLabel.checked = label.enabled === true;
+  f.elements.agencyName.value = label.agencyName || '';
+  applyWhiteLabel(label);
   $('[data-header-rows]').replaceChildren(...(s.headers || []).map(headerRow));
   const editable = can(me, 'admin');
   f.querySelectorAll('input, select, textarea, button').forEach((x) => (x.disabled = !editable));
@@ -748,6 +793,7 @@ function bindSettings() {
         sitemapUrl: f.elements.sitemapUrl.value.trim(),
         include: f.elements.include.value,
         exclude: f.elements.exclude.value,
+        whiteLabel: { enabled: f.elements.whiteLabel.checked, agencyName: f.elements.agencyName.value },
         headers: [...$('[data-header-rows]').children].map((r) => {
           const [n, v] = r.querySelectorAll('input');
           return { name: n.value.trim(), value: v.value };

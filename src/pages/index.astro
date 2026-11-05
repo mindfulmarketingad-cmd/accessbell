@@ -48,6 +48,49 @@ const compliance = [
   { name: 'AODA', flag: 'ca', href: undefined },
 ] as const;
 
+const lawCards = [
+  {
+    name: 'WCAG 2.2',
+    year: '2026',
+    status: 'The current W3C Recommendation, and AccessBell’s default. It includes 2.1 and 2.0 except the retired 4.1.1 Parsing criterion.',
+    href: '/blog/wcag-2-2-checklist',
+    link: 'WCAG 2.2 checklist',
+    source: { href: 'https://www.w3.org/TR/WCAG22/', label: 'W3C WCAG 2.2' },
+  },
+  {
+    name: 'ADA',
+    year: '2026',
+    status: 'Title II public-entity dates are April 26, 2027 and April 26, 2028. Title III still has no DOJ technical standard for private websites. Cases usually point at WCAG.',
+    href: '/blog/ada-website-compliance-guide',
+    link: 'ADA website compliance guide',
+    source: { href: 'https://www.ada.gov/resources/web-guidance/', label: 'ADA.gov web guidance' },
+  },
+  {
+    name: 'Section 508',
+    year: '2026',
+    status: 'Federal ICT still follows the Revised Section 508 Standards, which incorporate WCAG 2.0 Level AA.',
+    href: '/tools/section-508-checker',
+    link: 'Section 508 checker',
+    source: { href: 'https://www.section508.gov/', label: 'Section508.gov' },
+  },
+  {
+    name: 'EAA',
+    year: '2026',
+    status: 'In force since June 28, 2025. EN 301 549 version 4.1.1, based on WCAG 2.2, was published in September 2026.',
+    href: '/blog/european-accessibility-act-technical-compliance',
+    link: 'EAA technical guide',
+    source: { href: 'https://eur-lex.europa.eu/eli/dir/2019/882/oj', label: 'Directive (EU) 2019/882' },
+  },
+  {
+    name: 'AODA',
+    year: '2026',
+    status: 'Ontario still requires WCAG 2.0 Level AA for designated public-sector organizations and for businesses with 50 or more employees, in force since January 1, 2021.',
+    href: '/blog/wcag-2-aa-checklist',
+    link: 'WCAG 2 AA checklist',
+    source: { href: 'https://www.ontario.ca/laws/statute/05a11', label: 'Accessibility for Ontarians with Disabilities Act' },
+  },
+];
+
 const regions = [
   {
     id: 'us',
@@ -71,7 +114,7 @@ const regions = [
     label: 'European Union',
     title: 'European Accessibility Act and EN 301 549',
     body: [
-      'The European Accessibility Act applies to many consumer-facing products and services, including e-commerce, banking, transport and e-books. Conformance is measured against the harmonized standard EN 301 549, which incorporates WCAG 2.1 AA for web content.',
+      'The European Accessibility Act applies to many consumer-facing products and services, including e-commerce, banking, transport and e-books. Conformance is measured against the harmonized standard EN 301 549. Version 3.2.1 incorporates WCAG 2.1 AA. Version 4.1.1, published in September 2026, is based on WCAG 2.2.',
       'The Web Accessibility Directive already requires public sector websites and apps in member states to meet the same standard.',
     ],
     link: { href: '/blog/wcag-2-2-checklist', label: 'Work through the WCAG 2.2 checklist' },
@@ -304,11 +347,18 @@ const HUBS = [
       <p class="lead">
         AccessBell is a website accessibility checker built for <a href="/industries/ecommerce">e-commerce store owners</a>. Paste a product, cart or checkout URL and scan it against WCAG 2.2. The free scan shows how many issues that page has.
       </p>
+      <p class="hero-demand">If a demand letter names missing alt text, unlabeled checkout fields, or buttons with no name, this scan shows whether this page has those barriers. The result is a finding list, not a legal opinion.</p>
       <div class="hero-checker">
         <ScanForm id="hero" buttonLabel="Scan my website">
-          <span slot="proof">Free scan, no account. <a href="/app/signup">Start a 3-day free trial</a>, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. Cancel before then and you will not be charged. 14-day money-back guarantee on the first charge.</span>
+          <span slot="proof">Free scan, no account. <a href="/app/signup">Fix it myself with AccessBell Pro</a>, a 3-day free trial, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. <a href="/contact?topic=help">I'd rather have help</a>. 14-day money-back guarantee on the first charge.</span>
         </ScanForm>
       </div>
+      <ul class="trust-strip" aria-label="About this checker">
+        <li>axe-core in real Chrome</li>
+        <li>Not an overlay</li>
+        <li>No legal-compliance guarantee</li>
+        <li data-scan-proof-count hidden></li>
+      </ul>
       <DemoVideo class="demo-cta-hero" />
       <div class="compliance-row">
         <span id="compliance-label">Tests your site against:</span>
@@ -410,7 +460,7 @@ const HUBS = [
       <div class="section-head">
         <span class="eyebrow">From the scan to the change</span>
         <h2 id="fix-site-title">Fix Accessibility Issues on My Website</h2>
-        <p>The free scan names what is wrong on one page. To fix accessibility issues on your website, you need the failing code, a change you can make, and a rescan that shows the issue is gone.</p>
+        <p>The free scan names what is wrong on one page. To fix accessibility issues on your website, you need the failing code, a change you can make, and a rescan that shows the issue is gone. When the same component fails on many pages, <a href="/resources/help-center/fixing-issues/component-grouping">component grouping</a> treats it as one template: one template fix can clear every page that shares it.</p>
       </div>
       <div class="grid-3">
         <article class="card">
@@ -426,7 +476,7 @@ const HUBS = [
           <p>The next scan confirms the fix. <a href="/solutions/continuous-monitoring">Continuous accessibility monitoring</a> then watches up to 500 URLs per domain so the next edit does not bring the issue back.</p>
         </article>
       </div>
-      <p class="guide-note">AccessBell is a website accessibility checker with fixes. It does not guarantee legal compliance. A <a href="/solutions/page-report">Page Report is $19</a> for one page, a <a href="/solutions/domain-audit">Domain Audit is $79</a>, and Pro is $29 per domain per month or $199 per year after a 3-day free trial. Read the <a href="/disclaimer">disclaimer</a>.</p>
+      <p class="guide-note">AccessBell is a website accessibility checker with fixes. It does not guarantee legal compliance. A <a href="/solutions/page-report">Page Report is $19</a> for one page, a <a href="/solutions/domain-audit">Domain Audit is $79</a>, and Pro is $29 per domain per month or $199 per year after a 3-day free trial. Publish a <a href="/solutions/live-statement">Live Statement</a> that shows your last scan date. Read the <a href="/disclaimer">disclaimer</a>.</p>
     </div>
   </section>
 
@@ -615,8 +665,19 @@ const HUBS = [
       <div class="section-head">
         <span class="eyebrow">Legislation tracker</span>
         <h2 id="laws-title">Latest Updates on Global Accessibility Legislation and Standards</h2>
-        <p>Key requirements and dates for the regions where most of our customers operate.</p>
+        <p>Five standards, the 2026 status of each, and the guide to open first. The tabs under the cards keep the dates by region.</p>
       </div>
+      <ul class="law-cards">
+        {lawCards.map((card) => (
+          <li class="law-card">
+            <p class="law-card-year">{card.year}</p>
+            <h3>{card.name}</h3>
+            <p>{card.status}</p>
+            <p><a class="link-arrow" href={card.href}>{card.link} <Icon name="arrow" /></a></p>
+            <p class="law-card-source"><a href={card.source.href} rel="noopener noreferrer" target="_blank">{card.source.label}<span class="visually-hidden"> (opens in a new tab)</span></a></p>
+          </li>
+        ))}
+      </ul>
       <div class="tabs" data-tabs>
         <div class="tablist" role="tablist" aria-label="Regions">
           {regions.map((r, i) => (

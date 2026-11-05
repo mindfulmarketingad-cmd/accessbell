@@ -22,6 +22,7 @@ export const DEFAULT_SETTINGS = {
   include: [],
   exclude: [],
   sitemapUrl: '',
+  whiteLabel: { enabled: false, agencyName: '' },
 };
 
 const MASK = '********';
@@ -127,6 +128,15 @@ export function validateSettings(input, existing = DEFAULT_SETTINGS, domain = nu
   if (input.sitemapUrl !== undefined) out.sitemapUrl = validateSitemapUrl(input.sitemapUrl, domain);
   if (input.include !== undefined) out.include = patternList(input.include);
   if (input.exclude !== undefined) out.exclude = patternList(input.exclude);
+  if (input.whiteLabel !== undefined) {
+    const enabled = input.whiteLabel?.enabled === true;
+    const agencyName = String(input.whiteLabel?.agencyName || '')
+      .replace(/[\u0000-\u001F\u007F]/g, '')
+      .trim()
+      .slice(0, 80);
+    if (enabled && agencyName.length < 2) throw badRequest('Enter the agency or client name to use on white-label reports.');
+    out.whiteLabel = { enabled, agencyName };
+  }
   if (input.headers !== undefined) {
     const prev = new Map((s.headers || []).map((h) => [h.name.toLowerCase(), h.value]));
     const list = (Array.isArray(input.headers) ? input.headers : []).slice(0, 10);

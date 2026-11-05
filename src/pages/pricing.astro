@@ -73,6 +73,11 @@ const faqs: FaqItem[] = [
         Accessibility on <span class="accent">Autopilot</span>
       </h1>
       <p class="lead">Pro is ${PLAN.price} per domain per month, or ${PLAN.annualPrice} per year, after a 3-day free trial. You add a card at checkout and are not charged until the trial ends. Cancel before then and you will not be charged.</p>
+      <p class="price-contrast">
+        <strong>${PLAN.price} per domain</strong> a month, or ${PLAN.annualPrice} a year, for up to {PLAN.urlsPerDomain} URLs.
+        Comparable self-serve checkers in this category publish entry prices from about <strong>$69 per month</strong> when billed annually, often for far fewer URLs.
+        <a href="/blog/website-accessibility-checkers">That figure is in our checkers roundup</a>. Prices change, so confirm the other plan before you decide.
+      </p>
       <DemoVideo class="demo-cta-center" />
     </div>
   </section>
@@ -104,6 +109,18 @@ const faqs: FaqItem[] = [
             {PLAN.highlights.map((h) => <li><Icon name="check" />{h}</li>)}
           </ul>
           <p class="plan-note">Need more than {PLAN.urlsPerDomain} URLs per domain? <a href="/contact?topic=sales">Talk to us</a>.</p>
+          <div class="path-grid">
+            <div>
+              <h3>Fix it myself with AccessBell Pro</h3>
+              <p>You get the failing code, a guided fix, and daily monitoring. The trial is 3 days.</p>
+              <a class="btn btn-accent" href={PLAN.ctaHref}>Fix it myself with AccessBell Pro</a>
+            </div>
+            <div>
+              <h3>I'd rather have help</h3>
+              <p>AccessBell does not staff a remediation team and does not guarantee a legal outcome. Send a note and we will reply about a quote or whether a partner introduction is available.</p>
+              <a class="btn btn-outline" href="/contact?topic=help">I'd rather have help</a>
+            </div>
+          </div>
         </div>
         <div class="plan-single-features">
           <h3>Everything Included</h3>
@@ -178,7 +195,7 @@ const faqs: FaqItem[] = [
         ))}
       </ul>
       <div class="suit-note">
-        <p><strong>How AccessBell helps you avoid this.</strong> The barriers named in many complaints, such as missing alt text, unlabeled form fields and buttons with no name, are ones automated scans find. AccessBell scans up to {PLAN.urlsPerDomain} pages per domain every day, shows you the failing code and how to fix it, and keeps a dated record of every scan and fix. You pay to fix your site either way. The difference is whether you do it on your schedule or after a complaint.</p>
+        <p><strong>How AccessBell helps you avoid this.</strong> The barriers named in many complaints, such as missing alt text, unlabeled form fields and buttons with no name, are ones automated scans find. AccessBell scans up to {PLAN.urlsPerDomain} pages per domain every day, shows you the failing code and how to fix it, and keeps a dated record of every scan and fix. A <a href="/solutions/live-statement">Live Statement</a> publishes the standard you follow and the last scan date. You pay to fix your site either way. The difference is whether you do it on your schedule or after a complaint.</p>
         <p class="muted">"Years of Pro" divides the amount paid by ${PLAN.annualPrice}, one year of Pro for one domain on the annual plan. It is not a claim that AccessBell would have prevented these cases, and no tool can guarantee you will not be sued. Read <a href="/blog/what-happens-after-being-sued-for-ada-website-compliance">what happens after being sued for violating ADA website compliance</a>.</p>
       </div>
     </div>

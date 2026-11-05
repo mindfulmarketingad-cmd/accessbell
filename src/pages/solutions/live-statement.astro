@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { faqSchema, type FaqItem } from '../../lib/schema';
+import { PLAN } from '../../data/pricing';
+
+const faqs: FaqItem[] = [
+  {
+    q: 'What is a Live Accessibility Statement?',
+    a: 'A public page that says which standard you are aiming for, how someone can report a barrier, and the date of the latest AccessBell scan when one has run. It is the statement you create in the dashboard, published at a stable link for that domain.',
+  },
+  {
+    q: 'Does a Live Accessibility Statement update the score by itself?',
+    a: 'It shows the last check date from your scans, and the average automated score of monitored pages when that score exists. It does not rewrite your conformance claim. You choose partially conformant or fully conformant, and fully conformant is only appropriate when you are confident it is true.',
+  },
+  {
+    q: 'Is a Live Accessibility Statement a legal compliance guarantee?',
+    a: 'No. Publishing a statement does not make a site conform to WCAG, the ADA, or any other law, and it does not stop a complaint. It is a public description of your effort and a way for visitors to contact you.',
+  },
+  {
+    q: 'How is this different from the free statement generator?',
+    a: 'The free generator builds a statement you copy onto your own site. It is not tied to scans. A Live Accessibility Statement is hosted for a domain you monitor, so the last check date comes from real scan records.',
+  },
+  {
+    q: 'Can an agency hide the AccessBell name on the statement?',
+    a: 'Yes, for the hosted statement footer and for PDF report titles. In domain settings, turn on white-label reports and enter the agency or client name. Logo upload is not available. Compliance Vault evidence packages still name AccessBell, because they record which tool ran the tests.',
+  },
+];
+---
+<BaseLayout
+  title="Live Accessibility Statement | AccessBell"
+  description="A Live Accessibility Statement shows the standard you follow, your last scan date, and how visitors report a barrier. Included with Pro. Not a legal claim."
+  breadcrumbs={[{ label: 'Solutions', href: '/solutions' }, { label: 'Live Statement', href: '/solutions/live-statement' }]}
+  schema={[faqSchema(faqs)]}
+>
+  <section class="page-hero" aria-labelledby="live-title">
+    <div class="container">
+      <span class="eyebrow">Included with Pro</span>
+      <h1 id="live-title">Live Accessibility Statement</h1>
+      <p class="lead">A Live Accessibility Statement is the public page for a domain you monitor in AccessBell. It names the standard you follow, how someone can report a barrier, and the date of the latest scan when a scan has run. It updates from those records. It does not certify that the site conforms to any law.</p>
+      <div class="solution-cta">
+        <a class="btn btn-accent" href="/app/signup">Start 3-day free trial <Icon name="arrow" /></a>
+        <a class="btn btn-outline" href="/tools/statement-generator">Use the free generator</a>
+      </div>
+      <p class="solution-note"><Icon name="check" /> Pro is ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year after a 3-day trial</p>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="includes-title">
+    <div class="container cc-prose">
+      <h2 id="includes-title">What a Live Accessibility Statement Includes</h2>
+      <p>You write the statement in the domain settings. AccessBell hosts it at a link you can put in your footer. The same answers can be copied as HTML if you would rather publish the page yourself. The hosted version adds the facts that come from monitoring:</p>
+      <ul>
+        <li><strong>The standard for that domain.</strong> WCAG version and level from the domain’s scan settings, such as WCAG 2.2 Level AA.</li>
+        <li><strong>Your conformance wording.</strong> Partially conformant is the default. Fully conformant is a claim you make, not one the scanner makes for you.</li>
+        <li><strong>A contact for barriers.</strong> The email, and phone if you add one, so a visitor can tell you what blocked them.</li>
+        <li><strong>The last check date.</strong> When at least one scan has finished, the statement says the site was last checked on that date.</li>
+        <li><strong>The automated score, when one exists.</strong> The average of monitored pages that have a score, out of 100. The statement says that number is not a legal compliance determination.</li>
+      </ul>
+      <p>The W3C’s <a href="https://www.w3.org/WAI/planning/statements/" rel="noopener noreferrer">guide to developing an accessibility statement</a> is the reference for what a statement is for: a public commitment, the standard, known limitations, and a way to give feedback.</p>
+    </div>
+  </section>
+
+  <section class="section-tight section-surface" aria-labelledby="current-title">
+    <div class="container cc-prose">
+      <h2 id="current-title">How the Live Accessibility Statement Stays Current</h2>
+      <p>The statement page reads the saved answers and the latest scan date for that domain each time it loads. You do not republish it after every scan. Edit the wording when your commitment, contact, or conformance claim changes. The date and the average score follow the scans.</p>
+      <p>That record also sits in the <a href="/solutions/compliance-vault">Compliance Vault</a>, with the fix log and the evidence package. The statement is the public summary. The vault is the dated record behind it. <a href="/solutions">All solutions</a> describes how monitoring, fixes, and the vault fit together. <a href="/resources/help-center/getting-started/create-your-accessibility-statement">Create your accessibility statement</a> is the step-by-step in the Help Center.</p>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="generator-title">
+    <div class="container cc-prose">
+      <h2 id="generator-title">Live Accessibility Statement or the Free Generator</h2>
+      <p>Use the <a href="/tools/statement-generator">accessibility statement generator</a> when you want a statement now and you are not monitoring the site in AccessBell. You copy the text onto a page you control. Nothing on that page changes when your site changes.</p>
+      <p>Use a Live Accessibility Statement when the domain is in Pro. The hosted page can show the last check date and, when pages have been scored, the average automated score. Both versions still need you to keep the contact address staffed and the conformance wording honest.</p>
+    </div>
+  </section>
+
+  <section class="section-tight section-surface" aria-labelledby="limits-title">
+    <div class="container cc-prose">
+      <h2 id="limits-title">What a Live Accessibility Statement Does Not Claim</h2>
+      <p>It is not an overlay, and it does not change your site’s code. It does not mean the site passes WCAG, the ADA, Section 508, the European Accessibility Act, or any other rule. Automated scans miss checks that need a person, which is covered in <a href="/methodology">how we test</a> and the <a href="/disclaimer">disclaimer</a>.</p>
+      <p>Agencies can put their own name on the statement footer and on PDF report titles from <a href="/pricing">Pro</a> or from a one-time <a href="/solutions/page-report">Page Report</a> or <a href="/solutions/domain-audit">Domain Audit</a>. That setting is in the domain’s scan settings for Pro, and on the report download for a one-time PDF. It removes the AccessBell wordmark from those surfaces. It does not remove AccessBell from the Compliance Vault evidence package.</p>
+      <p>Same fixes that help visitors also help people using assistive technology, and they help automated agents that read the page. AccessBell does not ship a separate agent-readiness test.</p>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="faq-title">
+    <div class="container cc-prose">
+      <h2 id="faq-title">Live Accessibility Statement Questions</h2>
+      <Faq items={faqs} />
+      <p>See <a href="/solutions">solutions</a> and <a href="/pricing">pricing</a>. Pro is ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year after a 3-day free trial.</p>
+    </div>
+  </section>
+
+  <CtaBand title="Publish a statement tied to your scans" text="Start a 3-day free trial, add the domain, and create the statement in settings. The hosted page picks up the last scan date after the first scan finishes." />
+</BaseLayout>

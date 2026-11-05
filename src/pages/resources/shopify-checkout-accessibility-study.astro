@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { faqSchema, type FaqItem } from '../../lib/schema';
+
+const faqs: FaqItem[] = [
+  {
+    q: 'Does this page report Shopify checkout accessibility results?',
+    a: 'No. This is the plan for a study that has not been run. There is no sample, no score, and no finding on this page.',
+  },
+  {
+    q: 'What will the Shopify checkout accessibility study measure?',
+    a: 'Automated checks on a public home page and, where a cart or the first checkout step can be opened without an account, that URL too. The metrics are issue counts, the share of pages with missing alt text, unlabeled fields, or unnamed buttons, and the AccessBell accessibility score. They are not a legal compliance rate.',
+  },
+  {
+    q: 'Why might checkout itself be missing from the sample?',
+    a: 'Shopify’s checkout often runs on a hosted checkout that a scanner cannot enter without a purchase, a shop password, or a bot challenge. The method will record when the checkout URL could not be tested, instead of guessing what is on it.',
+  },
+];
+---
+<BaseLayout
+  title="Shopify Checkout Accessibility Study | AccessBell"
+  description="Shopify checkout accessibility study plan: the sample, the metrics, and the method. No results yet. This page is the methodology for an upcoming review."
+  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: 'Shopify checkout study', href: '/resources/shopify-checkout-accessibility-study' }]}
+  schema={[faqSchema(faqs)]}
+>
+  <section class="page-hero" aria-labelledby="study-title">
+    <div class="container">
+      <p class="study-banner">Upcoming study. Methodology only. No results.</p>
+      <h1 id="study-title">Shopify Checkout Accessibility Study</h1>
+      <p class="lead">This Shopify checkout accessibility study is a plan, not a report. It describes the stores we intend to review, the pages we intend to scan, and the metrics we intend to publish. No stores have been sampled for it yet, and this page does not include scores, rankings, or pass rates.</p>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="measure-title">
+    <div class="container cc-prose">
+      <h2 id="measure-title">What This Shopify Checkout Accessibility Study Will Measure</h2>
+      <p>The question is narrow: on public Shopify storefronts, how often do automated checks fail on the home page and on the cart or the first checkout step a visitor can open without an account? The study is about those pages. It is not a review of Shopify as a company, and it is not a claim that any store is or is not compliant.</p>
+      <p>Checkout matters for stores because a barrier there can stop a purchase. Missing alt text, fields with no label, and buttons with no name are the barriers complaints often name. The study will count those separately from other automated findings. The rules are the same ones AccessBell already runs: axe-core in Chrome, mapped to <a href="https://www.w3.org/TR/WCAG22/" rel="noopener noreferrer">WCAG 2.2</a>. The method follows the W3C’s distinction in <a href="https://www.w3.org/WAI/test-evaluate/" rel="noopener noreferrer">Evaluating Web Accessibility</a>: tools find many issues, and people still have to judge the rest.</p>
+      <p>Background on where Shopify storefront issues tend to come from is on the <a href="/platforms/shopify">Shopify accessibility checkers</a> page. That page cites WebAIM’s published home-page research. This study will not reuse those home-page figures as if they were checkout results.</p>
+    </div>
+  </section>
+
+  <section class="section-tight section-surface" aria-labelledby="method-title">
+    <div class="container cc-prose">
+      <h2 id="method-title">Shopify Checkout Accessibility Sample and Method</h2>
+      <p>Target sample: 50 public Shopify storefronts. That number is a goal for the fieldwork. It is not a count of stores already reviewed.</p>
+      <p>How a store gets into the sample, once the work starts:</p>
+      <ul>
+        <li>The storefront is public. Password pages, coming-soon pages, and stores that block automated fetches are recorded as not tested, not scored.</li>
+        <li>The platform is identified from public signals such as Shopify’s storefront assets. If that identification is uncertain, the store is left out.</li>
+        <li>Each store contributes its home page. It also contributes a cart URL, or the first checkout step, only when that URL opens without creating an account or paying.</li>
+        <li>One home page and at most one cart or checkout URL per store, so a large catalog does not dominate the counts.</li>
+        <li>No store name will be published as a failing example. Results, when they exist, will be aggregates.</li>
+      </ul>
+      <p>Shopify documents checkout as a hosted flow with its own extensibility limits. The plan uses the public help page on <a href="https://help.shopify.com/en/manual/checkout-settings" rel="noopener noreferrer">checkout settings</a> only to describe that boundary. We will not treat a page we could not load as a pass or a fail.</p>
+      <p>Scans will use the same engine described in our <a href="/methodology">methodology</a>. A page that fails to load is a failed fetch, not a perfect score.</p>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="metrics-title">
+    <div class="container cc-prose">
+      <h2 id="metrics-title">Metrics for Shopify Checkout Accessibility</h2>
+      <p>When the study is run, the write-up is planned to report only these aggregates, separately for home pages and for cart or checkout URLs that loaded:</p>
+      <ul>
+        <li>How many stores were attempted, how many home pages loaded, and how many cart or checkout URLs loaded.</li>
+        <li>The median and the range of automated issue counts. Not a single “average store” presented as typical without the range.</li>
+        <li>How many loaded pages had at least one missing-alt, unlabeled-field, or unnamed-button finding.</li>
+        <li>The AccessBell accessibility score for each loaded page, summarized as a median. The score is the existing 0–100 automated score. It is not a conformance percentage.</li>
+        <li>How often the cart or checkout URL could not be tested, as its own number, so the gap is visible.</li>
+      </ul>
+      <p>There is no metric for “percent compliant,” “lawsuit risk,” or “checkout conversion.” Those are not things an automated scan can establish. <a href="https://webaim.org/projects/million/" rel="noopener noreferrer">WebAIM’s Million</a> is a useful model for publishing home-page error rates with a stated method. This study is smaller, limited to Shopify, and not started.</p>
+    </div>
+  </section>
+
+  <section class="section-tight section-surface" aria-labelledby="limits-title">
+    <div class="container cc-prose">
+      <h2 id="limits-title">What the Shopify Checkout Accessibility Study Will Not Claim</h2>
+      <ul>
+        <li>No result on this page is a finding. If a number appears here in a later update, it will be labeled as a result and dated. Until then, there are none.</li>
+        <li>Automated checks do not cover keyboard traps inside a checkout a scanner cannot reach, meaningful alt text, or screen reader behavior. Those stay manual.</li>
+        <li>A theme or app that fails on one store is not evidence about every store using it.</li>
+        <li>The study will not recommend an overlay. AccessBell finds issues in the rendered page so they can be fixed in the theme or the app.</li>
+        <li>Nothing in the study is legal advice, and a clean automated scan is not a defense to a complaint.</li>
+      </ul>
+      <p>Store owners who want a look at their own URL today can run a <a href="/#scan">free scan</a> or open the <a href="/platforms/shopify">Shopify checkers</a>. That is a scan of one page, not this study. More guides are in <a href="/resources">resources</a>.</p>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="faq-title">
+    <div class="container cc-prose">
+      <h2 id="faq-title">Shopify Checkout Accessibility Study Questions</h2>
+      <p>These answers describe the plan. They do not describe findings.</p>
+      {faqs.map((item) => (
+        <div>
+          <h3>{item.q}</h3>
+          <p>{item.a}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <CtaBand title="Scan your own storefront" text="The study is not finished. A free scan checks one public page you choose, including a product, cart, or checkout URL that loads without a login." />
+</BaseLayout>

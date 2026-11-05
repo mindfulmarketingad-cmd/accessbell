@@ -34,6 +34,7 @@ export const FOOTER_GROUPS = [
       { label: 'Pricing', href: '/pricing' },
       { label: 'Solutions', href: '/solutions' },
       { label: 'Ads landing pages', href: '/solutions/google-ads-accessibility' },
+      { label: 'Live Statement', href: '/solutions/live-statement' },
       { label: 'Comparisons', href: '/comparisons' },
       { label: 'Use Cases', href: '/use-cases' },
       { label: 'Platform Checkers', href: '/platforms' },

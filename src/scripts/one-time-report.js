@@ -2,6 +2,7 @@
 // renders it. No account is required; the emailed token is the access
 // control. All report data is inserted as text, never HTML.
 import { pendingCheckout, clearPendingCheckout, trackPurchase } from './shared/ads-conversions.js';
+import { OWNER_LABELS, ownerLabels } from './shared/owner-priority.js';
 
 const mount = document.getElementById('report-mount');
 const token = new URLSearchParams(location.search).get('token') || '';
@@ -109,6 +110,15 @@ function showReport(data) {
     main.className = 'scan-result-main';
     const strong = document.createElement('strong');
     strong.textContent = issue.title;
+    const tags = document.createElement('span');
+    tags.className = 'scan-teaser-tags';
+    for (const id of ownerLabels(issue, issue.url || report.url || data.url || '')) {
+      const tag = document.createElement('span');
+      tag.className = `tag tag-owner tag-owner-${id}`;
+      tag.title = OWNER_LABELS[id].hint;
+      tag.textContent = OWNER_LABELS[id].text;
+      tags.append(tag);
+    }
     const meta = document.createElement('span');
     meta.className = 'scan-result-meta';
     const parts = [];
@@ -116,7 +126,7 @@ function showReport(data) {
     if (issue.pagesAffected) parts.push(`${issue.pagesAffected} page${issue.pagesAffected === 1 ? '' : 's'}`);
     if (issue.wcag && issue.wcag.length) parts.push(`WCAG ${issue.wcag.map((c) => `${c.sc} ${c.name}`).join(', ')}`);
     meta.textContent = parts.join(' · ');
-    main.append(strong, meta);
+    main.append(strong, tags, meta);
     li.append(main);
     if (issue.fix) {
       const fix = document.createElement('p');
@@ -147,7 +157,48 @@ function showReport(data) {
   card.append(list);
   const actions = document.createElement('div');
   actions.className = 'scan-teaser-actions';
-  if (data.pdfUrl) actions.append(link(data.pdfUrl, 'Download the PDF report', 'btn btn-accent btn-sm'));
+  if (data.pdfUrl) {
+    const form = document.createElement('form');
+    form.className = 'scan-help-form';
+    const checkLabel = document.createElement('label');
+    const check = document.createElement('input');
+    check.type = 'checkbox';
+    check.name = 'whiteLabel';
+    checkLabel.append(check, document.createTextNode(' White-label this PDF'));
+    const nameLabel = document.createElement('label');
+    nameLabel.htmlFor = 'report-agency';
+    nameLabel.textContent = 'Agency or client name';
+    const name = document.createElement('input');
+    name.id = 'report-agency';
+    name.name = 'agency';
+    name.type = 'text';
+    name.maxLength = 80;
+    name.placeholder = 'Northwind Studio';
+    name.autocomplete = 'organization';
+    const download = document.createElement('a');
+    download.className = 'btn btn-accent btn-sm';
+    download.textContent = 'Download the PDF report';
+    download.href = data.pdfUrl;
+    const hint = document.createElement('p');
+    hint.className = 'scan-cta-note';
+    hint.textContent = 'White-label replaces the AccessBell wordmark in the PDF title with this name. There is no logo upload. The findings and the compliance note stay the same.';
+    download.addEventListener('click', (e) => {
+      if (!check.checked) return;
+      const agency = name.value.trim();
+      if (agency.length < 2) {
+        e.preventDefault();
+        hint.textContent = 'Enter an agency or client name of at least 2 characters, or turn white-label off.';
+        name.focus();
+        return;
+      }
+      const u = new URL(data.pdfUrl, location.origin);
+      u.searchParams.set('whiteLabel', '1');
+      u.searchParams.set('agency', agency.slice(0, 80));
+      download.href = `${u.pathname}${u.search}`;
+    });
+    form.append(checkLabel, nameLabel, name, download, hint);
+    actions.append(form);
+  }
   actions.append(link('/app/signup', 'Save this report to your dashboard', 'btn btn-outline btn-sm'));
   actions.append(link('/pricing', 'Keep it monitored with Pro — $29/mo', 'btn btn-outline btn-sm'));
   card.append(actions);

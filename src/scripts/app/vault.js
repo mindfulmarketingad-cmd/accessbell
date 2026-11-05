@@ -237,19 +237,22 @@ export function mountVault({ panel, box, domainId, me, selectTab }) {
     const statementCard = data.statement.saved
       ? card({
           iconName: 'doc',
-          title: 'Accessibility Statement',
-          text: 'Your public statement updates itself with your latest scan date, so it always reflects where your site stands.',
+          title: 'Live Statement',
+          text: 'Your public statement updates with the latest scan date from this domain, so it reflects where the site stands. It is not a legal compliance claim.',
           foot: el('p', { class: 'vault-foot' }, [
             icon('check-circle'),
             `Published${data.statement.updatedAt ? `, last edited ${fmtDate(data.statement.updatedAt)}` : ''}. `,
             data.statement.url ? el('a', { href: data.statement.url, target: '_blank', rel: 'noopener', text: 'View statement (opens in a new tab)' }) : null,
+            ' ',
+            el('a', { href: '/solutions/live-statement', text: 'About Live Statement' }),
           ]),
           action: el('button', { class: 'btn btn-outline btn-block', type: 'button', on: { click: () => goStatement() } }, [icon('gear'), 'Edit statement']),
         })
       : card({
           iconName: 'doc',
-          title: 'Accessibility Statement',
-          text: 'A customizable, auto-updating accessibility statement powered by your scan results. Always current and audit-ready.',
+          title: 'Live Statement',
+          text: 'A public accessibility statement powered by your scan results. It shows the standard you follow and the last check date once a scan has run.',
+          foot: el('p', { class: 'vault-foot' }, [el('a', { href: '/solutions/live-statement', text: 'About Live Statement' })]),
           action: el('button', { class: 'btn btn-outline btn-block', type: 'button', on: { click: () => goStatement() } }, [icon('gear'), 'Set up']),
         });
     const pct = score === null ? 0 : score;
