@@ -1,0 +1,177 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import ScanForm from '../../components/ScanForm.astro';
+import { faqSchema, type FaqItem } from '../../lib/schema';
+import { PLAN } from '../../data/pricing';
+
+const faqs: FaqItem[] = [
+  {
+    q: 'Does Google Ads disapprove ads because a page fails WCAG?',
+    a: 'Not under the policy Google publishes today. <a href="https://support.google.com/adspolicy/answer/16428223" rel="noopener noreferrer">Destination not accessible</a> means the landing page is blocked in the targeted location or Google AdsBot cannot crawl it. <a href="https://support.google.com/adspolicy/answer/16427615" rel="noopener noreferrer">Destination experience</a> covers pages that are hard to navigate, such as pop-ups that hide the content or a broken Back button. Those policies do not list WCAG success criteria. A missing alt attribute, on its own, is not that disapproval.',
+  },
+  {
+    q: 'Can AccessBell fix a disapproved Google ad?',
+    a: 'No. AccessBell does not edit robots.txt, firewalls, geo-blocks or ad settings, and it does not appeal a policy decision. It scans the landing page and helps you fix accessibility issues in the code. You still have to correct whatever Google named, then resubmit the ad. Approval is not guaranteed.',
+  },
+  {
+    q: 'How do I fix ads compliance issues on the page people click?',
+    a: 'Read the policy name in Google Ads first. If the page cannot be reached or crawled, fix that with your host or developer. Then run a free scan of the final URL. Pro shows the failing code and how to fix accessibility issues such as unlabeled fields, unnamed buttons and missing alt text, and it can monitor the campaign URLs every day.',
+  },
+  {
+    q: 'Is AccessBell an overlay that makes landing pages compliant?',
+    a: 'No. AccessBell finds issues in your code. The optional AccessBellFix script applies only the alt text, button names and page language you approve. Neither one makes a site conform to WCAG on its own, and neither guarantees an ad will run.',
+  },
+  {
+    q: 'What does Pro cost if I want the fixes and monitoring?',
+    a: `Pro is $${PLAN.price} per domain per month, or $${PLAN.annualPrice} per domain per year, after a 3-day free trial. It monitors up to ${PLAN.urlsPerDomain} URLs per domain. A one-time <a href="/solutions/page-report">Page Report</a> is $19 if you only need one landing page in full.`,
+  },
+];
+---
+<BaseLayout
+  title="Fix Ads Compliance Issues on Landing Pages | AccessBell"
+  description="Fix ads compliance issues on the landing page people reach from Google Ads. Scan it free, then fix accessibility issues. Ads approval is not guaranteed."
+  breadcrumbs={[{ label: 'Solutions', href: '/solutions' }, { label: 'Ads landing pages', href: '/solutions/google-ads-accessibility' }]}
+  schema={[faqSchema(faqs)]}
+>
+  <section class="page-hero" aria-labelledby="ads-title">
+    <div class="container">
+      <span class="eyebrow">Google Ads landing pages</span>
+      <h1 id="ads-title">Fix Ads Compliance Issues on Ad Landing Pages</h1>
+      <p class="lead">Fix ads compliance issues on the page your ad sends people to, and read the policy name before you change the site. Google Ads can disapprove a destination when it cannot be reached, cannot be crawled, or is hard to use. That is not a WCAG checklist, and AccessBell does not clear a crawl block or a location wall. What AccessBell does is scan that URL, show the accessibility issues in the code, and help you fix them.</p>
+      <div class="solution-cta">
+        <a class="btn btn-accent" href="/app/signup">Start 3-day free trial <Icon name="arrow" /></a>
+        <a class="btn btn-outline" href="#check-landing-page">Scan the landing page</a>
+      </div>
+      <p class="solution-note"><Icon name="check" /> Free one-page scan, no account <span aria-hidden="true">&middot;</span> Pro is ${PLAN.price}/month or ${PLAN.annualPrice}/year per domain after a 3-day trial</p>
+    </div>
+  </section>
+
+  <section class="section-tight" id="check-landing-page" aria-labelledby="check-title">
+    <div class="container">
+      <div class="cc-prose">
+        <h2 id="check-title">Check the Landing Page Your Ad Uses</h2>
+        <p>Paste the final URL, the page people land on after tracking redirects. The free scan names the automated WCAG issues on that one page. It does not tell you whether Google will approve the ad.</p>
+      </div>
+      <div class="hero-checker">
+        <ScanForm id="ads" buttonLabel="Scan this landing page">
+          <span slot="proof">Free scan, no account. To see every fix and monitor the rest of the domain, <a href="/app/signup">start a 3-day free trial</a>. Then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year.</span>
+        </ScanForm>
+      </div>
+    </div>
+  </section>
+
+  <section class="results" id="scan-results" aria-live="polite" aria-busy="false" hidden>
+    <div class="container" data-results></div>
+  </section>
+
+  <section class="section-tight section-surface" aria-labelledby="means-title">
+    <div class="container cc-prose">
+      <h2 id="means-title">What a Google Ads Accessibility Disapproval Actually Means</h2>
+      <p>Advertisers often read “not accessible” as “fails disability access.” Google’s published <a href="https://support.google.com/adspolicy/answer/6368661" rel="noopener noreferrer">Destination requirements</a> use the word differently. The destination has to be functional, useful, and easy to navigate, and it has to be reachable where you are advertising.</p>
+      <p><a href="https://support.google.com/adspolicy/answer/16428223" rel="noopener noreferrer">Destination not accessible</a> is about location and crawling. Google says the landing page must be available in the targeted location and crawlable by Google AdsBot. The examples they list are access-limitation messages, HTTP 403 and 404 responses, a robots.txt file that blocks AdsBot, and server settings that stop the crawler. None of those examples is a WCAG success criterion.</p>
+      <p><a href="https://support.google.com/adspolicy/answer/16428019" rel="noopener noreferrer">Destination not working</a> covers pages that error, say the site is under construction, or return an HTTP error to AdsBot. <a href="https://support.google.com/adspolicy/answer/16428929" rel="noopener noreferrer">Destination not crawlable</a> covers sites that block crawling of most or all of the site, including with robots.txt. <a href="https://support.google.com/adspolicy/answer/16427615" rel="noopener noreferrer">Destination experience</a> covers pages that are unnecessarily difficult to navigate: pop-ups that hide the content, a Back button that does not work, pages that will not load on common browsers, direct downloads, abusive experiences, and ad layouts that miss the Better Ads Standards.</p>
+      <p>A page can fail WCAG and still be approved, and a page can be disapproved with no WCAG failure at all. Read the exact policy in the Google Ads account. AccessBell cannot see that disapproval, and it does not guess it.</p>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="named-title">
+    <div class="container cc-prose">
+      <h2 id="named-title">Fix Ads Compliance Issues Google Names in the Policy</h2>
+      <p>Google’s own help for <a href="https://support.google.com/google-ads/answer/9338593" rel="noopener noreferrer">fixing a disapproved ad</a> says to correct the destination, or point the ad at a different URL that meets the policy, then save so the ad is reviewed again. The work depends on the name of the violation:</p>
+      <ul>
+        <li><strong>Destination not accessible or not crawlable.</strong> The page has to load for people in the targeted location and for AdsBot. That is a hosting, firewall, geo-rule or robots.txt problem. Your developer or host fixes it. A WCAG scan does not.</li>
+        <li><strong>Destination not working.</strong> Fix the URL, the 404, or the “under construction” page. Then resubmit.</li>
+        <li><strong>Destination experience.</strong> Remove pop-ups and interstitials that block the content, restore the Back button, and deal with any abusive-experience or Better Ads issue Google named. AccessBell does not audit page speed or ad layouts.</li>
+      </ul>
+      <p>After the page loads for everyone you are targeting, it still has to work for the people who clicked. That is the next section, and it is the part AccessBell is built for.</p>
+    </div>
+  </section>
+
+  <section class="section-tight section-surface" aria-labelledby="landing-fix-title">
+    <div class="container cc-prose">
+      <h2 id="landing-fix-title">Fix Accessibility Issues on the Landing Page</h2>
+      <p>People who click an ad arrive with a job to do: buy, book, or fill in a form. Missing labels, buttons with no name, images with no alt text, and text with too little contrast stop some of them. Those are WCAG failures. Automated checks find many of them. The W3C’s <a href="https://www.w3.org/WAI/test-evaluate/" rel="noopener noreferrer">overview of evaluating web accessibility</a> is clear that tools find a lot quickly and a person still has to judge the rest, such as whether alt text actually describes the image.</p>
+      <p>To fix accessibility issues on that URL:</p>
+      <ol class="steps-list">
+        <li><strong>Scan the final URL</strong> with the form above. The free scan lists the issues and shows the most severe ones in full.</li>
+        <li><strong>Open the fix.</strong> A <a href="/solutions/page-report">Page Report</a> ($19, one time) or Pro shows the failing code and a corrected example for every issue on the page. <a href="/solutions/automated-fixes">AccessBellFix</a> can apply approved alt text, button names and the page language without a deploy. It is not an overlay, and nothing changes until you approve it.</li>
+        <li><strong>Rescan.</strong> The next scan shows whether the issue is gone. Pro keeps a dated record in the <a href="/solutions/compliance-vault">Compliance Vault</a>.</li>
+      </ol>
+      <p>The Department of Justice’s <a href="https://www.ada.gov/resources/web-guidance/" rel="noopener noreferrer">web guidance</a> says the ADA applies to the goods and services businesses offer online. Fixing the landing page is worth doing whether or not an ad was disapproved. It does not, by itself, clear a Google Ads policy.</p>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="checker-fixes-title">
+    <div class="container cc-prose">
+      <h2 id="checker-fixes-title">A Website Accessibility Checker with Fixes for Campaign URLs</h2>
+      <p>One landing page is rarely the only URL in an account. New offers, new paths and new forms show up every time a campaign changes. A website accessibility checker with fixes is useful here because the free scan is the first look, and <a href="/solutions/continuous-monitoring">continuous accessibility monitoring</a> is what catches the next page.</p>
+      <ul>
+        <li><strong>Free scan.</strong> One public URL, no account. You see how many issues there are and how severe they are.</li>
+        <li><strong>Pro.</strong> ${PLAN.price} per domain per month, or ${PLAN.annualPrice} per year, after a 3-day free trial. Up to {PLAN.urlsPerDomain} URLs per domain, rescanned daily, with email when a new critical or serious issue appears. See <a href="/pricing">pricing</a>.</li>
+        <li><strong>What it is not.</strong> Not an overlay, not a legal compliance guarantee, and not a promise that Google will approve the ad. Read the <a href="/disclaimer">disclaimer</a> and <a href="/methodology">how we test</a>.</li>
+      </ul>
+      <p>Choose the home page, each ad landing page, and every form on the path to purchase. Pages built from the same template share the same code, so one fix often clears the set. <a href="/solutions/url-monitoring">URL monitoring</a> is how you pick up to {PLAN.urlsPerDomain} of them.</p>
+    </div>
+  </section>
+
+  <section class="section-tight section-surface" aria-labelledby="cannot-title">
+    <div class="container cc-prose">
+      <h2 id="cannot-title">What AccessBell Cannot Do About a Disapproved Ad</h2>
+      <ul>
+        <li>It cannot unblock AdsBot, rewrite robots.txt, or remove a country restriction.</li>
+        <li>It cannot remove pop-ups, fix a broken Back button, or judge Better Ads layouts.</li>
+        <li>It cannot file an appeal or tell you the ad will be approved after a rescan.</li>
+        <li>It cannot make the page conform to every WCAG criterion. Keyboard behavior, meaningful alt text and captions still need a person.</li>
+        <li>It is not legal advice, and it does not guarantee you will not face an accessibility claim.</li>
+      </ul>
+      <p>Use it for the part it is built for: find accessibility issues on the website, fix them in the code, and keep checking. Start from <a href="/solutions">all solutions</a> if you want monitoring, fixes and the Compliance Vault as one workflow.</p>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="resubmit-title">
+    <div class="container cc-prose">
+      <h2 id="resubmit-title">How to Fix Ads Compliance Issues Before You Resubmit</h2>
+      <ol class="steps-list">
+        <li><strong>Copy the policy name</strong> from the disapproved ad. Match it to the Google help pages linked above.</li>
+        <li><strong>Fix that cause</strong> with whoever controls the site or the ad. If the URL is wrong, change the final URL. If the crawler is blocked, allow AdsBot.</li>
+        <li><strong>Scan the landing page</strong> and fix accessibility issues that block people who did get through: labels, names, contrast, alt text, page language.</li>
+        <li><strong>Save the ad</strong> so Google reviews it again. Google describes that step in <a href="https://support.google.com/google-ads/answer/9338593" rel="noopener noreferrer">Fix a disapproved ad</a>. AccessBell does not submit the appeal for you.</li>
+        <li><strong>Monitor the URLs</strong> you keep sending traffic to, so the next campaign page does not ship the same barriers.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section-tight section-surface" aria-labelledby="ads-faq">
+    <div class="container">
+      <div class="section-head section-head-left">
+        <h2 id="ads-faq">Fix Ads Compliance Issues: Questions</h2>
+      </div>
+      <Faq items={faqs} />
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="ads-sources">
+    <div class="container cc-prose checker-sources">
+      <h2 id="ads-sources">Sources</h2>
+      <ul>
+        <li><a href="https://support.google.com/adspolicy/answer/6368661" rel="noopener noreferrer">Google Ads: Destination requirements</a></li>
+        <li><a href="https://support.google.com/adspolicy/answer/16428223" rel="noopener noreferrer">Google Ads: Destination not accessible</a></li>
+        <li><a href="https://support.google.com/adspolicy/answer/16427615" rel="noopener noreferrer">Google Ads: Destination experience</a></li>
+        <li><a href="https://support.google.com/adspolicy/answer/16428019" rel="noopener noreferrer">Google Ads: Destination not working</a></li>
+        <li><a href="https://support.google.com/adspolicy/answer/16428929" rel="noopener noreferrer">Google Ads: Destination not crawlable</a></li>
+        <li><a href="https://support.google.com/google-ads/answer/9338593" rel="noopener noreferrer">Google Ads: Fix a disapproved ad or appeal a policy decision</a></li>
+        <li><a href="https://www.w3.org/WAI/test-evaluate/" rel="noopener noreferrer">W3C WAI: Evaluating Web Accessibility Overview</a></li>
+        <li><a href="https://www.ada.gov/resources/web-guidance/" rel="noopener noreferrer">ADA.gov: Guidance on Web Accessibility and the ADA</a></li>
+      </ul>
+      <p>Policy pages change. The descriptions above follow those Google help articles as published when this page was written. This page is not legal advice and not a Google Ads support document. See our <a href="/disclaimer">disclaimer</a>.</p>
+    </div>
+  </section>
+
+  <CtaBand title="Scan the Landing Page, Then Monitor It" text="Run a free WCAG check on the URL your ad uses. When you want the fix for every issue and a daily check, start a 3-day free trial." />
+</BaseLayout>
+<script>
+  import '../../scripts/free-scan.js';
+</script>

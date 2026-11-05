@@ -54,11 +54,15 @@ const faqs: FaqItem[] = [
     q: 'Does AccessBell guarantee legal compliance?',
     a: 'No tool can guarantee legal compliance on its own. AccessBell gives you continuous automated testing, fix guidance and documentation that support a compliance program. See our <a href="/disclaimer">disclaimer</a> for details.',
   },
+  {
+    q: 'Can Pro fix a Google Ads disapproval?',
+    a: 'Pro helps you fix accessibility issues on the landing page and monitor it. A Google Ads disapproval named “Destination not accessible” means the page could not be reached or crawled, which Pro does not fix, and no plan guarantees an ad will be approved. See <a href="/solutions/google-ads-accessibility">how to fix ads compliance issues</a>.',
+  },
 ];
 ---
 <BaseLayout
   title="Pricing - Website Accessibility Checker | AccessBell"
-  description={`Start a 3-day free trial of AccessBell Pro: continuous WCAG monitoring of up to ${PLAN.urlsPerDomain} URLs per domain, unlimited rescans and guided fix suggestions.`}
+  description={`AccessBell Pro is an accessibility monitoring tool: $${PLAN.price} per domain a month or $${PLAN.annualPrice} a year, with continuous WCAG monitoring and guided fixes after a 3-day trial.`}
   breadcrumbs={[{ label: 'Pricing', href: '/pricing' }]}
   schema={[softwareSchema(), faqSchema(faqs)]}
 >
@@ -264,7 +268,15 @@ const faqs: FaqItem[] = [
     </div>
   </section>
 
-  <section class="section section-surface" aria-labelledby="pfaq-title">
+  <section class="section section-surface" aria-labelledby="monitor-tool-title">
+    <div class="container cc-prose">
+      <h2 id="monitor-tool-title">What This Accessibility Monitoring Tool Includes</h2>
+      <p>Pro is continuous accessibility monitoring for up to {PLAN.urlsPerDomain} URLs per domain: a daily scan, an email when a new critical or serious issue appears, and the failing code with a fix. Use it to fix accessibility issues on your website after the free scan, or buy a one-time Page Report or Domain Audit if you only need the detail once.</p>
+      <p>Running Google Ads? A disapproval that says the destination is not accessible is about whether Google can reach the page, not about WCAG. <a href="/solutions/google-ads-accessibility">Fix ads compliance issues</a> starts with the policy Google named. AccessBell then checks the landing page people actually use. It is not an overlay, and it does not guarantee that an ad will be approved or that a site is legally compliant. See the <a href="/disclaimer">disclaimer</a>.</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="pfaq-title">
     <div class="container">
       <div class="section-head">
         <span class="eyebrow">FAQ</span>

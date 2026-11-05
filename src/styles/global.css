@@ -5087,75 +5087,81 @@ h2[tabindex='-1']:focus {
   gap: 8px;
 }
 
-/* ---------- Homepage hero: copy beside a product animation ---------- */
-.hero-split {
+/* ---------- Homepage hero: the free checker is the main action, centered ---------- */
+.hero-scan {
   /* Slide under the floating header (74px tall) so the background reaches the top of the page. */
   margin-top: -74px;
-  padding-block: calc(74px + clamp(40px, 6vw, 88px)) clamp(48px, 6vw, 88px);
+  padding-block: calc(74px + clamp(28px, 4vw, 56px)) clamp(40px, 5vw, 72px);
+  text-align: center;
 }
-.hero-grid {
-  display: grid;
-  gap: 48px;
-  align-items: center;
+.hero-scan h1 {
+  max-width: 16em;
 }
-.hero-split .hero-copy {
-  max-width: 680px;
-  margin-inline: auto;
-}
-.hero-split .lead {
+.hero-scan .lead {
+  max-width: 40rem;
   margin: 0 auto 28px;
-  max-width: 600px;
 }
-.hero-split .scan-form {
-  max-width: 660px;
+.hero-checker {
+  max-width: 960px;
+  margin-inline: auto;
+  text-align: left;
 }
-.hero-split .compliance-row,
-.hero-split .compliance-row ul {
+.hero-checker .scan-form {
+  max-width: none;
+}
+.hero-checker .scan-proof-form,
+.hero-checker .scan-error {
+  margin-inline: auto;
+  text-align: center;
+}
+#check-landing-page .cc-prose {
+  margin-inline: auto;
+  margin-bottom: 20px;
+}
+.hero-scan .scan-form {
+  max-width: none;
+  padding: 10px;
+  box-shadow: var(--shadow-lg), 0 0 0 8px rgb(255 255 255 / 0.72);
+}
+.hero-scan .scan-form input,
+.hero-scan .scan-form select,
+.hero-scan .scan-form .btn {
+  min-height: 60px;
+  font-size: 1.0625rem;
+}
+.hero-scan .compliance-row,
+.hero-scan .compliance-row ul {
   justify-content: center;
 }
-.hero-split .scan-error,
-.hero-split .scan-proof-form {
+.hero-scan .scan-error,
+.hero-scan .scan-proof-form {
   margin-inline: auto;
+  text-align: center;
 }
-.hero-split .scan-proof-form {
-  max-width: 640px;
+.hero-scan .scan-proof-form {
+  max-width: 46rem;
   font-size: 1rem;
   line-height: 1.5;
   color: var(--ink-800);
 }
-@media (min-width: 1000px) {
-  .hero-grid {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 540px);
-    gap: 56px;
+.hero-scan .demo-cta {
+  display: flex;
+  justify-content: center;
+}
+.hero-scan .hd {
+  margin-top: 36px;
+}
+@media (min-width: 860px) {
+  .hero-checker .scan-form {
+    grid-template-columns: minmax(0, 1fr) 190px auto;
   }
-  .hero-split {
-    text-align: left;
+}
+@media (max-width: 859px) {
+  .hero-checker .scan-form {
+    grid-template-columns: 1fr;
   }
-  .hero-split .hero-copy {
-    margin-inline: 0;
-  }
-  .hero-split h1 {
-    margin-inline: 0;
-    font-size: clamp(2.25rem, 3.6vw, 3.25rem);
-  }
-  .hero-split .lead {
-    margin-inline: 0;
-  }
-  .hero-split .scan-form {
-    margin-inline: 0;
-    grid-template-columns: 1fr auto;
-  }
-  .hero-split .scan-form .scan-field {
-    grid-column: 1 / -1;
-  }
-  .hero-split .compliance-row,
-  .hero-split .compliance-row ul {
-    justify-content: flex-start;
-  }
-  .hero-split .scan-error,
-  .hero-split .scan-proof-form {
-    margin-inline: 0;
-    text-align: left;
+  .hero-checker .scan-form .btn {
+    width: 100%;
   }
 }
 

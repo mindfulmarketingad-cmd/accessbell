@@ -22,6 +22,7 @@ const STATIC: Omit<RouteEntry, 'lastmod'>[] = [
   { path: '/pricing', label: 'Pricing', note: 'Pro plan and features', group: 'main' },
   { path: '/solutions/page-report', label: 'Single Page Accessibility Report', note: 'Full issue detail, fixes and a PDF for one page, $19 one-time', group: 'main' },
   { path: '/solutions/domain-audit', label: 'Website Accessibility Audit', note: 'Full audit of up to 500 pages with a PDF evidence pack, $79 one-time', group: 'main' },
+  { path: '/solutions/google-ads-accessibility', label: 'Fix Ads Compliance Issues', note: 'What a Google Ads accessibility disapproval means, and how to check the landing page', group: 'main' },
   { path: '/blog', label: 'Blog', note: 'Accessibility guides and compliance insights', group: 'main' },
   { path: '/comparisons', label: 'Comparisons', note: 'AccessBell compared with other accessibility tools', group: 'main' },
   { path: '/use-cases', label: 'Use Cases', note: 'How customers use AccessBell to monitor accessibility compliance', group: 'main' },
