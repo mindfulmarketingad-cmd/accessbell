@@ -336,12 +336,59 @@ test('token exchange failure surfaces the status', async () => {
   await assert.rejects(exchangeIdToken(SHOP, 't', { apiKey: API_KEY, apiSecret: SECRET }, { fetchImpl: async () => new Response('', { status: 400 }) }), (e) => e.status === 400);
 });
 
-test('theme app embed targets head and loads fix.js with the site key', () => {
+test('theme app embed targets head and loads the bundled fix.js with the site key', () => {
   const liquid = readFileSync(new URL('../shopify/extensions/accessbell-fix/blocks/accessbell-fix.liquid', import.meta.url), 'utf8');
   const schema = JSON.parse(/{% schema %}([\s\S]*){% endschema %}/.exec(liquid)[1]);
   assert.equal(schema.target, 'head');
-  assert.match(liquid, /src="https:\/\/www\.accessbell\.co\/fix\.js" data-site="{{ key \| escape }}"/);
+  assert.match(liquid, /src="\{\{ 'fix\.js' \| asset_url \}\}" data-site="\{\{ key \| escape \}\}" defer/);
   assert.match(liquid, /app\.metafields\.accessbell\.site_key/);
+  assert.match(liquid, /block\.settings\.site_key/);
+  assert.doesNotMatch(liquid, /https?:\/\//);
+  const source = readFileSync(new URL('../public/fix.js', import.meta.url), 'utf8');
+  const asset = readFileSync(new URL('../shopify/extensions/accessbell-fix/assets/fix.js', import.meta.url), 'utf8');
+  const origin = '  var origin = new URL(me.src, location.href).origin;\n';
+  const pinned =
+    "  // Shopify's CDN hosts this file, so the script URL is not the AccessBell API.\n" +
+    "  var origin = 'https://www.accessbell.co';\n";
+  assert.equal(asset, source.replace(origin, pinned));
+  assert.match(asset, /script\[data-site\]\[src\*="\/fix\.js"\]/);
+  const toml = readFileSync(new URL('../shopify/extensions/accessbell-fix/shopify.extension.toml', import.meta.url), 'utf8');
+  assert.match(toml, /handle = "accessbell-fixes"/);
+  assert.match(toml, /type = "theme"/);
+});
+
+test('bundled fix.js calls AccessBell when Shopify hosts the script', async () => {
+  const { runInNewContext } = await import('node:vm');
+  const js = readFileSync(new URL('../shopify/extensions/accessbell-fix/assets/fix.js', import.meta.url), 'utf8');
+  const calls = [];
+  const scriptEl = {
+    src: 'https://cdn.shopify.com/extensions/000/accessbell-fixes/assets/fix.js',
+    getAttribute(name) {
+      return name === 'data-site' ? 'abcdefghij123456' : null;
+    },
+  };
+  const sandbox = {
+    document: {
+      currentScript: scriptEl,
+      documentElement: {},
+      querySelector() {
+        return null;
+      },
+      addEventListener() {},
+    },
+    location: { href: 'https://demo.myshopify.com/' },
+    fetch(url) {
+      calls.push(String(url));
+      return Promise.resolve({ ok: true, json: async () => ({ fixes: [] }) });
+    },
+    setTimeout,
+    clearTimeout,
+    URL,
+  };
+  sandbox.window = sandbox;
+  runInNewContext(js, sandbox, { timeout: 1000 });
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  assert.deepEqual(calls, ['https://www.accessbell.co/api/app/fix?k=abcdefghij123456']);
 });
 
 test('app config declares the mandatory compliance webhooks', () => {
