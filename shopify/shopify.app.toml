@@ -3,7 +3,11 @@
 # client_id comes from the app David creates in the Shopify Dev Dashboard.
 client_id = "5e3af4afc86ca0a67f5a411a6dfa3eaa"
 name = "AccessBell"
-handle = "accessbell"
+# Deployed app handle. Managed Pricing links are
+# /charges/<handle>/pricing_plans. Keep this equal to APP_HANDLE in
+# server/shopify/plans.js. The metafield namespace and theme block name
+# are separate and are not this handle.
+handle = "accessbell-co"
 application_url = "https://www.accessbell.co/shopify"
 embedded = true
 

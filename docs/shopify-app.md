@@ -79,8 +79,11 @@ needed for usage charges or custom discounts, which we don't have.
 
 How it works:
 
-- The "See plans" / "Change plan" button opens Shopify's hosted page
-  `https://admin.shopify.com/store/{handle}/charges/accessbell/pricing_plans`.
+- The "Start a 3-day free trial" / "Change plan" button opens Shopify's hosted page
+  `https://admin.shopify.com/store/{store}/charges/accessbell-co/pricing_plans`.
+  `accessbell-co` is the app handle (`handle` in `shopify/shopify.app.toml`,
+  exported as `APP_HANDLE` in `server/shopify/plans.js`). The store handle and
+  the metafield namespace `accessbell` are different values.
 - The plan is read from `currentAppInstallation.activeSubscriptions`
   (`billing.js`) on every app open and on the `app_subscriptions/update`
   webhook, then written to `app.shopify_shops` and mirrored to
