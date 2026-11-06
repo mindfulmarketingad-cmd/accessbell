@@ -368,6 +368,50 @@ export const INDUSTRIES: Industry[] = [
       { href: 'https://www.w3.org/WAI/WCAG22/Techniques/#pdf', label: 'W3C: PDF Techniques for WCAG 2.2' },
     ],
   },
+  {
+    slug: 'gyms',
+    name: 'Gyms & Fitness',
+    seoTitle: 'Gyms & Fitness Accessibility Checker',
+    description: 'Free gyms and fitness accessibility checker. Scan class booking, membership signup and trainer pages for the WCAG issues ADA website claims often name.',
+    lead: 'Scan your gym or fitness center website with a free Gyms & Fitness accessibility checker. It finds the WCAG failures on class booking, membership signup and trainer pages that can stop someone from joining, and that ADA website complaints often name.',
+    stat: {
+      text: 'Title III of the ADA defines places of public accommodation to include a “gymnasium, health spa, bowling alley, golf course, or other place of exercise or recreation” when the operations of that place affect commerce. 42 U.S.C. § 12181(7)(L).',
+      href: 'https://www.law.cornell.edu/uscode/text/42/12181',
+      label: '42 U.S.C. § 12181(7)(L): a gymnasium, health spa, or other place of exercise or recreation is a public accommodation',
+    },
+    whatIs: [
+      'The gyms and fitness accessibility checker scans the pages a person uses to join and book: the class or schedule widget, the membership signup form, and trainer or class pages. Title III of the ADA defines a place of public accommodation to include a gymnasium, health spa, bowling alley, golf course, or other place of exercise or recreation, when its operations affect commerce. A gym or fitness center open to the public is that kind of place.',
+      'There is no Title III regulation that sets a technical standard for business websites. The Department of Justice, in its March 18, 2022 web guidance, says the ADA applies to the goods, services, privileges and activities that public accommodations offer on the web, and that businesses have flexibility in how they comply. It points to the Web Content Accessibility Guidelines (WCAG) and the Section 508 standards as helpful guidance. The same guidance lists barriers that also show up on gym and fitness sites: poor color contrast, information shown by color alone, images without text alternatives, videos without captions, forms without labels or error messages, and mouse-only navigation. The AccessBell ADA preset tests WCAG 2.1 Level AA. The gyms and fitness accessibility checker shows the automated failures on a public page so the booking and signup path can be fixed, then checked again as the class schedule and forms change.',
+    ],
+    commonIssues: [
+      { title: 'Class and schedule booking widgets', text: 'Class calendars and schedule grids built as clickable boxes often have no keyboard support and no accessible name for each class or day, so a member cannot book without a mouse. The web guidance names mouse-only navigation as a barrier. That is a WCAG 2.1.1 and 4.1.2 failure.' },
+      { title: 'Membership signup forms', text: 'Name, email and membership-plan fields are frequently unlabeled, and an error such as "choose a plan" is not announced. The Department of Justice web guidance calls out inaccessible online forms, including missing labels, unclear instructions and missing error indicators. WCAG 3.3.2 and 3.3.1 cover labels and error identification.' },
+      { title: 'Keyboard traps in modals', text: 'A class-detail modal, promo pop-up or chat window that keeps keyboard focus inside it, with no way to move on, is a keyboard trap. WCAG 2.1.2 requires a keyboard way out. Finding a trap takes a person: Tab into the modal and confirm Tab or Escape leaves it.' },
+      { title: 'Trainer and class images with no text alternative', text: 'Trainer headshots and class photos with empty alt text tell a screen reader user nothing about the person or the class shown. The web guidance says people who are blind will not understand the content and purpose of an image when no text alternative is provided. WCAG 1.1.1 requires a text alternative for an image that conveys information.' },
+      { title: 'Low-contrast "Join now" badges', text: 'A "Join now" or "spots left" label in light text on a bright photo, or on a pale button, is hard to read. The web guidance lists poor color contrast as a barrier, for example light gray text on a light background. WCAG 1.4.3 requires a contrast ratio of at least 4.5:1 for normal-size text and 3:1 for large text.' },
+      { title: 'Third-party booking apps', text: 'Third-party class booking, membership and chat apps add their own markup. One unlabeled button or focus trap in the app is on every page that loads it, and the theme cannot fix code the app owns.' },
+    ],
+    fixNotes: [
+      'Start with the class booking path and the membership form: labels, errors and the confirmation. A person who cannot pick a class or submit the form cannot join.',
+      'Label every field in text, such as "Email" and "Membership plan", and make sure an error says what is wrong and how to fix it. Do not rely on placeholder text or a red border alone.',
+      'Give each informative trainer or class photo a short text alternative, such as the trainer name or the class name. Put "Join now" and similar badges in text that can be read against its background.',
+      'Check booking widgets and modals with the keyboard: Tab to each control, activate it with Enter or Space, and leave calendars and pop-ups with Escape. If focus cannot leave a modal, that is a keyboard trap to fix in the widget.',
+      'Use the code example on an issue, such as a missing label or empty alt text, as the guide for the edit in your own templates. A guided fix suggestion does not change the site by itself and does not make the site conform to WCAG.',
+    ],
+    faqs: [
+      { q: 'Does the ADA apply to my gym website?', a: 'If you operate a gymnasium, health spa, or other place of exercise or recreation and your operations affect commerce, Title III of the ADA lists that place as a public accommodation in 42 U.S.C. § 12181(7)(L). The Department of Justice web guidance says the ADA applies to the goods, services, privileges and activities public accommodations offer on the web, which includes online class booking and membership signup. There is no Title III regulation that names a technical standard for business websites. This is general information, not legal advice.' },
+      { q: 'What should a gyms and fitness accessibility checker look at first?', a: 'The class or schedule booking page, the membership signup form and one trainer or class page. Those are the pages a person needs in order to join and book. Run the free scan above on each public URL, then fix critical and serious issues before the rest of the site. A keyboard trap in a modal is easy to miss in an automated list: Tab into the pop-up and confirm Escape or Tab lets you leave.' },
+      { q: 'Will an overlay make my gym website compliant?', a: 'No. An overlay runs in the browser and does not change the booking widget, membership form, trainer photos or Join now badges. The gyms and fitness accessibility checker shows the failing markup so it can be fixed at the source. Guided fix suggestions and code examples can speed up specific edits, such as missing alt text and unnamed buttons. They do not make a site conform to WCAG on their own, and no tool can guarantee you will not be sued.' },
+      { q: 'Can I scan my class or membership page for free?', a: 'Yes. The scan on this page is free and needs no account. It tests one public URL. To see the failing code and the fix for every issue on that page, buy a <a href="/solutions/page-report">Page Report</a> for $19. A <a href="/solutions/domain-audit">Domain Audit</a> is $79 for up to 500 pages, once. <a href="/app/signup">Pro</a> monitors up to 500 URLs per domain every day and starts with a 3-day free trial, then $29 per domain per month or $199 per domain per year. You add a card at checkout and are not charged until the trial ends. Cancel before then and you will not be charged.' },
+    ],
+    related: ['ada-title-iii-law-for-businesses', 'wcag-2-1-2-no-keyboard-trap', 'wcag-1-4-3-contrast-minimum', 'wcag-1-1-1-non-text-content'],
+    checkers: ['ada-compliance-checker', 'wcag-2-2-aa-checker'],
+    reviewed: new Date('2026-11-06'),
+    sources: [
+      { href: 'https://www.ada.gov/resources/web-guidance/', label: 'ADA.gov: Guidance on Web Accessibility and the ADA (March 18, 2022)' },
+      { href: 'https://www.w3.org/TR/WCAG22/', label: 'W3C: Web Content Accessibility Guidelines (WCAG) 2.2' },
+    ],
+  },
 ];
 
 export const industryPath = (i: Industry) => `/industries/${i.slug}`;

@@ -2,6 +2,14 @@
 
 A running record of shipped pages and conversion changes. One page and one site improvement per entry.
 
+## 2026-11-06
+
+**New page:** `/industries/gyms` — Gyms and fitness accessibility checker. Gyms and fitness centers look for class-booking, membership-form and trainer-page fixes, and that page did not exist. It cites the ADA definition of a gymnasium, health spa, or other place of exercise or recreation in 42 U.S.C. § 12181(7)(L) and ADA.gov web guidance on the goods and services public accommodations offer online, then offers a free scan, the 3-day Pro trial, the $19 Page Report and the $79 Domain Audit.
+
+**Site improvement:** The button call to action (the `CtaBand` used on industry pages and most other pages, without the scan form) now states the trial in full. Pro is a 3-day free trial, then $29 per domain per month or $199 per year. A card is added at checkout, and there is no charge until the trial ends. Canceling before then means no charge. People who do not want a subscription see the $19 Page Report and the $79 Domain Audit in the same band.
+
+**Why:** That band said only “Then $29/mo or $199/year per domain. Cancel anytime,” so the 3-day trial, the card at checkout and the no-charge cancel were easy to miss. Gyms and fitness centers are a Title III place of exercise the industry hub did not cover.
+
 ## 2026-11-05
 
 **New page:** `/industries/law-firms` — Law firm accessibility checker. Law firms look for intake-form, attorney-bio and booking fixes, and that page did not exist. It cites the ADA definition of the office of an accountant or lawyer in 42 U.S.C. § 12181(7)(F) and ADA.gov web guidance on the goods and services public accommodations offer online, then offers a free scan, the 3-day Pro trial, the $19 Page Report and the $79 Domain Audit.

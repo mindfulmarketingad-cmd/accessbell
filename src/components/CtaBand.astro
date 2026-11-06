@@ -1,7 +1,7 @@
 ---
 import ScanForm from './ScanForm.astro';
 import Icon from './Icon.astro';
-import { PLAN } from '../data/pricing';
+import { ONE_TIME, PLAN } from '../data/pricing';
 
 interface Props {
   title?: string;
@@ -36,7 +36,8 @@ const {
             <a class="btn btn-accent btn-lg" href="/app/signup">Start 3-day free trial <Icon name="arrow" /></a>
             <a class="btn btn-outline btn-lg" href="/#scan">Run a free scan</a>
           </div>
-          <p class="cta-note">Then $29/mo or $199/year per domain. Cancel anytime.</p>
+          <p class="cta-note">Pro is a 3-day free trial, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. Cancel before then and you will not be charged.</p>
+          <p class="cta-note">Not ready for a subscription? A <a href={ONE_TIME.pageReport.href}>Page Report</a> is ${ONE_TIME.pageReport.price} for one page, and a <a href={ONE_TIME.domainAudit.href}>Domain Audit</a> is ${ONE_TIME.domainAudit.price} for up to {PLAN.urlsPerDomain} pages.</p>
         </>
       )}
     </div>
