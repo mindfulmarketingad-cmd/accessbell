@@ -1,8 +1,8 @@
 ---
 /**
  * Homepage hero animation: a looping, simplified run of the AccessBell dashboard.
- * Pages are found, scanned, violations are flagged, a fix is suggested, then the
- * daily scheduled scan catches a new issue. Decorative, with a text alternative,
+ * Pages are found, scanned, violations are flagged, an approved fix is applied,
+ * then the daily scheduled scan catches a new issue. Decorative, with a text alternative,
  * a pause button (WCAG 2.2.2) and a still frame for reduced motion.
  */
 import Icon from './Icon.astro';
@@ -14,7 +14,7 @@ const issues = [
   { title: 'Low color contrast', impact: 'serious', label: 'Serious', sc: '1.4.3', level: 'AA', count: 31 },
 ];
 const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-const steps = ['Find pages', 'Scan', 'Flag violations', 'Suggest fixes', 'Monitor daily'];
+const steps = ['Find pages', 'Scan', 'Flag violations', 'Apply a fix', 'Monitor daily'];
 ---
 <figure class="hd" data-hero-demo data-step="3">
   <div
@@ -22,7 +22,7 @@ const steps = ['Find pages', 'Scan', 'Flag violations', 'Suggest fixes', 'Monito
     data-stage
     data-scene="fix"
     role="img"
-    aria-label="Animation of AccessBell at work: it finds the pages on your site, scans them against WCAG 2.2, flags violations such as images missing alt text, suggests the code fix, and rescans every day to catch new issues."
+    aria-label="Animation of AccessBell at work: it finds the pages on your site, scans them against WCAG 2.2, flags issues such as images missing alt text, applies a fix you approve, and rescans every day so you can keep monitoring."
   >
     <div class="hd-layer" aria-hidden="true">
       <div class="hd-card hd-pages">

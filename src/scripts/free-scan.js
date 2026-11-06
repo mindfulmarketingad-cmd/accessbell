@@ -1,8 +1,10 @@
 // Free accessibility checker: submits a URL to /api/scan, runs the checklist
 // animation, then lists the issues found. No sign-up is needed to run it.
 // The most severe issues are shown in full (failing code and fix) as a
-// teaser; the full detail for every issue is what a one-time report adds,
-// and daily monitoring is what a free trial adds.
+// teaser; the full detail for every issue is what a one-time report adds.
+// A free trial adds daily monitoring and fixes the user approves, such as
+// alt text, button names and the page language. Nothing is applied until
+// they approve it.
 // All data is inserted as text, never HTML.
 import { trackFreeScan } from './shared/ads-conversions.js';
 import { countLabel, explainIssue, SEVERITY_HINT, verdictFor, wcagSummary } from './shared/plain-issue.js';
@@ -276,11 +278,11 @@ function pathSplit(trial, url, { compact = false } = {}) {
   });
   return el('div', { class: compact ? 'scan-paths scan-paths-compact' : 'scan-paths' }, [
     el('div', { class: 'scan-path' }, [
-      el('h3', { text: 'Fix it myself with AccessBell Pro' }),
+      el('h3', { text: 'Monitor and fix with AccessBell' }),
       compact
         ? null
-        : el('p', { text: 'The failing code and a guided fix, for this page and up to 500 pages on the domain. 3-day free trial, then $29 per domain per month or $199 per year.' }),
-      el('a', { class: 'btn btn-accent', href: trial, text: 'Fix it myself with AccessBell Pro' }),
+        : el('p', { text: 'Keep watching up to 500 URLs on this domain with scheduled scans and email alerts. Apply fixes you approve, such as alt text, button names and the page language. Nothing is applied until you approve it. This is not an overlay. 3-day free trial, then $29 per domain per month or $199 per year.' }),
+      el('a', { class: 'btn btn-accent', href: trial, text: 'Monitor and fix with AccessBell' }),
     ]),
     el('div', { class: 'scan-path' }, [
       el('h3', { text: "I'd rather have help" }),
@@ -321,7 +323,7 @@ function riskPanel(urgent, url, trial) {
       ),
     ),
     el('div', { class: 'scan-risk-actions' }, [
-      el('a', { href: trial, text: 'Find these on every page with a 3-day free trial' }),
+      el('a', { href: trial, text: 'Monitor these pages and apply fixes you approve' }),
       el('a', { href: '/blog/ada-lawsuit-payouts', text: 'See what real ADA cases cost' }),
     ]),
     el('p', { class: 'scan-risk-note', text: 'Figures come from public sources and vary widely by case and state. They are not a prediction for your site and not legal advice.' }),
@@ -406,7 +408,7 @@ function showResults(r, url, form) {
     el('p', { class: 'scan-verdict-text' }, [el('strong', { text: v.text })]),
     tiles,
     pathSplit(trial, url),
-    el('p', { class: 'scan-proof' }, [proofCount, `Accessibility monitoring tool: up to 500 pages on ${host}, with guided fixes. Cancel anytime. 14-day money-back guarantee.`]),
+    el('p', { class: 'scan-proof' }, [proofCount, `Monitor up to 500 pages on ${host}, and apply fixes you approve, such as alt text and button names. Nothing is applied until you approve it. Cancel anytime. 14-day money-back guarantee.`]),
     el('p', { class: 'scan-verdict-alt' }, [oneTimeLink()]),
     biggest > 1
       ? el('p', { class: 'scan-pattern', text: `The same pattern shows up ${biggest.toLocaleString()} times on this page. On a monitored site, component grouping treats a shared template as one fix, so one template fix can clear every page that uses it.` })
@@ -439,11 +441,11 @@ function showResults(r, url, form) {
         el('span', { text: `Up to 500 pages on ${host}, checked every day` }),
       ]),
     ]),
-    el('p', { text: 'Checkout, forms, and other pages can have problems this page does not. To fix accessibility issues on the rest of the site, Pro shows what to change and checks those pages every day.' }),
+    el('p', { text: 'Checkout, forms, and other pages can have problems this page does not. Pro checks those pages every day, and you can apply the fixes you approve.' }),
     el('div', { class: 'scan-scope-actions' }, [again]),
     el('p', { class: 'scan-cta-note' }, [
-      'The trial covers up to 500 pages on this domain, rescanned every day. Then $29 per domain per month or $199 per year. Cancel before the trial ends and you will not be charged. ',
-      el('a', { href: trial, text: `Start your trial for ${host}` }),
+      'The trial monitors up to 500 pages on this domain, rescanned every day, and lets you apply fixes you approve. Then $29 per domain per month or $199 per year. Cancel before the trial ends and you will not be charged. ',
+      el('a', { href: trial, text: `Monitor and fix ${host}` }),
       '.',
     ]),
   ]);
@@ -460,7 +462,7 @@ function showResults(r, url, form) {
               ...ownerTags(i, r.finalUrl || url),
               // The most urgent problems get a direct route to a plan that fixes them.
               URGENT.has(i.impact)
-                ? el('a', { class: 'scan-fix-link', href: trial }, ['Get the fix', el('span', { class: 'visually-hidden', text: `: ${main.plain.name}. Starts a 3-day free trial with guided fix suggestions for ${host}.` })])
+                ? el('a', { class: 'scan-fix-link', href: trial }, ['Monitor and fix', el('span', { class: 'visually-hidden', text: `: ${main.plain.name}. Starts a 3-day free trial to monitor ${host} and apply fixes you approve.` })])
                 : null,
             ]),
           ]);
@@ -476,7 +478,7 @@ function showResults(r, url, form) {
     ? el('section', { class: 'scan-teaser', 'aria-labelledby': 'scan-teaser-title' }, [
         el('span', { class: 'scan-teaser-kicker', text: 'The biggest problems' }),
         el('h3', { id: 'scan-teaser-title', text: 'What is wrong, and how to fix it' }),
-        el('p', { text: 'The most serious issues, with the code and a fix. A free trial includes this for every issue, on every page.' }),
+        el('p', { text: 'The most serious issues, with the code and a fix. A free trial monitors the rest of the site and lets you apply fixes you approve, such as alt text and button names.' }),
         el(
           'ol',
           { class: 'scan-teaser-list' },
@@ -494,7 +496,7 @@ function showResults(r, url, form) {
           ),
         ),
         el('div', { class: 'scan-teaser-actions' }, [
-          el('a', { class: 'btn btn-accent', href: trial, text: 'Fix it myself with AccessBell Pro' }),
+          el('a', { class: 'btn btn-accent', href: trial, text: 'Monitor and fix with AccessBell' }),
           el('a', { class: 'btn btn-outline', href: `/contact?topic=help&site=${encodeURIComponent(url)}`, text: "I'd rather have help" }),
         ]),
       ])
@@ -544,12 +546,12 @@ function showResults(r, url, form) {
     }
   });
   const cta = el('div', { class: 'scan-cta' }, [
-    el('h3', { text: total ? 'Get the fix for every issue' : 'Check the rest of your site' }),
+    el('h3', { text: total ? 'Monitor this site and apply the fixes you approve' : 'Monitor the rest of the site, and fix what later scans find' }),
     el('ul', {}, [
-      el('li', { text: 'The broken code, and a corrected example, for each issue' }),
-      el('li', { text: 'The whole site, not just this page: up to 500 pages per domain' }),
-      el('li', { text: 'A dated record of what you fixed' }),
-      el('li', { text: 'Daily monitoring, so a new page does not bring the problem back' }),
+      el('li', { text: 'Scheduled scans of up to 500 URLs on this domain, with email when a new critical or serious issue appears' }),
+      el('li', { text: 'Apply approved fixes such as alt text, button names and the page language. Nothing is applied until you approve it. This is not an overlay.' }),
+      el('li', { text: 'The failing code and a corrected example for issues you change in your theme' }),
+      el('li', { text: 'A dated record of each scan and each fix you approve' }),
     ]),
     pathSplit(trial, url, { compact: true }),
     el('div', { class: 'scan-cta-actions' }, [oneTimeLink()]),

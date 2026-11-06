@@ -41,7 +41,7 @@ export const SOLUTIONS: Solution[] = [
     description: 'Continuous website accessibility monitoring with scheduled daily scans of up to 500 pages per domain, email alerts for new serious issues and score history.',
     icon: 'refresh',
     eyebrow: 'Scheduled monitoring',
-    lead: 'Continuous website accessibility monitoring means your site is tested every day, not once a year. AccessBell is an accessibility monitoring tool for that job: it rescans up to 500 pages per domain on a schedule, compares each scan with the last one and emails you when a new critical or serious issue appears, so a bad release is caught in a day instead of in a demand letter. That is continuous accessibility monitoring, not a one-time audit and not an overlay.',
+    lead: 'Continuous website accessibility monitoring means your site is tested every day, not once a year. AccessBell is an accessibility monitoring tool for that job: it rescans up to 500 pages per domain on a schedule, compares each scan with the last one and emails you when a new critical or serious issue appears, so a bad release is caught in a day instead of in a demand letter. That is continuous accessibility monitoring, not a one-time audit and not an overlay. When a scan finds missing alt text, an unnamed button or a missing page language, you approve the text and AccessBellFix applies it. Nothing is applied until you approve it.',
     summary: 'Scheduled daily scans of up to 500 pages per domain, with email alerts when a new critical or serious issue appears.',
     highlights: [
       { title: 'Scheduled daily scans', text: 'Every monitored page on every domain is rescanned once a day, starting at 06:00 UTC, using the settings you chose for that domain.' },
@@ -126,7 +126,7 @@ export const SOLUTIONS: Solution[] = [
     description: 'Accessibility URL monitoring with AccessBell: find pages automatically, choose up to 500 URLs under one domain and rescan them every day for WCAG issues.',
     icon: 'list',
     eyebrow: 'Up to 500 URLs per domain',
-    lead: 'With AccessBell’s URL monitoring, you can monitor up to 500 URLs under one domain for accessibility issues. AccessBell finds the pages on your site, you choose which URLs to monitor, and every one of them is rescanned each day against the WCAG standard you pick. This page explains how URL monitoring works, how to choose the right 500 URLs and how to keep large sites under control.',
+    lead: 'With AccessBell’s URL monitoring, you can monitor up to 500 URLs under one domain for accessibility issues. AccessBell finds the pages on your site, you choose which URLs to monitor, and every one of them is rescanned each day against the WCAG standard you pick. This page explains how URL monitoring works, how to choose the right 500 URLs and how to keep large sites under control. On those URLs you can also apply fixes you approve, such as alt text, button names and the page language. Nothing is applied until you approve it. This is not an overlay.',
     summary: 'Find pages automatically, choose up to 500 URLs under one domain and rescan them every day.',
     highlights: [
       { title: '500 URLs under one domain', text: 'Each domain you add can monitor up to 500 URLs, with its own settings, history and issues.' },
