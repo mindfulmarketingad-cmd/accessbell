@@ -4,7 +4,7 @@ export const SITE = {
   url: 'https://www.accessbell.co',
   tagline: 'Website Accessibility Checker',
   description:
-    'AccessBell is a website accessibility checker that scans your pages against WCAG 2.2, ADA, Section 508 and EN 301 549, then shows you exactly what to fix.',
+    'AccessBell is a website accessibility checker. Scan a public page, then monitor the site and apply fixes you approve. Not an overlay.',
   email: 'hello@accessbell.co',
   locale: 'en_US',
   ogImage: '/og-default.png',

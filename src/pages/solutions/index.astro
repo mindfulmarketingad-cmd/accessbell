@@ -13,7 +13,7 @@ const url = `${SITE.url}${PATH}`;
 const faqs = [
   { q: 'What does AccessBell do after the first scan?', a: 'Three things. It monitors your pages every day and emails you about new serious issues, it helps you fix issues with corrected code and AccessBellFix, and it records every scan and fix in the Compliance Vault so you can show your work.' },
   { q: 'Do I need every solution?', a: 'They are all included in one plan and work best together. Monitoring finds problems on up to 500 URLs per domain, fixes close them and the vault proves it. You can use whichever parts you need.' },
-  { q: 'Can I try these before paying?', a: 'Yes. Run a free one-page scan with no account, or start a 3-day free trial to monitor your whole domain.' },
+  { q: 'Can I try these before paying?', a: 'Yes. Run a free one-page scan with no account, or start a 3-day free trial to monitor your domain and apply fixes you approve.' },
   { q: 'Is AccessBell an accessibility overlay?', a: 'No. AccessBell finds issues in your code so they can be fixed at the source. The optional AccessBellFix script only applies fixes you approve for specific elements, and neither it nor any other tool can guarantee legal compliance.' },
 ];
 const schema = [
@@ -44,7 +44,7 @@ const schema = [
           <a class="btn btn-accent" href="/app/signup">Start 3-day free trial <Icon name="arrow" /></a>
           <a class="btn btn-outline" href="/#scan">Run a free scan</a>
         </div>
-        <p class="solution-note"><Icon name="check" /> 3-day free trial <span aria-hidden="true">&middot;</span> Free one-page scan, no account needed</p>
+        <p class="solution-note"><Icon name="check" /> 3-day free trial to monitor and apply approved fixes <span aria-hidden="true">&middot;</span> Free one-page scan, no account needed</p>
       </div>
       <DemoPlayer />
     </div>
@@ -144,5 +144,5 @@ const schema = [
     </div>
   </section>
 
-  <CtaBand title="Try AccessBell on Your Own Site" text="Start a 3-day free trial to monitor every page on your domain, or run a free one-page WCAG check first with no sign-up." />
+  <CtaBand title="Scan, Then Monitor and Fix" text="Start a 3-day free trial to monitor up to 500 URLs per domain and apply fixes you approve, or run a free one-page scan first with no sign-up." />
 </BaseLayout>

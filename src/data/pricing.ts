@@ -7,8 +7,8 @@ export const PLAN = {
   annualCtaHref: '/app/signup?plan=annual',
   currency: 'USD',
   urlsPerDomain: 500,
-  blurb: 'Continuous WCAG monitoring and guided fix suggestions for every domain you run.',
-  highlights: ['Up to 500 URLs per domain', 'Unlimited rescans', 'Guided fix suggestions', 'Email support'],
+  blurb: 'Scheduled monitoring for every domain you run, and fixes you approve, such as alt text and button names.',
+  highlights: ['Up to 500 URLs per domain', 'Unlimited rescans', 'Approved fixes, such as alt text and button names', 'Email support'],
   cta: 'Start 3-day free trial',
   ctaHref: '/app/signup',
 } as const;

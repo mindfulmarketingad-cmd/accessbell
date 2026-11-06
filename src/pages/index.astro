@@ -231,11 +231,11 @@ const wcagRows: { label: string; flag?: 'us' | 'eu' | 'gb' | 'ca'; cells: string
 const faqs: FaqItem[] = [
   {
     q: 'What is a website accessibility checker?',
-    a: 'A website accessibility checker is a tool that scans the code of a web page and flags barriers for people with disabilities, such as missing alt text, unlabeled form fields and missing page language. AccessBell maps every finding to the relevant WCAG success criterion and explains how to fix it.',
+    a: 'A website accessibility checker scans a web page and flags barriers for people with disabilities, such as missing alt text, unlabeled form fields and a missing page language. AccessBell maps every finding to the relevant WCAG success criterion and shows how to fix it. The free scan covers one public page. You can then monitor the site on a schedule, and apply fixes you approve, such as alt text, button names and the page language. Nothing is applied until you approve it.',
   },
   {
     q: 'Is the AccessBell accessibility checker free?',
-    a: 'Yes. You can scan any public page for free with no account and see how many issues it has and how severe they are, with the most severe issues shown in full. To see each issue and its fix, get a one-time <a href="/solutions/page-report">Page Report</a> or <a href="/solutions/domain-audit">Domain Audit</a>, or subscribe to Pro. Pro starts with a 3-day free trial, then $29 per domain per month or $199 per domain per year. You add a card at checkout and are not charged until the trial ends. Pro adds domain crawling, continuous monitoring, guided fix suggestions, reports and team features.',
+    a: 'Yes. You can scan any public page for free with no account and see how many issues it has and how severe they are, with the most severe issues shown in full. To see each issue and its fix, get a one-time <a href="/solutions/page-report">Page Report</a> or <a href="/solutions/domain-audit">Domain Audit</a>, or subscribe to Pro. Pro starts with a 3-day free trial, then $29 per domain per month or $199 per domain per year. You add a card at checkout and are not charged until the trial ends. Pro adds domain crawling, continuous monitoring of up to 500 URLs per domain, fixes you approve (such as alt text, button names and the page language), reports and team features. Nothing is applied until you approve it.',
   },
   {
     q: 'Which accessibility standards does AccessBell check?',
@@ -259,7 +259,7 @@ const faqs: FaqItem[] = [
   },
   {
     q: 'Is AccessBell an accessibility monitoring tool?',
-    a: 'Yes. The free scan checks one public page. Pro is continuous accessibility monitoring: up to 500 URLs per domain, rescanned every day, with an email when a new critical or serious issue appears. It shows the failing code and a guided fix. It is not an overlay, and it does not guarantee legal compliance.',
+    a: 'Yes. The free scan checks one public page. Pro is continuous accessibility monitoring: up to 500 URLs per domain, rescanned every day, with an email when a new critical or serious issue appears. You can also apply fixes you approve, such as alt text, button names and the page language. Nothing is applied until you approve it. It shows the failing code for issues you change in your theme. It is not an overlay, and it does not guarantee legal compliance.',
   },
   {
     q: 'Can AccessBell fix a Google Ads disapproval?',
@@ -342,17 +342,17 @@ const HUBS = [
   <section class="hero hero-scan" id="scan" aria-labelledby="hero-title">
     <div class="container">
       <h1 id="hero-title">
-        Website Accessibility Checker <span class="accent">- Scan Your Website</span>
+        Website Accessibility Checker <span class="accent">- Scan, Monitor and Fix</span>
       </h1>
       <p class="lead">
-        AccessBell is a website accessibility checker built for <a href="/industries/ecommerce">e-commerce store owners</a>. Paste a product, cart or checkout URL and scan it against WCAG 2.2. The free scan shows how many issues that page has.
+        AccessBell is a website accessibility checker for <a href="/industries/ecommerce">e-commerce store owners</a>. Scan a public page against WCAG 2.2 and see how many issues it has. Then choose to monitor the site, apply fixes you approve (such as alt text, button names and the page language), or both.
       </p>
-      <p class="hero-demand">If a demand letter names missing alt text, unlabeled checkout fields, or buttons with no name, this scan shows whether this page has those barriers. The result is a finding list, not a legal opinion.</p>
       <div class="hero-checker">
         <ScanForm id="hero" buttonLabel="Scan my website">
-          <span slot="proof">Free scan, no account. <a href="/app/signup">Fix it myself with AccessBell Pro</a>, a 3-day free trial, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. <a href="/contact?topic=help">I'd rather have help</a>. 14-day money-back guarantee on the first charge.</span>
+          <span slot="proof">Free scan of one public page, no account. <a href="/app/signup">Monitor and fix with AccessBell Pro</a>: scheduled scans of up to {PLAN.urlsPerDomain} URLs per domain, with email alerts, and fixes you approve, such as alt text, button names and the page language. Nothing is applied until you approve it. This is not an overlay. A 3-day free trial, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. <a href="/contact?topic=help">I'd rather have help</a>. 14-day money-back guarantee on the first charge.</span>
         </ScanForm>
       </div>
+      <p class="hero-demand">If a demand letter names missing alt text, unlabeled checkout fields, or buttons with no name, this scan shows whether this page has those barriers. You can then monitor the site and apply the fixes you approve. The result is a finding list, not a legal opinion.</p>
       <ul class="trust-strip" aria-label="About this checker">
         <li>axe-core in real Chrome</li>
         <li>Not an overlay</li>

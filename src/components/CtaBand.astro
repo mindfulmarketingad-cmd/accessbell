@@ -10,8 +10,8 @@ interface Props {
   withForm?: boolean;
 }
 const {
-  title = 'Find Out if Your Website Is Accessible',
-  text = 'Start a 3-day free trial to monitor every page on your domain, or run a free one-page WCAG check right now with no sign-up.',
+  title = 'Scan a Page, Then Monitor and Fix',
+  text = `The free scan shows the issues on one public page. A 3-day free trial then monitors up to ${PLAN.urlsPerDomain} URLs per domain and lets you apply fixes you approve, such as alt text, button names and the page language. Nothing is applied until you approve it.`,
   withForm = false,
 } = Astro.props;
 ---
@@ -28,7 +28,7 @@ const {
             <li><Icon name="check" />Results in under 30 seconds</li>
             <li><Icon name="check" />Mapped to WCAG success criteria</li>
           </ul>
-          <p class="cta-note">Want every page monitored? <a href="/app/signup">Start a 3-day free trial</a>, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends.</p>
+          <p class="cta-note">Want to monitor the site and apply fixes you approve? <a href="/app/signup">Start a 3-day free trial</a>, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. This is not an overlay.</p>
         </>
       ) : (
         <>
