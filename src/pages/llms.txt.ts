@@ -25,7 +25,7 @@ export const GET: APIRoute = async () => {
     [
       'Product',
       [
-        link('Home and free scanner', '/', 'Scan any public page and see how many WCAG issues it has. No sign-up needed; subscribers see every issue and its fix.'),
+        link('Home', '/', 'Website accessibility monitoring tool. A free scan checks one public page. Pro monitors the site and applies fixes you approve.'),
         link('Pricing', '/pricing', `${PLAN.name} plan: $${PLAN.price} per domain per month or $${PLAN.annualPrice} per domain per year, up to ${PLAN.urlsPerDomain} monitored URLs per domain, 3-day free trial.`),
         link('Methodology', '/methodology', 'How scans work: the axe-core engine, what automated testing covers and what needs manual review.'),
         link('About', '/about'),
@@ -87,7 +87,7 @@ export const GET: APIRoute = async () => {
 
 ${SITE.name} (${SITE.domain}) is a ${SITE.tagline.toLowerCase()}. Key facts:
 
-- The free scanner tests one public page at a time against WCAG 2.2 AA, WCAG 2.1 AA, the ADA, Section 508 or EN 301 549, with no account needed. The free scan shows how many issues were found and their severity; Pro subscribers see each issue, the failing code and the fix.
+- The free scan checks one public page at a time against WCAG 2.2 AA, WCAG 2.1 AA, the ADA, Section 508 or EN 301 549, with no account needed. It shows how many issues were found and their severity. Pro, the monitoring plan, shows each issue, the failing code and the fix.
 - The paid ${PLAN.name} plan costs $${PLAN.price} per domain per month or $${PLAN.annualPrice} per domain per year billed annually, both after a 3-day free trial, with the same features. It monitors up to ${PLAN.urlsPerDomain} URLs per domain with daily rescans, tracks issues over time and emails alerts when new issues appear. You can apply fixes you approve, such as alt text, button names and the page language. Nothing is applied until you approve it. This is not an overlay.
 - Scans run the open-source axe-core engine in a real browser. Automated testing finds many but not all accessibility issues, so every report also lists the WCAG criteria that need manual review.
 - Content on this site explains technical standards and is not legal advice.

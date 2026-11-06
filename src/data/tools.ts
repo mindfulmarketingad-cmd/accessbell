@@ -18,10 +18,10 @@ export type Tool = {
 export const TOOLS: Tool[] = [
   {
     href: '/',
-    keyword: 'Website Accessibility Checker',
+    keyword: 'Website Accessibility Monitoring Tool',
     icon: 'scan',
     tag: 'Free scan',
-    text: 'Scan any public page against WCAG 2.2, 2.1, ADA, Section 508 or EN 301 549 and see every issue it finds in seconds.',
+    text: 'Scan one public page for free against WCAG 2.2, 2.1, ADA, Section 508 or EN 301 549. Pro monitors the site and applies fixes you approve.',
     group: 'scan',
   },
   ...CHECKERS.map((c) => ({

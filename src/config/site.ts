@@ -2,9 +2,9 @@ export const SITE = {
   name: 'AccessBell',
   domain: 'accessbell.co',
   url: 'https://www.accessbell.co',
-  tagline: 'Website Accessibility Checker',
+  tagline: 'Website Accessibility Monitoring Tool',
   description:
-    'AccessBell is a website accessibility checker. Scan a public page, then monitor the site and apply fixes you approve. Not an overlay.',
+    'AccessBell is a website accessibility monitoring tool. Scan a public page, then monitor the site and apply fixes you approve. Not an overlay.',
   email: 'hello@accessbell.co',
   locale: 'en_US',
   ogImage: '/og-default.png',

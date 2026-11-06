@@ -22,9 +22,9 @@ export function softwareSchema() {
   return {
     '@type': 'SoftwareApplication',
     '@id': `${SITE.url}/#software`,
-    name: 'AccessBell Website Accessibility Checker',
+    name: 'AccessBell Website Accessibility Monitoring Tool',
     applicationCategory: 'BusinessApplication',
-    applicationSubCategory: 'Web accessibility testing',
+    applicationSubCategory: 'Website accessibility monitoring',
     operatingSystem: 'Web',
     url: SITE.url,
     description: SITE.description,
@@ -34,7 +34,7 @@ export function softwareSchema() {
       {
         '@type': 'Offer',
         name: `${PLAN.name} plan`,
-        description: `Up to ${PLAN.urlsPerDomain} URLs per domain, daily monitoring, and fixes you approve such as alt text and button names`,
+        description: `Website accessibility monitoring tool: up to ${PLAN.urlsPerDomain} URLs per domain, daily monitoring, and fixes you approve such as alt text, button names and the page language`,
         price: String(PLAN.price),
         priceCurrency: PLAN.currency,
         url: `${SITE.url}/pricing`,
@@ -49,7 +49,7 @@ export function softwareSchema() {
       {
         '@type': 'Offer',
         name: `${PLAN.name} plan, billed annually`,
-        description: `Up to ${PLAN.urlsPerDomain} URLs per domain, daily monitoring, and fixes you approve such as alt text and button names`,
+        description: `Website accessibility monitoring tool: up to ${PLAN.urlsPerDomain} URLs per domain, daily monitoring, and fixes you approve such as alt text, button names and the page language`,
         price: String(PLAN.annualPrice),
         priceCurrency: PLAN.currency,
         url: `${SITE.url}/pricing`,

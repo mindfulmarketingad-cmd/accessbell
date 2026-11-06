@@ -20,7 +20,7 @@ const schema = [
   {
     '@type': 'CollectionPage',
     '@id': `${url}#webpage`,
-    name: 'Website Accessibility Solutions',
+    name: 'Accessibility Monitoring Tool Solutions',
     url,
     isPartOf: { '@id': `${SITE.url}/#website` },
     hasPart: SOLUTIONS.map((s) => ({ '@type': 'WebPage', name: s.h1, url: `${SITE.url}${solutionPath(s)}` })),
@@ -29,8 +29,8 @@ const schema = [
 ];
 ---
 <BaseLayout
-  title="Website Accessibility Solutions | AccessBell"
-  description="AccessBell website accessibility solutions: continuous monitoring, automated fixes with AccessBellFix and a Compliance Vault that documents every issue and fix."
+  title="Accessibility Monitoring Tool Solutions | AccessBell"
+  description="AccessBell is a website accessibility monitoring tool. Daily monitoring, fixes you approve with AccessBellFix, and a Compliance Vault of every scan and fix."
   breadcrumbs={[{ label: 'Solutions', href: PATH }]}
   schema={schema}
 >
@@ -38,8 +38,8 @@ const schema = [
     <div class="container grid-2">
       <div class="solution-hero-copy">
         <span class="eyebrow">Solutions</span>
-        <h1 id="solutions-title">Website Accessibility Solutions</h1>
-        <p class="lead">Find accessibility issues, fix them and prove it. AccessBell’s website accessibility solutions combine <a href="/solutions/continuous-monitoring">continuous monitoring</a>, <a href="/solutions/automated-fixes">automated fixes with AccessBellFix</a> and a <a href="/solutions/compliance-vault">Compliance Vault</a> that documents every issue and fix.</p>
+        <h1 id="solutions-title">Accessibility Monitoring Tool Solutions</h1>
+        <p class="lead">AccessBell is a website accessibility monitoring tool. These solutions combine <a href="/solutions/continuous-monitoring">continuous monitoring</a>, <a href="/solutions/automated-fixes">fixes you approve with AccessBellFix</a> and a <a href="/solutions/compliance-vault">Compliance Vault</a> that documents every issue and fix.</p>
         <div class="solution-cta">
           <a class="btn btn-accent" href="/app/signup">Start 3-day free trial <Icon name="arrow" /></a>
           <a class="btn btn-outline" href="/#scan">Run a free scan</a>
