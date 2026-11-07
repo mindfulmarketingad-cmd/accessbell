@@ -89,7 +89,7 @@ const og = `
     <span style="font-size:40px;font-weight:700;letter-spacing:-1px">Access<span style="color:#84B082">Bell</span></span>
   </div>
   <div style="position:relative">
-    <div style="font-size:26px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#84B082;margin-bottom:18px">Website Accessibility Checker</div>
+    <div style="font-size:22px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#84B082;margin-bottom:18px">Website Accessibility Monitoring Tool</div>
     <div style="font-size:68px;font-weight:700;line-height:1.08;letter-spacing:-2px;max-width:960px">Find out if your website is accessible and compliant</div>
   </div>
   <div style="display:flex;gap:14px;position:relative;font-size:22px;font-weight:600">

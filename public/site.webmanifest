@@ -1,7 +1,7 @@
 {
-  "name": "AccessBell - Website Accessibility Checker",
+  "name": "AccessBell - Website Accessibility Monitoring Tool",
   "short_name": "AccessBell",
-  "description": "Scan your website against WCAG 2.2, ADA and Section 508.",
+  "description": "Scan a public page, then monitor the site and apply fixes you approve. Not an overlay.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

@@ -61,15 +61,15 @@ const faqs: FaqItem[] = [
 ];
 ---
 <BaseLayout
-  title="Pricing - Website Accessibility Checker | AccessBell"
-  description={`AccessBell Pro monitors up to ${PLAN.urlsPerDomain} URLs and applies fixes you approve. Nothing is applied until you approve it. $${PLAN.price} per domain a month or $${PLAN.annualPrice} a year after a 3-day trial.`}
+  title="Website Accessibility Monitoring Tool Pricing"
+  description={`Website accessibility monitoring tool. $${PLAN.price} per domain a month or $${PLAN.annualPrice} a year after a 3-day trial. Fixes apply only after you approve them. Not an overlay.`}
   breadcrumbs={[{ label: 'Pricing', href: '/pricing' }]}
   schema={[softwareSchema(), faqSchema(faqs)]}
 >
   <section class="page-hero page-hero-center" aria-labelledby="pricing-title">
     <div class="container">
       <h1 id="pricing-title">
-        <span class="h1-kicker">Website Accessibility Checker Pricing</span>
+        <span class="h1-kicker">Website Accessibility Monitoring Tool Pricing</span>
         Scan, Then <span class="accent">Monitor and Fix</span>
       </h1>
       <p class="lead">Pro monitors up to {PLAN.urlsPerDomain} URLs per domain and lets you apply fixes you approve, such as alt text, button names and the page language. Nothing is applied until you approve it. This is not an overlay. ${PLAN.price} per domain per month, or ${PLAN.annualPrice} per year, after a 3-day free trial. You add a card at checkout and are not charged until the trial ends. Cancel before then and you will not be charged.</p>

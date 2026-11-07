@@ -258,7 +258,7 @@ const faqs: FaqItem[] = [
     a: 'Scan at least weekly and after every major release. Websites change constantly, and new content is the most common source of regressions. The Pro plan monitors your pages continuously and includes unlimited rescans.',
   },
   {
-    q: 'Is AccessBell an accessibility monitoring tool?',
+    q: 'Is AccessBell a website accessibility monitoring tool?',
     a: 'Yes. The free scan checks one public page. Pro is continuous accessibility monitoring: up to 500 URLs per domain, rescanned every day, with an email when a new critical or serious issue appears. You can also apply fixes you approve, such as alt text, button names and the page language. Nothing is applied until you approve it. It shows the failing code for issues you change in your theme. It is not an overlay, and it does not guarantee legal compliance.',
   },
   {
@@ -335,17 +335,18 @@ const HUBS = [
 ];
 ---
 <BaseLayout
-  title="Website Accessibility Checker Free ADA & WCAG Compliance Scan"
-  description="Free website accessibility checker with fixes. Scan any page for WCAG 2.2 and ADA issues, then monitor the site and fix what the scan finds."
+  title="Website Accessibility Monitoring Tool | AccessBell"
+  description="Website accessibility monitoring tool. Scan one page free, then monitor and apply fixes you approve. Nothing is applied until you approve it. Not an overlay."
+  imageAlt="AccessBell - Website Accessibility Monitoring Tool"
   schema={[softwareSchema(), faqSchema(faqs)]}
 >
   <section class="hero hero-scan" id="scan" aria-labelledby="hero-title">
     <div class="container">
       <h1 id="hero-title">
-        Website Accessibility Checker <span class="accent">- Scan, Monitor and Fix</span>
+        Website Accessibility Monitoring Tool <span class="accent">- Scan, Monitor and Fix</span>
       </h1>
       <p class="lead">
-        AccessBell is a website accessibility checker for <a href="/industries/ecommerce">e-commerce store owners</a>. Scan a public page against WCAG 2.2 and see how many issues it has. Then choose to monitor the site, apply fixes you approve (such as alt text, button names and the page language), or both.
+        AccessBell is a website accessibility monitoring tool for <a href="/industries/ecommerce">e-commerce store owners</a>. Scan a public page against WCAG 2.2 and see how many issues it has. Then choose to monitor the site, apply fixes you approve (such as alt text, button names and the page language), or both.
       </p>
       <div class="hero-checker">
         <ScanForm id="hero" buttonLabel="Scan my website">
@@ -353,7 +354,7 @@ const HUBS = [
         </ScanForm>
       </div>
       <p class="hero-demand">If a demand letter names missing alt text, unlabeled checkout fields, or buttons with no name, this scan shows whether this page has those barriers. You can then monitor the site and apply the fixes you approve. The result is a finding list, not a legal opinion.</p>
-      <ul class="trust-strip" aria-label="About this checker">
+      <ul class="trust-strip" aria-label="About this tool">
         <li>axe-core in real Chrome</li>
         <li>Not an overlay</li>
         <li>No legal-compliance guarantee</li>
@@ -476,7 +477,7 @@ const HUBS = [
           <p>The next scan confirms the fix. <a href="/solutions/continuous-monitoring">Continuous accessibility monitoring</a> then watches up to 500 URLs per domain so the next edit does not bring the issue back.</p>
         </article>
       </div>
-      <p class="guide-note">AccessBell is a website accessibility checker with fixes. It does not guarantee legal compliance. A <a href="/solutions/page-report">Page Report is $19</a> for one page, a <a href="/solutions/domain-audit">Domain Audit is $79</a>, and Pro is $29 per domain per month or $199 per year after a 3-day free trial. Publish a <a href="/solutions/live-statement">Live Statement</a> that shows your last scan date. Read the <a href="/disclaimer">disclaimer</a>.</p>
+      <p class="guide-note">AccessBell is a website accessibility monitoring tool. The free scan checks one page. It does not guarantee legal compliance. A <a href="/solutions/page-report">Page Report is $19</a> for one page, a <a href="/solutions/domain-audit">Domain Audit is $79</a>, and Pro is $29 per domain per month or $199 per year after a 3-day free trial. Publish a <a href="/solutions/live-statement">Live Statement</a> that shows your last scan date. Read the <a href="/disclaimer">disclaimer</a>.</p>
     </div>
   </section>
 
@@ -880,7 +881,7 @@ const HUBS = [
     <div class="container">
       <div class="section-head">
         <span class="eyebrow">FAQ</span>
-        <h2 id="faq-title">Website Accessibility Checker Questions</h2>
+        <h2 id="faq-title">Questions About Scans, Monitoring and Fixes</h2>
         <p>Still deciding? Explore our <a href="/solutions">website accessibility solutions</a> or <a href="/about">learn about our approach</a>.</p>
       </div>
       <Faq items={faqs} />
