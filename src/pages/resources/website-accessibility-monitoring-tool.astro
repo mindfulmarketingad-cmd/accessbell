@@ -1,0 +1,307 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import ScanForm from '../../components/ScanForm.astro';
+import SourceList from '../../components/SourceList.astro';
+import { SITE } from '../../config/site';
+import { PLAN, ONE_TIME } from '../../data/pricing';
+import { faqSchema, type FaqItem } from '../../lib/schema';
+
+const PATH = '/resources/website-accessibility-monitoring-tool';
+const UPDATED = '2026-11-10';
+const title = 'Website Accessibility Monitoring Tool Guide | AccessBell';
+const description = 'A website accessibility monitoring tool rechecks pages on a schedule. Use this WCAG-EM checklist for what a tool can flag and what a person must judge.';
+
+const faqs: FaqItem[] = [
+  {
+    q: 'What is a website accessibility monitoring tool?',
+    a: 'It rechecks the same pages on a schedule and shows what changed. A one-time scan is a snapshot. Monitoring is the next scan of those same URLs, compared with the last result. The W3C says evaluation tools help, and that no tool alone can determine if a site meets accessibility standards.',
+  },
+  {
+    q: 'What can a website accessibility monitoring tool not decide?',
+    a: 'Whether alt text describes the image, whether captions match the speech, whether color is the only cue, and whether a keyboard user can finish a task without getting stuck. The W3C says human judgement is required. The Department of Justice says a clean automated report does not mean a site is accessible.',
+  },
+  {
+    q: 'How often should monitoring run?',
+    a: 'The W3C says to evaluate accessibility early and throughout development, and its WCAG-EM overview lists regular monitoring as a reason to evaluate. It does not set a daily or weekly legal minimum. AccessBell Pro rescans monitored URLs once a day and emails owners and admins when a new critical or serious issue appears.',
+  },
+  {
+    q: 'Does AccessBell apply fixes on its own?',
+    a: 'No. Guided fix suggestions show the failing code and a corrected example. AccessBellFix can apply alt text, a button name, or the page language only after you approve that change. Nothing is applied until you approve it. This is not an overlay, and it does not guarantee legal compliance.',
+  },
+  {
+    q: 'What does the Pro trial cost?',
+    a: `Pro is a 3-day free trial, then $${PLAN.price} per domain per month or $${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. Cancel before then and you will not be charged. A <a href="${ONE_TIME.pageReport.href}">Page Report</a> is $${ONE_TIME.pageReport.price} for one page. A <a href="${ONE_TIME.domainAudit.href}">Domain Audit</a> is $${ONE_TIME.domainAudit.price} for up to ${PLAN.urlsPerDomain} pages. Neither renews.`,
+  },
+];
+
+const groups: { legend: string; items: { id: string; label: string }[] }[] = [
+  {
+    legend: '1. Define the scope',
+    items: [
+      { id: 'mc-scope-name', label: 'Name the website, app, or flow you are monitoring.' },
+      { id: 'mc-scope-level', label: 'Name the WCAG version and level (A, AA, or AAA). AccessBell’s default is WCAG 2.2 Level AA.' },
+      { id: 'mc-scope-out', label: 'List what is out of scope, such as a payment page you do not control.' },
+    ],
+  },
+  {
+    legend: '2. Explore the product',
+    items: [
+      { id: 'mc-explore-pages', label: 'List key pages: home, contact, each form, checkout or booking, and one example of each template.' },
+      { id: 'mc-explore-types', label: 'List content types on those pages, including HTML, PDF, and video.' },
+    ],
+  },
+  {
+    legend: '3. Select a sample',
+    items: [
+      { id: 'mc-sample-key', label: 'Include the key pages in the sample. WCAG-EM says to select a representative sample when you cannot evaluate every view.' },
+      { id: 'mc-sample-same', label: 'Keep the same URLs for the next check, so you can compare the new result with the last one.' },
+    ],
+  },
+  {
+    legend: '4. Evaluate the sample',
+    items: [
+      { id: 'mc-contrast', label: 'Check text contrast (WCAG 1.4.3). A tool can flag text below the required ratio. The Department of Justice names poor contrast as a barrier.' },
+      { id: 'mc-color', label: 'Check that meaning is not shown by color alone (WCAG 1.4.1). A person judges this. The Department of Justice’s example is the word “required”, not red text by itself.' },
+      { id: 'mc-alt', label: 'Check images for a text alternative (WCAG 1.1.1). A tool can flag a missing alt attribute. A person checks that the text is short and describes the image.' },
+      { id: 'mc-forms', label: 'Check form labels and errors. A tool can flag a field with no label. A person checks that the error says how to fix it.' },
+      { id: 'mc-keyboard', label: 'Complete the main tasks with a keyboard only. A person checks for traps and a visible focus. The Department of Justice names mouse-only navigation as a barrier.' },
+      { id: 'mc-captions', label: 'Check videos that convey information for captions that match the speech and name the speakers. A person judges accuracy.' },
+      { id: 'mc-zoom', label: 'Confirm the page can be zoomed. A tool can flag a viewport that blocks zoom (WCAG 1.4.4).' },
+      { id: 'mc-headings', label: 'Confirm headings are marked up, not only styled to look big. A tool can flag an empty heading or a skipped level.' },
+      { id: 'mc-clean', label: 'Do not treat a clean automated report as proof the site is accessible. The Department of Justice says a clean report does not necessarily mean that.' },
+    ],
+  },
+  {
+    legend: '5. Report, then monitor',
+    items: [
+      { id: 'mc-record', label: 'Write down the findings and the fixes with the date.' },
+      { id: 'mc-report', label: 'Give visitors a way to report a barrier. The Department of Justice recommends this.' },
+      { id: 'mc-rescan', label: 'Check the same sample again after the site changes. Compare the new result with the last one.' },
+    ],
+  },
+];
+const total = groups.reduce((n, group) => n + group.items.length, 0);
+
+const schema = [
+  {
+    '@type': 'Article',
+    '@id': `${SITE.url}${PATH}#article`,
+    headline: 'Website Accessibility Monitoring Tool: What to Check and How Often',
+    description,
+    datePublished: UPDATED,
+    dateModified: UPDATED,
+    mainEntityOfPage: { '@id': `${SITE.url}${PATH}#webpage` },
+    url: `${SITE.url}${PATH}`,
+    inLanguage: 'en-US',
+    author: { '@id': `${SITE.url}/#organization` },
+    publisher: { '@id': `${SITE.url}/#organization` },
+    image: `${SITE.url}/images/resources/website-accessibility-monitoring-tool.svg`,
+  },
+  faqSchema(faqs),
+];
+---
+<BaseLayout
+  title={title}
+  description={description}
+  ogType="article"
+  article={{ published: `${UPDATED}T00:00:00.000Z`, modified: `${UPDATED}T00:00:00.000Z`, section: 'Resources' }}
+  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: 'Monitoring tool guide', href: PATH }]}
+  schema={schema}
+>
+  <article>
+    <header class="page-hero">
+      <div class="container">
+        <span class="eyebrow">Guide and checklist</span>
+        <h1 id="monitor-title">Website Accessibility Monitoring Tool: What to Check and How Often</h1>
+        <p class="lead">A website accessibility monitoring tool rechecks the same pages on a schedule and shows what changed. AccessBell scans a public page, then monitors up to {PLAN.urlsPerDomain} URLs on a domain and offers guided fix suggestions, such as alt text, button names, and the page language. Nothing is applied until you approve it. It is not an overlay. A scan is a list of findings, not a legal opinion.</p>
+        <p>Last updated <time datetime={UPDATED}>November 10, 2026</time>. The quotes below are from the W3C and the U.S. Department of Justice. Sources are linked in the text and listed at the end.</p>
+        <div class="solution-cta">
+          <a class="btn btn-accent" href="/app/signup">Start 3-day free trial <Icon name="arrow" /></a>
+          <a class="btn btn-outline" href="#check-a-page">Run a free scan</a>
+        </div>
+        <p class="monitor-offer">Pro is a 3-day free trial, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. A <a href={ONE_TIME.pageReport.href}>Page Report</a> is ${ONE_TIME.pageReport.price}. A <a href={ONE_TIME.domainAudit.href}>Domain Audit</a> is ${ONE_TIME.domainAudit.price}.</p>
+      </div>
+    </header>
+
+    <div class="container cc-prose monitor-guide">
+      <section class="monitor-facts" aria-labelledby="key-facts">
+        <h2 id="key-facts">Key Facts for a Website Accessibility Monitoring Tool</h2>
+        <p>Use monitoring when a site keeps changing. The W3C says to evaluate throughout development. A tool assists. A person decides whether the site is accessible.</p>
+        <figure class="monitor-quote">
+          <blockquote cite="https://www.w3.org/WAI/test-evaluate/">
+            <p>No tool alone can determine if a site meets accessibility standards. Knowledgeable human evaluation is required to determine if a site is accessible.</p>
+          </blockquote>
+          <figcaption>
+            W3C Web Accessibility Initiative, <a href="https://www.w3.org/WAI/test-evaluate/">Evaluating Web Accessibility</a>, updated 12 August 2026.
+          </figcaption>
+        </figure>
+        <figure class="monitor-quote">
+          <blockquote cite="https://www.ada.gov/resources/web-guidance/">
+            <p>A “clean” report does not necessarily mean everything is accessible. Also, a report that includes a few errors does not necessarily mean there are accessibility barriers.</p>
+          </blockquote>
+          <figcaption>
+            U.S. Department of Justice, <a href="https://www.ada.gov/resources/web-guidance/">Guidance on Web Accessibility and the ADA</a>, March 18, 2022.
+          </figcaption>
+        </figure>
+      </section>
+
+      <h2 id="what-it-does">What a Website Accessibility Monitoring Tool Does</h2>
+      <p>A single check tells you about one moment. Monitoring repeats the check on a known set of URLs and compares the new result with the previous one. That is the difference between a <a href="/#scan">free one-page scan</a> and <a href="/solutions/continuous-monitoring">continuous monitoring</a>.</p>
+      <p>The W3C’s <a href="https://www.w3.org/WAI/test-evaluate/conformance/wcag-em/">WCAG-EM overview</a> describes a procedure for judging conformance to the <a href="https://www.w3.org/TR/WCAG22/">Web Content Accessibility Guidelines (WCAG) 2.2</a>. WCAG-EM 2.0 was published on 23 July 2026. It is a W3C Group Note. It does not add requirements on top of WCAG. The overview gives five steps:</p>
+      <ol>
+        <li>Define the scope of the evaluation, including the WCAG level (A, AA, or AAA).</li>
+        <li>Explore the product: key pages, key tasks, and the types of content.</li>
+        <li>Select a representative sample when you cannot evaluate every page.</li>
+        <li>Evaluate that sample and record what passed and what failed.</li>
+        <li>Report the findings.</li>
+      </ol>
+      <p>The same overview says you will often want a conformance evaluation in order to regularly monitor a website. Its page was updated on 12 August 2026.</p>
+      <figure>
+        <img
+          src="/images/resources/website-accessibility-monitoring-tool.svg"
+          width="840"
+          height="320"
+          alt="Five WCAG-EM steps in order: 1 define the scope, 2 explore the product, 3 select a sample, 4 evaluate the sample, 5 report the findings. A bar underneath says to rescan the same sample and compare it with the last result."
+        />
+        <figcaption>The five WCAG-EM steps, then a repeat check of the same sample. The steps are also written in the list above. Source: W3C, WCAG-EM overview.</figcaption>
+      </figure>
+      <p>The W3C’s guide to <a href="https://www.w3.org/WAI/test-evaluate/tools/selecting/">selecting evaluation tools</a> (updated 13 May 2024) says some tools check one page and others check a whole site. It also says tools can produce inaccurate results, so they assist an evaluation. They do not finish it.</p>
+
+      <h2 id="cannot-decide">What a Website Accessibility Monitoring Tool Cannot Decide</h2>
+      <p>The Department of Justice’s March 18, 2022 <a href="https://www.ada.gov/resources/web-guidance/">web guidance</a> says businesses open to the public, and state and local governments, have to make the goods, services, and programs they offer online accessible to people with disabilities. The same page says the Department did not then have a regulation setting detailed website standards, and that WCAG and the Section 508 standards are guidance teams can use. The page states that it does not reflect Title II requirements published in the Federal Register on April 24, 2024. Deadlines for state and local government sites are covered in the <a href="/blog/ada-website-compliance-guide">ADA website compliance guide</a>.</p>
+      <p>The guidance names barriers a monitoring routine should keep looking for. It also says automated checkers and overlays need to be used carefully, like a spelling checker. Pair them with a manual check. AccessBell is not an overlay. It reports issues in the page and offers guided fix suggestions. <a href="/methodology">How AccessBell tests</a> separates automated results from items that need a person.</p>
+      <table>
+        <caption>Barriers the Department of Justice names, and what a tool can and cannot decide.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Barrier</th>
+            <th scope="col">WCAG</th>
+            <th scope="col">A tool can flag</th>
+            <th scope="col">A person still judges</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Poor color contrast</th>
+            <td><a href="/resources/wcag/1-4-3-contrast-minimum">1.4.3 Contrast (Minimum)</a></td>
+            <td>Text whose contrast with its background is below the WCAG ratio.</td>
+            <td>Whether text inside an image is still readable.</td>
+          </tr>
+          <tr>
+            <th scope="row">Color as the only cue</th>
+            <td><a href="/resources/wcag/1-4-1-use-of-color">1.4.1 Use of Color</a></td>
+            <td>Little of this is reliable to automate.</td>
+            <td>Whether the meaning is also in text. The DOJ example is the word “required”, not red text alone.</td>
+          </tr>
+          <tr>
+            <th scope="row">Image with no text alternative</th>
+            <td><a href="/resources/wcag/1-1-1-non-text-content">1.1.1 Non-text Content</a></td>
+            <td>An image with no alt attribute.</td>
+            <td>Whether the text is short and describes the image.</td>
+          </tr>
+          <tr>
+            <th scope="row">Video without captions</th>
+            <td><a href="/resources/wcag/1-2-2-captions-prerecorded">1.2.2 Captions (Prerecorded)</a></td>
+            <td>Not a substitute for watching the video.</td>
+            <td>Whether captions exist, match the speech, and name the speakers.</td>
+          </tr>
+          <tr>
+            <th scope="row">Forms that are hard to finish</th>
+            <td><a href="/resources/wcag/4-1-2-name-role-value">4.1.2 Name, Role, Value</a> and <a href="/resources/wcag/3-3-1-error-identification">3.3.1 Error Identification</a></td>
+            <td>A field with no label.</td>
+            <td>Whether the error message explains how to fix it.</td>
+          </tr>
+          <tr>
+            <th scope="row">Mouse-only use</th>
+            <td><a href="/resources/wcag/2-1-1-keyboard">2.1.1 Keyboard</a></td>
+            <td>Some controls with no accessible name.</td>
+            <td>Whether each task works from the keyboard, with no trap and a visible focus.</td>
+          </tr>
+          <tr>
+            <th scope="row">Headings that are only visual</th>
+            <td><a href="/resources/wcag/1-3-1-info-and-relationships">1.3.1 Info and Relationships</a></td>
+            <td>An empty heading or a skipped heading level.</td>
+            <td>Whether the heading text describes that section.</td>
+          </tr>
+          <tr>
+            <th scope="row">Text that cannot be resized</th>
+            <td><a href="/resources/wcag/1-4-4-resize-text">1.4.4 Resize Text</a></td>
+            <td>A viewport that blocks zoom.</td>
+            <td>Whether the page still works when text is larger.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>For a longer split between automated checks and manual testing, see <a href="/blog/automated-vs-manual-accessibility-testing">automated vs manual accessibility testing</a>.</p>
+
+      <h2 id="checklist">Website Accessibility Monitoring Tool Checklist</h2>
+      <p>Work through the five WCAG-EM steps. The ticks stay in this browser. Nothing is sent to AccessBell. This is a planning aid. It is not a conformance claim, and it is not legal advice. See the <a href="/disclaimer">disclaimer</a>.</p>
+      <div data-monitor-checklist>
+        {groups.map((group) => (
+          <fieldset class="monitor-checklist">
+            <legend>{group.legend}</legend>
+            {group.items.map((item) => (
+              <label>
+                <input type="checkbox" id={item.id} />
+                <span>{item.label}</span>
+              </label>
+            ))}
+          </fieldset>
+        ))}
+        <p data-checklist-status role="status">0 of {total} checked on this browser. Nothing is sent to AccessBell.</p>
+        <div class="monitor-actions">
+          <button class="btn btn-outline" type="button" data-checklist-reset>Clear checks on this browser</button>
+        </div>
+      </div>
+      <noscript><p>JavaScript is off, so these ticks are not saved. You can still check them while you read, or print the page. Nothing is sent to AccessBell either way.</p></noscript>
+
+      <h2 id="how-often">How Often a Website Accessibility Monitoring Tool Should Run</h2>
+      <p>The W3C’s evaluation overview says to evaluate accessibility early and throughout development, because problems are easier to fix then. The WCAG-EM overview lists regular monitoring of a website as one reason to evaluate. Neither page sets a number of days between checks.</p>
+      <p>A practical reading of that guidance is: check before you launch, check again when a template, plugin, or campaign changes, and keep a sample that you recheck on a schedule you can keep. A website accessibility monitoring tool is what runs that schedule when the team cannot remember to do it by hand.</p>
+      <p>AccessBell Pro rescans each monitored URL once a day, starting at 06:00 UTC, and emails owners and admins when a new critical or serious issue appears. You can also rescan after a release. The schedule and the alert rule are described in <a href="/solutions/continuous-monitoring">continuous website accessibility monitoring</a> and in <a href="/resources/help-center/scans-and-reports/scheduled-monitoring-and-alerts">scheduled monitoring and alerts</a>.</p>
+
+      <h2 id="accessbell">Using AccessBell as a Website Accessibility Monitoring Tool</h2>
+      <p>The <a href="/#scan">free scan</a> checks one public page. It needs no account. It shows the issues on that page. It does not watch the site tomorrow.</p>
+      <p>Pro monitors up to {PLAN.urlsPerDomain} URLs per domain. Each issue includes the failing code and a guided fix suggestion. You can approve alt text, a button name, or the page language and have AccessBellFix apply that change. Nothing is applied until you approve it. This is not an overlay. Read <a href="/solutions/automated-fixes">how approved fixes work</a>.</p>
+      <p>Pro is a 3-day free trial, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. Cancel before then and you will not be charged. Prices are on the <a href="/pricing">pricing page</a>.</p>
+      <p>If you do not want a subscription, a <a href={ONE_TIME.pageReport.href}>Page Report</a> is ${ONE_TIME.pageReport.price} for one page, with the full issue detail and a PDF. A <a href={ONE_TIME.domainAudit.href}>Domain Audit</a> is ${ONE_TIME.domainAudit.price} for up to {PLAN.urlsPerDomain} pages. Neither one renews, and neither one is a promise that the site conforms to WCAG or the ADA.</p>
+    </div>
+
+    <section class="section-tight" id="check-a-page" aria-labelledby="check-title">
+      <div class="container">
+        <div class="cc-prose">
+          <h2 id="check-title">Check One Page, Then Monitor the Site</h2>
+          <p>Paste a public URL. The free scan lists automated issues on that page. Start a 3-day free trial if you want the same URL, and others on the domain, checked again tomorrow.</p>
+        </div>
+        <div class="hero-checker">
+          <ScanForm id="monitor" buttonLabel="Scan this page">
+            <span slot="proof">Free scan of one public page, no account. <a href="/app/signup">Start a 3-day free trial</a> to monitor up to {PLAN.urlsPerDomain} URLs per domain and apply fixes you approve. Nothing is applied until you approve it. Then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year.</span>
+          </ScanForm>
+        </div>
+      </div>
+    </section>
+
+    <section class="results" id="scan-results" aria-live="polite" aria-busy="false" hidden>
+      <div class="container" data-results></div>
+    </section>
+
+    <section class="section-tight" aria-labelledby="faq-title">
+      <div class="container cc-prose">
+        <h2 id="faq-title">Website Accessibility Monitoring Tool Questions</h2>
+        <Faq items={faqs} />
+      </div>
+    </section>
+
+    <div class="container cc-prose">
+      <SourceList ids={['wai-evaluate', 'wcag-em', 'wai-select-tools', 'wcag22', 'ada-web', 'axe-core']} />
+      <p>Related reading on this site: <a href="/resources">all resources</a>, the <a href="/resources/wcag">WCAG library</a>, and <a href="/blog/wcag-2-2-checklist">the WCAG 2.2 checklist</a>.</p>
+    </div>
+  </article>
+  <CtaBand title="Scan a Page, Then Monitor It" text="Start a 3-day free trial to monitor up to 500 URLs per domain and apply fixes you approve, or run a free one-page scan with no account." />
+</BaseLayout>
+<script>
+  import '../../scripts/free-scan.js';
+  import '../../scripts/monitoring-checklist.js';
+</script>

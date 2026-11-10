@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="320" viewBox="0 0 840 320" role="img" aria-labelledby="title desc">
+  <title id="title">WCAG-EM steps, then monitor</title>
+  <desc id="desc">Five steps: define the scope, explore the product, select a sample, evaluate the sample, and report findings. Then rescan the same sample and compare it with the last result.</desc>
+  <rect width="840" height="320" fill="#f4f8f3"/>
+  <text x="24" y="36" fill="#22262f" font-family="system-ui, Segoe UI, sans-serif" font-size="18" font-weight="700">WCAG-EM steps, then keep monitoring</text>
+  <g font-family="system-ui, Segoe UI, sans-serif" fill="#22262f">
+    <g>
+      <rect x="24" y="56" width="148" height="176" rx="12" fill="#ffffff" stroke="#cfd4ce"/>
+      <circle cx="52" cy="88" r="16" fill="#365c32"/>
+      <text x="52" y="94" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">1</text>
+      <text x="40" y="128" font-size="15" font-weight="700">Define scope</text>
+      <text x="40" y="154" fill="#353a47" font-size="13">Name the product</text>
+      <text x="40" y="174" fill="#353a47" font-size="13">and the WCAG</text>
+      <text x="40" y="194" fill="#353a47" font-size="13">level.</text>
+    </g>
+    <g>
+      <rect x="186" y="56" width="148" height="176" rx="12" fill="#ffffff" stroke="#cfd4ce"/>
+      <circle cx="214" cy="88" r="16" fill="#365c32"/>
+      <text x="214" y="94" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">2</text>
+      <text x="202" y="128" font-size="15" font-weight="700">Explore</text>
+      <text x="202" y="154" fill="#353a47" font-size="13">List key pages</text>
+      <text x="202" y="174" fill="#353a47" font-size="13">and content</text>
+      <text x="202" y="194" fill="#353a47" font-size="13">types.</text>
+    </g>
+    <g>
+      <rect x="348" y="56" width="148" height="176" rx="12" fill="#ffffff" stroke="#cfd4ce"/>
+      <circle cx="376" cy="88" r="16" fill="#365c32"/>
+      <text x="376" y="94" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">3</text>
+      <text x="364" y="128" font-size="15" font-weight="700">Sample</text>
+      <text x="364" y="154" fill="#353a47" font-size="13">Pick pages you</text>
+      <text x="364" y="174" fill="#353a47" font-size="13">can check</text>
+      <text x="364" y="194" fill="#353a47" font-size="13">again.</text>
+    </g>
+    <g>
+      <rect x="510" y="56" width="148" height="176" rx="12" fill="#ffffff" stroke="#cfd4ce"/>
+      <circle cx="538" cy="88" r="16" fill="#365c32"/>
+      <text x="538" y="94" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">4</text>
+      <text x="526" y="128" font-size="15" font-weight="700">Evaluate</text>
+      <text x="526" y="154" fill="#353a47" font-size="13">A tool flags.</text>
+      <text x="526" y="174" fill="#353a47" font-size="13">A person</text>
+      <text x="526" y="194" fill="#353a47" font-size="13">judges the rest.</text>
+    </g>
+    <g>
+      <rect x="672" y="56" width="144" height="176" rx="12" fill="#ffffff" stroke="#cfd4ce"/>
+      <circle cx="700" cy="88" r="16" fill="#365c32"/>
+      <text x="700" y="94" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="700">5</text>
+      <text x="688" y="128" font-size="15" font-weight="700">Report</text>
+      <text x="688" y="154" fill="#353a47" font-size="13">Write down</text>
+      <text x="688" y="174" fill="#353a47" font-size="13">what failed</text>
+      <text x="688" y="194" fill="#353a47" font-size="13">and the fix.</text>
+    </g>
+  </g>
+  <rect x="24" y="252" width="792" height="48" rx="12" fill="#e8f1e7" stroke="#cfd4ce"/>
+  <text x="420" y="282" text-anchor="middle" fill="#22262f" font-family="system-ui, Segoe UI, sans-serif" font-size="16" font-weight="700">Then rescan the same sample and compare it with the last result</text>
+</svg>
