@@ -11,6 +11,8 @@ export const SOURCES = {
   'apg': { label: 'ARIA Authoring Practices Guide', publisher: 'W3C Web Accessibility Initiative', url: 'https://www.w3.org/WAI/ARIA/apg/' },
   'wai-intro': { label: 'Introduction to Web Accessibility', publisher: 'W3C Web Accessibility Initiative', url: 'https://www.w3.org/WAI/fundamentals/accessibility-intro/' },
   'wai-evaluate': { label: 'Evaluating Web Accessibility Overview', publisher: 'W3C Web Accessibility Initiative', url: 'https://www.w3.org/WAI/test-evaluate/' },
+  'wcag-em': { label: 'WCAG-EM Overview: WCAG Evaluation Methodology', publisher: 'W3C Web Accessibility Initiative', url: 'https://www.w3.org/WAI/test-evaluate/conformance/wcag-em/' },
+  'wai-select-tools': { label: 'Selecting Web Accessibility Evaluation Tools', publisher: 'W3C Web Accessibility Initiative', url: 'https://www.w3.org/WAI/test-evaluate/tools/selecting/' },
   'wai-statements': { label: 'Developing an Accessibility Statement', publisher: 'W3C Web Accessibility Initiative', url: 'https://www.w3.org/WAI/planning/statements/' },
   'wai-arrm': { label: 'Accessibility Roles and Responsibilities Mapping (ARRM)', publisher: 'W3C Web Accessibility Initiative', url: 'https://www.w3.org/WAI/planning/arrm/' },
   'axe-core': { label: 'axe-core, the open-source accessibility testing engine', publisher: 'Deque Systems', url: 'https://github.com/dequelabs/axe-core' },

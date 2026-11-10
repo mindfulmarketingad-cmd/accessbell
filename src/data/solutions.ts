@@ -61,7 +61,7 @@ export const SOLUTIONS: Solution[] = [
         h2: 'Why Continuous Website Accessibility Monitoring Matters',
         paras: [
           'A site that passed a test in January can fail in March. A new plugin adds an unlabeled form field, a marketing team uploads images without alt text, a theme update changes the focus styles. None of these are decisions anyone made about accessibility, and a one-time audit cannot catch them.',
-          'The W3C’s overview of evaluating web accessibility treats testing as something you plan for as part of building and maintaining a site, not a single event ([W3C WAI](https://www.w3.org/WAI/test-evaluate/)). Scheduled monitoring is the practical version of that for small teams: a regular, automatic check with a record of the results.',
+          'The W3C’s overview of evaluating web accessibility treats testing as something you plan for as part of building and maintaining a site, not a single event ([W3C WAI](https://www.w3.org/WAI/test-evaluate/)). Scheduled monitoring is the practical version of that for small teams: a regular, automatic check with a record of the results. The [website accessibility monitoring tool guide](/resources/website-accessibility-monitoring-tool) turns the W3C’s WCAG-EM steps into a checklist.',
         ],
       },
       {

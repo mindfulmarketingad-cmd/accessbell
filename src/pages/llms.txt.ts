@@ -64,6 +64,7 @@ export const GET: APIRoute = async () => {
         link('Fix ads compliance issues on ad landing pages', '/solutions/google-ads-accessibility', 'Google Ads destination policies are not a WCAG checklist. Scan the landing page, then fix the accessibility issues in the code.'),
         link('Live Statement', '/solutions/live-statement', 'A public accessibility statement tied to scan dates. Not a legal compliance claim.'),
         link('Shopify checkout accessibility study', '/resources/shopify-checkout-accessibility-study', 'Upcoming study plan. Methodology only. No results.'),
+        link('Website accessibility monitoring tool guide', '/resources/website-accessibility-monitoring-tool', 'WCAG-EM checklist: what a monitoring tool can flag, what a person must judge, and how often to rescan. Sources: W3C and ADA.gov.'),
         link('Comparisons: AccessBell vs other accessibility tools', '/comparisons'),
         ...COMPARISONS.map((c) => link(`${c.name} vs. AccessBell`, comparisonPath(c))),
         ...SOLUTIONS.map((x) => link(x.h1, solutionPath(x))),

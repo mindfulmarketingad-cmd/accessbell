@@ -2,6 +2,16 @@
 
 A running record of shipped pages and conversion changes. One page and one site improvement per entry.
 
+## 2026-11-10
+
+**New page:** `/resources/website-accessibility-monitoring-tool` — Website accessibility monitoring tool guide and checklist. It walks through the five steps in the W3C’s WCAG-EM overview (published 23 July 2026, page updated 12 August 2026), quotes the W3C limit on what a tool can decide and the Department of Justice warning that a clean automated report is not proof of access, and ends in a checklist people can tick in the browser. The free scan, the 3-day Pro trial ($29 per domain per month or $199 per year), the $19 Page Report and the $79 Domain Audit are on the page.
+
+**Site improvement:** The header button on every page now says “Start free trial” and opens the signup page. Pricing stays in the menu. Signup already states the 3-day trial, the price, that no card is taken on the form, and the one-time Page Report and Domain Audit.
+
+**Why:** The old button said “Monitor and fix” and sent people to the long pricing page before they could start a trial. The signup page is where both the subscription and the one-time reports are offered.
+
+**Backlink angle:** A sourced checklist that maps WCAG-EM’s five evaluation steps onto what an automated monitoring tool can flag and what a person still has to judge, with verbatim W3C and ADA.gov lines agencies and journalists can cite.
+
 ## 2026-11-06
 
 **New page:** `/industries/gyms` — Gyms and fitness accessibility checker. Gyms and fitness centers look for class-booking, membership-form and trainer-page fixes, and that page did not exist. It cites the ADA definition of a gymnasium, health spa, or other place of exercise or recreation in 42 U.S.C. § 12181(7)(L) and ADA.gov web guidance on the goods and services public accommodations offer online, then offers a free scan, the 3-day Pro trial, the $19 Page Report and the $79 Domain Audit.
