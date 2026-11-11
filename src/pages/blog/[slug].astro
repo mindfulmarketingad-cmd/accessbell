@@ -7,6 +7,7 @@ import CtaBand from '../../components/CtaBand.astro';
 import AuthorAvatar from '../../components/AuthorAvatar.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
 import { SITE } from '../../config/site';
+import { PLAN, ONE_TIME } from '../../data/pricing';
 import { formatDate, readingTime } from '../../lib/format';
 import { authorPath, authorSchema } from '../../lib/authors';
 import { faqSchema } from '../../lib/schema';
@@ -26,7 +27,7 @@ const { Content, headings } = await render(post);
 const url = `${SITE.url}/blog/${post.id}`;
 const minutes = readingTime(post.body ?? '');
 const { faqs, history } = post.data;
-// ADA and lawsuit posts promote the free ADA compliance checker in a sticky CTA.
+// ADA, compliance, and lawsuit posts keep a mobile trial bar. Every article’s sidebar offers the trial.
 const adaCta = post.data.category === 'Compliance' || /(^|-)(ada|lawsuit)(-|$)/.test(post.id);
 
 const people = await getEntries(post.data.contributors.map((c) => c.author));
@@ -188,27 +189,20 @@ const schema = [
 
       <aside class="article-aside" aria-label="Article tools">
         <TableOfContents headings={toc} variant="aside" />
-        {adaCta ? (
-          <div class="aside-card aside-card-accent">
-            <h2>Free ADA Compliance Checker</h2>
-            <p>Find the issues ADA lawsuits cite, like missing alt text, unlabeled form fields and low contrast. Tested against WCAG 2.1 AA, free, no signup.</p>
-            <a class="btn btn-accent btn-block" href="/tools/ada-compliance-checker">Check my website <Icon name="arrow" /></a>
-          </div>
-        ) : (
-          <div class="aside-card">
-            <h2>Check Your Website</h2>
-            <p>Run our free website accessibility checker to see how many WCAG 2.2 issues your page has.</p>
-            <a class="btn btn-block" href="/#scan">Run a free scan <Icon name="arrow" /></a>
-          </div>
-        )}
+        <div class="aside-card aside-card-accent">
+          <h2>Monitor and fix, not only scan</h2>
+          <p>A free scan lists issues on one page. Pro is a 3-day free trial, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. Nothing is applied until you approve it.</p>
+          <a class="btn btn-accent btn-block" href="/app/signup">Start 3-day free trial <Icon name="arrow" /></a>
+          <p class="aside-card-links"><a href="/#scan">Free scan</a> · <a href={ONE_TIME.pageReport.href}>Page Report, ${ONE_TIME.pageReport.price}</a> · <a href={ONE_TIME.domainAudit.href}>Domain Audit, ${ONE_TIME.domainAudit.price}</a></p>
+        </div>
       </aside>
     </div>
   </article>
 
   {adaCta && (
-    <div class="sticky-cta" role="complementary" aria-label="Free ADA compliance checker">
-      <p><strong>Is your site at risk?</strong> <span>Free ADA check, no signup.</span></p>
-      <a class="btn btn-accent btn-sm" href="/tools/ada-compliance-checker">Check my website</a>
+    <div class="sticky-cta" role="complementary" aria-label="Start a 3-day free trial">
+      <p><strong>3-day free trial.</strong> <span>Then ${PLAN.price} per domain per month, or ${PLAN.annualPrice} per year. No charge until the trial ends.</span></p>
+      <a class="btn btn-accent btn-sm" href="/app/signup">Start free trial</a>
     </div>
   )}
 

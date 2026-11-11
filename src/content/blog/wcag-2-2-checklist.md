@@ -92,3 +92,5 @@ A checker can reliably detect many failures under 1.1.1, 1.3.1, 1.4.3, 2.4.2, 3.
 ## Keep Your Checklist Current
 
 A checklist is only useful if you run it more than once. Every new template, plugin or marketing page is a chance for regressions. Scheduled scans catch the automated failures, and a short manual pass on new templates catches the rest. See how [continuous monitoring plans](/pricing) keep your whole domain checked against WCAG 2.2 AA.
+
+Store owners can use the [WCAG 2.2 checklist for online stores](/resources/wcag-2-2-checklist-for-online-stores). It maps the nine new success criteria onto a product page, a cart, and checkout, with the W3C wording and the ADA.gov position on goods and services offered on the web.
