@@ -1,0 +1,331 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import ScanForm from '../../components/ScanForm.astro';
+import SourceList from '../../components/SourceList.astro';
+import { SITE } from '../../config/site';
+import { PLAN, ONE_TIME } from '../../data/pricing';
+import { faqSchema, type FaqItem } from '../../lib/schema';
+
+const PATH = '/resources/wcag-2-2-checklist-for-online-stores';
+const UPDATED = '2026-11-11';
+const title = 'WCAG 2.2 Checklist for Online Stores | AccessBell';
+const description = 'A WCAG 2.2 checklist for online stores: the nine new success criteria, mapped to product pages, carts, and checkout. Sources from W3C and ADA.gov.';
+
+const faqs: FaqItem[] = [
+  {
+    q: 'What does this WCAG 2.2 checklist add for a store?',
+    a: 'WCAG 2.2 added nine success criteria. Six of them apply at Level A or AA. The W3C published WCAG 2.2 as a Recommendation on 5 October 2023, and it removed success criterion 4.1.1 Parsing. This page maps the six A and AA criteria onto a product page, a cart, and checkout.',
+  },
+  {
+    q: 'Does the ADA require online stores to meet WCAG 2.2?',
+    a: 'The Department of Justice’s March 18, 2022 web guidance says the ADA applies to goods and services that public accommodations offer on the web, and it lists retail stores. That page says the Department does not have a regulation setting detailed website standards. The same page says it does not reflect Title II requirements published on April 24, 2024. Title II covers state and local governments, not a private store. This checklist is not a legal opinion.',
+  },
+  {
+    q: 'Which new criteria show up at checkout?',
+    a: 'Check 2.4.11 so a sticky order summary does not entirely hide the focused field, 2.5.8 so pay and quantity controls are at least 24 by 24 CSS pixels or meet an exception, 3.3.7 so information already entered is filled in or available to select, and 3.3.8 so signing in is not only a memory test or a puzzle.',
+  },
+  {
+    q: 'Can a scan finish this WCAG 2.2 checklist?',
+    a: 'No. The W3C says no tool alone can determine if a site meets accessibility standards. A scan can flag some failures. A person still checks whether focus is hidden, whether a drag has a click alternative, whether help stays in the same order, and whether login avoids a cognitive test. Each criterion’s page in the WCAG library says whether AccessBell has an automated rule for it.',
+  },
+  {
+    q: 'What does the Pro trial cost?',
+    a: `Pro is a 3-day free trial, then $${PLAN.price} per domain per month or $${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. Cancel before then and you will not be charged. A <a href="${ONE_TIME.pageReport.href}">Page Report</a> is $${ONE_TIME.pageReport.price} for one page. A <a href="${ONE_TIME.domainAudit.href}">Domain Audit</a> is $${ONE_TIME.domainAudit.price} for up to ${PLAN.urlsPerDomain} pages. Neither renews.`,
+  },
+];
+
+const criteria: { sc: string; name: string; level: string; href: string; brief: string; store: string }[] = [
+  {
+    sc: '2.4.11',
+    name: 'Focus Not Obscured (Minimum)',
+    level: 'AA',
+    href: '/resources/wcag/2-4-11-focus-not-obscured-minimum',
+    brief: 'Ensure when an item gets keyboard focus, it is at least partially visible.',
+    store: 'A sticky add-to-cart bar, cookie banner, or chat panel is author-created content. Tab to a control and confirm it is not entirely hidden.',
+  },
+  {
+    sc: '2.4.12',
+    name: 'Focus Not Obscured (Enhanced)',
+    level: 'AAA',
+    href: '/resources/wcag/2-4-12-focus-not-obscured-enhanced',
+    brief: 'Ensure when an item gets keyboard focus, it is fully visible.',
+    store: 'Stricter than 2.4.11. No part of the focused control is hidden. Most stores target AA, so this is optional.',
+  },
+  {
+    sc: '2.4.13',
+    name: 'Focus Appearance',
+    level: 'AAA',
+    href: '/resources/wcag/2-4-13-focus-appearance',
+    brief: 'Use a focus indicator of sufficient size and contrast.',
+    store: 'The W3C text asks for an area at least as large as a 2 CSS pixel perimeter, with a 3:1 contrast change, unless an exception applies. Optional at AA.',
+  },
+  {
+    sc: '2.5.7',
+    name: 'Dragging Movements',
+    level: 'AA',
+    href: '/resources/wcag/2-5-7-dragging-movements',
+    brief: 'For any action that involves dragging, provide a simple pointer alternative.',
+    store: 'Reordering cart lines by dragging, or a price filter that only moves by dragging the handle. Offer a single click or tap, unless dragging is essential.',
+  },
+  {
+    sc: '2.5.8',
+    name: 'Target Size (Minimum)',
+    level: 'AA',
+    href: '/resources/wcag/2-5-8-target-size-minimum',
+    brief: 'Ensure targets meet a minimum size or have sufficient spacing around them.',
+    store: 'Quantity steppers, swatches, wishlist icons, and the close control on a mini-cart. At least 24 by 24 CSS pixels, or an exception such as spacing or an equivalent control.',
+  },
+  {
+    sc: '3.2.6',
+    name: 'Consistent Help',
+    level: 'A',
+    href: '/resources/wcag/3-2-6-consistent-help',
+    brief: 'Put help in the same place when it is on multiple pages.',
+    store: 'A phone number, chat, help link, or contact form. If it repeats on the product page, cart, and checkout, it stays in the same relative order.',
+  },
+  {
+    sc: '3.3.7',
+    name: 'Redundant Entry',
+    level: 'A',
+    href: '/resources/wcag/3-3-7-redundant-entry',
+    brief: 'Don’t ask for the same information twice in the same session.',
+    store: 'Email, shipping address, or phone already entered in the same checkout is filled in or available to select, unless re-entry is essential, needed for security, or the old value is no longer valid.',
+  },
+  {
+    sc: '3.3.8',
+    name: 'Accessible Authentication (Minimum)',
+    level: 'AA',
+    href: '/resources/wcag/3-3-8-accessible-authentication-minimum',
+    brief: 'Don’t make people solve, recall, or transcribe something to log in.',
+    store: 'Account login and checkout sign-in. The W3C names password managers and copy and paste as mechanisms that satisfy this. A puzzle as the only method does not.',
+  },
+  {
+    sc: '3.3.9',
+    name: 'Accessible Authentication (Enhanced)',
+    level: 'AAA',
+    href: '/resources/wcag/3-3-9-accessible-authentication-enhanced',
+    brief: 'Don’t make people recognize objects or user-supplied images and media to login.',
+    store: 'Stricter than 3.3.8. Recognizing objects or images the shopper uploaded does not qualify. Optional at AA.',
+  },
+];
+
+const groups: { legend: string; items: { id: string; label: string }[] }[] = [
+  {
+    legend: 'Product page',
+    items: [
+      { id: 'st-focus-product', label: 'With any sticky bar, cookie banner, or chat open, tab to Add to cart. The focused control is not entirely hidden (2.4.11).' },
+      { id: 'st-target-product', label: 'Quantity buttons, swatches, and icon buttons are at least 24 by 24 CSS pixels, or they meet a 2.5.8 exception.' },
+      { id: 'st-drag-product', label: 'A gallery or zoom that uses dragging also works with a single click or tap, unless dragging is essential (2.5.7).' },
+      { id: 'st-help-product', label: 'Help, such as a phone number, chat, or help link, is present in the same relative order you will use on the cart and checkout (3.2.6).' },
+    ],
+  },
+  {
+    legend: 'Cart',
+    items: [
+      { id: 'st-drag-cart', label: 'If shoppers reorder lines by dragging, the same reorder works with a button or another single pointer action that does not drag (2.5.7).' },
+      { id: 'st-focus-cart', label: 'Tab to quantity and remove. A sticky checkout bar does not entirely hide the focused control (2.4.11).' },
+      { id: 'st-target-cart', label: 'Quantity and remove controls meet the 24 by 24 CSS pixel size, or a 2.5.8 exception.' },
+      { id: 'st-help-cart', label: 'Help is in the same relative order as on the product page (3.2.6).' },
+    ],
+  },
+  {
+    legend: 'Checkout and account',
+    items: [
+      { id: 'st-redundant', label: 'Email, address, or phone entered earlier in this checkout is filled in or available to select, unless an exception in 3.3.7 applies.' },
+      { id: 'st-auth', label: 'Signing in allows a password manager and paste, or another method that is not only remembering a password or solving a puzzle (3.3.8).' },
+      { id: 'st-focus-checkout', label: 'Tab through the fields. A sticky order summary does not entirely hide the focused field (2.4.11).' },
+      { id: 'st-target-checkout', label: 'Pay, apply-coupon, and quantity controls meet the 24 by 24 CSS pixel size, or a 2.5.8 exception.' },
+      { id: 'st-help-checkout', label: 'Help on checkout and the account page is in the same relative order as on the rest of the store (3.2.6).' },
+    ],
+  },
+];
+const total = groups.reduce((n, group) => n + group.items.length, 0);
+
+const schema = [
+  {
+    '@type': 'Article',
+    '@id': `${SITE.url}${PATH}#article`,
+    headline: 'WCAG 2.2 Checklist for Online Store Owners',
+    description,
+    datePublished: UPDATED,
+    dateModified: UPDATED,
+    mainEntityOfPage: { '@id': `${SITE.url}${PATH}#webpage` },
+    url: `${SITE.url}${PATH}`,
+    inLanguage: 'en-US',
+    author: { '@id': `${SITE.url}/#organization` },
+    publisher: { '@id': `${SITE.url}/#organization` },
+    image: `${SITE.url}/images/resources/wcag-2-2-checklist-for-online-stores.svg`,
+  },
+  faqSchema(faqs),
+];
+---
+<BaseLayout
+  title={title}
+  description={description}
+  ogType="article"
+  image="/images/resources/wcag-2-2-checklist-for-online-stores.svg"
+  imageAlt="Six WCAG 2.2 Level A and AA checks for an online store: focus not hidden, a click alternative to dragging, 24 by 24 CSS pixel targets, help in the same order, no repeated entry, and authentication that is not only a memory test."
+  article={{ published: `${UPDATED}T00:00:00.000Z`, modified: `${UPDATED}T00:00:00.000Z`, section: 'Resources' }}
+  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: 'WCAG 2.2 checklist for stores', href: PATH }]}
+  schema={schema}
+>
+  <article>
+    <header class="page-hero">
+      <div class="container">
+        <span class="eyebrow">Checklist</span>
+        <h1 id="store-title">WCAG 2.2 Checklist for Online Store Owners</h1>
+        <p class="lead">This WCAG 2.2 checklist is for people who run an online store. It covers the nine success criteria WCAG 2.2 added, and it maps the six Level A and AA criteria onto a product page, a cart, and checkout. AccessBell can scan a public page, then monitor the store and offer guided fix suggestions, such as alt text, a button name, or the page language. Nothing is applied until you approve it. It is not an overlay. A scan is a list of findings, not a legal opinion.</p>
+        <p>Last updated <time datetime={UPDATED}>November 11, 2026</time>. The lines below are from the W3C, the U.S. Department of Justice, and the WebAIM Million. Sources are linked in the text and listed at the end.</p>
+        <div class="solution-cta">
+          <a class="btn btn-accent" href="/app/signup">Start 3-day free trial <Icon name="arrow" /></a>
+          <a class="btn btn-outline" href="#check-a-page">Run a free scan</a>
+        </div>
+        <p class="monitor-offer">Pro is a 3-day free trial, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. A <a href={ONE_TIME.pageReport.href}>Page Report</a> is ${ONE_TIME.pageReport.price}. A <a href={ONE_TIME.domainAudit.href}>Domain Audit</a> is ${ONE_TIME.domainAudit.price}.</p>
+      </div>
+    </header>
+
+    <div class="container cc-prose monitor-guide">
+      <section class="monitor-facts" aria-labelledby="key-facts">
+        <h2 id="key-facts">Key Facts for a Store WCAG 2.2 Checklist</h2>
+        <p>Use these when you need a short, sourced summary. The longer checklist is below.</p>
+        <ul>
+          <li>WCAG 2.2 added nine success criteria and removed 4.1.1 Parsing. The W3C published it as a Recommendation on 5 October 2023.</li>
+          <li>Six of the nine apply at Level A or AA: 2.4.11, 2.5.7, 2.5.8, 3.2.6, 3.3.7, and 3.3.8. The other three are Level AAA.</li>
+          <li>2.5.8 asks for a pointer target of at least 24 by 24 CSS pixels, with exceptions for spacing, an equivalent control, inline text, user-agent controls, and essential presentation.</li>
+          <li>42 U.S.C. § 12181(7)(E) lists a bakery, grocery store, clothing store, hardware store, shopping center, or other sales or rental establishment as a public accommodation.</li>
+          <li>In the WebAIM Million 2025, the average home page had 51 detected errors. Shopify home pages averaged 69.6 (28,181 pages), WooCommerce 75.6 (26,349), and Magento 85.4 (8,623). WebAIM says a higher count next to a technology is not always caused by that technology.</li>
+        </ul>
+        <figure class="monitor-quote">
+          <blockquote cite="https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/">
+            <p>WCAG 2.2 was published as a “W3C Recommendation” web standard on 5 October 2023.</p>
+          </blockquote>
+          <figcaption>
+            W3C Web Accessibility Initiative, <a href="https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/">What’s New in WCAG 2.2</a>. The page says it was updated 5 October 2023.
+          </figcaption>
+        </figure>
+        <figure class="monitor-quote">
+          <blockquote cite="https://www.ada.gov/resources/web-guidance/">
+            <p>For these reasons, the Department has consistently taken the position that the ADA’s requirements apply to all the goods, services, privileges, or activities offered by public accommodations, including those offered on the web.</p>
+          </blockquote>
+          <figcaption>
+            U.S. Department of Justice, <a href="https://www.ada.gov/resources/web-guidance/">Guidance on Web Accessibility and the ADA</a>, March 18, 2022. The page lists retail stores among businesses open to the public. It also says it does not reflect Title II requirements published in the Federal Register on April 24, 2024.
+          </figcaption>
+        </figure>
+      </section>
+
+      <h2 id="nine-criteria">The Nine Criteria on This WCAG 2.2 Checklist</h2>
+      <p>The W3C’s <a href="https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/">What’s New in WCAG 2.2</a> page says WCAG 2.2 provides 9 additional success criteria since WCAG 2.1. The “what to do” lines in the table are the W3C’s brief wording. The store column is where that wording shows up on a catalog, a cart, or checkout. It is not a claim that every store fails these checks. The full text of each criterion is in the <a href="https://www.w3.org/TR/WCAG22/">WCAG 2.2 Recommendation</a> and in the <a href="/resources/wcag">WCAG library</a>.</p>
+      <figure>
+        <img
+          src="/images/resources/wcag-2-2-checklist-for-online-stores.svg"
+          width="840"
+          height="420"
+          alt="Six WCAG 2.2 Level A and AA checks for a store: 2.4.11 focus not entirely hidden by sticky bars, 2.5.7 a click alternative to dragging, 2.5.8 targets at least 24 by 24 CSS pixels, 3.2.6 help in the same order, 3.3.7 do not retype information already entered, and 3.3.8 login that is not only a memory test. The same six are in the table on this page."
+        />
+        <figcaption>The six Level A and AA criteria to check on a store. The three Level AAA criteria are in the table. Source: W3C, What’s New in WCAG 2.2.</figcaption>
+      </figure>
+      <table>
+        <caption>The nine success criteria added in WCAG 2.2, and where each one shows up on a store.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Criterion</th>
+            <th scope="col">Level</th>
+            <th scope="col">W3C: what to do</th>
+            <th scope="col">On a store</th>
+          </tr>
+        </thead>
+        <tbody>
+          {criteria.map((row) => (
+            <tr>
+              <th scope="row"><a href={row.href}>{row.sc} {row.name}</a></th>
+              <td>{row.level}</td>
+              <td>{row.brief}</td>
+              <td>{row.store}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p>Success criterion <a href="/resources/wcag/4-1-1-parsing-obsolete-in-wcag-2-2">4.1.1 Parsing</a> is obsolete and removed from WCAG 2.2. The W3C says the 2.0 and 2.1 criteria are otherwise essentially the same. A store that meets WCAG 2.2 at a level also meets WCAG 2.1 and 2.0 at that level. The general list, including older criteria such as alt text and contrast, is the <a href="/blog/wcag-2-2-checklist">WCAG 2.2 checklist</a>.</p>
+
+      <h2 id="why-stores">Why a Store Is on This WCAG 2.2 Checklist</h2>
+      <p>The statute’s list of public accommodations includes “a bakery, grocery store, clothing store, hardware store, shopping center, or other sales or rental establishment” (<a href="https://www.law.cornell.edu/uscode/text/42/12181">42 U.S.C. § 12181(7)(E)</a>). ADA.gov’s web guidance uses the same idea in plainer words: retail stores and other sales or retail establishments are businesses open to the public, and the Department’s position is that the ADA applies to the goods and services those businesses offer on the web.</p>
+      <p>The same ADA.gov page says the Department of Justice does not have a regulation setting out detailed standards. Businesses can currently choose how they will make online goods and services accessible, and the page names WCAG and the Section 508 standards as helpful guidance. Read that limit next to the Title II note: the March 18, 2022 page does not reflect the state-and-local rule published on April 24, 2024. A private store is not a Title II public entity. This page is not legal advice. See the <a href="/disclaimer">disclaimer</a>.</p>
+      <p>Home-page error counts are a separate fact, and they are not a lawsuit count. The <a href="https://webaim.org/projects/million/2025">WebAIM Million 2025</a> found 50,960,288 distinct accessibility errors across one million home pages, an average of 51 per page. In its technology tables, Shopify averaged 69.6 errors (28,181 home pages), WooCommerce 75.6 (26,349), and Magento 85.4 (8,623). WebAIM says correspondence of additional errors with a technology cannot always be attributed to that technology, and that absence of detected errors does not mean a page is accessible or conformant. Those home pages are not product pages or checkouts. A scan of the pages you actually sell on is the useful next step. Platform starting points are the <a href="/platforms/shopify/accessibility-checker">Shopify accessibility checker</a> and the <a href="/platforms/woocommerce/accessibility-checker">WooCommerce accessibility checker</a>, and the industry page is the <a href="/industries/ecommerce">e-commerce accessibility checker</a>.</p>
+
+      <h2 id="checklist">A WCAG 2.2 Checklist You Can Tick</h2>
+      <p>Tick the Level A and AA items while you move through a product page, the cart, and checkout. The three AAA criteria stay in the table above. They are not in this list, because most stores target AA. The ticks stay in this browser. Nothing is sent to AccessBell. This is a planning aid. It is not a conformance claim.</p>
+      <div data-monitor-checklist data-storage-key="accessbell-store-wcag22-checklist-v1">
+        {groups.map((group) => (
+          <fieldset class="monitor-checklist">
+            <legend>{group.legend}</legend>
+            {group.items.map((item) => (
+              <label>
+                <input type="checkbox" id={item.id} />
+                <span>{item.label}</span>
+              </label>
+            ))}
+          </fieldset>
+        ))}
+        <p data-checklist-status role="status">0 of {total} checked on this browser. Nothing is sent to AccessBell.</p>
+        <div class="monitor-actions">
+          <button class="btn btn-outline" type="button" data-checklist-reset>Clear checks on this browser</button>
+        </div>
+      </div>
+      <noscript><p>JavaScript is off, so these ticks are not saved. You can still check them while you read, or print the page. Nothing is sent to AccessBell either way.</p></noscript>
+
+      <h2 id="person-judges">What This WCAG 2.2 Checklist Still Needs a Person to Judge</h2>
+      <p>The W3C’s <a href="https://www.w3.org/WAI/test-evaluate/">evaluating web accessibility</a> overview says no tool alone can determine if a site meets accessibility standards, and that knowledgeable human evaluation is required. The Department of Justice says a clean automated report does not necessarily mean everything is accessible. Open each criterion in the library to see whether AccessBell runs an automated rule for it. A rule can flag a failure. It cannot decide that the store meets the criterion.</p>
+      <ul>
+        <li><strong>A person checks 2.4.11.</strong> Look at the focused control with the sticky bar, banner, and chat in their real positions. The W3C text is “not entirely hidden due to author-created content.”</li>
+        <li><strong>A person checks 2.5.7.</strong> Complete the drag action with one click or tap and no dragging, unless dragging is essential.</li>
+        <li><strong>A tool can measure some 2.5.8 targets.</strong> A person still checks the exceptions: spacing, an equivalent control on the same page, inline text, a user-agent control, or an essential presentation.</li>
+        <li><strong>A person checks 3.2.6 and 3.3.7.</strong> Compare the order of help across pages, and see whether checkout repeats a value the shopper already entered in the same process.</li>
+        <li><strong>A person checks 3.3.8.</strong> Try a password manager and paste. The W3C lists both as mechanisms that satisfy the criterion. Confirm a puzzle is not the only way in.</li>
+      </ul>
+      <p>Guided fix suggestions in AccessBell cover changes such as alt text, a button name, and the page language. You approve the text, and AccessBellFix can apply that change. Nothing is applied until you approve it. Those suggestions do not by themselves satisfy focus-not-obscured, dragging, target size, consistent help, redundant entry, or accessible authentication. Read <a href="/solutions/automated-fixes">how approved fixes work</a> and <a href="/methodology">how AccessBell tests</a>.</p>
+
+      <h2 id="after-the-list">After the WCAG 2.2 Checklist, Monitor the Store</h2>
+      <p>A catalog changes. A new product photo, a new app, or a theme update can hide focus or shrink a button after this list was ticked. The <a href="/#scan">free scan</a> checks one public page and needs no account. It does not watch the store tomorrow.</p>
+      <p>Pro monitors up to {PLAN.urlsPerDomain} URLs per domain, rescans on a schedule, and emails owners and admins when a new critical or serious issue appears. That is <a href="/solutions/continuous-monitoring">continuous monitoring</a>, plus the guided fixes you approve. Pro is a 3-day free trial, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. Cancel before then and you will not be charged. Prices are on the <a href="/pricing">pricing page</a>.</p>
+      <p>If you do not want a subscription, a <a href={ONE_TIME.pageReport.href}>Page Report</a> is ${ONE_TIME.pageReport.price} for one page, with the full issue detail and a PDF. A <a href={ONE_TIME.domainAudit.href}>Domain Audit</a> is ${ONE_TIME.domainAudit.price} for up to {PLAN.urlsPerDomain} pages. Neither one renews, and neither one is a promise that the store conforms to WCAG or the ADA. A longer view of what a monitoring tool can and cannot decide is the <a href="/resources/website-accessibility-monitoring-tool">website accessibility monitoring tool guide</a>.</p>
+    </div>
+
+    <section class="section-tight" id="check-a-page" aria-labelledby="check-title">
+      <div class="container">
+        <div class="cc-prose">
+          <h2 id="check-title">Check One Store Page, Then Monitor the Rest</h2>
+          <p>Paste a public product, cart, or content URL. The free scan lists automated issues on that page. Start a 3-day free trial if you want that URL, and others on the domain, checked again.</p>
+        </div>
+        <div class="hero-checker">
+          <ScanForm id="store-wcag" buttonLabel="Scan this page">
+            <span slot="proof">Free scan of one public page, no account. <a href="/app/signup">Start a 3-day free trial</a> to monitor up to {PLAN.urlsPerDomain} URLs per domain and apply fixes you approve. Nothing is applied until you approve it. Then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year.</span>
+          </ScanForm>
+        </div>
+      </div>
+    </section>
+
+    <section class="results" id="scan-results" aria-live="polite" aria-busy="false" hidden>
+      <div class="container" data-results></div>
+    </section>
+
+    <section class="section-tight" aria-labelledby="faq-title">
+      <div class="container cc-prose">
+        <h2 id="faq-title">WCAG 2.2 Checklist Questions for Store Owners</h2>
+        <Faq items={faqs} />
+      </div>
+    </section>
+
+    <div class="container cc-prose">
+      <SourceList ids={['new-in-22', 'wcag22', 'ada-web', 'ada-12181', 'webaim-million', 'wai-evaluate']} />
+      <p>Related reading on this site: <a href="/resources">all resources</a>, the <a href="/blog/wcag-2-2-checklist">general WCAG 2.2 checklist</a>, and the <a href="/industries/ecommerce">e-commerce accessibility checker</a>.</p>
+    </div>
+  </article>
+  <CtaBand title="Scan a Store Page, Then Monitor It" text="Start a 3-day free trial to monitor up to 500 URLs per domain and apply fixes you approve, or run a free one-page scan with no account." />
+</BaseLayout>
+<script>
+  import '../../scripts/free-scan.js';
+  import '../../scripts/monitoring-checklist.js';
+</script>

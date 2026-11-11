@@ -18,6 +18,8 @@ export type Industry = {
   checkers: string[];
   /** Extra primary sources listed under the in-body citation. */
   sources?: { href: string; label: string }[];
+  /** Extra guides linked from the related-guides list. */
+  guides?: { href: string; title: string; note: string }[];
   /** When this page's content was last reviewed. Defaults to the shared industry review date. */
   reviewed?: Date;
 };
@@ -56,6 +58,13 @@ export const INDUSTRIES: Industry[] = [
     ],
     related: ['ada-website-compliance-guide', 'best-ada-compliance-software-for-small-businesses', 'ada-demand-letter'],
     checkers: ['ada-compliance-checker', 'wcag-2-2-aa-checker'],
+    guides: [
+      {
+        href: '/resources/wcag-2-2-checklist-for-online-stores',
+        title: 'WCAG 2.2 Checklist for Online Stores',
+        note: 'The nine new WCAG 2.2 success criteria, mapped to product pages, carts, and checkout.',
+      },
+    ],
   },
   {
     slug: 'healthcare',

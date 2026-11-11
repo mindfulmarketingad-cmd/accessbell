@@ -1,9 +1,7 @@
-/** Persists the monitoring checklist in this browser only. Nothing is uploaded. */
-const KEY = 'accessbell-monitoring-checklist-v1';
-
-function readSaved() {
+/** Persists a checklist in this browser only. Nothing is uploaded. */
+function readSaved(key) {
   try {
-    const raw = localStorage.getItem(KEY);
+    const raw = localStorage.getItem(key);
     const parsed = raw ? JSON.parse(raw) : {};
     return parsed && typeof parsed === 'object' ? parsed : {};
   } catch {
@@ -13,9 +11,10 @@ function readSaved() {
 
 export function initMonitoringChecklist(root = document.querySelector('[data-monitor-checklist]')) {
   if (!root) return;
+  const key = root.getAttribute('data-storage-key') || 'accessbell-monitoring-checklist-v1';
   const boxes = [...root.querySelectorAll('input[type="checkbox"]')];
   const status = root.querySelector('[data-checklist-status]');
-  const saved = readSaved();
+  const saved = readSaved(key);
 
   const render = () => {
     const checked = boxes.filter((box) => box.checked).length;
@@ -26,7 +25,7 @@ export function initMonitoringChecklist(root = document.querySelector('[data-mon
     const next = {};
     for (const box of boxes) if (box.checked) next[box.id] = true;
     try {
-      localStorage.setItem(KEY, JSON.stringify(next));
+      localStorage.setItem(key, JSON.stringify(next));
     } catch {
       /* Private browsing can block storage. The ticks still work for this visit. */
     }
@@ -41,7 +40,7 @@ export function initMonitoringChecklist(root = document.querySelector('[data-mon
   root.querySelector('[data-checklist-reset]')?.addEventListener('click', () => {
     for (const box of boxes) box.checked = false;
     try {
-      localStorage.removeItem(KEY);
+      localStorage.removeItem(key);
     } catch {
       /* The boxes are already clear. */
     }

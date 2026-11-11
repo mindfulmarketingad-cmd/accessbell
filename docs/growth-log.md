@@ -2,6 +2,16 @@
 
 A running record of shipped pages and conversion changes. One page and one site improvement per entry.
 
+## 2026-11-11
+
+**New page:** `/resources/wcag-2-2-checklist-for-online-stores` — WCAG 2.2 checklist for online store owners. It lists the nine success criteria WCAG 2.2 added, quotes the W3C publication date (5 October 2023) and the six Level A and AA “what to do” lines, and maps those six onto a product page, a cart, and checkout. It also quotes ADA.gov on goods and services offered on the web, cites 42 U.S.C. § 12181(7)(E), and reports the WebAIM Million 2025 home-page averages for Shopify (69.6), WooCommerce (75.6), and Magento (85.4), with WebAIM’s caveat that a technology’s higher count is not always caused by that technology. The ticks stay in the browser. The free scan, the 3-day Pro trial ($29 per domain per month or $199 per year), the $19 Page Report, and the $79 Domain Audit are on the page.
+
+**Site improvement:** Every blog article’s sidebar now leads with the 3-day Pro trial, the price, and links to the free scan, the $19 Page Report, and the $79 Domain Audit. On ADA, compliance, and lawsuit articles, the mobile bar at the bottom of the screen says the same trial terms and opens signup. It used to send those readers to another free checker.
+
+**Why:** People reading a lawsuit or WCAG article are already past “what is accessibility.” The old sidebar and mobile bar offered only a free scan, so the trial and the one-time reports were easy to miss until the bottom of the page.
+
+**Backlink angle:** A sourced map of the nine WCAG 2.2 success criteria onto product pages, carts, and checkout, with verbatim W3C “what to do” lines, the ADA.gov web position, and the WebAIM Million 2025 store-platform averages that agencies and journalists can cite.
+
 ## 2026-11-10
 
 **New page:** `/resources/website-accessibility-monitoring-tool` — Website accessibility monitoring tool guide and checklist. It walks through the five steps in the W3C’s WCAG-EM overview (published 23 July 2026, page updated 12 August 2026), quotes the W3C limit on what a tool can decide and the Department of Justice warning that a clean automated report is not proof of access, and ends in a checklist people can tick in the browser. The free scan, the 3-day Pro trial ($29 per domain per month or $199 per year), the $19 Page Report and the $79 Domain Audit are on the page.

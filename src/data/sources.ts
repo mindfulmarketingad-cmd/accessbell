@@ -32,6 +32,7 @@ export const SOURCES = {
   'stripe-security': { label: 'Security at Stripe', publisher: 'Stripe', url: 'https://stripe.com/docs/security' },
   'stripe-privacy': { label: 'Stripe Privacy Policy', publisher: 'Stripe', url: 'https://stripe.com/privacy' },
   'ada-web': { label: 'Guidance on Web Accessibility and the ADA', publisher: 'U.S. Department of Justice', url: 'https://www.ada.gov/resources/web-guidance/' },
+  'ada-12181': { label: '42 U.S.C. § 12181 (definitions, including public accommodation)', publisher: 'U.S. Code, via the Legal Information Institute', url: 'https://www.law.cornell.edu/uscode/text/42/12181' },
   'vpat': { label: 'VPAT (Voluntary Product Accessibility Template)', publisher: 'Information Technology Industry Council', url: 'https://www.itic.org/policy/accessibility/vpat' },
   'mdn-script': { label: 'The <script> element', publisher: 'MDN Web Docs', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script' },
   'mdn-aria-label': { label: 'aria-label', publisher: 'MDN Web Docs', url: 'https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-label' },

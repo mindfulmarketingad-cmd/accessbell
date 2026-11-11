@@ -110,6 +110,9 @@ const schema = [
         {checkers.map((c) => (
           <li><a href={checkerPath(c)}>{c.name}</a><span>The free scanner preset for WCAG {c.version} Level {c.level}, for any page.</span></li>
         ))}
+        {(i.guides ?? []).map((guide) => (
+          <li><a href={guide.href}>{guide.title}</a><span>{guide.note}</span></li>
+        ))}
         {related.map((post) => post && (
           <li><a href={postPath(post)}>{post.data.title}</a><span>{post.data.description}</span></li>
         ))}
