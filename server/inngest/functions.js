@@ -1,6 +1,6 @@
 // Inngest background functions: scheduled monitoring with fan-out.
 import { Inngest } from 'inngest';
-import { pagesDueForMonitoring, monitorPage, sendRegressionAlert } from '../app/monitoring.js';
+import { pagesDueForMonitoring, monitorPage, sendRegressionAlert, sendReadyDigests } from '../app/monitoring.js';
 import { startOneTimeAudit, finishOneTimeAudit, failOneTimeAudit } from '../app/one-time.js';
 import { discoverOneTimeUrls, scanOneTimeUrls, aggregateOneTimeReport } from '../one-time-audit.js';
 import { sendReportReadyEmail } from '../app/email-sequences.js';
@@ -181,6 +181,12 @@ export const monitorPageFn = inngest.createFunction(
   },
 );
 
+/** Send each site's regression digest once it has been quiet for a few minutes (one email per account and site). */
+export const sendAlertDigestsFn = inngest.createFunction(
+  { id: 'send-alert-digests', triggers: [{ cron: '*/10 * * * *' }], concurrency: { limit: 1 }, retries: 1 },
+  async ({ step }) => step.run('send', () => sendReadyDigests()),
+);
+
 /** A scan someone started from the dashboard ("Start Scan" or "Re-scan domain") for many pages. */
 export const scanPageFn = inngest.createFunction(
   { id: 'scan-page', triggers: [{ event: 'app/page.scan' }], concurrency: { limit: 3 }, retries: 1 },
@@ -240,6 +246,7 @@ export const functions = [
   shopifyFreeScanFn,
   scheduleMonitoring,
   monitorPageFn,
+  sendAlertDigestsFn,
   scanPageFn,
   oneTimeAuditFn,
   funnelScanFollowupFn,
