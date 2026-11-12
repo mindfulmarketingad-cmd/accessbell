@@ -79,7 +79,7 @@ test('fix.js reports only the site key and a fixed code', () => {
 test('regression alert with nothing to report sends nothing', async () => {
   let called = false;
   const out = await sendRegressionAlert({ accountId: 'a', regressions: [] }, { fetchImpl: () => (called = true) });
-  assert.deepEqual(out, { sent: false });
+  assert.deepEqual(out, { sent: false, queued: false });
   assert.equal(called, false);
 });
 
