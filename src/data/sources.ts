@@ -46,6 +46,13 @@ export const SOURCES = {
   'pdf-lang': { label: 'PDF16: Setting the default language using the /Lang entry in the document catalog', publisher: 'W3C', url: 'https://www.w3.org/WAI/WCAG22/Techniques/pdf/PDF16' },
   'pdf-alt': { label: 'PDF1: Applying text alternatives to images with the Alt entry in PDF documents', publisher: 'W3C', url: 'https://www.w3.org/WAI/WCAG22/Techniques/pdf/PDF1' },
   'gmail-help': { label: 'Gmail Help', publisher: 'Google', url: 'https://support.google.com/mail' },
+  'sqsp-a11y': { label: 'Squarespace Accessibility & Compliance', publisher: 'Squarespace', url: 'https://www.squarespace.com/accessibility' },
+  'sqsp-features': { label: 'Make your site accessible with built-in features', publisher: 'Squarespace Help Center', url: 'https://support.squarespace.com/hc/en-us/articles/215129127-Make-your-site-accessible-with-built-in-features' },
+  'sqsp-inclusive': { label: 'Make your site accessible with inclusive design practices', publisher: 'Squarespace Help Center', url: 'https://support.squarespace.com/hc/en-us/articles/13638524256397-Make-your-site-accessible-with-inclusive-design-practices' },
+  'sqsp-alt': { label: 'Add alt text to images for accessibility and SEO', publisher: 'Squarespace Help Center', url: 'https://support.squarespace.com/hc/en-us/articles/206542357-Add-alt-text-to-images-for-accessibility-and-SEO' },
+  'sqsp-media': { label: 'Making audio, images, and videos more accessible', publisher: 'Squarespace Help Center', url: 'https://support.squarespace.com/hc/en-us/articles/13630857891981-Making-audio-images-and-videos-more-accessible' },
+  'sqsp-vpat': { label: 'Creating a VPAT for your site', publisher: 'Squarespace Help Center', url: 'https://support.squarespace.com/hc/en-us/articles/20776030405517-Creating-a-VPAT-for-your-site' },
+  'ada-2010': { label: '2010 ADA Standards for Accessible Design', publisher: 'U.S. Department of Justice', url: 'https://www.ada.gov/law-and-regs/design-standards/2010-stds/' },
 } as const;
 
 export type SourceId = keyof typeof SOURCES;

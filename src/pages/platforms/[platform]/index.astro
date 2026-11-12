@@ -97,6 +97,9 @@ const schema = [
       {p.slug === 'shopify-accessibility-checker' && (
         <p>A planned review of cart and checkout is outlined in the <a href="/resources/shopify-checkout-accessibility-study">Shopify checkout accessibility study</a>. That page is the method only. It does not report results.</p>
       )}
+      {p.slug === 'squarespace-accessibility-checker' && (
+        <p>Squarespace’s help pages name the editor fields for alt text, headings, focus, and checkout. The <a href="/resources/squarespace-accessibility-checklist">Squarespace accessibility checklist</a> maps those fields to WCAG 2.2 and quotes the help pages.</p>
+      )}
       {ada && (
         <>
           <p>If you are worried about ADA website claims, these are the {p.name} risks to check first, covered in the <a href={platformAdaPath(p)}>{p.name} ADA Compliance Checker</a>:</p>

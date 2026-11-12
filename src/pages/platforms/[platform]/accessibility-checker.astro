@@ -101,6 +101,9 @@ const schema = [
       <ul class="focus-grid">
         {p.commonIssues.map((i) => <li><h3>{i.title}</h3><p>{i.text}</p></li>)}
       </ul>
+      {p.slug === 'squarespace-accessibility-checker' && (
+        <p>Squarespace’s own help pages name where alt text, headings, focus, and checkout labels are set. The <a href="/resources/squarespace-accessibility-checklist">Squarespace accessibility checklist</a> quotes those pages and maps each field to a WCAG 2.2 success criterion.</p>
+      )}
     </section>
 
     <section aria-labelledby="how-scans">
