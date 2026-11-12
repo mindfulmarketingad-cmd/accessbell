@@ -55,6 +55,21 @@ function showTokenForm(message) {
   mount.append(card);
 }
 
+function showLoadFailed() {
+  mount.replaceChildren();
+  const card = document.createElement('div');
+  card.className = 'results-card';
+  card.append(text('h2', 'Your report is safe, it just did not load'));
+  card.append(text('p', 'Your report has not expired or been removed. The page could not reach our server. Check your connection and try again. If it keeps failing, email hello@accessbell.co with this link and we will send you the report as a PDF.'));
+  const again = document.createElement('button');
+  again.type = 'button';
+  again.className = 'btn btn-accent btn-sm';
+  again.textContent = 'Try again';
+  again.addEventListener('click', () => location.reload());
+  card.append(again);
+  mount.append(card);
+}
+
 function showPending(product, hostname, delivery) {
   mount.replaceChildren();
   const card = document.createElement('div');
@@ -199,6 +214,12 @@ function showReport(data) {
     form.append(checkLabel, nameLabel, name, download, hint);
     actions.append(form);
   }
+  const printBtn = document.createElement('button');
+  printBtn.type = 'button';
+  printBtn.className = 'btn btn-outline btn-sm';
+  printBtn.textContent = 'Print or save this page as PDF';
+  printBtn.addEventListener('click', () => window.print());
+  actions.append(printBtn);
   actions.append(link('/app/signup', 'Save this report to your dashboard', 'btn btn-outline btn-sm'));
   actions.append(link('/pricing', 'Keep it monitored with Pro — $29/mo', 'btn btn-outline btn-sm'));
   card.append(actions);
@@ -234,10 +255,17 @@ async function main() {
   }
   mount.replaceChildren(text('p', 'Loading your report…'));
   let res;
-  try {
-    res = await fetch(`/api/one-time-report?token=${token.toLowerCase()}`, { credentials: 'same-origin' });
-  } catch {
-    mount.replaceChildren(text('p', 'The report could not be loaded. Please try again.'));
+  for (let attempt = 0; attempt < 3 && !res; attempt += 1) {
+    try {
+      res = await fetch(`/api/one-time-report?token=${token.toLowerCase()}`, { credentials: 'same-origin', signal: AbortSignal.timeout(30000) });
+      if (res.status >= 500) res = null; // transient server error: retry
+    } catch {
+      res = null;
+    }
+    if (!res && attempt < 2) await new Promise((ok) => setTimeout(ok, 1500 * (attempt + 1)));
+  }
+  if (!res) {
+    showLoadFailed();
     return;
   }
   const data = await res.json().catch(() => ({}));
