@@ -2,6 +2,16 @@
 
 A running record of shipped pages and conversion changes. One page and one site improvement per entry.
 
+## 2026-11-12
+
+**New page:** `/resources/squarespace-accessibility-checklist` — Squarespace accessibility checklist. It quotes Squarespace’s accessibility page (a customized site is not always accessible, and the customer is responsible for compliance), the October 1, 2026 alt-text article (image blocks and auto layouts have no alt text unless you add it; product images fall back to the product name, up to 200 characters; page featured images use the file name), the September 23, 2026 inclusive-design guide (one Heading 1, no fake headings, and a focus outline you cannot recolor or thicken), and the July 15, 2025 VPAT guide (completing a VPAT does not guarantee accessibility). It maps those fields to WCAG 2.2, notes that the 2010 ADA Standards Squarespace links are the facility standards, and quotes ADA.gov’s March 18, 2022 position on goods and services offered on the web. The ticks stay in the browser. The free scan, the 3-day Pro trial ($29 per domain per month or $199 per year), the $19 Page Report, and the $79 Domain Audit are on the page.
+
+**Site improvement:** The line under the scan form on platform, industry, state, and standard checker pages now states the 3-day Pro trial, then $29 per domain per month or $199 per year, that a card is added at checkout and there is no charge until the trial ends, the 14-day money-back guarantee on the first charge, and the $19 Page Report and $79 Domain Audit. It used to say “3-day free trial. Cancel anytime,” with no price and no one-time report.
+
+**Why:** Those forms are where someone who searched for a Squarespace, Shopify, restaurant, or ADA checker is about to scan. The price and the one-time reports were not on that line, so the trial looked open-ended.
+
+**Backlink angle:** A table of the alt-text fallback Squarespace documents for each image type, plus verbatim lines that a customized site is not always accessible, that the customer is responsible, and that a completed VPAT does not guarantee access, set next to the ADA.gov web position and the WCAG criteria those editor fields affect.
+
 ## 2026-11-11
 
 **New page:** `/resources/wcag-2-2-checklist-for-online-stores` — WCAG 2.2 checklist for online store owners. It lists the nine success criteria WCAG 2.2 added, quotes the W3C publication date (5 October 2023) and the six Level A and AA “what to do” lines, and maps those six onto a product page, a cart, and checkout. It also quotes ADA.gov on goods and services offered on the web, cites 42 U.S.C. § 12181(7)(E), and reports the WebAIM Million 2025 home-page averages for Shopify (69.6), WooCommerce (75.6), and Magento (85.4), with WebAIM’s caveat that a technology’s higher count is not always caused by that technology. The ticks stay in the browser. The free scan, the 3-day Pro trial ($29 per domain per month or $199 per year), the $19 Page Report, and the $79 Domain Audit are on the page.

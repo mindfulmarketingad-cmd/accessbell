@@ -66,6 +66,7 @@ export const GET: APIRoute = async () => {
         link('Shopify checkout accessibility study', '/resources/shopify-checkout-accessibility-study', 'Upcoming study plan. Methodology only. No results.'),
         link('Website accessibility monitoring tool guide', '/resources/website-accessibility-monitoring-tool', 'WCAG-EM checklist: what a monitoring tool can flag, what a person must judge, and how often to rescan. Sources: W3C and ADA.gov.'),
         link('WCAG 2.2 checklist for online stores', '/resources/wcag-2-2-checklist-for-online-stores', 'The nine new WCAG 2.2 success criteria, mapped to product pages, carts, and checkout. Sources: W3C, ADA.gov, and WebAIM.'),
+        link('Squarespace accessibility checklist', '/resources/squarespace-accessibility-checklist', 'Squarespace editor fields for alt text, headings, contrast, focus, and checkout, mapped to WCAG 2.2. Sources: Squarespace Help, the W3C, and ADA.gov.'),
         link('Comparisons: AccessBell vs other accessibility tools', '/comparisons'),
         ...COMPARISONS.map((c) => link(`${c.name} vs. AccessBell`, comparisonPath(c))),
         ...SOLUTIONS.map((x) => link(x.h1, solutionPath(x))),

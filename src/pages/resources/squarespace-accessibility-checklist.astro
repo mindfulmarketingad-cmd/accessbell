@@ -1,0 +1,312 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import ScanForm from '../../components/ScanForm.astro';
+import SourceList from '../../components/SourceList.astro';
+import { SITE } from '../../config/site';
+import { PLAN, ONE_TIME } from '../../data/pricing';
+import { criterionPath } from '../../lib/wcag-pages';
+import { faqSchema, type FaqItem } from '../../lib/schema';
+
+const PATH = '/resources/squarespace-accessibility-checklist';
+const UPDATED = '2026-11-12';
+const title = 'Squarespace Accessibility Checklist | AccessBell';
+const description = 'Squarespace accessibility checklist for alt text, headings, contrast, focus, and checkout, mapped to WCAG 2.2. Sources: Squarespace, the W3C, and ADA.gov.';
+
+const altRows: { type: string; source: string }[] = [
+  { type: 'Image block', source: 'The Image alt text field only. Squarespace says no alt text displays if you leave it empty.' },
+  { type: 'Auto layout (version 7.1)', source: 'The Image alt text field only. Squarespace says no alt text displays if you leave it empty.' },
+  { type: 'Product image', source: 'The Alt text field, up to 200 characters. The product name is used if you do not add alt text.' },
+  { type: 'Blog post featured image', source: 'The post title.' },
+  { type: 'Event featured image', source: 'The event title.' },
+  { type: 'Gallery block image', source: 'The image title, or the image description if you do not add a title.' },
+  { type: 'Gallery section image', source: 'The image description.' },
+  { type: 'Page featured image', source: 'The file name.' },
+  { type: 'Site logo', source: 'The site title.' },
+  { type: 'Cover page image (version 7.0)', source: 'The alt text field.' },
+  { type: 'Gallery page image (version 7.0)', source: 'The image title, or the image description if you do not add a title.' },
+];
+
+const groups: { legend: string; items: { id: string; label: string }[] }[] = [
+  {
+    legend: 'Images and media',
+    items: [
+      { id: 'sq-image-block', label: 'Every image block and auto layout has alt text I wrote. Squarespace says those blocks have none if the field is empty.' },
+      { id: 'sq-product', label: 'Product images have alt text, or I checked that the product name actually describes the picture. Squarespace uses the product name when the field is empty.' },
+      { id: 'sq-fallback', label: 'Featured images, galleries, and the logo are not relying on a file name or a title that does not describe the picture.' },
+      { id: 'sq-background', label: 'Section background images are decorative. Squarespace says those images do not support alt text.' },
+      { id: 'sq-captions', label: 'Videos that convey information have captions, and audio has a transcript.' },
+    ],
+  },
+  {
+    legend: 'Headings, titles, and links',
+    items: [
+      { id: 'sq-h1', label: 'The page has one Heading 1, and later headings follow in order, set with the text toolbar.' },
+      { id: 'sq-fake-heading', label: 'Text that only looks big is not standing in for a heading.' },
+      { id: 'sq-title', label: 'The page title, or the SEO title if one is set, names the page and is unique on the site.' },
+      { id: 'sq-links', label: 'Each link says where it goes. “Click here” is not the link text.' },
+    ],
+  },
+  {
+    legend: 'Color, keyboard, and motion',
+    items: [
+      { id: 'sq-contrast', label: 'Normal text is at least 4.5:1 against its background, and large text is at least 3:1. I measured the pair. The Colors panel does not do that for me.' },
+      { id: 'sq-color-only', label: 'Color is not the only way a status, a required field, or a link is shown.' },
+      { id: 'sq-focus', label: 'Tabbing the published page shows Skip to Content first, then a focus outline I can see on every control. I cannot change that outline’s color or thickness in the editor.' },
+      { id: 'sq-motion', label: 'Autoplaying video and slideshows have a pause, skip, or stop control, and nothing flashes more than three times in one second.' },
+    ],
+  },
+  {
+    legend: 'Forms, checkout, and proof',
+    items: [
+      { id: 'sq-labels', label: 'Every form field has a visible label. Placeholder text is an example, not the label.' },
+      { id: 'sq-checkout', label: 'Checkout still uses Squarespace’s labeled fields and named payment buttons. No block sits on top of the submit control.' },
+      { id: 'sq-vpat', label: 'If someone asked for a VPAT, I treated it as a report I fill out after testing. Completing the form is not a pass.' },
+      { id: 'sq-scan', label: 'I scanned the live page. A clean report is not proof the page is accessible.' },
+    ],
+  },
+];
+const total = groups.reduce((n, group) => n + group.items.length, 0);
+
+const faqs: FaqItem[] = [
+  {
+    q: 'Does Squarespace make a website accessible by default?',
+    a: 'No. Squarespace says customers can customize a site, and that this sometimes means the end product is not fully accessible to everyone. It also says that because users have creative freedom, they can build websites that are not always accessible by all. You are responsible for the requirements that apply to your business. Squarespace says it does not give legal advice.',
+  },
+  {
+    q: 'Where do I add alt text in Squarespace?',
+    a: 'Image blocks and auto layouts have an Image alt text field, and Squarespace says no alt text displays if you leave it empty. Product images have an Alt text field of up to 200 characters, and the product name is used if you do not fill it in. Other images reuse a title, a description, or the file name. The table on this page lists each one. The steps are in Squarespace’s <a href="https://support.squarespace.com/hc/en-us/articles/206542357-Add-alt-text-to-images-for-accessibility-and-SEO">alt text help article</a>, updated October 1, 2026.',
+  },
+  {
+    q: 'Does the Squarespace Colors panel check WCAG contrast?',
+    a: 'Squarespace says you can match background and font colors from the Colors panel to meet WCAG without custom CSS. The same help pages do not name a ratio, and they do not describe a control that refuses a pair below 4.5:1. Measure the colors with a <a href="/tools/contrast-checker">contrast checker</a>. WCAG 1.4.3 requires 4.5:1 for normal text and 3:1 for large text.',
+  },
+  {
+    q: 'Can I change the Squarespace focus outline?',
+    a: 'No. Squarespace says a focus outline appears when a visitor presses Tab, and that you cannot customize its color or thickness. The first Tab opens a Skip to Content link. Whether that outline stays visible on your colors is something you check on the published page. WCAG 2.4.7 requires a visible keyboard focus indicator.',
+  },
+  {
+    q: 'Does a Squarespace VPAT prove my site conforms?',
+    a: 'No. Squarespace’s VPAT guide says a completed VPAT is a report of how a product conforms, that you evaluate the product before you fill it out, and that completing a VPAT does not guarantee accessibility for all customers. It is not a scan of the pages you published.',
+  },
+  {
+    q: 'What does the Pro trial cost?',
+    a: `Pro is a 3-day free trial, then $${PLAN.price} per domain per month or $${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. Cancel before then and you will not be charged. A <a href="${ONE_TIME.pageReport.href}">Page Report</a> is $${ONE_TIME.pageReport.price} for one page. A <a href="${ONE_TIME.domainAudit.href}">Domain Audit</a> is $${ONE_TIME.domainAudit.price} for up to ${PLAN.urlsPerDomain} pages. Neither renews.`,
+  },
+];
+
+const schema = [
+  {
+    '@type': 'Article',
+    '@id': `${SITE.url}${PATH}#article`,
+    headline: 'Squarespace Accessibility Checklist',
+    description,
+    datePublished: UPDATED,
+    dateModified: UPDATED,
+    mainEntityOfPage: { '@id': `${SITE.url}${PATH}#webpage` },
+    url: `${SITE.url}${PATH}`,
+    inLanguage: 'en-US',
+    author: { '@id': `${SITE.url}/#organization` },
+    publisher: { '@id': `${SITE.url}/#organization` },
+    image: `${SITE.url}/images/resources/squarespace-accessibility-checklist.svg`,
+  },
+  faqSchema(faqs),
+];
+---
+<BaseLayout
+  title={title}
+  description={description}
+  ogType="article"
+  article={{ published: `${UPDATED}T00:00:00.000Z`, modified: `${UPDATED}T00:00:00.000Z`, section: 'Resources' }}
+  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: 'Squarespace accessibility checklist', href: PATH }]}
+  schema={schema}
+>
+  <article>
+    <header class="page-hero">
+      <div class="container">
+        <span class="eyebrow">Checklist</span>
+        <h1 id="sqsp-title">Squarespace Accessibility Checklist</h1>
+        <p class="lead">A Squarespace accessibility checklist maps the fields Squarespace documents in its editor onto the WCAG 2.2 checks those fields affect. Squarespace says a customized site is not always accessible, and that you are responsible for the rules that apply to your business. The ticks stay in this browser. A scan is a list of findings, not a legal opinion and not a conformance claim.</p>
+        <p>Last updated <time datetime={UPDATED}>November 12, 2026</time>. The quotes are from Squarespace Help (pages updated July 15, 2025 through October 1, 2026), Squarespace’s accessibility page, the W3C, and ADA.gov.</p>
+        <div class="solution-cta">
+          <a class="btn btn-accent" href="/app/signup">Start 3-day free trial <Icon name="arrow" /></a>
+          <a class="btn btn-outline" href="#check-a-page">Run a free scan</a>
+        </div>
+        <p class="monitor-offer">Pro is a 3-day free trial, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. A <a href={ONE_TIME.pageReport.href}>Page Report</a> is ${ONE_TIME.pageReport.price}. A <a href={ONE_TIME.domainAudit.href}>Domain Audit</a> is ${ONE_TIME.domainAudit.price}.</p>
+      </div>
+    </header>
+
+    <div class="container cc-prose monitor-guide">
+      <section class="monitor-facts" aria-labelledby="key-facts">
+        <h2 id="key-facts">Key Facts for a Squarespace Accessibility Checklist</h2>
+        <p>Use these when you need a short, sourced summary. The editor-by-editor list is below.</p>
+        <ul>
+          <li>Squarespace says customizing a site sometimes means the end product is not fully accessible to everyone, and that you are responsible for compliance. It says it does not give legal advice.</li>
+          <li>Image blocks and auto layouts have alt text only if you add it. Product images fall back to the product name. Page featured images use the file name.</li>
+          <li>The focus outline appears on Tab, including a Skip to Content link, and you cannot change its color or thickness.</li>
+          <li>A completed VPAT does not guarantee accessibility. Squarespace says you evaluate the site yourself before you fill one out.</li>
+          <li>ADA.gov’s position is that the ADA applies to the goods, services, privileges, or activities a public accommodation offers on the web. The 2010 ADA Standards that Squarespace links are the standards for facilities, not a website technical standard.</li>
+        </ul>
+        <figure class="monitor-quote">
+          <blockquote cite="https://www.squarespace.com/accessibility">
+            <p>Squarespace gives every customer the ability to customize their site. This sometimes means the end product is not fully accessible to everyone.</p>
+          </blockquote>
+          <figcaption>
+            Squarespace, <a href="https://www.squarespace.com/accessibility">Accessibility &amp; Compliance</a>, answer to “How do I make a Squarespace website ADA compliant?”
+          </figcaption>
+        </figure>
+        <figure class="monitor-quote">
+          <blockquote cite="https://www.squarespace.com/accessibility">
+            <p>You are responsible for ensuring that your site complies with those requirements.</p>
+          </blockquote>
+          <figcaption>
+            Squarespace, <a href="https://www.squarespace.com/accessibility">Accessibility &amp; Compliance</a>, answer to “Who is responsible for my website accessibility?” The same answer says following a checklist may not guarantee the site meets applicable requirements.
+          </figcaption>
+        </figure>
+        <figure class="monitor-quote">
+          <blockquote cite="https://www.ada.gov/resources/web-guidance/">
+            <p>For these reasons, the Department has consistently taken the position that the ADA’s requirements apply to all the goods, services, privileges, or activities offered by public accommodations, including those offered on the web.</p>
+          </blockquote>
+          <figcaption>
+            U.S. Department of Justice, <a href="https://www.ada.gov/resources/web-guidance/">Guidance on Web Accessibility and the ADA</a>, March 18, 2022. The page says it does not reflect Title II requirements published in the Federal Register on April 24, 2024.
+          </figcaption>
+        </figure>
+      </section>
+
+      <h2 id="what-squarespace-says">What Squarespace Says This Checklist Is For</h2>
+      <p>Squarespace’s help article on <a href="https://support.squarespace.com/hc/en-us/articles/215129127-Make-your-site-accessible-with-built-in-features">built-in accessibility features</a> (updated July 22, 2026) says the guide is a resource, not legal advice, and that Squarespace does not give advice on the accessibility laws or standards that apply to a particular site. The <a href="https://www.squarespace.com/accessibility">accessibility page</a> says the same thing in the answer to whether a site needs to be ADA compliant: laws vary, and Squarespace does not give legal advice.</p>
+      <p>That page answers “Are all sites built on Squarespace accessible?” with this: because users have a lot of creative freedom, they can build websites that are not always accessible by all. The checklist on this page is the practical version of that sentence. It follows the controls Squarespace documents. It does not certify a template, and it is not a substitute for the <a href="/disclaimer">disclaimer</a>.</p>
+      <p>If the business is a public accommodation, the statute is the place to start. A sales or rental establishment is listed in <a href="https://www.law.cornell.edu/uscode/text/42/12181">42 U.S.C. § 12181(7)(E)</a>. A service establishment, such as a law office or a health office, is listed in § 12181(7)(F). ADA.gov’s March 18, 2022 web guidance says the Department’s position is that the ADA applies to the goods, services, privileges, or activities those businesses offer on the web. The same page says the Department did not then have a regulation setting detailed website standards, and that WCAG and the Section 508 standards are guidance teams can use. It also says it does not reflect the Title II rule published on April 24, 2024. A private Squarespace site is not a Title II public entity. This page is not legal advice.</p>
+      <p>Squarespace’s answer to “How do I make a Squarespace website ADA compliant?” points readers to the <a href="https://www.ada.gov/law-and-regs/design-standards/2010-stds/">2010 ADA Standards for Accessible Design</a>. On ADA.gov, that document is the standard for state and local government facilities and for public accommodations and commercial facilities, including new construction and alterations. It is not the web guidance. Use the March 18, 2022 web guidance for the website position, and WCAG 2.2 for the technical checks below.</p>
+      <figure>
+        <img
+          src="/images/resources/squarespace-accessibility-checklist.svg"
+          width="840"
+          height="360"
+          alt="Six Squarespace checks: 1, image blocks have no alt text unless you type it. 2, use one Heading 1 and do not fake a heading with size. 3, the help pages name no contrast ratio and no automatic block. 4, the focus outline is fixed and you cannot restyle it. 5, a placeholder is not a label. 6, pause autoplay and avoid more than three flashes in one second."
+        />
+        <figcaption>Six checks that match Squarespace’s help pages. Each one is written out in the sections below. Sources: Squarespace Help Center.</figcaption>
+      </figure>
+
+      <h2 id="alt-text">Alt Text on a Squarespace Accessibility Checklist</h2>
+      <p>Squarespace’s <a href="https://support.squarespace.com/hc/en-us/articles/206542357-Add-alt-text-to-images-for-accessibility-and-SEO">alt text article</a> (updated October 1, 2026) says alt text is a short description that screen readers read aloud. It also says image blocks and auto layouts only have alt text if you add it. The image-block steps are: open the Pages panel, edit the page, open the block, open the Content tab, and type in Image alt text. Auto layouts, which the article says are available in version 7.1, use the same kind of field under Edit Content.</p>
+      <figure class="monitor-quote">
+        <blockquote cite="https://support.squarespace.com/hc/en-us/articles/206542357-Add-alt-text-to-images-for-accessibility-and-SEO">
+          <p>If you don't add alt text there, no alt text displays. Without alt text, the block won't be visible to assistive technologies, like screen readers.</p>
+        </blockquote>
+        <figcaption>
+          Squarespace Help Center, <a href="https://support.squarespace.com/hc/en-us/articles/206542357-Add-alt-text-to-images-for-accessibility-and-SEO">Add alt text to images for accessibility and SEO</a>, updated October 1, 2026. The article uses this wording for image blocks and again for auto layouts.
+        </figcaption>
+      </figure>
+      <p><a href={criterionPath('1.1.1')}>WCAG 1.1.1 Non-text Content</a> (Level A) requires a text alternative that serves the same purpose as the image, with exceptions for decorative images and a few other cases. A file name or a product name passes that test only when it actually describes the picture. Squarespace’s own writing advice is to describe the image the way you would to someone who could not see it, and to keep it short, usually 150 to 200 characters.</p>
+      <p>On version 7.1, in Fluid Engine sections, Squarespace also documents generated suggestions: the SEO report can flag missing alt text in image blocks, gallery sections, and auto layouts, and you review, edit, or regenerate the text before you save it. The article says that tool does not scan images added to collection items, and that generated alt text is only available in Fluid Engine on version 7.1. A suggestion is not the finished description until someone checks that it matches the picture.</p>
+      <table>
+        <caption>What Squarespace uses as alt text when you do not type a description. Source: Squarespace Help Center, alt text article, updated October 1, 2026.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Image</th>
+            <th scope="col">What Squarespace uses</th>
+          </tr>
+        </thead>
+        <tbody>
+          {altRows.map((row) => (
+            <tr>
+              <th scope="row">{row.type}</th>
+              <td>{row.source}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p>Two limits sit outside that table. Section background images do not support alt text. Squarespace says decorative backgrounds generally do not need a description, and that it cannot help with a code workaround. A video block’s custom thumbnail does not use the file name as alt text. In Email Campaigns, images in the body can take alt text, and images or logos in the campaign header cannot.</p>
+      <p>The same article says that for most other areas, the file name acts as alt text when nothing else is set. A file name such as <code>IMG_2044.jpg</code> is not a description. Rename it in the Asset library, or add a real alternative. The criterion, with the exceptions, is in the <a href={criterionPath('1.1.1')}>WCAG library entry for 1.1.1</a>.</p>
+
+      <h2 id="headings">Headings, Titles, and Links</h2>
+      <p>Squarespace’s <a href="https://support.squarespace.com/hc/en-us/articles/13638524256397-Make-your-site-accessible-with-inclusive-design-practices">inclusive design guide</a> (updated September 23, 2026) says screen readers use the HTML, not the visual size, to understand a page. Its “do” list says to create one Heading 1 per page, to use headings in sequence from H1 through H6, and to format them with the text toolbar. Its “don’t” list says not to style ordinary text so it looks like a heading, and not to use an empty heading only to make text big. That is <a href={criterionPath('1.3.1')}>WCAG 1.3.1 Info and Relationships</a> (Level A): structure has to be in the markup, not only in the look.</p>
+      <p>On titles, the same guide says the first thing a screen reader announces is the page title. If an SEO title is set, Squarespace says screen readers read that and skip the page title. If it is not set, they read the page title. <a href={criterionPath('2.4.2')}>WCAG 2.4.2 Page Titled</a> (Level A) requires a title that describes the topic or purpose. Squarespace’s examples of a useful title put the specific words first.</p>
+      <p>On links, the guide says the link text should state the purpose, and that you do not need the word “link” because screen readers already say it. Its example of what not to write is “click here.” That is <a href={criterionPath('2.4.4')}>WCAG 2.4.4 Link Purpose (In Context)</a> (Level A). Summary blocks and blog lists are where “Read more” usually shows up. The <a href="/platforms/squarespace/accessibility-checker">Squarespace accessibility checker</a> is the scan for a published page that still has those links.</p>
+
+      <h2 id="color-keyboard">Color, Focus, and Motion</h2>
+      <p>The built-in features article says you can match background tones and font colors from the Colors panel to meet WCAG without custom CSS. The inclusive design guide says not to rely on color alone, and it points color-vision checks at Chrome DevTools and Firefox’s Accessibility Inspector, which it says are outside Squarespace support. Neither page states a ratio, and neither page describes a switch that blocks a failing pair.</p>
+      <p><a href={criterionPath('1.4.3')}>WCAG 1.4.3 Contrast (Minimum)</a> (Level AA) requires a contrast ratio of at least 4.5:1 for normal text and at least 3:1 for large text, with exceptions for incidental text and logotypes. <a href={criterionPath('1.4.1')}>WCAG 1.4.1 Use of Color</a> (Level A) says color cannot be the only visual cue. Measure a pair in the <a href="/tools/contrast-checker">WCAG color contrast checker</a> before you save it as a site style. Text sitting on a photo in Fluid Engine is the case the inclusive design guide calls out: add a background, change the text color, or move the text until it is readable.</p>
+      <figure class="monitor-quote">
+        <blockquote cite="https://support.squarespace.com/hc/en-us/articles/13638524256397-Make-your-site-accessible-with-inclusive-design-practices">
+          <p>You can't customize the focus outline's color or thickness.</p>
+        </blockquote>
+        <figcaption>
+          Squarespace Help Center, <a href="https://support.squarespace.com/hc/en-us/articles/13638524256397-Make-your-site-accessible-with-inclusive-design-practices">Make your site accessible with inclusive design practices</a>, updated September 23, 2026.
+        </figcaption>
+      </figure>
+      <p>The same section says the first Tab opens a Skip to Content link, and the spacebar jumps past the header to the main content. That mechanism is what <a href={criterionPath('2.4.1')}>WCAG 2.4.1 Bypass Blocks</a> (Level A) asks for. <a href={criterionPath('2.4.7')}>WCAG 2.4.7 Focus Visible</a> (Level AA) requires a visible keyboard focus indicator, and <a href={criterionPath('1.4.11')}>WCAG 1.4.11 Non-text Contrast</a> (Level AA) requires the indicator to have at least 3:1 contrast against the colors next to it. Because the editor will not let you thicken or recolor the outline, a page where the outline disappears into the background has to be fixed by changing the background, not the outline. Tab the published page. The editor preview is not the test. <a href={criterionPath('2.1.1')}>WCAG 2.1.1 Keyboard</a> (Level A) is the broader rule: the tasks on the page work from the keyboard.</p>
+      <p>For motion, the <a href="https://support.squarespace.com/hc/en-us/articles/13630857891981-Making-audio-images-and-videos-more-accessible">audio, images, and video guide</a> says to add no more than two background videos per page, to avoid content that flashes more than three times in one second, and to turn parallax off when it sits behind text. The built-in features article says to include buttons to pause, skip, or stop video loops and slideshows that play automatically, and to add captions and transcripts. Those lines track <a href={criterionPath('2.2.2')}>WCAG 2.2.2 Pause, Stop, Hide</a>, <a href={criterionPath('2.3.1')}>WCAG 2.3.1 Three Flashes or Below Threshold</a>, <a href={criterionPath('1.2.2')}>WCAG 1.2.2 Captions (Prerecorded)</a>, and <a href={criterionPath('1.2.1')}>WCAG 1.2.1 Audio-only and Video-only (Prerecorded)</a>. Squarespace’s pages state the practice. They do not cite the criterion numbers. The numbers are the W3C’s.</p>
+
+      <h2 id="forms-checkout">Forms, Checkout, and a VPAT</h2>
+      <p>The inclusive design guide says each form field needs a clear label, and that placeholder text should not replace the label. It also says to put instructions in a text block. That is <a href={criterionPath('3.3.2')}>WCAG 3.3.2 Labels or Instructions</a> (Level A). A placeholder disappears when someone types, and it is often too light to meet 1.4.3.</p>
+      <p>Checkout is separate from a form block you built. The built-in features article says secure checkout fields include text labels, and that main buttons such as payment buttons use descriptive labels. Leave those labels in place. The Fluid Engine note in the inclusive design guide says overlapping blocks must stay visible and usable, and gives the example of a button placed on top of a form so a visitor cannot tell which control submits it. If you sell on the site, the <a href="/resources/wcag-2-2-checklist-for-online-stores">WCAG 2.2 checklist for online stores</a> maps the newer criteria onto a product page, a cart, and checkout.</p>
+      <p>When a customer or a school asks for proof, Squarespace’s built-in features article points to its accessibility statement and to a VPAT. The separate guide, <a href="https://support.squarespace.com/hc/en-us/articles/20776030405517-Creating-a-VPAT-for-your-site">Creating a VPAT for your site</a> (updated July 15, 2025), says a completed VPAT explains how well your product conforms, that you evaluate the product before you write it, and that anyone can choose to provide one. It says organizations governed by Section 508, directly or indirectly, may be required to complete one. It also says completing a VPAT does not guarantee accessibility for all customers. The template it names is the one from the <a href="https://www.itic.org/policy/accessibility/vpat">Information Technology Industry Council</a>. A VPAT is a report you write after a review. It is not a review by itself, and it is not a statement that the Squarespace platform passed WCAG for the pages you designed.</p>
+
+      <h2 id="checklist">A Squarespace Accessibility Checklist You Can Tick</h2>
+      <p>Tick these while you edit, then again on the published page. The ticks stay in this browser. Nothing is sent to AccessBell. This is a planning aid. It is not a conformance claim. See the <a href="/disclaimer">disclaimer</a> and the <a href="/resources">resources</a> hub this page belongs to.</p>
+      <div data-monitor-checklist data-storage-key="accessbell-squarespace-checklist-v1">
+        {groups.map((group) => (
+          <fieldset class="monitor-checklist">
+            <legend>{group.legend}</legend>
+            {group.items.map((item) => (
+              <label>
+                <input type="checkbox" id={item.id} />
+                <span>{item.label}</span>
+              </label>
+            ))}
+          </fieldset>
+        ))}
+        <p data-checklist-status role="status">0 of {total} checked on this browser. Nothing is sent to AccessBell.</p>
+        <div class="monitor-actions">
+          <button class="btn btn-outline" type="button" data-checklist-reset>Clear checks on this browser</button>
+        </div>
+      </div>
+      <noscript><p>JavaScript is off, so these ticks are not saved. You can still check them while you read, or print the page. Nothing is sent to AccessBell either way.</p></noscript>
+
+      <h2 id="cannot-prove">What a Squarespace Accessibility Checklist Cannot Prove</h2>
+      <p>Squarespace’s accessibility page says there is no such thing as 100% accessibility and no universal governing metric. Its VPAT guide says a finished VPAT does not guarantee access. The Department of Justice’s web guidance says a “clean” report does not necessarily mean everything is accessible. The W3C’s <a href="https://www.w3.org/WAI/test-evaluate/">evaluating web accessibility</a> overview says no tool alone can determine if a site meets accessibility standards.</p>
+      <p>Use the checklist to find the editor fields. Use a scan to see what the published HTML does. A person still checks whether the alt text describes the image, whether the keyboard path has a trap, and whether a video’s captions match the speech. <a href="/methodology">How AccessBell tests</a> separates automated results from items that need a person. The <a href="/platforms/squarespace">Squarespace accessibility checkers</a> and the <a href="/platforms/squarespace/ada-compliance-checker">Squarespace ADA compliance checker</a> run that scan on one public page. If the business sells to consumers in the European Union, the related standard on this site is the <a href="/tools/en-301-549-checker">EN 301 549 checker</a>. Federal contractors start with the <a href="/tools/section-508-checker">Section 508 checker</a>.</p>
+      <p>Pro monitors up to {PLAN.urlsPerDomain} URLs per domain and offers guided fix suggestions, such as alt text, a button name, or the page language. Nothing is applied until you approve it. This is not an overlay. Pro is a 3-day free trial, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. Cancel before then and you will not be charged. Prices are on the <a href="/pricing">pricing page</a>.</p>
+      <p>If you do not want a subscription, a <a href={ONE_TIME.pageReport.href}>Page Report</a> is ${ONE_TIME.pageReport.price} for one page, with the full issue detail and a PDF. A <a href={ONE_TIME.domainAudit.href}>Domain Audit</a> is ${ONE_TIME.domainAudit.price} for up to {PLAN.urlsPerDomain} pages. Neither one renews, and neither one is a promise that the site conforms to WCAG or the ADA.</p>
+    </div>
+
+    <section class="section-tight" id="check-a-page" aria-labelledby="check-title">
+      <div class="container">
+        <div class="cc-prose">
+          <h2 id="check-title">Check a Squarespace Page, Then Monitor the Site</h2>
+          <p>Paste a public Squarespace URL. The free scan lists automated issues on that page. Start a 3-day free trial if you want that URL, and others on the domain, checked again.</p>
+        </div>
+        <div class="hero-checker">
+          <ScanForm id="squarespace-check" buttonLabel="Scan this page">
+            <span slot="proof">Free scan of one public page, no account. <a href="/app/signup">Start a 3-day free trial</a> to monitor up to {PLAN.urlsPerDomain} URLs per domain and apply fixes you approve. Nothing is applied until you approve it. Then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year.</span>
+          </ScanForm>
+        </div>
+      </div>
+    </section>
+
+    <section class="results" id="scan-results" aria-live="polite" aria-busy="false" hidden>
+      <div class="container" data-results></div>
+    </section>
+
+    <section class="section-tight" aria-labelledby="faq-title">
+      <div class="container cc-prose">
+        <h2 id="faq-title">Squarespace Accessibility Checklist Questions</h2>
+        <Faq items={faqs} />
+      </div>
+    </section>
+
+    <div class="container cc-prose">
+      <SourceList ids={['sqsp-a11y', 'sqsp-features', 'sqsp-inclusive', 'sqsp-alt', 'sqsp-media', 'sqsp-vpat', 'wcag22', 'ada-web', 'ada-12181', 'ada-2010', 'vpat', 'wai-evaluate']} />
+      <p>Related pages: <a href="/resources">all resources</a>, the <a href="/platforms/squarespace">Squarespace checkers</a>, the <a href="/resources/wcag">WCAG library</a>, and the <a href="/blog/wcag-2-2-checklist">WCAG 2.2 checklist</a>.</p>
+    </div>
+  </article>
+  <CtaBand title="Scan a Squarespace Page, Then Monitor It" text="Start a 3-day free trial to monitor up to 500 URLs per domain and apply fixes you approve, or run a free one-page scan with no account." />
+</BaseLayout>
+<script>
+  import '../../scripts/free-scan.js';
+  import '../../scripts/monitoring-checklist.js';
+</script>

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="360" viewBox="0 0 840 360" role="img" aria-labelledby="title desc">
+  <title id="title">Six Squarespace checks</title>
+  <desc id="desc">Six checks: alt text on image blocks, headings in order, text contrast, a visible keyboard focus, labeled forms and checkout, and a way to pause motion.</desc>
+  <rect width="840" height="360" fill="#f4f8f3"/>
+  <text x="24" y="36" fill="#22262f" font-family="system-ui, Segoe UI, sans-serif" font-size="18" font-weight="700">What to check in the Squarespace editor</text>
+  <g font-family="system-ui, Segoe UI, sans-serif" fill="#22262f">
+    <g>
+      <rect x="24" y="56" width="252" height="128" rx="12" fill="#ffffff" stroke="#cfd4ce"/>
+      <text x="40" y="88" font-size="15" font-weight="700">1. Alt text</text>
+      <text x="40" y="114" fill="#353a47" font-size="13">Image blocks: none</text>
+      <text x="40" y="134" fill="#353a47" font-size="13">unless you type it.</text>
+    </g>
+    <g>
+      <rect x="294" y="56" width="252" height="128" rx="12" fill="#ffffff" stroke="#cfd4ce"/>
+      <text x="310" y="88" font-size="15" font-weight="700">2. Headings</text>
+      <text x="310" y="114" fill="#353a47" font-size="13">One Heading 1. Do not</text>
+      <text x="310" y="134" fill="#353a47" font-size="13">fake a heading with size.</text>
+    </g>
+    <g>
+      <rect x="564" y="56" width="252" height="128" rx="12" fill="#ffffff" stroke="#cfd4ce"/>
+      <text x="580" y="88" font-size="15" font-weight="700">3. Contrast</text>
+      <text x="580" y="114" fill="#353a47" font-size="13">Help names no ratio</text>
+      <text x="580" y="134" fill="#353a47" font-size="13">and no automatic block.</text>
+    </g>
+    <g>
+      <rect x="24" y="200" width="252" height="128" rx="12" fill="#ffffff" stroke="#cfd4ce"/>
+      <text x="40" y="232" font-size="15" font-weight="700">4. Keyboard</text>
+      <text x="40" y="258" fill="#353a47" font-size="13">Focus outline is fixed.</text>
+      <text x="40" y="278" fill="#353a47" font-size="13">You cannot restyle it.</text>
+    </g>
+    <g>
+      <rect x="294" y="200" width="252" height="128" rx="12" fill="#ffffff" stroke="#cfd4ce"/>
+      <text x="310" y="232" font-size="15" font-weight="700">5. Forms</text>
+      <text x="310" y="258" fill="#353a47" font-size="13">A placeholder is not</text>
+      <text x="310" y="278" fill="#353a47" font-size="13">a label.</text>
+    </g>
+    <g>
+      <rect x="564" y="200" width="252" height="128" rx="12" fill="#ffffff" stroke="#cfd4ce"/>
+      <text x="580" y="232" font-size="15" font-weight="700">6. Motion</text>
+      <text x="580" y="258" fill="#353a47" font-size="13">Pause autoplay. Avoid</text>
+      <text x="580" y="278" fill="#353a47" font-size="13">more than 3 flashes.</text>
+    </g>
+  </g>
+</svg>
