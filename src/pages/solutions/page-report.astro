@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
 import Faq from '../../components/Faq.astro';
 import { faqSchema, type FaqItem } from '../../lib/schema';
-import { ONE_TIME } from '../../data/pricing';
+import { ONE_TIME, PLAN } from '../../data/pricing';
 
 const faqs: FaqItem[] = [
   {
@@ -20,7 +20,7 @@ const faqs: FaqItem[] = [
   },
   {
     q: 'How is this different from Pro monitoring?',
-    a: 'The Page Report is a one-time snapshot of one page. Pro monitors your whole domain continuously, rescans daily and emails you when something new breaks. See <a href="/pricing">pricing</a> for Pro, or the <a href="/solutions/domain-audit">Domain Audit</a> for a one-time audit of your whole domain.',
+    a: `The Page Report is a one-time snapshot of one page for $${ONE_TIME.pageReport.price}. Pro monitors your whole domain continuously, rescans daily, emails you when something new breaks, and lets you apply fixes you approve. Pro is a 3-day free trial, then $${PLAN.price} per domain per month or $${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. Cancel before then and you will not be charged. The first charge has a 14-day money-back guarantee. A <a href="${ONE_TIME.domainAudit.href}">Domain Audit</a> is $${ONE_TIME.domainAudit.price} once for up to ${PLAN.urlsPerDomain} pages.`,
   },
   {
     q: 'Does the report guarantee my page is compliant?',
@@ -68,7 +68,7 @@ const faqs: FaqItem[] = [
         <li><strong>Pay ${ONE_TIME.pageReport.price} once.</strong> One-time payment through Stripe. No subscription, nothing renews.</li>
         <li><strong>Open the emailed link.</strong> The report builds when you open it and stays available from that link. Download the PDF from the report page.</li>
       </ol>
-      <p>Want the same detail for your whole website instead? The <a href="/solutions/domain-audit">Domain Audit</a> crawls up to 500 pages for ${ONE_TIME.domainAudit.price} one-time. Want ongoing cover? <a href="/solutions">Solutions</a> explains <a href="/solutions/continuous-monitoring">continuous monitoring</a>, and <a href="/pricing">pricing</a> covers Pro at $29 per domain per month or $199 per year.</p>
+      <p>Want the same detail for your whole website instead? The <a href="/solutions/domain-audit">Domain Audit</a> crawls up to {PLAN.urlsPerDomain} pages for ${ONE_TIME.domainAudit.price} one-time. Want the domain checked again, with fixes you approve? Pro is a 3-day free trial, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. Cancel before then and you will not be charged. The first charge has a 14-day money-back guarantee. <a href="/solutions">Solutions</a> explains <a href="/solutions/continuous-monitoring">continuous monitoring</a>, and the numbers are on <a href="/pricing">pricing</a>.</p>
     </div>
   </section>
 
@@ -91,7 +91,7 @@ const faqs: FaqItem[] = [
         <input id="pr-url" name="url" type="url" inputmode="url" required maxlength="2048" placeholder="https://example.com/checkout" />
         <button class="btn btn-accent" type="submit">Buy the Page Report — ${ONE_TIME.pageReport.price}</button>
         <p data-checkout-error hidden></p>
-        <p class="scan-cta-note">Prefer to monitor the whole domain instead? <a href="/app/signup">Start a 3-day free trial</a> of Pro.</p>
+        <p class="scan-cta-note">This purchase is ${ONE_TIME.pageReport.price} once, for this page. A <a href={ONE_TIME.domainAudit.href}>Domain Audit</a> is ${ONE_TIME.domainAudit.price} once, for up to {PLAN.urlsPerDomain} pages. To keep monitoring the domain and apply fixes you approve, <a href="/app/signup">start a 3-day free trial</a> of Pro, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. Cancel before then and you will not be charged. The first charge has a 14-day money-back guarantee.</p>
       </form>
     </div>
   </section>

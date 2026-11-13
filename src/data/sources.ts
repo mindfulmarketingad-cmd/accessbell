@@ -53,6 +53,18 @@ export const SOURCES = {
   'sqsp-media': { label: 'Making audio, images, and videos more accessible', publisher: 'Squarespace Help Center', url: 'https://support.squarespace.com/hc/en-us/articles/13630857891981-Making-audio-images-and-videos-more-accessible' },
   'sqsp-vpat': { label: 'Creating a VPAT for your site', publisher: 'Squarespace Help Center', url: 'https://support.squarespace.com/hc/en-us/articles/20776030405517-Creating-a-VPAT-for-your-site' },
   'ada-2010': { label: '2010 ADA Standards for Accessible Design', publisher: 'U.S. Department of Justice', url: 'https://www.ada.gov/law-and-regs/design-standards/2010-stds/' },
+  'contrast-min': { label: 'Understanding Success Criterion 1.4.3: Contrast (Minimum)', publisher: 'W3C Web Accessibility Initiative', url: 'https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html' },
+  'wix-wizard-about': { label: 'Accessibility: About the Accessibility Wizard', publisher: 'Wix Help Center', url: 'https://support.wix.com/en/article/accessibility-about-the-accessibility-wizard-7284021' },
+  'wix-wizard': { label: 'Accessibility: Using the Accessibility Wizard', publisher: 'Wix Help Center', url: 'https://support.wix.com/en/article/accessibility-using-the-accessibility-wizard' },
+  'wix-harmony': { label: 'Wix Harmony Editor: Using the Accessibility Wizard', publisher: 'Wix Help Center', url: 'https://support.wix.com/en/article/wix-harmony-editor-using-the-accessibility-wizard' },
+  'wix-images': { label: 'Accessibility: Preparing Your Images and Galleries', publisher: 'Wix Help Center', url: 'https://support.wix.com/en/article/accessibility-preparing-your-images-and-galleries' },
+  'wix-text': { label: 'Accessibility: Preparing Your Text and Graphics', publisher: 'Wix Help Center', url: 'https://support.wix.com/en/article/accessibility-preparing-your-text-and-graphics' },
+  'wix-structure': { label: 'Accessibility: Preparing Your Site Structure', publisher: 'Wix Help Center', url: 'https://support.wix.com/en/article/accessibility-preparing-your-site-structure' },
+  'wix-focus': { label: 'Accessibility: About Focus Indicators (Visual Indicators)', publisher: 'Wix Help Center', url: 'https://support.wix.com/en/article/accessibility-turning-the-blue-boxes-visual-indicators-on-and-off' },
+  'wix-skip': { label: 'Accessibility: About “Skip to Main Content”', publisher: 'Wix Help Center', url: 'https://support.wix.com/en/article/accessibility-about-skip-to-main-content' },
+  'wix-forms': { label: 'Accessibility: Creating an Accessible Wix Form', publisher: 'Wix Help Center', url: 'https://support.wix.com/en/article/accessibility-creating-an-accessible-wix-form' },
+  'wix-monitor': { label: 'Accessibility: Checking Site Accessibility with the Accessibility Monitor', publisher: 'Wix Help Center', url: 'https://support.wix.com/en/article/accessibility-checking-site-accessibility-with-the-accessibility-monitor' },
+  'wix-checklist': { label: 'Accessibility: Checklist for Improving Your Site’s Accessibility', publisher: 'Wix Help Center', url: 'https://support.wix.com/en/article/accessibility-checklist-for-improving-your-sites-accessibility' },
 } as const;
 
 export type SourceId = keyof typeof SOURCES;

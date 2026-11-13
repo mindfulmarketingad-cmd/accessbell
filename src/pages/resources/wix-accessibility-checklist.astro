@@ -1,0 +1,356 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import ScanForm from '../../components/ScanForm.astro';
+import SourceList from '../../components/SourceList.astro';
+import { SITE } from '../../config/site';
+import { PLAN, ONE_TIME } from '../../data/pricing';
+import { criterionPath } from '../../lib/wcag-pages';
+import { faqSchema, type FaqItem } from '../../lib/schema';
+
+const PATH = '/resources/wix-accessibility-checklist';
+const UPDATED = '2026-11-13';
+const title = 'Wix Accessibility Checklist | AccessBell';
+const description = 'Wix accessibility checklist for alt text, headings, contrast, and the pages the Accessibility Wizard does not scan. Sources: Wix Help, the W3C, and ADA.gov.';
+
+const skipped: { surface: string; note: string }[] = [
+  { surface: 'Content Management System (CMS)', note: 'Named on the “does not support” list.' },
+  { surface: 'External and third-party apps', note: 'Named on the “does not support” list. App pages such as Stores and Blog are a separate case, described above.' },
+  { surface: 'Velo', note: 'Named on the “does not support” list. The wizard article also gives Velo as an example of a part it does not scan.' },
+  { surface: 'Password-protected pages', note: 'Named on the “does not support” list.' },
+  { surface: 'The side cart', note: 'Named on the “does not support” list. Wix uses the side cart for Stores, Bookings, and Restaurant Orders.' },
+  { surface: 'Checkout pages (Wix Stores, Wix Bookings, and others)', note: 'Wix’s wording is “Checkout pages (Wix Stores, Wix Bookings etc.).”' },
+  { surface: 'Wix Online Programs Thank You page', note: 'Named on the “does not support” list.' },
+  { surface: 'Wix Site Search', note: 'Named on the “does not support” list.' },
+  { surface: 'Wix Gift Cards', note: 'Named on the “does not support” list.' },
+  { surface: 'Wix Music', note: 'Named on the “does not support” list.' },
+  { surface: 'Wix Reviews', note: 'Named on the “does not support” list.' },
+  { surface: 'Wix Referral Program', note: 'Named on the “does not support” list.' },
+  { surface: 'Wix Loyalty Program', note: 'Named on the “does not support” list.' },
+  { surface: 'Wix Pricing Plans', note: 'Named on the “does not support” list.' },
+  { surface: 'Wix Podcast Player', note: 'Named on the “does not support” list.' },
+  { surface: 'Wix Table Reservations', note: 'Named on the “does not support” list.' },
+  { surface: 'Wix Restaurant Orders', note: 'Named on the “does not support” list.' },
+];
+
+const ratios: { element: string; aa: string }[] = [
+  { element: 'Small text: smaller than 24px (18pt)', aa: '4.5:1 and above' },
+  { element: 'Large text: bigger than 24px (18pt), or over 18px (14pt) and bold', aa: '3:1 and above' },
+  { element: 'Non-text components, such as icons', aa: '3:1 and above' },
+];
+
+const groups: { legend: string; items: { id: string; label: string }[] }[] = [
+  {
+    legend: 'Images and media',
+    items: [
+      { id: 'wix-alt', label: 'Each informative image has its own description. I did not reuse one sentence for two images, and I did not start it with “image of.”' },
+      { id: 'wix-publish', label: 'I published the site after adding alt text. Wix says the description is not live until then.' },
+      { id: 'wix-ai', label: 'If I used the wizard’s AI alt text, I read every line. SVG and GIF images were written by hand. Wix says it cannot guarantee the generated text is accurate.' },
+      { id: 'wix-decorative', label: 'Decorative images are marked decorative. Linked images are not marked decorative.' },
+      { id: 'wix-text-images', label: 'Words that matter are real text, or they are in the alt text. A photo of a sign is not the only copy of those words.' },
+    ],
+  },
+  {
+    legend: 'Headings, titles, and links',
+    items: [
+      { id: 'wix-h1', label: 'The page has one Heading 1 in the page body, then headings in order. A one-page site is the exception Wix names for a header H1.' },
+      { id: 'wix-break', label: 'A line break inside a heading used Shift+Enter. Enter would have started a new heading.' },
+      { id: 'wix-page-title', label: 'The page title is not “New page” or “Copy of,” and it is unique on the site.' },
+      { id: 'wix-links', label: 'Each link and button says where it goes or what it does. “Read more” is not the whole label.' },
+      { id: 'wix-apps', label: 'App text that the wizard does not list was checked by hand.' },
+    ],
+  },
+  {
+    legend: 'Color, keyboard, and language',
+    items: [
+      { id: 'wix-contrast', label: 'I measured contrast. Normal text is at least 4.5:1 and large text is at least 3:1 under WCAG 1.4.3. The wizard requires Level AA and does not check every element.' },
+      { id: 'wix-color', label: 'Color is not the only way a link, a status, or a chart series is shown.' },
+      { id: 'wix-focus', label: 'Tabbing the published page shows a visible focus box, including on a white button over a blue background.' },
+      { id: 'wix-skip', label: 'The first Tab shows Skip to Main Content, and that link is visible on the header colors.' },
+      { id: 'wix-lang', label: 'The main site language is set. A second language was checked outside the wizard, which Wix says runs only in the primary language.' },
+    ],
+  },
+  {
+    legend: 'Forms, cart, checkout, and proof',
+    items: [
+      { id: 'wix-forms', label: 'The form is the new Wix Forms, and every field title is visible and specific. Old Wix Forms are gone.' },
+      { id: 'wix-cart', label: 'I checked the side cart and checkout separately. The wizard does not scan either one.' },
+      { id: 'wix-motion', label: 'Audio and video that start on their own have a pause or stop control, and I checked the page at 200% zoom.' },
+      { id: 'wix-scan', label: 'I scanned the published page. A finished wizard run is not proof the page is accessible.' },
+    ],
+  },
+];
+const total = groups.reduce((n, group) => n + group.items.length, 0);
+
+const faqs: FaqItem[] = [
+  {
+    q: 'Does the Wix Accessibility Wizard make a site accessible?',
+    a: 'No. Wix says the wizard helps you find and fix issues, and that it cannot guarantee your site will comply with your region’s accessibility laws and regulations after you use it. Wix recommends consulting an accessibility expert for the standards that apply in your region. The wizard also does not scan checkout, the side cart, Velo, the CMS, or third-party apps.',
+  },
+  {
+    q: 'Where do I add alt text in Wix?',
+    a: 'Wix’s images article says you add alt text from the Settings panel in the Wix Editor, the Studio Editor, and the Wix Harmony Editor, and that you should publish the site so the text is live. In the Harmony Editor steps, the field is labeled “What’s in the image?” Galleries are edited in the Media Manager. For Wix Pro Gallery, those Harmony steps say you can set Alt Text separately from the image title. The same article says the AI tool in the wizard cannot be guaranteed accurate, and that SVG and GIF images are not supported by it.',
+  },
+  {
+    q: 'Does the Wix Accessibility Wizard scan checkout?',
+    a: 'No. Wix’s list of unsupported content includes checkout pages for Wix Stores, Wix Bookings, and others, and the side cart. The same help page says the wizard does scan many app pages, and it gives Stores and Blog as examples. A product page and a checkout page are not the same scan. The table on this page is that unsupported list.',
+  },
+  {
+    q: 'What contrast ratio does Wix require?',
+    a: 'The wizard article states Level AA ratios: 4.5:1 and above for text smaller than 24px (18pt), 3:1 and above for larger or bold text, and 3:1 and above for non-text components such as icons. It says only Level AA is currently required in the wizard. WCAG 1.4.3 requires at least 4.5:1 for normal text and at least 3:1 for large-scale text, which the W3C defines as at least 18 point or 14 point bold. Measure a pair in the <a href="/tools/contrast-checker">contrast checker</a>. The wizard says some elements, including app elements, are not fully integrated and need a manual check.',
+  },
+  {
+    q: 'Are old Wix Forms accessible?',
+    a: 'Wix says old Wix Forms are not accessible, and that you should switch to the new Wix Forms if you need to comply with accessibility regulations. On the new forms, Wix says to show a field title and to make that title specific, with examples such as last name and phone number.',
+  },
+  {
+    q: 'What does the Pro trial cost?',
+    a: `Pro is a 3-day free trial, then $${PLAN.price} per domain per month or $${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. Cancel before then and you will not be charged. A <a href="${ONE_TIME.pageReport.href}">Page Report</a> is $${ONE_TIME.pageReport.price} for one page. A <a href="${ONE_TIME.domainAudit.href}">Domain Audit</a> is $${ONE_TIME.domainAudit.price} for up to ${PLAN.urlsPerDomain} pages. Neither renews.`,
+  },
+];
+
+const schema = [
+  {
+    '@type': 'Article',
+    '@id': `${SITE.url}${PATH}#article`,
+    headline: 'Wix Accessibility Checklist',
+    description,
+    datePublished: UPDATED,
+    dateModified: UPDATED,
+    mainEntityOfPage: { '@id': `${SITE.url}${PATH}#webpage` },
+    url: `${SITE.url}${PATH}`,
+    inLanguage: 'en-US',
+    author: { '@id': `${SITE.url}/#organization` },
+    publisher: { '@id': `${SITE.url}/#organization` },
+    image: `${SITE.url}/images/resources/wix-accessibility-checklist.svg`,
+  },
+  faqSchema(faqs),
+];
+---
+<BaseLayout
+  title={title}
+  description={description}
+  ogType="article"
+  article={{ published: `${UPDATED}T00:00:00.000Z`, modified: `${UPDATED}T00:00:00.000Z`, section: 'Resources' }}
+  breadcrumbs={[{ label: 'Resources', href: '/resources' }, { label: 'Wix accessibility checklist', href: PATH }]}
+  schema={schema}
+>
+  <article>
+    <header class="page-hero">
+      <div class="container">
+        <span class="eyebrow">Checklist</span>
+        <h1 id="wix-title">Wix Accessibility Checklist</h1>
+        <p class="lead">A Wix accessibility checklist maps the tasks in Wix’s Accessibility Wizard onto the WCAG 2.2 checks those tasks affect. Wix says it cannot guarantee that your site will comply with your region’s accessibility laws after you use the wizard. The wizard also skips checkout, the side cart, and third-party apps. The ticks on this page stay in this browser. A scan is a list of findings, not a legal opinion and not a conformance claim.</p>
+        <p>Last updated <time datetime={UPDATED}>November 13, 2026</time>. The quotes are from Wix Help, the W3C, and ADA.gov.</p>
+        <div class="solution-cta">
+          <a class="btn btn-accent" href="/app/signup">Start 3-day free trial <Icon name="arrow" /></a>
+          <a class="btn btn-outline" href="#check-a-page">Run a free scan</a>
+        </div>
+        <p class="monitor-offer">Pro is a 3-day free trial, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. A <a href={ONE_TIME.pageReport.href}>Page Report</a> is ${ONE_TIME.pageReport.price}. A <a href={ONE_TIME.domainAudit.href}>Domain Audit</a> is ${ONE_TIME.domainAudit.price}.</p>
+      </div>
+    </header>
+
+    <div class="container cc-prose monitor-guide">
+      <section class="monitor-facts" aria-labelledby="key-facts">
+        <h2 id="key-facts">Key Facts for a Wix Accessibility Checklist</h2>
+        <p>Use these when you need a short, sourced summary. The page-by-page list is below.</p>
+        <ul>
+          <li>Wix says it cannot guarantee that a site will comply with local accessibility laws after you use the Accessibility Wizard.</li>
+          <li>Wix says the wizard’s tasks are based on WCAG 2.2, and that only Level AA is currently required in the wizard.</li>
+          <li>The wizard does not scan checkout, the side cart, Velo, the CMS, password-protected pages, or third-party apps. The table below is Wix’s list.</li>
+          <li>Wix says its AI alt text is not guaranteed accurate, and that SVG and GIF images are not supported by that tool.</li>
+          <li>Wix says old Wix Forms are not accessible. ADA.gov’s position is that the ADA applies to goods, services, privileges, or activities a public accommodation offers on the web.</li>
+        </ul>
+        <figure class="monitor-quote">
+          <blockquote cite="https://support.wix.com/en/article/accessibility-about-the-accessibility-wizard-7284021">
+            <p>While Wix is always striving to improve our products and services, we cannot guarantee that your site will be compliant with your region's accessibility laws and regulations after using the Wizard.</p>
+          </blockquote>
+          <figcaption>
+            Wix Help Center, <a href="https://support.wix.com/en/article/accessibility-about-the-accessibility-wizard-7284021">About the Accessibility Wizard</a>. The same sentence, without the words “after using the Wizard,” is on the <a href="https://support.wix.com/en/article/accessibility-checking-site-accessibility-with-the-accessibility-monitor">Accessibility Monitor</a> article.
+          </figcaption>
+        </figure>
+        <figure class="monitor-quote">
+          <blockquote cite="https://support.wix.com/en/article/accessibility-about-the-accessibility-wizard-7284021">
+            <p>Additionally, some site pages are not scanned / supported by the wizard.</p>
+          </blockquote>
+          <figcaption>
+            Wix Help Center, <a href="https://support.wix.com/en/article/accessibility-about-the-accessibility-wizard-7284021">About the Accessibility Wizard</a>, answer to “What does the Accessibility Wizard scan?” The unsupported list, including checkout and the side cart, is the table on this page. The same list is on the <a href="https://support.wix.com/en/article/wix-harmony-editor-using-the-accessibility-wizard">Harmony Editor wizard article</a>.
+          </figcaption>
+        </figure>
+        <figure class="monitor-quote">
+          <blockquote cite="https://www.ada.gov/resources/web-guidance/">
+            <p>For these reasons, the Department has consistently taken the position that the ADA’s requirements apply to all the goods, services, privileges, or activities offered by public accommodations, including those offered on the web.</p>
+          </blockquote>
+          <figcaption>
+            U.S. Department of Justice, <a href="https://www.ada.gov/resources/web-guidance/">Guidance on Web Accessibility and the ADA</a>, March 18, 2022. The page says it does not reflect Title II requirements published in the Federal Register on April 24, 2024.
+          </figcaption>
+        </figure>
+      </section>
+
+      <h2 id="what-wix-says">What This Wix Accessibility Checklist Is For</h2>
+      <p>Wix’s <a href="https://support.wix.com/en/article/accessibility-about-the-accessibility-wizard-7284021">About the Accessibility Wizard</a> article says the wizard scans a site from the editor and guides you through actions. It says the results sit in two tabs, Detected issues and Manual tasks, and that those tasks are based on WCAG 2.2. The same page says a scan is a way to get a sense of the site and see suggestions. It does not say a finished run is a conformance claim.</p>
+      <p>Wix’s own <a href="https://support.wix.com/en/article/accessibility-checklist-for-improving-your-sites-accessibility">accessibility checklist</a> calls the wizard the best way to improve a site, and then says you should still check the site by hand. That checklist also says Wix handles many built-in pieces, including keyboard semantics, ARIA attributes for elements Wix provides, and visual indicators, and that the content you add still has to be made accessible. It says accessible templates include heading structure and color contrast, and that custom ARIA labels and alt text are not included and have to be added. This page follows the fields and limits Wix documents. It does not certify a template.</p>
+      <p>If the business is a public accommodation, the statute is the place to start. A sales or rental establishment is listed in <a href="https://www.law.cornell.edu/uscode/text/42/12181">42 U.S.C. § 12181(7)(E)</a>. A service establishment is listed in § 12181(7)(F). ADA.gov’s March 18, 2022 web guidance says the Department’s position is that the ADA applies to the goods, services, privileges, or activities those businesses offer on the web. The same page says the Department did not then have a regulation setting detailed website standards, and that WCAG and the Section 508 standards are guidance teams can use. It also says it does not reflect the Title II rule published on April 24, 2024. A private Wix site is not a Title II public entity. This page is not legal advice. See the <a href="/disclaimer">disclaimer</a>.</p>
+      <figure>
+        <img
+          src="/images/resources/wix-accessibility-checklist.svg"
+          width="840"
+          height="360"
+          alt="Six Wix checks: 1, the Accessibility Wizard does not scan checkout or the side cart. 2, publish alt text and check any text the AI tool wrote. 3, put one Heading 1 in the page body, then follow in order. 4, measure contrast; the wizard requires Level AA and does not check every element. 5, confirm the blue focus box is visible, including on a white button over blue. 6, show a field title, and replace old Wix Forms."
+        />
+        <figcaption>Six checks that match Wix Help. Each one is written out in the sections below.</figcaption>
+      </figure>
+
+      <h2 id="not-scanned">Pages a Wix Accessibility Checklist Still Has to Cover</h2>
+      <p>Wix says the wizard scans most of the site, including regular pages and pages that are part of business solutions, and it gives the Calendar page in Wix Bookings as an example. It also says some content on those pages may still need a manual review. A later answer on the same page is the limit: some pages and apps are not scanned.</p>
+      <p>Read that next to a second sentence on the same article: the wizard also scans app pages, and Wix gives Stores and Blog as examples. A Stores page can be in the scan while checkout and the side cart are not. The <a href="/resources/wcag-2-2-checklist-for-online-stores">WCAG 2.2 checklist for online stores</a> is the map for a product page, a cart, and checkout when you sell on the site.</p>
+      <table>
+        <caption>What the Wix Accessibility Wizard does not support. Source: Wix Help Center, About the Accessibility Wizard, answer to “What pages and site content are not supported by the wizard?” The same list is on the Harmony Editor wizard article.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Surface</th>
+            <th scope="col">What Wix says</th>
+          </tr>
+        </thead>
+        <tbody>
+          {skipped.map((row) => (
+            <tr>
+              <th scope="row">{row.surface}</th>
+              <td>{row.note}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p>Wix says to go through those pages with its checklist. The <a href="https://support.wix.com/en/article/accessibility-checking-site-accessibility-with-the-accessibility-monitor">Accessibility Monitor</a> is a separate tool. Wix says it scans a live Wix site for potential issues, shows the status on the dashboard, and opens the wizard so you can fix what it flagged. Wix recommends checking the monitor every time you publish. The monitor article does not say the monitor covers the unsupported list above.</p>
+      <p>The wizard is also limited by language. Wix says it is only supported in the site’s primary language and cannot be opened in a secondary language added with Wix Multilingual. A translated page needs the same checks outside the wizard.</p>
+
+      <h2 id="alt-text">Alt Text on a Wix Accessibility Checklist</h2>
+      <p>Wix’s <a href="https://support.wix.com/en/article/accessibility-preparing-your-images-and-galleries">images and galleries article</a> says it follows WCAG 1.1.1 Non-text Content and 1.4.5 Images of Text. Its writing rules are to describe the important information, to be specific, to avoid using the same alt text for two or more images on one page, and to leave out phrases such as “image of” or “picture of.” It also says to publish the site so the alt text is live.</p>
+      <p>The article says you add alt text from the Settings panel in the Wix Editor, the Studio Editor, and the Wix Harmony Editor. The Harmony Editor steps name the field “What’s in the image?” Gallery images are edited in the Media Manager. In those Harmony steps, Wix Pro Gallery has an Alt Text field when you want the description to differ from the image title. Tooltips that used to sit on images in the Wix Editor are no longer available, and Wix says existing tooltips have been removed from the live site.</p>
+      <figure class="monitor-quote">
+        <blockquote cite="https://support.wix.com/en/article/accessibility-preparing-your-images-and-galleries">
+          <p>We cannot guarantee that AI generated alt text is always completely accurate. We therefore recommend checking the generated text for every image, and editing it as needed.</p>
+        </blockquote>
+        <figcaption>
+          Wix Help Center, <a href="https://support.wix.com/en/article/accessibility-preparing-your-images-and-galleries">Preparing Your Images and Galleries</a>. The same section says SVG and GIF images are not supported by the AI tool, and that a bulk run skips images marked decorative and images that already have alt text.
+        </figcaption>
+      </figure>
+      <p>Decorative images can be marked with the checkbox “This image is decorative, it doesn't need alt text.” Wix says linked images should have alt text and should not be marked decorative. That matches the exception in <a href={criterionPath('1.1.1')}>WCAG 1.1.1</a> for decorative images, and the rule that a linked image still needs a text alternative. Wix says to check generated alt text for every image before you rely on it.</p>
+      <p>For text inside an image, the wizard’s manual tasks say text in images, such as photos of signs or slogans, cannot be read by screen readers, and that you should replace those images with real text where possible. That is <a href={criterionPath('1.4.5')}>WCAG 1.4.5 Images of Text</a> (Level AA). The <a href="/platforms/wix/accessibility-checker">Wix accessibility checker</a> is the scan of a published page that still has an empty description.</p>
+
+      <h2 id="headings">Headings, Titles, and Links</h2>
+      <p>Wix’s <a href="https://support.wix.com/en/article/accessibility-preparing-your-site-structure">site structure article</a> says every page should have an H1, and that the tags after it should be sequential, so an H1 is followed by an H2. It says to think of headings as labels for the text below. To break a heading onto two lines, it says to use Shift+Enter. Enter creates a new heading element on each line. It also says an H1 in the site header appears on every page that shows that header, so it recommends putting headings in the page body. A one-page site with no other pages is the exception it names.</p>
+      <p>Most text can be retagged in the wizard. Wix says some text, and it gives app text as the example, is not fully integrated and may need a manual change. The same article says you can use Optimize with AI to resolve heading-tag issues on a page in bulk, and that text the wizard does not support gets a manual suggestion instead of an automatic change. That structure is <a href={criterionPath('1.3.1')}>WCAG 1.3.1 Info and Relationships</a> (Level A).</p>
+      <p>On titles, the <a href="https://support.wix.com/en/article/accessibility-using-the-accessibility-wizard">using the wizard</a> article says the wizard prompts you when the title tag contains “New page,” the default for a new page, or “Copy of,” the default for a duplicate. It says titles should be descriptive, unique, and concise. That is <a href={criterionPath('2.4.2')}>WCAG 2.4.2 Page Titled</a> (Level A).</p>
+      <p>On links, the <a href="https://support.wix.com/en/article/wix-harmony-editor-using-the-accessibility-wizard">Harmony Editor wizard article</a> says link text should be as descriptive as possible. Its example is that “Read more about our latest research” is clearer than “Read more,” and that a control should also be clear when it leads to an action such as submitting a form. That is <a href={criterionPath('2.4.4')}>WCAG 2.4.4 Link Purpose (In Context)</a> (Level A). The classic editor lists the same manual task, “Use descriptive link and button text.”</p>
+
+      <h2 id="color-keyboard">Color, Focus, and the Site Language</h2>
+      <p>The wizard article prints Level AA contrast ratios and says only Level AA is currently required in the wizard. It also says you can adjust most content in the wizard, and that some elements are not fully integrated and need a manual adjustment. The <a href="https://support.wix.com/en/article/accessibility-preparing-your-text-and-graphics">text and graphics article</a> repeats 4.5:1 for normal text, 3:1 for large text, and at least 3:1 for graphics and user interface components such as form borders and placeholders. It defines large text as above 14 points (approximately 18px) and bold, or 18 points (approximately 24px). The wizard page words the cutoff as bigger than 24px (18pts), or text over 18px (14pts) and bold. When a size sits on that line, use the W3C definition.</p>
+      <table>
+        <caption>Level AA contrast ratios stated in Wix’s Accessibility Wizard article. Wix says only Level AA is currently required in the wizard. WCAG 1.4.3 is the criterion to measure against.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Element, as Wix describes it</th>
+            <th scope="col">Level AA ratio Wix states</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ratios.map((row) => (
+            <tr>
+              <th scope="row">{row.element}</th>
+              <td>{row.aa}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p><a href={criterionPath('1.4.3')}>WCAG 1.4.3 Contrast (Minimum)</a> (Level AA) requires at least 4.5:1 for normal text and at least 3:1 for large-scale text. The W3C’s <a href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html">understanding page for 1.4.3</a> says large scale means at least 18 point or 14 point bold. <a href={criterionPath('1.4.11')}>WCAG 1.4.11 Non-text Contrast</a> (Level AA) is the 3:1 rule for interface components. Measure a pair in the <a href="/tools/contrast-checker">WCAG color contrast checker</a>. Wix also points people at its Contrast Checker add-on for pairs the wizard does not identify.</p>
+      <p>The same manual tasks say not to use color alone. Wix’s example is that linked text should be underlined, and that a graph should also use patterns or textures. That is <a href={criterionPath('1.4.1')}>WCAG 1.4.1 Use of Color</a> (Level A).</p>
+      <figure class="monitor-quote">
+        <blockquote cite="https://support.wix.com/en/article/accessibility-turning-the-blue-boxes-visual-indicators-on-and-off">
+          <p>Focus indicators are automatically enabled on all sites you build with Wix. The indicator is designed to fit most site color combinations. However, it is less visible on buttons with a white fill over a blue background.</p>
+        </blockquote>
+        <figcaption>
+          Wix Help Center, <a href="https://support.wix.com/en/article/accessibility-turning-the-blue-boxes-visual-indicators-on-and-off">About Focus Indicators</a>. The article says these are blue rectangles around buttons and links when a visitor uses the keyboard, and it cites WCAG 2.4.7.
+        </figcaption>
+      </figure>
+      <p>On a Wix Editor site where indicators were turned off earlier, the wizard can turn them back on, and Wix says they cannot be turned off again. Studio Editor and Harmony Editor sites keep them on. <a href={criterionPath('2.4.7')}>WCAG 2.4.7 Focus Visible</a> (Level AA) requires a visible keyboard focus indicator. Tab the published page. A white control on a blue header is the case Wix tells you to check. <a href="https://support.wix.com/en/article/accessibility-about-skip-to-main-content">Skip to Main Content</a> is on by default as well, appears on the first Tab, and Wix says it can be less visible on a white-and-blue header. The article cites <a href={criterionPath('2.4.1')}>WCAG 2.4.1 Bypass Blocks</a> (Level A). On Studio and Harmony sites it stays on. On a Wix Editor site, once you enable it from the wizard, Wix says it cannot be turned off.</p>
+      <p>The wizard also asks for the main site language, which assistive technologies use for pronunciation and for which captions a media player offers. That is <a href={criterionPath('3.1.1')}>WCAG 3.1.1 Language of Page</a> (Level A). For motion, the manual tasks say an audio player that starts automatically can speak over a screen reader, and they tell you to add controls. They also say to preview the site and zoom the browser to 200% so content stays visible. Those lines track <a href={criterionPath('1.4.2')}>WCAG 1.4.2 Audio Control</a> and <a href={criterionPath('1.4.4')}>WCAG 1.4.4 Resize Text</a>. Wix states the practice. The criterion numbers are the W3C’s.</p>
+
+      <h2 id="forms-checkout">Forms, the Side Cart, and Checkout</h2>
+      <figure class="monitor-quote">
+        <blockquote cite="https://support.wix.com/en/article/accessibility-creating-an-accessible-wix-form">
+          <p>Old Wix Forms are not accessible. If you need to comply with accessibility regulations, switch to the new Wix Forms.</p>
+        </blockquote>
+        <figcaption>
+          Wix Help Center, <a href="https://support.wix.com/en/article/accessibility-creating-an-accessible-wix-form">Creating an Accessible Wix Form</a>.
+        </figcaption>
+      </figure>
+      <p>On the new forms, Wix says to show the field title and to make it specific. Its examples are last name and phone number. A title that is hidden, or a placeholder standing in for the label, fails <a href={criterionPath('3.3.2')}>WCAG 3.3.2 Labels or Instructions</a> (Level A). Wix also says to set an error state on the fields so a problem is visible, and to keep the keyboard focus box on.</p>
+      <p>Checkout is outside that form. The unsupported list includes checkout pages and the side cart. A public product page can still be scanned. A checkout step that asks the visitor to sign in is not a page a public scan can open. If you sell on the site, check the cart and the payment step by keyboard yourself, then use the <a href="/platforms/wix">Wix checkers</a> on any product or cart URL that loads without a login. The <a href="/platforms/wix/ada-compliance-checker">Wix ADA compliance checker</a> is the same scan framed for the ADA questions.</p>
+
+      <h2 id="checklist">A Wix Accessibility Checklist You Can Tick</h2>
+      <p>Tick these in the editor, then again on the published page. The ticks stay in this browser. Nothing is sent to AccessBell. This is a planning aid. It is not a conformance claim. See the <a href="/disclaimer">disclaimer</a> and the <a href="/resources">resources</a> hub this page belongs to.</p>
+      <div data-monitor-checklist data-storage-key="accessbell-wix-checklist-v1">
+        {groups.map((group) => (
+          <fieldset class="monitor-checklist">
+            <legend>{group.legend}</legend>
+            {group.items.map((item) => (
+              <label>
+                <input type="checkbox" id={item.id} />
+                <span>{item.label}</span>
+              </label>
+            ))}
+          </fieldset>
+        ))}
+        <p data-checklist-status role="status">0 of {total} checked on this browser. Nothing is sent to AccessBell.</p>
+        <div class="monitor-actions">
+          <button class="btn btn-outline" type="button" data-checklist-reset>Clear checks on this browser</button>
+        </div>
+      </div>
+      <noscript><p>JavaScript is off, so these ticks are not saved. You can still check them while you read, or print the page. Nothing is sent to AccessBell either way.</p></noscript>
+
+      <h2 id="cannot-prove">What a Wix Accessibility Checklist Cannot Prove</h2>
+      <p>Wix says a finished wizard run is not a guarantee of compliance. The Department of Justice’s web guidance says a “clean” report does not necessarily mean everything is accessible. The W3C’s <a href="https://www.w3.org/WAI/test-evaluate/">evaluating web accessibility</a> overview says no tool alone can determine if a site meets accessibility standards, and that a knowledgeable person is required to decide.</p>
+      <p>Use the checklist to find the editor tasks and the pages the wizard skips. Use a scan to see what the published HTML does. A person still checks whether the alt text describes the image, whether the keyboard path has a trap, and whether a cart that the wizard never opened can be completed from the keyboard. <a href="/methodology">How AccessBell tests</a> separates automated results from items that need a person. The <a href="/platforms/wix">Wix accessibility checkers</a> run that scan on one public page. A builder with a different editor is the <a href="/resources/squarespace-accessibility-checklist">Squarespace accessibility checklist</a>. If the business sells to consumers in the European Union, the related standard on this site is the <a href="/tools/en-301-549-checker">EN 301 549 checker</a>. Federal contractors start with the <a href="/tools/section-508-checker">Section 508 checker</a>.</p>
+      <p>Pro monitors up to {PLAN.urlsPerDomain} URLs per domain and offers guided fix suggestions, such as alt text, a button name, or the page language. Nothing is applied until you approve it. This is not an overlay. Pro is a 3-day free trial, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. Cancel before then and you will not be charged. Prices are on the <a href="/pricing">pricing page</a>.</p>
+      <p>If you do not want a subscription, a <a href={ONE_TIME.pageReport.href}>Page Report</a> is ${ONE_TIME.pageReport.price} for one page, with the full issue detail and a PDF. A <a href={ONE_TIME.domainAudit.href}>Domain Audit</a> is ${ONE_TIME.domainAudit.price} for up to {PLAN.urlsPerDomain} pages. Neither one renews, and neither one is a promise that the site conforms to WCAG or the ADA.</p>
+    </div>
+
+    <section class="section-tight" id="check-a-page" aria-labelledby="check-title">
+      <div class="container">
+        <div class="cc-prose">
+          <h2 id="check-title">Check a Wix Page, Then Monitor the Site</h2>
+          <p>Paste a public Wix URL. The free scan lists automated issues on that page. Start a 3-day free trial if you want that URL, and others on the domain, checked again. Checkout that sits behind a login is not a URL this form can open.</p>
+        </div>
+        <div class="hero-checker">
+          <ScanForm id="wix-check" buttonLabel="Scan this page">
+            <span slot="proof">Free scan of one public page, no account. <a href="/app/signup">Start a 3-day free trial</a> to monitor up to {PLAN.urlsPerDomain} URLs per domain and apply fixes you approve. Nothing is applied until you approve it. Then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year.</span>
+          </ScanForm>
+        </div>
+      </div>
+    </section>
+
+    <section class="results" id="scan-results" aria-live="polite" aria-busy="false" hidden>
+      <div class="container" data-results></div>
+    </section>
+
+    <section class="section-tight" aria-labelledby="faq-title">
+      <div class="container cc-prose">
+        <h2 id="faq-title">Wix Accessibility Checklist Questions</h2>
+        <Faq items={faqs} />
+      </div>
+    </section>
+
+    <div class="container cc-prose">
+      <SourceList ids={['wix-wizard-about', 'wix-wizard', 'wix-harmony', 'wix-images', 'wix-text', 'wix-structure', 'wix-focus', 'wix-skip', 'wix-forms', 'wix-monitor', 'wix-checklist', 'wcag22', 'contrast-min', 'ada-web', 'ada-12181', 'wai-evaluate']} />
+      <p>Related pages: <a href="/resources">all resources</a>, the <a href="/platforms/wix">Wix checkers</a>, the <a href="/resources/squarespace-accessibility-checklist">Squarespace accessibility checklist</a>, the <a href="/resources/wcag">WCAG library</a>, and the <a href="/blog/wcag-2-2-checklist">WCAG 2.2 checklist</a>.</p>
+    </div>
+  </article>
+  <CtaBand title="Scan a Wix Page, Then Monitor It" text="Start a 3-day free trial to monitor up to 500 URLs per domain and apply fixes you approve, or run a free one-page scan with no account." />
+</BaseLayout>
+<script>
+  import '../../scripts/free-scan.js';
+  import '../../scripts/monitoring-checklist.js';
+</script>
