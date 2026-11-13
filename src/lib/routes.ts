@@ -28,6 +28,7 @@ const STATIC: Omit<RouteEntry, 'lastmod'>[] = [
   { path: '/resources/website-accessibility-monitoring-tool', label: 'Website Accessibility Monitoring Tool Guide', note: 'WCAG-EM checklist: what a monitoring tool can flag, what a person must judge, and how often to rescan.', group: 'main' },
   { path: '/resources/wcag-2-2-checklist-for-online-stores', label: 'WCAG 2.2 Checklist for Online Stores', note: 'The nine new WCAG 2.2 success criteria, mapped to product pages, carts, and checkout.', group: 'main' },
   { path: '/resources/squarespace-accessibility-checklist', label: 'Squarespace Accessibility Checklist', note: 'Squarespace editor fields for alt text, headings, contrast, focus, and checkout, mapped to WCAG 2.2.', group: 'main' },
+  { path: '/resources/wix-accessibility-checklist', label: 'Wix Accessibility Checklist', note: 'What the Wix Accessibility Wizard scans, what it skips, and the WCAG 2.2 checks those tasks affect.', group: 'main' },
   { path: '/blog', label: 'Blog', note: 'Accessibility guides and compliance insights', group: 'main' },
   { path: '/comparisons', label: 'Comparisons', note: 'AccessBell compared with other accessibility tools', group: 'main' },
   { path: '/use-cases', label: 'Use Cases', note: 'How customers use AccessBell to monitor accessibility compliance', group: 'main' },
@@ -83,7 +84,9 @@ export async function getRoutes(): Promise<RouteEntry[]> {
                 ? new Date('2026-11-11T00:00:00Z')
                 : r.path === '/resources/squarespace-accessibility-checklist'
                   ? new Date('2026-11-12T00:00:00Z')
-                  : undefined,
+                  : r.path === '/resources/wix-accessibility-checklist'
+                    ? new Date('2026-11-13T00:00:00Z')
+                    : undefined,
     })),
     ...CHECKERS.map((c) => ({ path: checkerPath(c), label: c.name, note: `Free WCAG ${c.version} Level ${c.level} scan`, group: 'main' as const })),
     ...COMPARISONS.map((c) => ({ path: comparisonPath(c), label: `${c.name} vs. AccessBell`, note: c.kind, group: 'main' as const })),

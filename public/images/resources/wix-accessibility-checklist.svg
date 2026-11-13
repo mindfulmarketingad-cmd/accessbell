@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="360" viewBox="0 0 840 360" role="img" aria-labelledby="title desc">
+  <title id="title">Six Wix checks</title>
+  <desc id="desc">Six checks: the wizard skips checkout and the side cart, alt text must be published and reviewed, headings start with one Heading 1 in the page body, contrast is a Level AA measurement the wizard does not finish, the blue focus box must stay visible, and form fields need a visible title.</desc>
+  <rect width="840" height="360" fill="#f4f8f3"/>
+  <text x="24" y="36" fill="#22262f" font-family="system-ui, Segoe UI, sans-serif" font-size="18" font-weight="700">What to check on a Wix site</text>
+  <g font-family="system-ui, Segoe UI, sans-serif" fill="#22262f">
+    <g>
+      <rect x="24" y="56" width="252" height="128" rx="12" fill="#ffffff" stroke="#cfd4ce"/>
+      <text x="40" y="88" font-size="15" font-weight="700">1. Wizard gap</text>
+      <text x="40" y="114" fill="#353a47" font-size="13">Checkout and the side</text>
+      <text x="40" y="134" fill="#353a47" font-size="13">cart are not scanned.</text>
+    </g>
+    <g>
+      <rect x="294" y="56" width="252" height="128" rx="12" fill="#ffffff" stroke="#cfd4ce"/>
+      <text x="310" y="88" font-size="15" font-weight="700">2. Alt text</text>
+      <text x="310" y="114" fill="#353a47" font-size="13">Publish it. Check any</text>
+      <text x="310" y="134" fill="#353a47" font-size="13">text the AI tool wrote.</text>
+    </g>
+    <g>
+      <rect x="564" y="56" width="252" height="128" rx="12" fill="#ffffff" stroke="#cfd4ce"/>
+      <text x="580" y="88" font-size="15" font-weight="700">3. Headings</text>
+      <text x="580" y="114" fill="#353a47" font-size="13">One Heading 1 in the</text>
+      <text x="580" y="134" fill="#353a47" font-size="13">page body, then in order.</text>
+    </g>
+    <g>
+      <rect x="24" y="200" width="252" height="128" rx="12" fill="#ffffff" stroke="#cfd4ce"/>
+      <text x="40" y="232" font-size="15" font-weight="700">4. Contrast</text>
+      <text x="40" y="258" fill="#353a47" font-size="13">Measure the pair. The</text>
+      <text x="40" y="278" fill="#353a47" font-size="13">wizard misses some elements.</text>
+    </g>
+    <g>
+      <rect x="294" y="200" width="252" height="128" rx="12" fill="#ffffff" stroke="#cfd4ce"/>
+      <text x="310" y="232" font-size="15" font-weight="700">5. Keyboard</text>
+      <text x="310" y="258" fill="#353a47" font-size="13">Blue focus box. Check</text>
+      <text x="310" y="278" fill="#353a47" font-size="13">white buttons on blue.</text>
+    </g>
+    <g>
+      <rect x="564" y="200" width="252" height="128" rx="12" fill="#ffffff" stroke="#cfd4ce"/>
+      <text x="580" y="232" font-size="15" font-weight="700">6. Forms</text>
+      <text x="580" y="258" fill="#353a47" font-size="13">Show a field title.</text>
+      <text x="580" y="278" fill="#353a47" font-size="13">Replace old Wix Forms.</text>
+    </g>
+  </g>
+</svg>

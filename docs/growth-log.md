@@ -2,6 +2,16 @@
 
 A running record of shipped pages and conversion changes. One page and one site improvement per entry.
 
+## 2026-11-13
+
+**New page:** `/resources/wix-accessibility-checklist` — Wix accessibility checklist. It quotes Wix’s statement that the Accessibility Wizard cannot guarantee compliance with local accessibility laws, the WCAG 2.2 basis of the wizard’s tasks, and the Level AA ratios the wizard prints. The shareable table is Wix’s own list of what the wizard does not support, including checkout, the side cart, Velo, the CMS, password-protected pages, and third-party apps. It also quotes the AI alt-text limit (not guaranteed accurate; SVG and GIF are excluded), the warning that old Wix Forms are not accessible, and ADA.gov’s March 18, 2022 position on goods and services offered on the web. The ticks stay in the browser. The free scan, the 3-day Pro trial ($29 per domain per month or $199 per year), the $19 Page Report, and the $79 Domain Audit are on the page.
+
+**Site improvement:** The Page Report and Domain Audit purchase forms now state the choice in full. The $19 page purchase and the $79 domain purchase name each other. Pro is a 3-day free trial, then $29 per domain per month or $199 per year, a card is added at checkout, there is no charge until the trial ends, and the first charge has a 14-day money-back guarantee. The same terms are in the FAQ and in the “how it works” section on both pages. The old line said only “Start a 3-day free trial of Pro,” with no price.
+
+**Why:** Those forms are where someone is about to pay. The trial was a link with no price and no card terms, so a reader who wanted monitoring could not compare $19 once, $79 once, and $29 a month without leaving the page.
+
+**Backlink angle:** A table of the pages and apps Wix says the Accessibility Wizard does not support, set next to Wix’s own line that a finished wizard run does not guarantee compliance, the Level AA contrast ratios the wizard prints, and the ADA.gov web position.
+
 ## 2026-11-12
 
 **New page:** `/resources/squarespace-accessibility-checklist` — Squarespace accessibility checklist. It quotes Squarespace’s accessibility page (a customized site is not always accessible, and the customer is responsible for compliance), the October 1, 2026 alt-text article (image blocks and auto layouts have no alt text unless you add it; product images fall back to the product name, up to 200 characters; page featured images use the file name), the September 23, 2026 inclusive-design guide (one Heading 1, no fake headings, and a focus outline you cannot recolor or thicken), and the July 15, 2025 VPAT guide (completing a VPAT does not guarantee accessibility). It maps those fields to WCAG 2.2, notes that the 2010 ADA Standards Squarespace links are the facility standards, and quotes ADA.gov’s March 18, 2022 position on goods and services offered on the web. The ticks stay in the browser. The free scan, the 3-day Pro trial ($29 per domain per month or $199 per year), the $19 Page Report, and the $79 Domain Audit are on the page.
