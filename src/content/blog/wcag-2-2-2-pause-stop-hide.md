@@ -150,7 +150,7 @@ For live feeds, scores and dashboards, give people control. Pause updates, let t
   <figcaption>Holding new items until someone asks for them keeps the content still while people read.</figcaption>
 </figure>
 
-This matches the W3C technique [G186, using a control in the web page that stops moving, blinking, or auto-updating content](https://www.w3.org/WAI/WCAG22/Techniques/general/G186). If the updates are important, pair the "Show new" button with a [status message](/resources/wcag/4-1-3-status-messages) so screen reader users know they are waiting.
+This matches the W3C technique [G186, using a control in the web page that stops moving, blinking, or auto-updating content](https://www.w3.org/WAI/WCAG22/Techniques/general/G186). If the updates are important, pair the "Show new" button with a [status message](/wcag/4-1-3-status-messages) so screen reader users know they are waiting.
 
 ### Know the "essential" exception
 
@@ -166,14 +166,14 @@ Automated checkers can flag the obsolete `<blink>` and `<marquee>` elements, but
 4. **Use the control with a keyboard.** Tab to it, press Enter or Space, and confirm the movement really stops, and stays stopped.
 5. **Check the essential exception** before you mark something as a failure.
 
-For a quick reference, see our [2.2.2 Pause, Stop, Hide page](/resources/wcag/2-2-2-pause-stop-hide) in the WCAG library. The W3C's [Understanding 2.2.2 Pause, Stop, Hide](https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html) has more examples.
+For a quick reference, see our [2.2.2 Pause, Stop, Hide page](/wcag/2-2-2-pause-stop-hide) in the WCAG library. The W3C's [Understanding 2.2.2 Pause, Stop, Hide](https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html) has more examples.
 
 ## Related Success Criteria
 
-- [2.2.1 Timing Adjustable](/resources/wcag/2-2-1-timing-adjustable): time limits can be turned off, adjusted or extended.
-- [2.2.3 No Timing](/resources/wcag/2-2-3-no-timing): the Level AAA rule that tasks have no time limit at all.
-- [1.4.2 Audio Control](/resources/wcag/1-4-2-audio-control): audio that plays automatically for more than 3 seconds can be paused or stopped.
-- [2.3.1 Three Flashes or Below Threshold](/resources/wcag/2-3-1-three-flashes-or-below-threshold): nothing flashes more than three times a second.
+- [2.2.1 Timing Adjustable](/wcag/2-2-1-timing-adjustable): time limits can be turned off, adjusted or extended.
+- [2.2.3 No Timing](/wcag/2-2-3-no-timing): the Level AAA rule that tasks have no time limit at all.
+- [1.4.2 Audio Control](/wcag/1-4-2-audio-control): audio that plays automatically for more than 3 seconds can be paused or stopped.
+- [2.3.1 Three Flashes or Below Threshold](/wcag/2-3-1-three-flashes-or-below-threshold): nothing flashes more than three times a second.
 
 Want to find the issues software *can* catch while you check moving content by hand? [Run a free WCAG scan](/#scan) of any page.
 

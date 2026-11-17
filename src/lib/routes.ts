@@ -10,6 +10,7 @@ import { INDUSTRIES, industryPath } from '../data/industries';
 import { STATE_LAWS, stateLawPath } from '../data/state-laws';
 import { CRITERIA } from '../../server/wcag-criteria.js';
 import { criterionPath } from './wcag-pages';
+import { CRITERION_GUIDES, GUIDE_UPDATED } from '../data/wcag-criterion-guides';
 
 /** lastmod is only set where the page has a real content date; sitemaps omit it otherwise. */
 export type RouteEntry = { path: string; label: string; note?: string; lastmod?: Date; group: 'main' | 'blog' | 'authors' | 'help' | 'company' | 'wcag' };
@@ -45,7 +46,7 @@ const STATIC: Omit<RouteEntry, 'lastmod'>[] = [
   { path: '/platforms', label: 'Accessibility Checkers by Platform', note: 'WordPress, Shopify, Webflow, Squarespace and Wix', group: 'main' },
   { path: '/industries', label: 'Accessibility Checkers by Industry', note: 'Hotels, restaurants, e-commerce, healthcare and more', group: 'main' },
   { path: '/state-accessibility-laws', label: 'Website Accessibility Laws by State', note: 'State laws and a free checker for each', group: 'main' },
-  { path: '/resources/wcag', label: 'WCAG Success Criteria Library', note: 'Every WCAG criterion explained', group: 'main' },
+  { path: '/wcag', label: 'WCAG 2.2 Success Criteria', note: 'Plain-English guide to all 86 WCAG 2.2 rules', group: 'main' },
   { path: '/resources/help-center', label: 'Help Center', note: 'Guides for every AccessBell feature', group: 'help' },
   { path: '/authors', label: 'Authors', note: 'The writers and reviewers behind our guides', group: 'authors' },
   { path: '/about', label: 'About', note: 'Our mission and approach', group: 'company' },
@@ -99,7 +100,9 @@ export async function getRoutes(): Promise<RouteEntry[]> {
     ...Object.values(CRITERIA).map((c) => {
       // Criteria with a written guide take the guide's dates; the rest have no content date.
       const guide = posts.find((p) => isWcagGuide(p) && guideSc(p.id) === c.sc);
-      return { path: criterionPath(c.sc), label: `${c.sc} ${c.name}`, note: `Level ${c.level} · WCAG ${c.version}`, lastmod: guide ? guide.data.updatedDate ?? guide.data.pubDate : undefined, group: 'wcag' as const };
+      const deep = CRITERION_GUIDES[c.sc];
+      const dates = [guide ? guide.data.updatedDate ?? guide.data.pubDate : undefined, deep ? GUIDE_UPDATED : undefined].filter((d): d is Date => Boolean(d));
+      return { path: criterionPath(c.sc), label: `${c.sc} ${c.name}`, note: `Level ${c.level} · WCAG ${c.version}`, lastmod: dates.length ? new Date(Math.max(...dates.map((d) => +d))) : undefined, group: 'wcag' as const };
     }),
     ...help.flatMap((g) => [
       { path: categoryPath(g.id), label: g.title, note: `${g.articles.length} articles`, lastmod: helpUpdated(g.articles), group: 'help' as const },

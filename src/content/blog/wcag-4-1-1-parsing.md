@@ -87,7 +87,7 @@ IDs are how the code connects one element to another. A `label` finds its field 
 <label for="work-email">Work email</label> <input id="work-email">
 ```
 
-This is a failure of [1.3.1 Info and Relationships](/resources/wcag/1-3-1-info-and-relationships) or [4.1.2 Name, Role, Value](/resources/wcag/4-1-2-name-role-value), and of [3.3.2 Labels or Instructions](/resources/wcag/3-3-2-labels-or-instructions), depending on what breaks.
+This is a failure of [1.3.1 Info and Relationships](/wcag/1-3-1-info-and-relationships) or [4.1.2 Name, Role, Value](/wcag/4-1-2-name-role-value), and of [3.3.2 Labels or Instructions](/wcag/3-3-2-labels-or-instructions), depending on what breaks.
 
 ### Broken nesting that changes structure
 
@@ -95,7 +95,7 @@ Browsers repair bad nesting, but not always the way you meant. A `<div>` inside 
 
 ### Invalid ARIA and duplicate attributes
 
-Unknown roles, misspelled `aria-` attributes and missing required attributes are real accessibility errors, and are checked under [4.1.2 Name, Role, Value](/resources/wcag/4-1-2-name-role-value).
+Unknown roles, misspelled `aria-` attributes and missing required attributes are real accessibility errors, and are checked under [4.1.2 Name, Role, Value](/wcag/4-1-2-name-role-value).
 
 ## How to Test Your Markup Today
 
@@ -108,8 +108,8 @@ You do not need a 4.1.1 test, but a few quick checks catch the bugs above:
 
 ## Related Success Criteria
 
-- [1.3.1 Info and Relationships](/resources/wcag/1-3-1-info-and-relationships): structure and relationships are available in the code.
-- [4.1.2 Name, Role, Value](/resources/wcag/4-1-2-name-role-value): controls expose a name, role and state.
-- [4.1.3 Status Messages](/resources/wcag/4-1-3-status-messages): updates are announced without moving focus.
+- [1.3.1 Info and Relationships](/wcag/1-3-1-info-and-relationships): structure and relationships are available in the code.
+- [4.1.2 Name, Role, Value](/wcag/4-1-2-name-role-value): controls expose a name, role and state.
+- [4.1.3 Status Messages](/wcag/4-1-3-status-messages): updates are announced without moving focus.
 
 Want to find the structural problems that still matter? [Run a free WCAG scan](/#scan) of any page, or [start a 3-day free trial](/app/signup) to monitor up to 500 URLs per domain every day.

@@ -98,7 +98,7 @@ Every form field needs a `label` element tied to it with `for` and `id` ([H44](h
 </fieldset>
 ```
 
-Labels also help meet [3.3.2 Labels or Instructions](/resources/wcag/3-3-2-labels-or-instructions) and [4.1.2 Name, Role, Value](/resources/wcag/4-1-2-name-role-value).
+Labels also help meet [3.3.2 Labels or Instructions](/wcag/3-3-2-labels-or-instructions) and [4.1.2 Name, Role, Value](/wcag/4-1-2-name-role-value).
 
 ### Mark up page regions
 
@@ -122,10 +122,10 @@ Our [keyboard accessibility testing guide](/blog/keyboard-accessibility-testing)
 
 ## Related Success Criteria
 
-- [1.3.2 Meaningful Sequence](/resources/wcag/1-3-2-meaningful-sequence): the reading order in the code makes sense.
-- [2.4.6 Headings and Labels](/resources/wcag/2-4-6-headings-and-labels): headings and labels describe their topic or purpose.
-- [2.4.10 Section Headings](/resources/wcag/2-4-10-section-headings): sections of content have headings, at Level AAA.
-- [3.3.2 Labels or Instructions](/resources/wcag/3-3-2-labels-or-instructions): form fields have labels or instructions.
-- [4.1.2 Name, Role, Value](/resources/wcag/4-1-2-name-role-value): every control has a name and role.
+- [1.3.2 Meaningful Sequence](/wcag/1-3-2-meaningful-sequence): the reading order in the code makes sense.
+- [2.4.6 Headings and Labels](/wcag/2-4-6-headings-and-labels): headings and labels describe their topic or purpose.
+- [2.4.10 Section Headings](/wcag/2-4-10-section-headings): sections of content have headings, at Level AAA.
+- [3.3.2 Labels or Instructions](/wcag/3-3-2-labels-or-instructions): form fields have labels or instructions.
+- [4.1.2 Name, Role, Value](/wcag/4-1-2-name-role-value): every control has a name and role.
 
 [Run a free WCAG scan](/#scan) to find missing labels, broken lists and table header problems, then check headings and structure by hand.

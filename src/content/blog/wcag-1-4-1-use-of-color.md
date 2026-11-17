@@ -82,7 +82,7 @@ Saying "fields in red are required", or showing an error only with a red border,
 </p>
 ```
 
-This follows the W3C technique [G14, ensuring that information conveyed by color differences is also available in text](https://www.w3.org/WAI/WCAG22/Techniques/general/G14). Clear error text also helps meet [3.3.1 Error Identification](/resources/wcag/3-3-1-error-identification).
+This follows the W3C technique [G14, ensuring that information conveyed by color differences is also available in text](https://www.w3.org/WAI/WCAG22/Techniques/general/G14). Clear error text also helps meet [3.3.1 Error Identification](/wcag/3-3-1-error-identification).
 
 ### Underline links in body text
 
@@ -116,7 +116,7 @@ Charts and maps that tell lines, bars or areas apart only by color fail for many
 - Use **different marker shapes** on line charts, such as circles, squares and triangles.
 - **Label data directly** on the chart, rather than relying only on a color legend.
 - Test your palette with our free [chart color checker](/tools/chart-color-checker), which shows how the colors look with color blindness.
-- Offer the **data as a table** as well, which also helps meet [1.1.1 Non-text Content](/resources/wcag/1-1-1-non-text-content).
+- Offer the **data as a table** as well, which also helps meet [1.1.1 Non-text Content](/wcag/1-1-1-non-text-content).
 
 ### Pair status colors with icons and words
 
@@ -132,12 +132,12 @@ Automated tools can check one case: axe-core's `link-in-text-block` rule looks f
 4. **Check links in paragraphs.** Can you tell they are links without color?
 5. **Check each fix** gives the same information in text, an icon, a pattern or an underline.
 
-For a quick reference, see our [1.4.1 Use of Color page](/resources/wcag/1-4-1-use-of-color) in the WCAG library, and the W3C's [Understanding 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html).
+For a quick reference, see our [1.4.1 Use of Color page](/wcag/1-4-1-use-of-color) in the WCAG library, and the W3C's [Understanding 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html).
 
 ## Related Success Criteria
 
-- [1.4.3 Contrast (Minimum)](/resources/wcag/1-4-3-contrast-minimum): text has enough contrast with its background.
-- [1.4.11 Non-text Contrast](/resources/wcag/1-4-11-non-text-contrast): icons, borders and chart parts have enough contrast.
-- [1.3.3 Sensory Characteristics](/resources/wcag/1-3-3-sensory-characteristics): instructions do not rely only on shape, color, size or position.
+- [1.4.3 Contrast (Minimum)](/wcag/1-4-3-contrast-minimum): text has enough contrast with its background.
+- [1.4.11 Non-text Contrast](/wcag/1-4-11-non-text-contrast): icons, borders and chart parts have enough contrast.
+- [1.3.3 Sensory Characteristics](/wcag/1-3-3-sensory-characteristics): instructions do not rely only on shape, color, size or position.
 
 Want to find color-only links and low-contrast text automatically? [Run a free WCAG scan](/#scan) of any page, then check the rest by hand in grayscale.

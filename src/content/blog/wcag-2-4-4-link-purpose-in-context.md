@@ -69,7 +69,7 @@ On cards, a simple pattern is to make the card heading the link and drop the sep
 
 ### Use ARIA when the design needs short text
 
-If the design must show "Read more", add the full purpose for assistive technology with `aria-label` ([ARIA8](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA8)) or by pointing to the heading with `aria-labelledby` ([ARIA7](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA7)). Keep the visible text inside the accessible name, so voice control still works ([2.5.3 Label in Name](/resources/wcag/2-5-3-label-in-name)).
+If the design must show "Read more", add the full purpose for assistive technology with `aria-label` ([ARIA8](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA8)) or by pointing to the heading with `aria-labelledby` ([ARIA7](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA7)). Keep the visible text inside the accessible name, so voice control still works ([2.5.3 Label in Name](/wcag/2-5-3-label-in-name)).
 
 ```html
 <h3 id="tent-guide">Choosing a 2-person tent</h3>
@@ -78,7 +78,7 @@ If the design must show "Read more", add the full purpose for assistive technolo
 
 ### Name icon and image links
 
-An icon-only or image-only link needs a text alternative that describes the destination, such as `aria-label="Cart, 2 items"` or alt text "Trailhead home". An image link with no accessible name is failure [F89](https://www.w3.org/WAI/WCAG22/Techniques/failures/F89) and also fails [1.1.1 Non-text Content](/resources/wcag/1-1-1-non-text-content).
+An icon-only or image-only link needs a text alternative that describes the destination, such as `aria-label="Cart, 2 items"` or alt text "Trailhead home". An image link with no accessible name is failure [F89](https://www.w3.org/WAI/WCAG22/Techniques/failures/F89) and also fails [1.1.1 Non-text Content](/wcag/1-1-1-non-text-content).
 
 ## How to Test for 2.4.4 Link Purpose (In Context)
 
@@ -90,9 +90,9 @@ An icon-only or image-only link needs a text alternative that describes the dest
 
 ## Related Success Criteria
 
-- [2.4.9 Link Purpose (Link Only)](/resources/wcag/2-4-9-link-purpose-link-only): the Level AAA version, where link text alone must make sense.
-- [1.1.1 Non-text Content](/resources/wcag/1-1-1-non-text-content): image links need text alternatives.
-- [2.5.3 Label in Name](/resources/wcag/2-5-3-label-in-name): the accessible name includes the visible text.
-- [2.4.6 Headings and Labels](/resources/wcag/2-4-6-headings-and-labels): headings and labels are descriptive.
+- [2.4.9 Link Purpose (Link Only)](/wcag/2-4-9-link-purpose-link-only): the Level AAA version, where link text alone must make sense.
+- [1.1.1 Non-text Content](/wcag/1-1-1-non-text-content): image links need text alternatives.
+- [2.5.3 Label in Name](/wcag/2-5-3-label-in-name): the accessible name includes the visible text.
+- [2.4.6 Headings and Labels](/wcag/2-4-6-headings-and-labels): headings and labels are descriptive.
 
 [Run a free WCAG scan](/#scan) to find links with no accessible name, then read through your link text by hand.

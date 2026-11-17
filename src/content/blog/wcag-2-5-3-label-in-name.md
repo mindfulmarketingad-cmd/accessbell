@@ -91,9 +91,9 @@ Matching is about the words. "Search" and "search" match, and so do "Next ›" a
 
 ## Related Success Criteria
 
-- [4.1.2 Name, Role, Value](/resources/wcag/4-1-2-name-role-value): every control has an accessible name and role.
-- [2.4.4 Link Purpose (In Context)](/resources/wcag/2-4-4-link-purpose-in-context): link text describes where links go.
-- [3.3.2 Labels or Instructions](/resources/wcag/3-3-2-labels-or-instructions): fields have visible labels.
-- [2.4.6 Headings and Labels](/resources/wcag/2-4-6-headings-and-labels): labels describe their purpose.
+- [4.1.2 Name, Role, Value](/wcag/4-1-2-name-role-value): every control has an accessible name and role.
+- [2.4.4 Link Purpose (In Context)](/wcag/2-4-4-link-purpose-in-context): link text describes where links go.
+- [3.3.2 Labels or Instructions](/wcag/3-3-2-labels-or-instructions): fields have visible labels.
+- [2.4.6 Headings and Labels](/wcag/2-4-6-headings-and-labels): labels describe their purpose.
 
 [Run a free WCAG scan](/#scan) to compare accessible names with visible labels on any page, then test with voice control.

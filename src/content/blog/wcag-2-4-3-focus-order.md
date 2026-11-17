@@ -92,9 +92,9 @@ Our [keyboard accessibility testing guide](/blog/keyboard-accessibility-testing)
 
 ## Related Success Criteria
 
-- [1.3.2 Meaningful Sequence](/resources/wcag/1-3-2-meaningful-sequence): the reading order in the code makes sense.
-- [2.1.1 Keyboard](/resources/wcag/2-1-1-keyboard): everything works with a keyboard.
-- [2.4.7 Focus Visible](/resources/wcag/2-4-7-focus-visible): you can see where focus is.
-- [2.4.11 Focus Not Obscured (Minimum)](/resources/wcag/2-4-11-focus-not-obscured-minimum): focus is not hidden behind other content.
+- [1.3.2 Meaningful Sequence](/wcag/1-3-2-meaningful-sequence): the reading order in the code makes sense.
+- [2.1.1 Keyboard](/wcag/2-1-1-keyboard): everything works with a keyboard.
+- [2.4.7 Focus Visible](/wcag/2-4-7-focus-visible): you can see where focus is.
+- [2.4.11 Focus Not Obscured (Minimum)](/wcag/2-4-11-focus-not-obscured-minimum): focus is not hidden behind other content.
 
 [Run a free WCAG scan](/#scan) to flag positive tabindex values, then Tab through every task to confirm the order.

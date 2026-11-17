@@ -90,8 +90,8 @@ Honoring the `prefers-reduced-motion` media query is not required by 2.3.1, but 
 
 ## Related Success Criteria
 
-- [2.3.2 Three Flashes](/resources/wcag/2-3-2-three-flashes): no flashing more than three times a second at all, at Level AAA.
-- [2.3.3 Animation from Interactions](/resources/wcag/2-3-3-animation-from-interactions): motion animation can be turned off, at Level AAA.
-- [2.2.2 Pause, Stop, Hide](/resources/wcag/2-2-2-pause-stop-hide): moving content can be paused.
+- [2.3.2 Three Flashes](/wcag/2-3-2-three-flashes): no flashing more than three times a second at all, at Level AAA.
+- [2.3.3 Animation from Interactions](/wcag/2-3-3-animation-from-interactions): motion animation can be turned off, at Level AAA.
+- [2.2.2 Pause, Stop, Hide](/wcag/2-2-2-pause-stop-hide): moving content can be paused.
 
 [Run a free WCAG scan](/#scan) for the automated checks, then review every video and animation for flashing.

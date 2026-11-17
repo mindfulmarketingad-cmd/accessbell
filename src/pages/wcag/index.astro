@@ -1,0 +1,205 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Faq from '../../components/Faq.astro';
+import { SITE } from '../../config/site';
+import { CRITERIA, PRINCIPLES, GUIDELINES } from '../../../server/wcag-criteria.js';
+import { criterionPath, rulesForCriterion } from '../../lib/wcag-pages';
+import { CRITERION_GUIDES } from '../../data/wcag-criterion-guides';
+import { faqSchema } from '../../lib/schema';
+import { inlineMarkdown, stripMarkdown } from '../../lib/inline-markdown';
+
+const scRank = (sc: string) => sc.split('.').map(Number);
+const cmp = (a: string, b: string) => {
+  const [a1, a2, a3] = scRank(a);
+  const [b1, b2, b3] = scRank(b);
+  return a1 - b1 || a2 - b2 || a3 - b3;
+};
+
+const removed = CRITERIA['4.1.1'];
+const all = Object.values(CRITERIA)
+  .filter((c) => c.sc !== '4.1.1')
+  .map((c) => ({ ...c, ruleCount: rulesForCriterion(c.sc).length, full: Boolean(CRITERION_GUIDES[c.sc]) }))
+  .sort((a, b) => cmp(a.sc, b.sc));
+
+const countLevel = (level: string) => all.filter((c) => c.level === level).length;
+const levelA = countLevel('A');
+const levelAA = countLevel('AA');
+const levelAAA = countLevel('AAA');
+
+const groups = Object.values(PRINCIPLES).map((principle) => {
+  const criteria = all.filter((c) => c.principle === principle);
+  const guidelines = Object.entries(GUIDELINES)
+    .filter(([key]) => criteria.some((c) => c.sc.startsWith(`${key}.`)))
+    .map(([key, name]) => ({ key, name, criteria: criteria.filter((c) => c.sc.startsWith(`${key}.`)) }));
+  return { principle, criteria, guidelines };
+});
+
+const POUR = [
+  { name: 'Perceivable', text: 'Information and the interface have to be presentable in ways people can perceive: text alternatives, captions, contrast, and content that adapts.' },
+  { name: 'Operable', text: 'People have to be able to use every control and find their way, including with a keyboard, with enough time, and without content that can cause seizures.' },
+  { name: 'Understandable', text: 'Content and controls have to be clear and predictable: readable text, consistent navigation, and forms that help people avoid and fix mistakes.' },
+  { name: 'Robust', text: 'Content has to work with browsers and assistive technologies. In practice that means the right names, roles and states in the code.' },
+];
+
+const faqSource = [
+  {
+    q: 'How many WCAG 2.2 success criteria are there?',
+    a: `WCAG 2.2 has ${all.length} success criteria: ${levelA} at Level A, ${levelAA} at Level AA and ${levelAAA} at Level AAA. The W3C’s [What’s New in WCAG 2.2](https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/) says version 2.2 adds 9 success criteria and removes 4.1.1 Parsing. The counts above are taken from the criteria that remain in the [WCAG 2.2 Recommendation](https://www.w3.org/TR/WCAG22/).`,
+  },
+  {
+    q: 'What is the difference between Level A, AA and AAA?',
+    a: `Level A is the minimum set. Level AA includes every Level A criterion and the Level AA criteria. Level AAA includes all three. The [W3C conformance requirements](https://www.w3.org/TR/WCAG22/#conformance-reqs) say a claim is for one level, so a Level AA claim covers the A and AA criteria that apply to the page, ${levelA + levelAA} criteria in all, not only the ${levelAA} labeled AA. Not every criterion applies to every page. A page with no video is not tested against the video criteria.`,
+  },
+  {
+    q: 'Does meeting WCAG 2.2 AA mean a site complies with the ADA?',
+    a: 'No. Meeting a WCAG level is a technical result, not a legal conclusion. The [ADA.gov web guidance](https://www.ada.gov/resources/web-guidance/) (March 18, 2022) says the ADA applies to the websites of state and local governments and of businesses open to the public, and it points to WCAG as helpful guidance. That document does not set one technical level for every business, and it says it does not reflect state and local government requirements published on April 24, 2024. Read that guidance and our [disclaimer](/disclaimer).',
+  },
+  {
+    q: 'Can a website accessibility monitoring tool test every success criterion?',
+    a: 'No. Automation catches patterns in the code, such as a missing alt attribute or a contrast pair it can measure. It cannot decide whether a heading describes the section, whether captions are accurate, or whether a pause button actually stops a carousel. AccessBell’s free scan reports what axe-core can see and leaves the rest for a person. Each criterion page on this hub says which is which.',
+  },
+  {
+    q: 'Why is 4.1.1 Parsing not in the list of 86?',
+    a: 'The W3C removed 4.1.1 Parsing from WCAG 2.2. The other 2.0 and 2.1 criteria are essentially unchanged. People still search for it, so the [4.1.1 Parsing](/wcag/4-1-1-parsing-obsolete-in-wcag-2-2) page explains what it required and why it was removed. Duplicate ids can still fail other criteria, such as 1.3.1 or 4.1.2, when a label or an ARIA attribute points at the wrong element.',
+  },
+];
+
+const url = `${SITE.url}/wcag`;
+const description = 'Plain-English WCAG 2.2 success criteria for all 86 rules at A, AA and AAA. See what each requires, then scan with a website accessibility monitoring tool.';
+const schema = [
+  {
+    '@type': 'CollectionPage',
+    '@id': `${url}#collection`,
+    name: 'WCAG 2.2 Success Criteria: Plain-English Guide to Every Rule (A, AA, AAA)',
+    url,
+    description,
+    isPartOf: { '@id': `${SITE.url}/#website` },
+    about: { '@type': 'Thing', name: 'WCAG 2.2' },
+    hasPart: all.map((c) => ({ '@type': 'WebPage', name: `${c.sc} ${c.name}`, url: `${SITE.url}${criterionPath(c.sc)}` })),
+  },
+  faqSchema(faqSource.map((f) => ({ q: f.q, a: stripMarkdown(f.a) }))),
+];
+---
+<BaseLayout
+  title="WCAG 2.2 Success Criteria (A, AA, AAA) | AccessBell"
+  description={description}
+  breadcrumbs={[{ label: 'WCAG 2.2', href: '/wcag' }]}
+  schema={schema}
+>
+  <section class="page-hero" aria-labelledby="wcag-title">
+    <div class="container">
+      <h1 id="wcag-title">WCAG 2.2 Success Criteria: Plain-English Guide to Every Rule (A, AA, AAA)</h1>
+      <p class="lead">WCAG 2.2 success criteria are the {all.length} testable rules in the W3C’s Web Content Accessibility Guidelines 2.2, at Level A, AA and AAA. This guide lists every one, in plain English, grouped by principle and guideline. AccessBell is a <a href="/resources/website-accessibility-monitoring-tool">website accessibility monitoring tool</a> that scans a public page against many of these rules. It is not an overlay, and a scan is not a legal opinion.</p>
+    </div>
+  </section>
+
+  <article class="container checker-body">
+    <section aria-labelledby="wcag-facts">
+      <h2 id="wcag-facts">WCAG 2.2 success criteria, in numbers</h2>
+      <ul class="fact-list">
+        <li>
+          <p>WCAG 2.2 was published as a W3C Recommendation on 5 October 2023.</p>
+          <cite><a href="https://www.w3.org/TR/WCAG22/" rel="noopener noreferrer">W3C, Web Content Accessibility Guidelines (WCAG) 2.2</a></cite>
+        </li>
+        <li>
+          <p>WCAG 2.2 adds 9 success criteria and removes 4.1.1 Parsing. The other criteria from 2.0 and 2.1 are essentially the same. That leaves {all.length} success criteria: {levelA} at Level A, {levelAA} at Level AA and {levelAAA} at Level AAA.</p>
+          <cite>Additions and the removal: <a href="https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/" rel="noopener noreferrer">W3C, What’s New in WCAG 2.2</a>. The {levelA}/{levelAA}/{levelAAA} split is counted from the criteria that remain in the Recommendation.</cite>
+        </li>
+        <li>
+          <p>A Level AA claim includes every applicable Level A and Level AA criterion, {levelA + levelAA} in the set, not only the {levelAA} that are labeled AA. A criterion that does not apply, such as a video rule on a page with no video, is not part of that page’s test.</p>
+          <cite><a href="https://www.w3.org/TR/WCAG22/#conformance-reqs" rel="noopener noreferrer">W3C, WCAG 2.2 conformance requirements</a></cite>
+        </li>
+        <li>
+          <p>The U.S. Department of Justice lists poor color contrast, missing alt text, color used as the only cue, videos without captions, inaccessible forms and mouse-only navigation as examples of website barriers.</p>
+          <cite><a href="https://www.ada.gov/resources/web-guidance/" rel="noopener noreferrer">ADA.gov, Guidance on Web Accessibility and the ADA</a>, March 18, 2022</cite>
+        </li>
+      </ul>
+      <p>Those barriers map to criteria in this guide: <a href={criterionPath('1.4.3')}>1.4.3 Contrast (Minimum)</a>, <a href={criterionPath('1.1.1')}>1.1.1 Non-text Content</a>, <a href={criterionPath('1.4.1')}>1.4.1 Use of Color</a>, <a href={criterionPath('1.2.2')}>1.2.2 Captions (Prerecorded)</a>, <a href={criterionPath('3.3.2')}>3.3.2 Labels or Instructions</a> and <a href={criterionPath('2.1.1')}>2.1.1 Keyboard</a>. The Department’s examples are not a complete list of the {all.length} rules.</p>
+    </section>
+
+    <section aria-labelledby="pour-title" class="pour-section">
+      <h2 id="pour-title">How WCAG 2.2 success criteria are organized</h2>
+      <p>Each success criterion sits under one of four principles, often called POUR, and under a numbered guideline such as 1.4 Distinguishable. The W3C explains the principles in its <a href="https://www.w3.org/WAI/fundamentals/accessibility-principles/" rel="noopener noreferrer">introduction to accessibility</a>.</p>
+      <ol class="pour-grid">
+        {POUR.map((p) => {
+          const g = groups.find((x) => x.principle === p.name)!;
+          return (
+            <li>
+              <span class="pour-letter" aria-hidden="true">{p.name[0]}</span>
+              <h3><a href={`#principle-${p.name.toLowerCase()}`}>{p.name}</a></h3>
+              <p>{p.text}</p>
+              <p class="pour-meta">{g.criteria.length} criteria</p>
+            </li>
+          );
+        })}
+      </ol>
+    </section>
+
+    <section aria-labelledby="wcag-groups">
+      <h2 id="wcag-groups">Browse every WCAG 2.2 success criterion</h2>
+      <p>{Object.keys(CRITERION_GUIDES).length} criteria have a full guide, with the official wording, a plain-English explanation, who it helps, pass and fail code, a manual test, what AccessBell can check, and the failures common on Shopify, WordPress, Wix and Squarespace. The other rows are shorter references. They are real pages, with the requirement and a way to test, not placeholders. Separately, {all.filter((c) => c.ruleCount > 0).length} of the {all.length} criteria have at least one <a href="https://github.com/dequelabs/axe-core" rel="noopener noreferrer">axe-core</a> rule. A full guide and an automated rule are not the same set. Criteria with no axe-core rule need a person to judge them.</p>
+      <div class="sc-browser">
+        <div class="level-filter">
+          <p id="level-filter-label">Show level</p>
+          <div role="radiogroup" aria-labelledby="level-filter-label">
+            <input type="radio" name="wcag-level" id="lvl-all" checked />
+            <label for="lvl-all">All {all.length}</label>
+            <input type="radio" name="wcag-level" id="lvl-a" />
+            <label for="lvl-a">A <span>{levelA}</span></label>
+            <input type="radio" name="wcag-level" id="lvl-aa" />
+            <label for="lvl-aa">AA <span>{levelAA}</span></label>
+            <input type="radio" name="wcag-level" id="lvl-aaa" />
+            <label for="lvl-aaa">AAA <span>{levelAAA}</span></label>
+          </div>
+        </div>
+
+        {groups.map((g) => (
+          <details class="cov-group principle" open id={`principle-${g.principle.toLowerCase()}`}>
+            <summary>{g.principle} <span>{g.criteria.length} criteria</span></summary>
+            {g.guidelines.map((gl) => (
+              <div class="gl" id={`guideline-${gl.key.replace('.', '-')}`}>
+                <h3>{gl.key} {gl.name}</h3>
+                <div class="table-scroll" role="region" aria-label={`${gl.key} ${gl.name}`} tabindex="0">
+                  <table class="cov-list">
+                    <caption class="visually-hidden">{gl.key} {gl.name}</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Success criterion</th>
+                        <th scope="col">Level</th>
+                        <th scope="col">Guide</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {gl.criteria.map((c) => (
+                        <tr data-level={c.level}>
+                          <th scope="row"><a href={criterionPath(c.sc)}><span class="sc-no">{c.sc}</span> {c.name}</a></th>
+                          <td>{c.level}</td>
+                          <td>{c.full ? <span class="tag tag-pass">Full guide</span> : <span class="tag">Short reference</span>}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ))}
+          </details>
+        ))}
+      </div>
+
+      <h3>Removed from WCAG 2.2</h3>
+      <p><a href={criterionPath(removed.sc)}>{removed.sc} {removed.name}</a> was Level A in WCAG 2.0 and 2.1. It is not one of the {all.length}. The page explains why the W3C removed it, because the query still ranks.</p>
+    </section>
+
+    <section class="article-faq" aria-labelledby="faq">
+      <h2 id="faq">Questions about WCAG 2.2 success criteria</h2>
+      <Faq items={faqSource.map((f) => ({ q: f.q, a: inlineMarkdown(f.a) }))} />
+    </section>
+  </article>
+
+  <CtaBand
+    title="Check your site against these criteria"
+    text="The free scan checks one public page and maps findings to WCAG success criteria. AccessBell is a website accessibility monitoring tool: you see the issues, then monitor and apply fixes you approve. It is not an overlay."
+  />
+</BaseLayout>

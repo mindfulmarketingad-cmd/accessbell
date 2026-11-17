@@ -31,7 +31,7 @@ A well-known complaint about [accessibility overlays](/comparisons/accessibe-vs-
 - People who are blind or have low vision typically navigate by keyboard alongside a screen reader.
 - People with motor disabilities may be unable to use a mouse at all, relying on a keyboard, switch device or voice-to-keyboard software.
 - Power users and people with repetitive strain injuries often navigate by keyboard by choice.
-- WCAG requires it directly: [2.1.1 Keyboard](/resources/wcag/2-1-1-keyboard) (Level A) requires all functionality to be operable through a keyboard interface, and [2.1.2 No Keyboard Trap](/resources/wcag/2-1-2-no-keyboard-trap) (Level A) requires that keyboard focus can always move away from any component.
+- WCAG requires it directly: [2.1.1 Keyboard](/wcag/2-1-1-keyboard) (Level A) requires all functionality to be operable through a keyboard interface, and [2.1.2 No Keyboard Trap](/wcag/2-1-2-no-keyboard-trap) (Level A) requires that keyboard focus can always move away from any component.
 
 Our [stories of web users with disabilities](/blog/stories-of-web-users-with-disabilities) show what this looks like for a reporter who cannot use a mouse.
 
@@ -50,9 +50,9 @@ Start at the top of the page and press Tab repeatedly until you reach the end. A
 
 ## What to Check For
 
-**A visible focus indicator.** Every interactive element needs a visible marker showing it is focused, required by [2.4.7 Focus Visible](/resources/wcag/2-4-7-focus-visible). The most common way sites break this is a CSS reset with `outline: none` and nothing put in its place. If you do restyle the default outline, keep it clearly visible against every background it can appear on, and make sure sticky headers or cookie banners never cover it, per WCAG 2.2's [2.4.11 Focus Not Obscured](/resources/wcag/2-4-11-focus-not-obscured-minimum). The stricter Level AAA version is explained in our guide to [2.4.12 Focus Not Obscured (Enhanced)](/resources/wcag/2-4-12-focus-not-obscured-enhanced).
+**A visible focus indicator.** Every interactive element needs a visible marker showing it is focused, required by [2.4.7 Focus Visible](/wcag/2-4-7-focus-visible). The most common way sites break this is a CSS reset with `outline: none` and nothing put in its place. If you do restyle the default outline, keep it clearly visible against every background it can appear on, and make sure sticky headers or cookie banners never cover it, per WCAG 2.2's [2.4.11 Focus Not Obscured](/wcag/2-4-11-focus-not-obscured-minimum). The stricter Level AAA version is explained in our guide to [2.4.12 Focus Not Obscured (Enhanced)](/wcag/2-4-12-focus-not-obscured-enhanced).
 
-**A logical navigation order.** Tab order should generally follow the visual reading order of the page, required by [2.4.3 Focus Order](/resources/wcag/2-4-3-focus-order). This is normally correct automatically when the underlying HTML is in a sensible order; it breaks when CSS repositions elements visually without moving them in the source, or when a positive `tabindex` value is used to force a custom order. The same mismatch also scrambles the order a screen reader reads in, which is covered by [1.3.2 Meaningful Sequence](/resources/wcag/1-3-2-meaningful-sequence).
+**A logical navigation order.** Tab order should generally follow the visual reading order of the page, required by [2.4.3 Focus Order](/wcag/2-4-3-focus-order). This is normally correct automatically when the underlying HTML is in a sensible order; it breaks when CSS repositions elements visually without moving them in the source, or when a positive `tabindex` value is used to force a custom order. The same mismatch also scrambles the order a screen reader reads in, which is covered by [1.3.2 Meaningful Sequence](/wcag/1-3-2-meaningful-sequence).
 
 **Nothing focusable that shouldn't be.** Elements that are not interactive, such as a `<div>` used only for layout, should not be reachable by Tab. Adding `tabindex="0"` to non-interactive elements creates confusing stops with nothing to do at them.
 

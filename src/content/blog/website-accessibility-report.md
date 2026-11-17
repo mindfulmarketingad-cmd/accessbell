@@ -58,9 +58,9 @@ For each success criterion, record whether it passed, failed or does not apply, 
 
 | Criterion | Result | Where | Notes |
 | --- | --- | --- | --- |
-| [1.1.1 Non-text Content](/resources/wcag/1-1-1-non-text-content) | Fail | Product pages | 14 product photos have no alt text |
-| [1.4.3 Contrast (Minimum)](/resources/wcag/1-4-3-contrast-minimum) | Fail | Footer | Gray footer links on white are 3.2:1 |
-| [2.1.1 Keyboard](/resources/wcag/2-1-1-keyboard) | Pass | All pages | Checked with keyboard only |
+| [1.1.1 Non-text Content](/wcag/1-1-1-non-text-content) | Fail | Product pages | 14 product photos have no alt text |
+| [1.4.3 Contrast (Minimum)](/wcag/1-4-3-contrast-minimum) | Fail | Footer | Gray footer links on white are 3.2:1 |
+| [2.1.1 Keyboard](/wcag/2-1-1-keyboard) | Pass | All pages | Checked with keyboard only |
 | 1.2.2 Captions (Prerecorded) | Not applicable | | No video on the site |
 
 The figures in that table are examples to show the format, not real results.

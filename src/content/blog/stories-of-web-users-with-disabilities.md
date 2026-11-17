@@ -49,10 +49,10 @@ Tomás was in an accident that caused a spinal cord injury and left him with lim
 
 **What helps Tomás:**
 
-- Every link, button, menu and form control works with the keyboard alone ([WCAG 2.1.1 Keyboard](/resources/wcag/2-1-1-keyboard)).
+- Every link, button, menu and form control works with the keyboard alone ([WCAG 2.1.1 Keyboard](/wcag/2-1-1-keyboard)).
 - He can always leave a pop-up or widget without getting stuck.
 - A visible focus outline shows him where he is on the page.
-- Buttons and links are large enough to hit accurately ([WCAG 2.5.8 Target Size](/resources/wcag/2-5-8-target-size-minimum)).
+- Buttons and links are large enough to hit accurately ([WCAG 2.5.8 Target Size](/wcag/2-5-8-target-size-minimum)).
 
 Many other assistive technologies, such as switch devices and speech recognition, also depend on pages that work through the keyboard interface, so fixing this helps far more than one reader. Our [keyboard accessibility testing guide](/blog/keyboard-accessibility-testing) shows how to check your own pages in a few minutes.
 
@@ -62,10 +62,10 @@ Owen is autistic and works as a data entry clerk. He finds it hard to understand
 
 **What helps Owen:**
 
-- Moving, blinking or auto-updating content can be paused, stopped or hidden ([WCAG 2.2.2 Pause, Stop, Hide](/resources/wcag/2-2-2-pause-stop-hide)).
+- Moving, blinking or auto-updating content can be paused, stopped or hidden ([WCAG 2.2.2 Pause, Stop, Hide](/wcag/2-2-2-pause-stop-hide)).
 - Audio does not start on its own, or it can be stopped straight away.
-- Navigation and page layout stay consistent from page to page ([WCAG 3.2.3 Consistent Navigation](/resources/wcag/3-2-3-consistent-navigation)).
-- Nothing important changes when he focuses on a field or types in it without warning ([WCAG 3.2.2 On Input](/resources/wcag/3-2-2-on-input)).
+- Navigation and page layout stay consistent from page to page ([WCAG 3.2.3 Consistent Navigation](/wcag/3-2-3-consistent-navigation)).
+- Nothing important changes when he focuses on a field or types in it without warning ([WCAG 3.2.2 On Input](/wcag/3-2-2-on-input)).
 
 Clear, predictable pages help Owen, and they help everyone who is tired, distracted or reading on a small screen.
 
@@ -75,10 +75,10 @@ Priya is blind. She uses a screen reader on her computer and phone to work with 
 
 **What helps Priya:**
 
-- Images that carry meaning have text alternatives ([WCAG 1.1.1 Non-text Content](/resources/wcag/1-1-1-non-text-content)).
-- Every form field has a clear label ([WCAG 3.3.2 Labels or Instructions](/resources/wcag/3-3-2-labels-or-instructions)).
+- Images that carry meaning have text alternatives ([WCAG 1.1.1 Non-text Content](/wcag/1-1-1-non-text-content)).
+- Every form field has a clear label ([WCAG 3.3.2 Labels or Instructions](/wcag/3-3-2-labels-or-instructions)).
 - Headings and landmarks let her jump between sections instead of listening to the whole page.
-- Messages such as "Item added to cart" are announced without moving focus ([WCAG 4.1.3 Status Messages](/resources/wcag/4-1-3-status-messages)).
+- Messages such as "Item added to cart" are announced without moving focus ([WCAG 4.1.3 Status Messages](/wcag/4-1-3-status-messages)).
 
 These are the failures that automated scanners find most reliably. An accessibility checker will flag missing alt text and unlabeled fields in seconds, which makes them the best place to start.
 
@@ -88,7 +88,7 @@ Renata has deuteranopia, a form of red-green color blindness. Reds, greens, oran
 
 **What helps Renata:**
 
-- Color is never the only way to show information. Swatches carry a text name, and errors include a message and an icon ([WCAG 1.4.1 Use of Color](/resources/wcag/1-4-1-use-of-color)).
+- Color is never the only way to show information. Swatches carry a text name, and errors include a message and an icon ([WCAG 1.4.1 Use of Color](/wcag/1-4-1-use-of-color)).
 - Links inside paragraphs are underlined, not just a different color.
 - Charts use labels or patterns as well as color. Our [chart color checker](/tools/chart-color-checker) can simulate common types of color blindness on your own palette.
 
@@ -100,9 +100,9 @@ Walter is deaf and studies part time in an online course. When he watches videos
 
 **What helps Walter:**
 
-- Prerecorded videos have accurate captions ([WCAG 1.2.2 Captions (Prerecorded)](/resources/wcag/1-2-2-captions-prerecorded)).
-- Audio-only content, such as a podcast, has a text transcript ([WCAG 1.2.1 Audio-only and Video-only (Prerecorded)](/resources/wcag/1-2-1-audio-only-and-video-only-prerecorded)).
-- Live events offer real-time captions ([WCAG 1.2.4 Captions (Live)](/resources/wcag/1-2-4-captions-live)).
+- Prerecorded videos have accurate captions ([WCAG 1.2.2 Captions (Prerecorded)](/wcag/1-2-2-captions-prerecorded)).
+- Audio-only content, such as a podcast, has a text transcript ([WCAG 1.2.1 Audio-only and Video-only (Prerecorded)](/wcag/1-2-1-audio-only-and-video-only-prerecorded)).
+- Live events offer real-time captions ([WCAG 1.2.4 Captions (Live)](/wcag/1-2-4-captions-live)).
 
 Captions also help people in noisy places, people watching with the sound off and people learning a language, which is why they are worth the effort even outside of legal requirements.
 

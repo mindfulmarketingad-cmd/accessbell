@@ -47,7 +47,7 @@ export const GET: APIRoute = async () => {
     ['Guides', posts.map((p) => link(p.data.title, postPath(p), p.data.description))],
     [
       'WCAG Success Criteria',
-      [link('WCAG Success Criteria Library', '/resources/wcag', 'Every WCAG 2.0, 2.1 and 2.2 success criterion explained, with how to test it.')],
+      [link('WCAG 2.2 Success Criteria', '/wcag', 'Plain-English guide to all 86 WCAG 2.2 success criteria, grouped by principle and guideline.')],
     ],
     [
       'Help Center',

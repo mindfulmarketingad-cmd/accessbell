@@ -68,7 +68,7 @@ Do not reload or redirect pages on a timer. Using `meta http-equiv="refresh"` to
 
 ### Save people's work
 
-Even when a limit applies, saving form data so people can continue after signing back in reduces the harm. See also [2.2.5 Re-authenticating](/resources/wcag/2-2-5-re-authenticating), a Level AAA criterion.
+Even when a limit applies, saving form data so people can continue after signing back in reduces the harm. See also [2.2.5 Re-authenticating](/wcag/2-2-5-re-authenticating), a Level AAA criterion.
 
 ### Know the exceptions
 
@@ -86,9 +86,9 @@ Even when a limit applies, saving form data so people can continue after signing
 
 ## Related Success Criteria
 
-- [2.2.2 Pause, Stop, Hide](/resources/wcag/2-2-2-pause-stop-hide): moving and updating content can be paused.
-- [2.2.3 No Timing](/resources/wcag/2-2-3-no-timing): no time limits at all, at Level AAA.
-- [2.2.5 Re-authenticating](/resources/wcag/2-2-5-re-authenticating): work is kept after signing back in, at Level AAA.
-- [2.2.6 Timeouts](/resources/wcag/2-2-6-timeouts): people are told about timeouts that lose data, at Level AAA.
+- [2.2.2 Pause, Stop, Hide](/wcag/2-2-2-pause-stop-hide): moving and updating content can be paused.
+- [2.2.3 No Timing](/wcag/2-2-3-no-timing): no time limits at all, at Level AAA.
+- [2.2.5 Re-authenticating](/wcag/2-2-5-re-authenticating): work is kept after signing back in, at Level AAA.
+- [2.2.6 Timeouts](/wcag/2-2-6-timeouts): people are told about timeouts that lose data, at Level AAA.
 
 [Run a free WCAG scan](/#scan) to catch timed refreshes in the code, then test your session timeouts by hand.

@@ -79,7 +79,7 @@ On multilingual sites, each language version must set its own `lang`. The French
 
 ### Mark passages in other languages
 
-If a page includes a quote, product name or paragraph in another language, mark it with its own `lang` attribute. That is a separate criterion, [3.1.2 Language of Parts](/resources/wcag/3-1-2-language-of-parts).
+If a page includes a quote, product name or paragraph in another language, mark it with its own `lang` attribute. That is a separate criterion, [3.1.2 Language of Parts](/wcag/3-1-2-language-of-parts).
 
 ## How to Test for 3.1.1 Language of Page
 
@@ -92,8 +92,8 @@ Automated scans catch missing and invalid values reliably, so this is one of the
 
 ## Related Success Criteria
 
-- [3.1.2 Language of Parts](/resources/wcag/3-1-2-language-of-parts): passages in another language are marked up.
-- [1.3.1 Info and Relationships](/resources/wcag/1-3-1-info-and-relationships): structure is available in the code.
-- [3.1.5 Reading Level](/resources/wcag/3-1-5-reading-level): text is written as simply as possible, at Level AAA.
+- [3.1.2 Language of Parts](/wcag/3-1-2-language-of-parts): passages in another language are marked up.
+- [1.3.1 Info and Relationships](/wcag/1-3-1-info-and-relationships): structure is available in the code.
+- [3.1.5 Reading Level](/wcag/3-1-5-reading-level): text is written as simply as possible, at Level AAA.
 
 [Run a free WCAG scan](/#scan) to check the language attribute on any page in seconds.

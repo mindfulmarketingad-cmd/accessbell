@@ -76,7 +76,7 @@ Wrap regions in `header`, `nav`, `main`, `aside` and `footer`. Screen readers li
 
 ### Start sections with headings
 
-Headings at the start of each section let screen reader users jump through the page by heading ([H69](https://www.w3.org/WAI/WCAG22/Techniques/html/H69)). Correct heading markup also helps meet [1.3.1 Info and Relationships](/resources/wcag/1-3-1-info-and-relationships).
+Headings at the start of each section let screen reader users jump through the page by heading ([H69](https://www.w3.org/WAI/WCAG22/Techniques/html/H69)). Correct heading markup also helps meet [1.3.1 Info and Relationships](/wcag/1-3-1-info-and-relationships).
 
 ### Use all three
 
@@ -92,9 +92,9 @@ Landmarks and headings mostly help screen reader users. A visible skip link help
 
 ## Related Success Criteria
 
-- [1.3.1 Info and Relationships](/resources/wcag/1-3-1-info-and-relationships): headings and regions are marked up in the code.
-- [2.1.1 Keyboard](/resources/wcag/2-1-1-keyboard): everything works with a keyboard.
-- [2.4.3 Focus Order](/resources/wcag/2-4-3-focus-order): focus moves in a logical order.
-- [2.4.7 Focus Visible](/resources/wcag/2-4-7-focus-visible): the skip link is visible when focused.
+- [1.3.1 Info and Relationships](/wcag/1-3-1-info-and-relationships): headings and regions are marked up in the code.
+- [2.1.1 Keyboard](/wcag/2-1-1-keyboard): everything works with a keyboard.
+- [2.4.3 Focus Order](/wcag/2-4-3-focus-order): focus moves in a logical order.
+- [2.4.7 Focus Visible](/wcag/2-4-7-focus-visible): the skip link is visible when focused.
 
 [Run a free WCAG scan](/#scan) to check landmarks and skip link targets, then test the skip link with your keyboard.

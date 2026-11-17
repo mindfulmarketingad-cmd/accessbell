@@ -48,7 +48,7 @@ The words "contractual, licensing or other arrangements" matter. A payment porta
 
 The rule adopts the Web Content Accessibility Guidelines (WCAG) 2.1 at Level AA as the technical standard, according to the [DOJ fact sheet on the web rule](https://www.ada.gov/resources/2024-03-08-web-rule/). That means meeting every Level A and Level AA success criterion in WCAG 2.1, such as text alternatives for images, captions for video, keyboard access, sufficient color contrast and labeled form fields.
 
-WCAG 2.2 has since been published and adds criteria such as [2.5.8 Target Size (Minimum)](/resources/wcag/2-5-8-target-size-minimum). The Title II rule names 2.1. WCAG 2.2 keeps almost every 2.1 requirement and adds new ones, so testing against 2.2 AA is a good way to meet the rule and stay ahead of it. The [WCAG Library](/resources/wcag) explains each criterion and how to test it.
+WCAG 2.2 has since been published and adds criteria such as [2.5.8 Target Size (Minimum)](/wcag/2-5-8-target-size-minimum). The Title II rule names 2.1. WCAG 2.2 keeps almost every 2.1 requirement and adds new ones, so testing against 2.2 AA is a good way to meet the rule and stay ahead of it. The [WCAG Library](/wcag) explains each criterion and how to test it.
 
 ## ADA Title II Website Compliance Deadlines
 
@@ -86,11 +86,11 @@ The rule has three more provisions that come up in practice:
 Government websites tend to fail in the same places. When you start testing, look at these first:
 
 - **PDF forms and notices.** Applications, permits, meeting agendas and budget documents are often scanned images or untagged PDFs that a screen reader cannot read. Anything posted after your compliance date, and any older document people still use to get a service, must meet WCAG 2.1 AA.
-- **Meeting and event videos.** Recorded council or board meetings need accurate captions under [1.2.2 Captions (Prerecorded)](/resources/wcag/1-2-2-captions-prerecorded). Live streams need live captions at Level AA.
+- **Meeting and event videos.** Recorded council or board meetings need accurate captions under [1.2.2 Captions (Prerecorded)](/wcag/1-2-2-captions-prerecorded). Live streams need live captions at Level AA.
 - **Third-party systems.** Payment portals, utility billing, parks reservations and job application systems are often run by vendors and are often where people with disabilities get stuck.
-- **Forms without labels.** Contact, request and complaint forms that rely on placeholder text instead of labels fail [3.3.2 Labels or Instructions](/resources/wcag/3-3-2-labels-or-instructions).
+- **Forms without labels.** Contact, request and complaint forms that rely on placeholder text instead of labels fail [3.3.2 Labels or Instructions](/wcag/3-3-2-labels-or-instructions).
 - **Maps and images of text.** Flyers posted as images and maps with no text alternative leave out anyone who cannot see them. Provide the same information as text.
-- **Keyboard traps and menus.** Mega menus, date pickers and pop-ups that only work with a mouse fail [2.1.1 Keyboard](/resources/wcag/2-1-1-keyboard).
+- **Keyboard traps and menus.** Mega menus, date pickers and pop-ups that only work with a mouse fail [2.1.1 Keyboard](/wcag/2-1-1-keyboard).
 
 ## How to Prepare for ADA Title II Website Compliance
 

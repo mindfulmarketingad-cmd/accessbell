@@ -88,7 +88,7 @@ export const USE_CASES: UseCase[] = [
         h2: 'The First Accessibility Compliance Scan: 300+ Issues on 22 Pages',
         paras: [
           'When the team added their domain, they started with the pages that matter most: the home page and the blog. AccessBell scanned 22 pages and found more than 300 accessibility issues against WCAG.',
-          'Each issue in the dashboard shows the failing element, the [WCAG success criterion](/resources/wcag) it relates to, how serious it is and how to fix it. Issues that repeat across pages are grouped by component, so a problem in a shared template only has to be fixed once.',
+          'Each issue in the dashboard shows the failing element, the [WCAG success criterion](/wcag) it relates to, how serious it is and how to fix it. Issues that repeat across pages are grouped by component, so a problem in a shared template only has to be fixed once.',
         ],
       },
       {

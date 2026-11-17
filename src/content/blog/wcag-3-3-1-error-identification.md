@@ -81,11 +81,11 @@ When a form is submitted with several errors, show a summary at the top, move fo
 
 ### Announce errors that appear without a page reload
 
-If errors appear while people type or after a script checks the form, make sure screen readers hear them: move focus to the summary, or use a live region such as `role="alert"` ([ARIA19](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA19)). The W3C techniques [SCR18](https://www.w3.org/WAI/WCAG22/Techniques/client-side-script/SCR18) and [SCR32](https://www.w3.org/WAI/WCAG22/Techniques/client-side-script/SCR32) cover client-side validation. See also [4.1.3 Status Messages](/resources/wcag/4-1-3-status-messages).
+If errors appear while people type or after a script checks the form, make sure screen readers hear them: move focus to the summary, or use a live region such as `role="alert"` ([ARIA19](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA19)). The W3C techniques [SCR18](https://www.w3.org/WAI/WCAG22/Techniques/client-side-script/SCR18) and [SCR32](https://www.w3.org/WAI/WCAG22/Techniques/client-side-script/SCR32) cover client-side validation. See also [4.1.3 Status Messages](/wcag/4-1-3-status-messages).
 
 ### Do not rely on color or icons alone
 
-Pair any red border or warning icon with words. Color alone fails [1.4.1 Use of Color](/resources/wcag/1-4-1-use-of-color).
+Pair any red border or warning icon with words. Color alone fails [1.4.1 Use of Color](/wcag/1-4-1-use-of-color).
 
 ## How to Test for 3.3.1 Error Identification
 
@@ -97,10 +97,10 @@ Pair any red border or warning icon with words. Color alone fails [1.4.1 Use of 
 
 ## Related Success Criteria
 
-- [3.3.2 Labels or Instructions](/resources/wcag/3-3-2-labels-or-instructions): fields have labels and instructions up front.
-- [3.3.3 Error Suggestion](/resources/wcag/3-3-3-error-suggestion): suggest how to fix the error, at Level AA.
-- [3.3.4 Error Prevention (Legal, Financial, Data)](/resources/wcag/3-3-4-error-prevention-legal-financial-data): important submissions can be checked or reversed.
-- [1.4.1 Use of Color](/resources/wcag/1-4-1-use-of-color): errors are not shown by color alone.
-- [4.1.3 Status Messages](/resources/wcag/4-1-3-status-messages): dynamic messages are announced.
+- [3.3.2 Labels or Instructions](/wcag/3-3-2-labels-or-instructions): fields have labels and instructions up front.
+- [3.3.3 Error Suggestion](/wcag/3-3-3-error-suggestion): suggest how to fix the error, at Level AA.
+- [3.3.4 Error Prevention (Legal, Financial, Data)](/wcag/3-3-4-error-prevention-legal-financial-data): important submissions can be checked or reversed.
+- [1.4.1 Use of Color](/wcag/1-4-1-use-of-color): errors are not shown by color alone.
+- [4.1.3 Status Messages](/wcag/4-1-3-status-messages): dynamic messages are announced.
 
 [Run a free WCAG scan](/#scan) to find fields with missing labels and error markup problems, then submit your forms with mistakes to check the messages.

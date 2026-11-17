@@ -75,7 +75,7 @@ Review instructions, help text, error messages and video scripts for: left, righ
 
 ### Remember color
 
-Color is a sensory characteristic too. "Fields marked in red are required" fails. See [1.4.1 Use of Color](/resources/wcag/1-4-1-use-of-color).
+Color is a sensory characteristic too. "Fields marked in red are required" fails. See [1.4.1 Use of Color](/wcag/1-4-1-use-of-color).
 
 ## How to Test for 1.3.3 Sensory Characteristics
 
@@ -87,8 +87,8 @@ Color is a sensory characteristic too. "Fields marked in red are required" fails
 
 ## Related Success Criteria
 
-- [1.4.1 Use of Color](/resources/wcag/1-4-1-use-of-color): color is not the only way to show information.
-- [1.3.1 Info and Relationships](/resources/wcag/1-3-1-info-and-relationships): structure is in the code, not just the look.
-- [3.3.2 Labels or Instructions](/resources/wcag/3-3-2-labels-or-instructions): forms give clear labels and instructions.
+- [1.4.1 Use of Color](/wcag/1-4-1-use-of-color): color is not the only way to show information.
+- [1.3.1 Info and Relationships](/wcag/1-3-1-info-and-relationships): structure is in the code, not just the look.
+- [3.3.2 Labels or Instructions](/wcag/3-3-2-labels-or-instructions): forms give clear labels and instructions.
 
 [Run a free WCAG scan](/#scan) for the code-level checks, then read through your instructions with these words in mind.

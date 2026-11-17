@@ -6,7 +6,7 @@ type PostLike = { id: string; data: { category: string } };
 
 /**
  * "WCAG Codes Explained" guides live in the blog collection but are published
- * as the criterion pages at /resources/wcag/<sc-slug>, not under /blog.
+ * as the criterion pages at /wcag/<sc-slug>, not under /blog.
  */
 export const isWcagGuide = (p: PostLike) => p.data.category === WCAG_GUIDES_CATEGORY;
 
@@ -20,4 +20,4 @@ export const guideSlug = (id: string) => {
 };
 
 /** The public URL of any post. */
-export const postPath = (p: PostLike) => (isWcagGuide(p) ? `/resources/wcag/${guideSlug(p.id)}` : `/blog/${p.id}`);
+export const postPath = (p: PostLike) => (isWcagGuide(p) ? `/wcag/${guideSlug(p.id)}` : `/blog/${p.id}`);

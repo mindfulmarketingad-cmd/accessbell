@@ -6,7 +6,7 @@ import Icon from './Icon.astro';
 
 const path = normalizePath(Astro.url.pathname);
 const matches = (href: string) => (href === '/' ? path === '/' : path === href || path.startsWith(href + '/'));
-// Only the most specific match is current, so /resources/wcag marks "WCAG Library", not "Resources" too.
+// Only the most specific match is current, so /wcag marks "WCAG 2.2", not "Resources" too.
 const best = HEADER_NAV.map((i) => i.href).filter(matches).sort((a, b) => b.length - a.length)[0];
 const isCurrent = (href: string) => href === best;
 ---

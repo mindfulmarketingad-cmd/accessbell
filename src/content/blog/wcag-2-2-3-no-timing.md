@@ -92,7 +92,7 @@ Do not store passwords or payment details this way. For anything sensitive, save
 
 ### Keep security timeouts from destroying work
 
-Sessions sometimes have to expire. When they do, keep the person's data so they can pick up where they left off after signing in again, and tell them about the timeout. Those two requirements are [2.2.5 Re-authenticating](/resources/wcag/2-2-5-re-authenticating) and [2.2.6 Timeouts](/resources/wcag/2-2-6-timeouts).
+Sessions sometimes have to expire. When they do, keep the person's data so they can pick up where they left off after signing in again, and tell them about the timeout. Those two requirements are [2.2.5 Re-authenticating](/wcag/2-2-5-re-authenticating) and [2.2.6 Timeouts](/wcag/2-2-6-timeouts).
 
 ### Know the two exceptions
 
@@ -108,14 +108,14 @@ Sessions sometimes have to expire. When they do, keep the person's data so they 
 
 ## How to Test for 2.2.3 No Timing
 
-Time limits are hidden in scripts, server settings and business rules, so automated checkers cannot reliably find them. Automated tests also struggle with behavior over time in general: in [our test of 10 accessibility checker tools](/blog/we-tested-10-accessibility-checker-tools), every tool missed an [auto-advancing carousel](/resources/wcag/2-2-2-pause-stop-hide). Test by hand:
+Time limits are hidden in scripts, server settings and business rules, so automated checkers cannot reliably find them. Automated tests also struggle with behavior over time in general: in [our test of 10 accessibility checker tools](/blog/we-tested-10-accessibility-checker-tools), every tool missed an [auto-advancing carousel](/wcag/2-2-2-pause-stop-hide). Test by hand:
 
 1. Look for countdowns, "expires in" messages and timed steps in forms, checkouts and quizzes.
 2. Start a task, then leave the page idle for 30 minutes or more. Come back and see whether your work survived.
 3. Check that pop-ups, alerts and notifications stay until you dismiss them.
 4. For each time limit you find, ask whether it is a real-time event or non-interactive media. If not, it fails 2.2.3 No Timing.
 
-For a quick reference, see our [2.2.3 No Timing page](/resources/wcag/2-2-3-no-timing) in the WCAG library.
+For a quick reference, see our [2.2.3 No Timing page](/wcag/2-2-3-no-timing) in the WCAG library.
 
 ## Is 2.2.3 No Timing Required?
 
@@ -123,9 +123,9 @@ Because it is Level AAA, 2.2.3 No Timing is rarely required by law. The W3C itse
 
 ## Related Success Criteria
 
-- [2.2.1 Timing Adjustable](/resources/wcag/2-2-1-timing-adjustable): the Level A rule that time limits must be adjustable.
-- [2.2.2 Pause, Stop, Hide](/resources/wcag/2-2-2-pause-stop-hide): moving and auto-updating content can be paused.
-- [2.2.5 Re-authenticating](/resources/wcag/2-2-5-re-authenticating): no data loss when a session expires.
-- [2.2.6 Timeouts](/resources/wcag/2-2-6-timeouts): warn people about inactivity timeouts that could lose data.
+- [2.2.1 Timing Adjustable](/wcag/2-2-1-timing-adjustable): the Level A rule that time limits must be adjustable.
+- [2.2.2 Pause, Stop, Hide](/wcag/2-2-2-pause-stop-hide): moving and auto-updating content can be paused.
+- [2.2.5 Re-authenticating](/wcag/2-2-5-re-authenticating): no data loss when a session expires.
+- [2.2.6 Timeouts](/wcag/2-2-6-timeouts): warn people about inactivity timeouts that could lose data.
 
 Want to find the issues software *can* catch while you check timing by hand? [Run a free WCAG scan](/#scan) of any page.

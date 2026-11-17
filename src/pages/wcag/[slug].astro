@@ -1,0 +1,392 @@
+---
+import { getEntries, getEntry, getCollection, render } from 'astro:content';
+import { fitTitle } from '../../lib/titles';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import AuthorAvatar from '../../components/AuthorAvatar.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
+import { SITE } from '../../config/site';
+import { formatDate, readingTime } from '../../lib/format';
+import { authorPath, authorSchema } from '../../lib/authors';
+import { faqSchema } from '../../lib/schema';
+import { inlineMarkdown, stripMarkdown } from '../../lib/inline-markdown';
+import { coverFor } from '../../lib/covers';
+import { getWcagGuides } from '../../lib/wcag-guides';
+import { guideSc } from '../../lib/posts';
+import { CRITERIA, GUIDELINES } from '../../../server/wcag-criteria.js';
+import { criterionSlug, criterionPath, understandingUrl, rulesForCriterion, checkersForCriterion } from '../../lib/wcag-pages';
+import { checkerPath } from '../../data/checkers';
+import { WCAG_CONTENT } from '../../data/wcag-content';
+import { CRITERION_GUIDES, GUIDE_UPDATED, type FullCriterion } from '../../data/wcag-criterion-guides';
+import { wcagCoverAlt } from '../../data/blog-covers.js';
+import { fixExample } from '../../scripts/shared/fix-examples.js';
+
+export function getStaticPaths() {
+  return Object.values(CRITERIA).map((c) => ({ params: { slug: criterionSlug(c.sc) }, props: { c } }));
+}
+
+const { c } = Astro.props as { c: (typeof CRITERIA)[string] };
+const content = WCAG_CONTENT[c.sc];
+const deep = CRITERION_GUIDES[c.sc];
+const REVIEWED = new Date('2026-09-28');
+const path = criterionPath(c.sc);
+const url = `${SITE.url}${path}`;
+
+// The plain-English "WCAG Codes Explained" guide for this criterion, if one has been written.
+const guide = (await getCollection('blog', ({ id, data }) => !data.draft && guideSc(id) === c.sc))[0];
+if (deep?.kind === 'full' && guide) throw new Error(`${c.sc} is a full page and also has a guide. Keep one, so the two do not compete.`);
+if (deep?.kind === 'guide' && !guide) throw new Error(`${c.sc} supplements a guide, but no WCAG Codes Explained article exists.`);
+const rendered = guide && deep?.kind !== 'full' ? await render(guide) : null;
+const Content = rendered?.Content;
+const full: FullCriterion | undefined = deep?.kind === 'full' ? deep : undefined;
+
+const contributors = guide
+  ? (await getEntries(guide.data.contributors.map((x) => x.author))).map((a, i) => ({ role: guide.data.contributors[i].role, author: a }))
+  : [{ role: 'Author', author: (await getEntry('authors', 'anton-stewart'))! }].filter((x) => x.author);
+
+// Featured image: the guide's cover, or the criterion card from npm run covers.
+const slug = criterionSlug(c.sc);
+const cover = guide
+  ? coverFor(guide.id)
+  : { src: `/images/wcag/covers/${slug}.webp`, og: `/images/wcag/og/${slug}.png`, alt: wcagCoverAlt(c.sc, c.name), width: 1200, height: 630 };
+
+const rules = rulesForCriterion(c.sc);
+const checkers = checkersForCriterion(c.sc);
+const example = rules.map((r) => fixExample(r.id)).find(Boolean);
+
+const guidelineKey = c.sc.split('.').slice(0, 2).join('.');
+const related = Object.values(CRITERIA)
+  .filter((x) => x.sc !== c.sc && x.sc.split('.').slice(0, 2).join('.') === guidelineKey)
+  .sort((a, b) => Number(a.sc.split('.')[2]) - Number(b.sc.split('.')[2]));
+// Guides already end with their own related-criteria section.
+const guideHasRelated = !!rendered?.headings.some((h) => h.depth === 2 && /related/i.test(h.text));
+const series = (await getWcagGuides()).filter((g) => g.sc.join('.') !== c.sc);
+
+const checkerNames = checkers.map((x) => x.name).join(', ');
+const automatedAnswer = rules.length
+  ? `Yes. AccessBell runs ${rules.length} automated ${rules.length === 1 ? 'rule' : 'rules'} that can catch failures of this criterion${checkers.length ? `, including in our ${checkerNames}` : ''}. A person still needs to check what automation cannot judge.`
+  : `Not fully. This criterion needs a person to judge, so AccessBell's report lists it for manual review rather than marking it pass or fail on its own.`;
+let levelAnswer = `Level ${c.level}, added in WCAG ${c.version}.`;
+if (c.level === 'AA') levelAnswer += ' Level AA is the level referenced by the ADA, Section 508 and most accessibility laws.';
+else if (c.level === 'AAA') levelAnswer += ' Level AAA is the highest, most demanding conformance level in WCAG.';
+
+const generatedFaqs = [
+  { q: `What does WCAG ${c.sc} require?`, a: content.summary },
+  { q: `Can AccessBell test WCAG ${c.sc} automatically?`, a: automatedAnswer },
+  { q: `What level is WCAG ${c.sc}?`, a: levelAnswer },
+];
+// Guides bring their own FAQs; add the automation question, which they do not cover.
+const faqs = full ? full.faqs : guide ? [...guide.data.faqs, generatedFaqs[1]] : generatedFaqs;
+
+const title = `WCAG ${c.sc} ${c.name}`;
+const displayTitle = full || !guide ? title : guide.data.title;
+const lead = full ? full.description : guide ? guide.data.description : content.summary;
+const metaTitle = full
+  ? fitTitle(`${full.seoTitle} | AccessBell`, full.seoTitle)
+  : guide
+    ? fitTitle(`${guide.data.seoTitle ?? guide.data.title} | AccessBell`, guide.data.seoTitle ?? guide.data.title)
+    : fitTitle(
+        `WCAG ${c.sc} ${c.name}: What It Means and How to Test It | AccessBell`,
+        `WCAG ${c.sc} ${c.name}: Meaning and How to Test | AccessBell`,
+        `WCAG ${c.sc} ${c.name}: Explained | AccessBell`,
+        `WCAG ${c.sc} ${c.name} | AccessBell`,
+        `WCAG ${c.sc} ${c.name}`,
+      );
+const metaDescription = full ? full.description : guide ? guide.data.description : `WCAG ${c.sc} ${c.name} (Level ${c.level}): ${content.summary}`;
+const minutes = guide && !full ? readingTime(guide.body ?? '') : null;
+const modified = deep
+  ? new Date(Math.max(...[guide && !full ? guide.data.updatedDate ?? guide.data.pubDate : undefined, GUIDE_UPDATED].filter((d): d is Date => Boolean(d)).map((d) => +d)))
+  : guide
+    ? guide.data.updatedDate ?? guide.data.pubDate
+    : REVIEWED;
+
+const supplementToc = deep?.kind === 'guide'
+  ? [
+      { depth: 2, slug: 'pass-fail', text: 'Pass and fail examples' },
+      { depth: 2, slug: 'platforms', text: 'Common failures on Shopify, WordPress, Wix and Squarespace' },
+      { depth: 2, slug: 'level', text: 'Level and conformance' },
+      { depth: 2, slug: 'also-see', text: 'Related WCAG criteria' },
+    ]
+  : [];
+
+const toc = full
+  ? [
+      { depth: 2, slug: 'wording', text: `What WCAG ${c.sc} ${c.name} requires` },
+      { depth: 2, slug: 'plain-english', text: `What WCAG ${c.sc} means in plain English` },
+      { depth: 2, slug: 'who', text: `Who WCAG ${c.sc} helps` },
+      { depth: 2, slug: 'pass-fail', text: 'Pass and fail examples' },
+      { depth: 2, slug: 'manual', text: `How to test WCAG ${c.sc}` },
+      { depth: 2, slug: 'automated', text: `Testing WCAG ${c.sc} with AccessBell` },
+      { depth: 2, slug: 'platforms', text: 'Common failures on Shopify, WordPress, Wix and Squarespace' },
+      { depth: 2, slug: 'level', text: 'Level and conformance' },
+      { depth: 2, slug: 'also-see', text: 'Related WCAG criteria' },
+      { depth: 2, slug: 'faq', text: 'Frequently Asked Questions' },
+    ]
+  : [
+      ...(rendered
+        ? rendered.headings.filter((h) => h.depth === 2)
+        : [
+            { depth: 2, slug: 'requires', text: `What WCAG ${c.sc} Requires` },
+            { depth: 2, slug: 'how-to-test', text: 'How to Test It by Hand' },
+            { depth: 2, slug: 'failures', text: 'Common Failures' },
+          ]),
+      ...(deep?.kind === 'guide' ? [supplementToc[0]] : []),
+      { depth: 2, slug: 'automated', text: `Testing WCAG ${c.sc} with AccessBell` },
+      ...supplementToc.slice(1),
+      ...(example && !deep ? [{ depth: 2, slug: 'fix', text: 'Example Fix' }] : []),
+      ...(related.length && !guideHasRelated && !deep ? [{ depth: 2, slug: 'related-sc', text: `Related Criteria in ${GUIDELINES[guidelineKey]}` }] : []),
+      { depth: 2, slug: 'faq', text: 'Frequently Asked Questions' },
+    ];
+
+const schema = [
+  {
+    '@type': 'TechArticle',
+    '@id': `${url}#article`,
+    headline: displayTitle,
+    description: metaDescription,
+    ...(guide && !full ? { datePublished: guide.data.pubDate.toISOString() } : { datePublished: modified.toISOString() }),
+    dateModified: modified.toISOString(),
+    image: cover?.og ? `${SITE.url}${cover.og}` : undefined,
+    author: contributors.filter((x) => x.role === 'Author').map((x) => ({ '@id': `${SITE.url}${authorPath(x.author)}#author` })),
+    publisher: { '@id': `${SITE.url}/#organization` },
+    mainEntityOfPage: { '@id': `${url}#webpage` },
+    about: { '@type': 'Thing', name: `WCAG ${c.sc} ${c.name}` },
+    isPartOf: { '@id': `${SITE.url}/wcag#webpage` },
+  },
+  ...contributors.map((x) => authorSchema(x.author)),
+  faqSchema(faqs.map((f) => ({ q: f.q, a: stripMarkdown(f.a) }))),
+];
+---
+<BaseLayout
+  title={metaTitle}
+  description={metaDescription}
+  ogType="article"
+  breadcrumbs={[{ label: 'WCAG 2.2', href: '/wcag' }, { label: `${c.sc} ${c.name}`, href: path }]}
+  schema={schema}
+  image={cover?.og ?? undefined}
+  imageAlt={cover?.og ? displayTitle : undefined}
+>
+  <article>
+    <header class="container article-head">
+      <span class="eyebrow">{c.principle} &middot; {GUIDELINES[guidelineKey]}</span>
+      <h1>{displayTitle}</h1>
+      <p class="lead">{lead}</p>
+      <p class="checker-meta wcag-meta">
+        <span class="sc-no">{c.sc}</span> Level {c.level}
+        <span aria-hidden="true">&middot;</span> Added in WCAG {c.version}
+        <span aria-hidden="true">&middot;</span> {rules.length > 0 ? `${rules.length} automated ${rules.length === 1 ? 'rule' : 'rules'}` : 'Needs manual review'}
+      </p>
+      <div class="byline">
+        <div class="byline-people">
+          {contributors.map((x) => (
+            <a class="byline-person" href={authorPath(x.author)}>
+              <AuthorAvatar name={x.author.data.name} />
+              <span><strong>{x.author.data.name}</strong><small>{x.role}</small></span>
+            </a>
+          ))}
+        </div>
+        <div class="article-meta">
+          {guide && !full ? (
+            <>
+              <span>Published <time datetime={guide.data.pubDate.toISOString()}>{formatDate(guide.data.pubDate)}</time></span>
+              <span>Updated <time datetime={modified.toISOString()}>{formatDate(modified)}</time></span>
+              <span>{minutes} min read</span>
+            </>
+          ) : (
+            <span>Reviewed <time datetime={modified.toISOString()}>{formatDate(modified)}</time> against the <a href={understandingUrl(c.sc)} rel="noopener noreferrer" target="_blank">W3C Understanding document<span class="visually-hidden"> (opens in a new tab)</span></a></span>
+          )}
+        </div>
+      </div>
+    </header>
+
+    {cover && (
+      <figure class="container article-cover">
+        <img src={cover.src} width={cover.width} height={cover.height} alt={cover.alt} fetchpriority="high" decoding="async" />
+      </figure>
+    )}
+
+    <div class="container article-layout">
+      <div class="article-main">
+        <TableOfContents headings={toc} variant="inline" />
+        <div class="prose">
+          {full ? (
+            <>
+              <p><strong>WCAG {c.sc} {c.name}</strong> is a Level {c.level} success criterion{c.version === '2.2' ? ', added in WCAG 2.2' : `, from WCAG ${c.version}`}. This page is part of the <a href="/wcag">WCAG 2.2 success criteria</a> guide. It explains the rule in plain English, who it helps, what passing and failing code look like, and how to test it by hand and with AccessBell, a <a href="/resources/website-accessibility-monitoring-tool">website accessibility monitoring tool</a>. AccessBell is not an overlay.</p>
+              <h2 id="wording">What WCAG {c.sc} {c.name} requires</h2>
+              <blockquote cite={full.quoteUrl}>
+                <p>{full.quote}</p>
+              </blockquote>
+              <p>That sentence is the heart of the criterion. The exceptions and notes are in the <a href={full.quoteUrl} rel="noopener noreferrer">WCAG 2.2 Recommendation</a> and the <a href={understandingUrl(c.sc)} rel="noopener noreferrer">Understanding document for {c.sc} {c.name}</a>.</p>
+              <h2 id="plain-english">What WCAG {c.sc} means in plain English</h2>
+              {full.plainEnglish.map((p) => <p set:html={inlineMarkdown(p)} />)}
+              <h2 id="who">Who WCAG {c.sc} helps</h2>
+              <p set:html={inlineMarkdown(full.whoItHelps)} />
+              <h2 id="pass-fail">Pass and fail examples</h2>
+              <figure class="code-sample">
+                <figcaption><span class="tag tag-fail">Fail</span> {full.fail.caption}</figcaption>
+                <pre class="fix-code" tabindex="0" role="region" aria-label="Failing example"><code>{full.fail.code}</code></pre>
+              </figure>
+              <figure class="code-sample">
+                <figcaption><span class="tag tag-pass">Pass</span> {full.pass.caption}</figcaption>
+                <pre class="fix-code" tabindex="0" role="region" aria-label="Passing example"><code>{full.pass.code}</code></pre>
+              </figure>
+              <h2 id="manual">How to test WCAG {c.sc}</h2>
+              <ol class="steps-list">{full.manual.map((step) => <li set:html={inlineMarkdown(step)} />)}</ol>
+            </>
+          ) : Content ? (
+            <Content />
+          ) : (
+            <>
+              <h2 id="requires">What WCAG {c.sc} Requires</h2>
+              <p>{content.summary}</p>
+              {c.sc === '4.1.1' && <p>Because it is obsolete, WCAG {c.sc} is not counted in our WCAG 2.2 checkers, but it still applies to WCAG 2.0 and 2.1 targets.</p>}
+              <h2 id="how-to-test">How to Test It by Hand</h2>
+              <p>{content.howToTest}</p>
+              {['1.4.3', '1.4.6', '1.4.11'].includes(c.sc) && <p>Check any text and background pair with our free <a href="/tools/contrast-checker">WCAG color contrast checker</a>.</p>}
+              <h2 id="failures">Common Failures</h2>
+              <ul>{content.commonFailures.map((f) => <li>{f}</li>)}</ul>
+            </>
+          )}
+
+          {deep?.kind === 'guide' && (
+            <>
+              <h2 id="pass-fail">Pass and fail examples</h2>
+              <p>The guide above is the long version. These two snippets are the shortest pair that shows the difference.</p>
+              <figure class="code-sample">
+                <figcaption><span class="tag tag-fail">Fail</span> {deep.fail.caption}</figcaption>
+                <pre class="fix-code" tabindex="0" role="region" aria-label="Failing example"><code>{deep.fail.code}</code></pre>
+              </figure>
+              <figure class="code-sample">
+                <figcaption><span class="tag tag-pass">Pass</span> {deep.pass.caption}</figcaption>
+                <pre class="fix-code" tabindex="0" role="region" aria-label="Passing example"><code>{deep.pass.code}</code></pre>
+              </figure>
+            </>
+          )}
+
+          <h2 id="automated">Testing WCAG {c.sc} with AccessBell</h2>
+          {full && <p set:html={inlineMarkdown(full.accessbell)} />}
+          {rules.length > 0 ? (
+            <>
+              <p>AccessBell's scanner runs axe-core, which includes {rules.length} {rules.length === 1 ? 'rule' : 'rules'} that catch code-level failures of this criterion. Automated checks help you spot issues quickly. A person still needs to review what they cannot judge.</p>
+              <ul>
+                {rules.map((r) => <li><code>{r.id}</code>: {r.description}{r.helpUrl && <> (<a href={r.helpUrl} rel="noopener noreferrer" target="_blank">details<span class="visually-hidden"> (opens in a new tab)</span></a>)</>}</li>)}
+              </ul>
+              {checkers.length > 0 && <p>This criterion is included in: {checkers.map((chk, i) => <>{i > 0 && ', '}<a href={checkerPath(chk)}>{chk.name}</a></>)}.</p>}
+            </>
+          ) : (
+            !full && <p>This criterion depends on meaning or context, so it needs a person to judge. AccessBell's report lists it for manual review rather than marking it pass or fail automatically, so it is not missed.</p>
+          )}
+          <p><a href="/#scan">Check your site for this</a> with a free scan of one public page. AccessBell is a <a href="/resources/website-accessibility-monitoring-tool">website accessibility monitoring tool</a>, not an overlay.</p>
+
+          {deep && (
+            <>
+              <h2 id="platforms">Common failures on Shopify, WordPress, Wix and Squarespace</h2>
+              <p>These are patterns in how the builders work. They are not counts from AccessBell scans. Where a platform hosts the screen, a merchant may not be able to change it, and an unscanned page is not a pass.</p>
+              <h3>Shopify</h3>
+              <p set:html={inlineMarkdown(deep.platforms.shopify)} />
+              <h3>WordPress</h3>
+              <p set:html={inlineMarkdown(deep.platforms.wordpress)} />
+              <h3>Wix</h3>
+              <p set:html={inlineMarkdown(deep.platforms.wix)} />
+              <h3>Squarespace</h3>
+              <p set:html={inlineMarkdown(deep.platforms.squarespace)} />
+              <h2 id="level">Level and conformance</h2>
+              <p set:html={inlineMarkdown(deep.levelNotes)} />
+              <p>Conforming at Level AA means meeting every Level A and Level AA criterion that applies, not only the ones labeled AA. See the <a href="https://www.w3.org/TR/WCAG22/#conformance-reqs" rel="noopener noreferrer">WCAG 2.2 conformance requirements</a>. This page explains the technical rule. It is not a legal opinion. Read the <a href="/disclaimer">disclaimer</a>.</p>
+              <h2 id="also-see">Related WCAG criteria</h2>
+              <ul>
+                {deep.related.map((sc) => <li><a href={criterionPath(sc)}>{sc} {CRITERIA[sc].name}</a> (Level {CRITERIA[sc].level}, WCAG {CRITERIA[sc].version})</li>)}
+              </ul>
+              <p>Every criterion is listed in the <a href="/wcag">WCAG 2.2 success criteria</a> guide.</p>
+            </>
+          )}
+
+          {example && !deep && (
+            <>
+              <h2 id="fix">Example Fix</h2>
+              <ol>{example.steps.map(([t, text]) => <li><strong>{t}.</strong> {text}</li>)}</ol>
+              <pre class="fix-code" tabindex="0" role="region" aria-label="Example code"><code>{example.code}</code></pre>
+            </>
+          )}
+
+          {related.length > 0 && !guideHasRelated && !deep && (
+            <>
+              <h2 id="related-sc">Related Criteria in {GUIDELINES[guidelineKey]}</h2>
+              <ul>{related.map((r) => <li><a href={criterionPath(r.sc)}>{r.sc} {r.name}</a> (Level {r.level}, WCAG {r.version})</li>)}</ul>
+            </>
+          )}
+
+          <section class="article-faq" aria-labelledby="faq">
+            <h2 id="faq">Frequently Asked Questions</h2>
+            {faqs.map((f) => (
+              <>
+                <h3>{f.q}</h3>
+                <p set:html={inlineMarkdown(f.a)} />
+              </>
+            ))}
+          </section>
+
+          <h2 id="sources">Sources</h2>
+          <ul>
+            <li><a href={understandingUrl(c.sc)} rel="noopener noreferrer" target="_blank">W3C: Understanding {c.sc} {c.name}<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+            <li><a href="https://www.w3.org/TR/WCAG22/" rel="noopener noreferrer" target="_blank">W3C: Web Content Accessibility Guidelines (WCAG) 2.2<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+          </ul>
+          <p class="muted">This page explains a technical standard and is not legal advice. See our <a href="/disclaimer">disclaimer</a>.</p>
+        </div>
+
+        {series.length > 0 && (
+          <nav class="guide-series" aria-labelledby="more-guides">
+            <h2 id="more-guides">More WCAG Codes Explained</h2>
+            <p>Plain-English guides to other WCAG success criteria, with examples and fixes.</p>
+            <ul>{series.map((g) => <li><a href={g.href}>{g.name}</a></li>)}</ul>
+            <p><a class="link-arrow" href="/wcag">Browse all 86 WCAG 2.2 success criteria <Icon name="arrow" /></a></p>
+          </nav>
+        )}
+
+        <section class="author-box" aria-labelledby="about-the-authors">
+          <h2 id="about-the-authors">{contributors.length > 1 ? 'About the Authors' : 'About the Author'}</h2>
+          {contributors.map((x) => (
+            <div class="author-box-item">
+              <AuthorAvatar name={x.author.data.name} size="lg" />
+              <div>
+                <p class="author-box-name"><a href={authorPath(x.author)}>{x.author.data.name}</a><span class="tag">{x.role}</span></p>
+                <p class="author-box-title">{x.author.data.jobTitle}</p>
+                <p>{x.author.data.shortBio}</p>
+              </div>
+            </div>
+          ))}
+        </section>
+
+        {guide && guide.data.history.length > 0 && (
+          <details class="review-history">
+            <summary>How we reviewed this page</summary>
+            <ol>
+              {guide.data.history.map((h, i) => (
+                <li>
+                  <time datetime={h.date.toISOString()}>{formatDate(h.date)}</time>
+                  {i === 0 && <span class="tag tag-pass">Current version</span>}
+                  <p>{h.note}</p>
+                </li>
+              ))}
+            </ol>
+          </details>
+        )}
+      </div>
+
+      <aside class="article-aside" aria-label="Page tools">
+        <TableOfContents headings={toc} variant="aside" />
+        <div class="aside-card">
+          <h2>Check your site for this</h2>
+          <p>Run a free scan to spot WCAG {c.sc} issues and every other automated check on your page.</p>
+          <a class="btn btn-block" href="/#scan">Check your site for this <Icon name="arrow" /></a>
+        </div>
+      </aside>
+    </div>
+  </article>
+
+  <CtaBand
+    title={`Check your site for WCAG ${c.sc}`}
+    text={`The free scan checks one public page for ${c.sc} ${c.name} and the other rules an automated test can see. AccessBell is a website accessibility monitoring tool, not an overlay.`}
+  />
+</BaseLayout>

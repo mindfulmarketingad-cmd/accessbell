@@ -127,7 +127,7 @@ A CAPTCHA that asks people to type distorted text or solve a sum is a cognitive 
 
 - Bot detection that runs in the background, with no task for the person.
 - A checkbox-style check that only asks for a challenge when something looks suspicious.
-- An object recognition challenge, such as picking photos of bikes. This is allowed at Level AA, but it can still be hard for some people and fails the AAA version, [3.3.9](/resources/wcag/3-3-9-accessible-authentication-enhanced).
+- An object recognition challenge, such as picking photos of bikes. This is allowed at Level AA, but it can still be hard for some people and fails the AAA version, [3.3.9](/wcag/3-3-9-accessible-authentication-enhanced).
 
 ### Avoid memory-based security questions
 
@@ -143,13 +143,13 @@ Automated checkers cannot judge a login flow. In [our test of 10 accessibility c
 4. **Check each task for an exception:** an alternative method, a helping mechanism, object recognition or personal content.
 5. **Check the whole flow,** including two-step verification and account recovery, not just the first screen.
 
-For a quick reference, see our [3.3.8 Accessible Authentication (Minimum) page](/resources/wcag/3-3-8-accessible-authentication-minimum) in the WCAG library, and the W3C's [Understanding 3.3.8 Accessible Authentication (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/accessible-authentication-minimum.html).
+For a quick reference, see our [3.3.8 Accessible Authentication (Minimum) page](/wcag/3-3-8-accessible-authentication-minimum) in the WCAG library, and the W3C's [Understanding 3.3.8 Accessible Authentication (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/accessible-authentication-minimum.html).
 
 ## Related Success Criteria
 
-- [3.3.9 Accessible Authentication (Enhanced)](/resources/wcag/3-3-9-accessible-authentication-enhanced): the Level AAA version, without the object and personal content exceptions.
-- [3.3.7 Redundant Entry](/resources/wcag/3-3-7-redundant-entry): people do not have to re-enter information they already gave in the same process.
-- [1.3.5 Identify Input Purpose](/resources/wcag/1-3-5-identify-input-purpose): form fields use `autocomplete` so browsers can fill them in.
-- [4.1.3 Status Messages](/resources/wcag/4-1-3-status-messages): messages such as "Code sent" are announced to screen reader users.
+- [3.3.9 Accessible Authentication (Enhanced)](/wcag/3-3-9-accessible-authentication-enhanced): the Level AAA version, without the object and personal content exceptions.
+- [3.3.7 Redundant Entry](/wcag/3-3-7-redundant-entry): people do not have to re-enter information they already gave in the same process.
+- [1.3.5 Identify Input Purpose](/wcag/1-3-5-identify-input-purpose): form fields use `autocomplete` so browsers can fill them in.
+- [4.1.3 Status Messages](/wcag/4-1-3-status-messages): messages such as "Code sent" are announced to screen reader users.
 
 Want to find the issues software *can* catch on your login page? [Run a free WCAG scan](/#scan), then test the sign-in flow by hand.

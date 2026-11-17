@@ -84,7 +84,7 @@ Here is how to fix each one in your code.
 
 ### Missing Alt Text on Images
 
-Every meaningful image needs a text alternative that says what it shows or does. Decorative images get an empty `alt` so screen readers skip them. See [WCAG 1.1.1 Non-text Content](/resources/wcag/1-1-1-non-text-content).
+Every meaningful image needs a text alternative that says what it shows or does. Decorative images get an empty `alt` so screen readers skip them. See [WCAG 1.1.1 Non-text Content](/wcag/1-1-1-non-text-content).
 
 ```html
 <!-- Before: a screen reader reads the file name, or nothing -->
@@ -99,7 +99,7 @@ Every meaningful image needs a text alternative that says what it shows or does.
 
 ### Form Fields Without Labels
 
-Placeholder text is not a label. Every input needs a label that is tied to it, so a screen reader announces it when the field gets focus. See [WCAG 3.3.2 Labels or Instructions](/resources/wcag/3-3-2-labels-or-instructions).
+Placeholder text is not a label. Every input needs a label that is tied to it, so a screen reader announces it when the field gets focus. See [WCAG 3.3.2 Labels or Instructions](/wcag/3-3-2-labels-or-instructions).
 
 ```html
 <!-- Before -->
@@ -112,7 +112,7 @@ Placeholder text is not a label. Every input needs a label that is tied to it, s
 
 ### Empty Buttons and Links
 
-Icon-only buttons, like a cart, search or close icon, are announced as just "button" unless they have an accessible name. See [WCAG 4.1.2 Name, Role, Value](/resources/wcag/4-1-2-name-role-value).
+Icon-only buttons, like a cart, search or close icon, are announced as just "button" unless they have an accessible name. See [WCAG 4.1.2 Name, Role, Value](/wcag/4-1-2-name-role-value).
 
 ```html
 <!-- Before -->
@@ -124,11 +124,11 @@ Icon-only buttons, like a cart, search or close icon, are announced as just "but
 
 ### Low Contrast Text
 
-Normal text needs a contrast ratio of at least 4.5:1 against its background, and large text 3:1. Light gray text on white is the usual culprit, as are buttons in pale brand colors. Check your colors with the [free contrast checker](/tools/contrast-checker) and see [WCAG 1.4.3 Contrast (Minimum)](/resources/wcag/1-4-3-contrast-minimum).
+Normal text needs a contrast ratio of at least 4.5:1 against its background, and large text 3:1. Light gray text on white is the usual culprit, as are buttons in pale brand colors. Check your colors with the [free contrast checker](/tools/contrast-checker) and see [WCAG 1.4.3 Contrast (Minimum)](/wcag/1-4-3-contrast-minimum).
 
 ### Missing Page Language
 
-One attribute tells screen readers which language to read the page in. See [WCAG 3.1.1 Language of Page](/resources/wcag/3-1-1-language-of-page).
+One attribute tells screen readers which language to read the page in. See [WCAG 3.1.1 Language of Page](/wcag/3-1-1-language-of-page).
 
 ```html
 <html lang="en">
@@ -136,7 +136,7 @@ One attribute tells screen readers which language to read the page in. See [WCAG
 
 ### Keyboard Traps and Missing Focus
 
-Some people use only a keyboard. Every link, button, menu and form control must be reachable with Tab, usable with Enter or Space, and show a visible focus outline. Pop-ups must close with Escape and not trap focus. See [WCAG 2.1.1 Keyboard](/resources/wcag/2-1-1-keyboard).
+Some people use only a keyboard. Every link, button, menu and form control must be reachable with Tab, usable with Enter or Space, and show a visible focus outline. Pop-ups must close with Escape and not trap focus. See [WCAG 2.1.1 Keyboard](/wcag/2-1-1-keyboard).
 
 ## Manual Tests To Run Before You Call the Website Fixed
 

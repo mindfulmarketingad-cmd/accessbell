@@ -81,7 +81,7 @@ Mapping, chart and image viewer libraries often support pinch and drag by defaul
 
 ### Make the buttons accessible too
 
-The alternatives need clear names, keyboard support and a reasonable size. See [2.5.8 Target Size (Minimum)](/resources/wcag/2-5-8-target-size-minimum).
+The alternatives need clear names, keyboard support and a reasonable size. See [2.5.8 Target Size (Minimum)](/wcag/2-5-8-target-size-minimum).
 
 ## How to Test for 2.5.1 Pointer Gestures
 
@@ -92,9 +92,9 @@ The alternatives need clear names, keyboard support and a reasonable size. See [
 
 ## Related Success Criteria
 
-- [2.5.2 Pointer Cancellation](/resources/wcag/2-5-2-pointer-cancellation): accidental presses can be cancelled.
-- [2.5.7 Dragging Movements](/resources/wcag/2-5-7-dragging-movements): dragging has a single-pointer alternative, at Level AA.
-- [2.5.8 Target Size (Minimum)](/resources/wcag/2-5-8-target-size-minimum): controls are large enough to tap.
-- [2.1.1 Keyboard](/resources/wcag/2-1-1-keyboard): everything also works with a keyboard.
+- [2.5.2 Pointer Cancellation](/wcag/2-5-2-pointer-cancellation): accidental presses can be cancelled.
+- [2.5.7 Dragging Movements](/wcag/2-5-7-dragging-movements): dragging has a single-pointer alternative, at Level AA.
+- [2.5.8 Target Size (Minimum)](/wcag/2-5-8-target-size-minimum): controls are large enough to tap.
+- [2.1.1 Keyboard](/wcag/2-1-1-keyboard): everything also works with a keyboard.
 
 [Run a free WCAG scan](/#scan) for the automated checks, then try every gesture-driven feature with one finger or a mouse.

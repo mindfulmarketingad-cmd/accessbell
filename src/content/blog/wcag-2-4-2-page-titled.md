@@ -84,7 +84,7 @@ document.title = 'Order history | Trailhead Outfitters';
 
 ### Title frames and documents too
 
-Each `iframe` should have a `title` attribute describing its content, which helps meet [4.1.2 Name, Role, Value](/resources/wcag/4-1-2-name-role-value). PDFs and other documents also need a title in their properties.
+Each `iframe` should have a `title` attribute describing its content, which helps meet [4.1.2 Name, Role, Value](/wcag/4-1-2-name-role-value). PDFs and other documents also need a title in their properties.
 
 ## How to Test for 2.4.2 Page Titled
 
@@ -98,9 +98,9 @@ Our [SEO audit guide](/blog/seo-audit) shows how to find missing and duplicate t
 
 ## Related Success Criteria
 
-- [2.4.4 Link Purpose (In Context)](/resources/wcag/2-4-4-link-purpose-in-context): links describe where they go.
-- [2.4.6 Headings and Labels](/resources/wcag/2-4-6-headings-and-labels): headings describe their topic.
-- [2.4.8 Location](/resources/wcag/2-4-8-location): people can tell where they are in a set of pages, at Level AAA.
-- [4.1.2 Name, Role, Value](/resources/wcag/4-1-2-name-role-value): frames have accessible names.
+- [2.4.4 Link Purpose (In Context)](/wcag/2-4-4-link-purpose-in-context): links describe where they go.
+- [2.4.6 Headings and Labels](/wcag/2-4-6-headings-and-labels): headings describe their topic.
+- [2.4.8 Location](/wcag/2-4-8-location): people can tell where they are in a set of pages, at Level AAA.
+- [4.1.2 Name, Role, Value](/wcag/4-1-2-name-role-value): frames have accessible names.
 
 [Run a free WCAG scan](/#scan) to catch missing titles, then read your titles in context to make sure they describe each page.

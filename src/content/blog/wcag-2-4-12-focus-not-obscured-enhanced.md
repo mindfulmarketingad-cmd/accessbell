@@ -38,8 +38,8 @@ When someone presses Tab, focus moves to the next link, button or field, and the
 
 WCAG 2.2 has two versions of this rule:
 
-- **[2.4.11 Focus Not Obscured (Minimum)](/resources/wcag/2-4-11-focus-not-obscured-minimum), Level AA:** the focused element must not be **entirely** hidden. Partly covered is allowed.
-- **[2.4.12 Focus Not Obscured (Enhanced)](/resources/wcag/2-4-12-focus-not-obscured-enhanced), Level AAA:** **no part** of the focused element may be hidden.
+- **[2.4.11 Focus Not Obscured (Minimum)](/wcag/2-4-11-focus-not-obscured-minimum), Level AA:** the focused element must not be **entirely** hidden. Partly covered is allowed.
+- **[2.4.12 Focus Not Obscured (Enhanced)](/wcag/2-4-12-focus-not-obscured-enhanced), Level AAA:** **no part** of the focused element may be hidden.
 
 <figure>
   <img src="/images/wcag/2-4-12-focus-not-obscured-enhanced/minimum-vs-enhanced.svg" width="900" height="380" loading="lazy" alt="Three examples of a focused Contact us button near a sticky footer. Fully visible: passes both 2.4.11 and 2.4.12. Partly covered by the footer: passes 2.4.11 Minimum but fails 2.4.12 Enhanced. Completely covered by the footer: fails both.">
@@ -97,7 +97,7 @@ Cookie banners, chat launchers, promotional bars and newsletter popups are the m
 
 ### Watch out for transparent overlays
 
-A semi-transparent popup or gradient over content still gets in the way. It can make the focused element hard to see and can lower the contrast of the focus indicator, which brings in [1.4.11 Non-text Contrast](/resources/wcag/1-4-11-non-text-contrast) and [2.4.13 Focus Appearance](/resources/wcag/2-4-13-focus-appearance). The safest approach is to make sure nothing overlaps a focused element at all.
+A semi-transparent popup or gradient over content still gets in the way. It can make the focused element hard to see and can lower the contrast of the focus indicator, which brings in [1.4.11 Non-text Contrast](/wcag/1-4-11-non-text-contrast) and [2.4.13 Focus Appearance](/wcag/2-4-13-focus-appearance). The safest approach is to make sure nothing overlaps a focused element at all.
 
 ### Use JavaScript only where CSS cannot help
 
@@ -126,17 +126,17 @@ Automated tools cannot reliably test 2.4.12 Focus Not Obscured (Enhanced), becau
 4. Repeat at a **narrow window** width and at **200% zoom**, where sticky content covers more of the screen.
 5. Pay special attention to the **top and bottom** of the window, where sticky headers and footers sit.
 
-Our [keyboard accessibility testing guide](/blog/keyboard-accessibility-testing) walks through a full keyboard test. [AccessBell](/) runs the automated WCAG 2.2 checks on every page of your site, and its WCAG coverage table shows which criteria, like this one, need a person to check. [Run a free scan](/#scan) to see where your site stands, and use [WCAG 2.2 Level AAA](/resources/wcag) as your target in AccessBell if you want to track the enhanced criteria too.
+Our [keyboard accessibility testing guide](/blog/keyboard-accessibility-testing) walks through a full keyboard test. [AccessBell](/) runs the automated WCAG 2.2 checks on every page of your site, and its WCAG coverage table shows which criteria, like this one, need a person to check. [Run a free scan](/#scan) to see where your site stands, and use [WCAG 2.2 Level AAA](/wcag) as your target in AccessBell if you want to track the enhanced criteria too.
 
 ## Related Success Criteria
 
-- [2.4.11 Focus Not Obscured (Minimum)](/resources/wcag/2-4-11-focus-not-obscured-minimum): the Level AA version, where the focused element must not be entirely hidden.
-- [2.4.7 Focus Visible](/resources/wcag/2-4-7-focus-visible): the focused element must have a visible focus indicator.
-- [2.4.13 Focus Appearance](/resources/wcag/2-4-13-focus-appearance): the focus indicator must be large enough and have enough contrast, at Level AAA.
-- [2.4.3 Focus Order](/resources/wcag/2-4-3-focus-order): focus moves through the page in an order that makes sense.
-- [2.1.1 Keyboard](/resources/wcag/2-1-1-keyboard): everything can be used with a keyboard.
-- [1.4.10 Reflow](/resources/wcag/1-4-10-reflow): content works at 400% zoom without scrolling in two directions.
+- [2.4.11 Focus Not Obscured (Minimum)](/wcag/2-4-11-focus-not-obscured-minimum): the Level AA version, where the focused element must not be entirely hidden.
+- [2.4.7 Focus Visible](/wcag/2-4-7-focus-visible): the focused element must have a visible focus indicator.
+- [2.4.13 Focus Appearance](/wcag/2-4-13-focus-appearance): the focus indicator must be large enough and have enough contrast, at Level AAA.
+- [2.4.3 Focus Order](/wcag/2-4-3-focus-order): focus moves through the page in an order that makes sense.
+- [2.1.1 Keyboard](/wcag/2-1-1-keyboard): everything can be used with a keyboard.
+- [1.4.10 Reflow](/wcag/1-4-10-reflow): content works at 400% zoom without scrolling in two directions.
 
-For the rest of the new WCAG 2.2 requirements, see [what you should know about WCAG 2.2](/blog/what-you-should-know-about-wcag-2-2) and [2.5.8 Target Size (Minimum)](/resources/wcag/2-5-8-target-size-minimum).
+For the rest of the new WCAG 2.2 requirements, see [what you should know about WCAG 2.2](/blog/what-you-should-know-about-wcag-2-2) and [2.5.8 Target Size (Minimum)](/wcag/2-5-8-target-size-minimum).
 
 Sticky headers and banners are common in storefronts and apps. See the [PrestaShop accessibility checker](/platforms/prestashop/accessibility-checker), [Shopify accessibility checker](/platforms/shopify/accessibility-checker) and [Next.js accessibility checker](/platforms/nextjs/accessibility-checker) checkers.

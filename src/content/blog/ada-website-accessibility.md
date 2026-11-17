@@ -69,7 +69,7 @@ Every WCAG success criterion falls under one of four principles, often shortened
 3. **Understandable:** content and controls make sense. The page language is set, forms have clear labels and instructions, and errors are explained.
 4. **Robust:** the site works with assistive technology. Buttons, links and form fields expose their name, role and state to screen readers.
 
-You can browse every criterion in plain English in our [WCAG success criteria library](/resources/wcag), or work through our [WCAG 2.2 checklist](/blog/wcag-2-2-checklist).
+You can browse every criterion in plain English in our [WCAG success criteria library](/wcag), or work through our [WCAG 2.2 checklist](/blog/wcag-2-2-checklist).
 
 ## The ADA Website Accessibility Problems Behind Most Lawsuits
 

@@ -91,9 +91,9 @@ Speech recognition is a fast way to start, but it makes mistakes, especially wit
 
 ## Related Success Criteria
 
-- [1.2.1 Audio-only and Video-only (Prerecorded)](/resources/wcag/1-2-1-audio-only-and-video-only-prerecorded): transcripts for audio-only media.
-- [1.2.3 Audio Description or Media Alternative (Prerecorded)](/resources/wcag/1-2-3-audio-description-or-media-alternative-prerecorded): describing the visuals.
-- [1.2.4 Captions (Live)](/resources/wcag/1-2-4-captions-live): captions for live video, at Level AA.
-- [1.2.6 Sign Language (Prerecorded)](/resources/wcag/1-2-6-sign-language-prerecorded): sign language interpretation, at Level AAA.
+- [1.2.1 Audio-only and Video-only (Prerecorded)](/wcag/1-2-1-audio-only-and-video-only-prerecorded): transcripts for audio-only media.
+- [1.2.3 Audio Description or Media Alternative (Prerecorded)](/wcag/1-2-3-audio-description-or-media-alternative-prerecorded): describing the visuals.
+- [1.2.4 Captions (Live)](/wcag/1-2-4-captions-live): captions for live video, at Level AA.
+- [1.2.6 Sign Language (Prerecorded)](/wcag/1-2-6-sign-language-prerecorded): sign language interpretation, at Level AAA.
 
 [Run a free WCAG scan](/#scan) to find videos on your pages, then check each one has accurate captions.

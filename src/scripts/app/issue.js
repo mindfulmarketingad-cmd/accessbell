@@ -29,7 +29,7 @@ const FIXABLE = {
   'aria-progressbar-name': 'name', 'aria-tooltip-name': 'name', 'aria-dialog-name': 'name', 'summary-name': 'name', 'object-alt': 'name',
 };
 const kebab = (s) => s.toLowerCase().replace(/[()]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-const criterionPath = (sc) => `/resources/wcag/${sc.replace(/\./g, '-')}-${kebab(CRITERIA[sc]?.name || sc)}`;
+const criterionPath = (sc) => `/wcag/${sc.replace(/\./g, '-')}-${kebab(CRITERIA[sc]?.name || sc)}`;
 
 const selectTab = initTabs($('[data-tabs]'));
 let data;

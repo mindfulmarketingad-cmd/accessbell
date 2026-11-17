@@ -123,19 +123,19 @@ Moving focus to the next field once a field is full, as in the phone number exam
 
 ## How to Test for 3.2.2 On Input
 
-Automated tools cannot reliably catch 3.2.2 On Input failures, because they depend on what happens when you *use* the page. In [our test of 10 accessibility checker tools](/blog/we-tested-10-accessibility-checker-tools), every tool missed the barriers that depend on behavior, such as a keyboard trap and an [auto-advancing carousel](/resources/wcag/2-2-2-pause-stop-hide). Test it by hand:
+Automated tools cannot reliably catch 3.2.2 On Input failures, because they depend on what happens when you *use* the page. In [our test of 10 accessibility checker tools](/blog/we-tested-10-accessibility-checker-tools), every tool missed the barriers that depend on behavior, such as a keyboard trap and an [auto-advancing carousel](/wcag/2-2-2-pause-stop-hide). Test it by hand:
 
 1. Use only the keyboard. Tab to each text field, dropdown, radio button and checkbox.
 2. Type into each field and change each value, including with the arrow keys in dropdowns.
 3. Watch for a new page, a new window or tab, focus jumping elsewhere, or the page scrolling away.
 4. If anything like that happens, check that the page told you it would, before you used the control.
 
-For a quick reference to the criterion, see our [3.2.2 On Input page](/resources/wcag/3-2-2-on-input) in the WCAG library, and for a full keyboard routine read our [keyboard accessibility testing guide](/blog/keyboard-accessibility-testing).
+For a quick reference to the criterion, see our [3.2.2 On Input page](/wcag/3-2-2-on-input) in the WCAG library, and for a full keyboard routine read our [keyboard accessibility testing guide](/blog/keyboard-accessibility-testing).
 
 ## Related Success Criteria
 
-- [3.2.1 On Focus](/resources/wcag/3-2-1-on-focus): moving focus to a component must not change the context either.
-- [3.2.5 Change on Request](/resources/wcag/3-2-5-change-on-request): the stricter Level AAA version, where changes of context happen only when the person asks.
-- [3.3.2 Labels or Instructions](/resources/wcag/3-3-2-labels-or-instructions): the instructions that give people advance notice.
+- [3.2.1 On Focus](/wcag/3-2-1-on-focus): moving focus to a component must not change the context either.
+- [3.2.5 Change on Request](/wcag/3-2-5-change-on-request): the stricter Level AAA version, where changes of context happen only when the person asks.
+- [3.3.2 Labels or Instructions](/wcag/3-3-2-labels-or-instructions): the instructions that give people advance notice.
 
 Want to catch the issues software *can* find while you check forms by hand? [Run a free WCAG scan](/#scan) of any page.
