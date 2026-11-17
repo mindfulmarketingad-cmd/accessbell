@@ -323,7 +323,7 @@ const helpArticles = (await helpByCategory()).reduce((n, g) => n + g.articles.le
 const hubPosts = (await getCollection('blog', ({ data }) => !data.draft && data.category !== 'WCAG Codes Explained')).length;
 const HUBS = [
   { href: '/tools', icon: 'wrench', title: 'Free Accessibility Tools', text: `${TOOLS.length} free checkers, generators and downloads, from WCAG and ADA scans to color contrast and PDFs.` },
-  { href: '/resources/wcag', icon: 'list', title: 'WCAG Library', text: 'Every WCAG success criterion explained in plain English, with how to test it.' },
+  { href: '/wcag', icon: 'list', title: 'WCAG 2.2 Success Criteria', text: 'All 86 WCAG 2.2 rules in plain English, grouped by principle, with full guides for the criteria people look up most.' },
   { href: '/solutions', icon: 'shield', title: 'Solutions', text: `${SOLUTIONS.length} ways AccessBell helps after the first scan: monitoring, fixes and documentation.` },
   { href: '/platforms', icon: 'layers', title: 'Platform Checkers', text: `Free checkers for ${PLATFORMS.length} platforms, including Shopify, WordPress, Wix and Squarespace.` },
   { href: '/industries', icon: 'users', title: 'Industry Checkers', text: `The rules and common failures for ${INDUSTRIES.length} industries, with a free scan for each.` },
@@ -521,7 +521,7 @@ const HUBS = [
           <h3>What we guide you through</h3>
           <ul class="check-list">
             <li><Icon name="check" /><span>The checks automation cannot decide, such as whether alt text describes the image, listed in their own Manually Required tab</span></li>
-            <li><Icon name="check" /><span>Plain-English steps for each one in the <a href="/resources/help-center/scans-and-reports/manual-review-items">Help Center</a> and the <a href="/resources/wcag">WCAG Library</a></span></li>
+            <li><Icon name="check" /><span>Plain-English steps for each one in the <a href="/resources/help-center/scans-and-reports/manual-review-items">Help Center</a> and the <a href="/wcag">WCAG Library</a></span></li>
             <li><Icon name="check" /><span>A dated record of every scan and fix in the <a href="/solutions/compliance-vault">Compliance Vault</a></span></li>
           </ul>
         </div>

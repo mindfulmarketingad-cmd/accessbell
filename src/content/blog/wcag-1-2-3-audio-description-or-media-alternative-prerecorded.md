@@ -85,9 +85,9 @@ Describe information people need to understand the video: actions, on-screen tex
 
 ## Related Success Criteria
 
-- [1.2.2 Captions (Prerecorded)](/resources/wcag/1-2-2-captions-prerecorded): captions for the soundtrack.
-- [1.2.5 Audio Description (Prerecorded)](/resources/wcag/1-2-5-audio-description-prerecorded): audio description required at Level AA.
-- [1.2.7 Extended Audio Description (Prerecorded)](/resources/wcag/1-2-7-extended-audio-description-prerecorded): pausing the video for longer descriptions, at Level AAA.
-- [1.2.8 Media Alternative (Prerecorded)](/resources/wcag/1-2-8-media-alternative-prerecorded): a full text alternative for all video, at Level AAA.
+- [1.2.2 Captions (Prerecorded)](/wcag/1-2-2-captions-prerecorded): captions for the soundtrack.
+- [1.2.5 Audio Description (Prerecorded)](/wcag/1-2-5-audio-description-prerecorded): audio description required at Level AA.
+- [1.2.7 Extended Audio Description (Prerecorded)](/wcag/1-2-7-extended-audio-description-prerecorded): pausing the video for longer descriptions, at Level AAA.
+- [1.2.8 Media Alternative (Prerecorded)](/wcag/1-2-8-media-alternative-prerecorded): a full text alternative for all video, at Level AAA.
 
 [Run a free WCAG scan](/#scan) to find the videos on your pages, then listen to each one without watching.

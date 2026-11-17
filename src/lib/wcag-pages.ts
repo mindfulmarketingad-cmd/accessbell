@@ -7,7 +7,7 @@ const require = createRequire(import.meta.url);
 const axe = require('axe-core') as { getRules: () => { ruleId: string; description: string; help: string; helpUrl: string; tags: string[] }[] };
 const ALL_RULES = axe.getRules().filter((r) => !r.tags.includes('experimental') && !r.tags.includes('deprecated'));
 
-export const WCAG_BASE = '/resources/wcag';
+export const WCAG_BASE = '/wcag';
 
 const kebab = (s: string) =>
   s

@@ -82,7 +82,7 @@ The easiest fix is a minimum size on anything clickable. Keep the icon the same 
 }
 ```
 
-Going further helps more people. Many teams use 44 by 44 pixels on touch screens, which also meets the stricter Level AAA criterion, [2.5.5 Target Size (Enhanced)](/resources/wcag/2-5-5-target-size-enhanced).
+Going further helps more people. Many teams use 44 by 44 pixels on touch screens, which also meets the stricter Level AAA criterion, [2.5.5 Target Size (Enhanced)](/wcag/2-5-5-target-size-enhanced).
 
 ### Or space small targets apart
 
@@ -114,13 +114,13 @@ To test by hand:
 3. For anything under 24 by 24 pixels, check the spacing: is there another target within 12 pixels of its center?
 4. Check whether an exception applies before marking it as a failure.
 
-Then [run a free WCAG 2.2 scan](/tools/wcag-2-2-aa-checker) to find undersized targets across the page automatically. For a quick reference, see our [2.5.8 Target Size (Minimum) page](/resources/wcag/2-5-8-target-size-minimum) in the WCAG library.
+Then [run a free WCAG 2.2 scan](/tools/wcag-2-2-aa-checker) to find undersized targets across the page automatically. For a quick reference, see our [2.5.8 Target Size (Minimum) page](/wcag/2-5-8-target-size-minimum) in the WCAG library.
 
 ## Related Success Criteria
 
-- [2.5.5 Target Size (Enhanced)](/resources/wcag/2-5-5-target-size-enhanced): the Level AAA version, at 44 by 44 CSS pixels.
-- [2.5.1 Pointer Gestures](/resources/wcag/2-5-1-pointer-gestures): complex gestures need a simple single-pointer alternative.
-- [2.5.2 Pointer Cancellation](/resources/wcag/2-5-2-pointer-cancellation): people can back out of an accidental press.
-- [2.5.7 Dragging Movements](/resources/wcag/2-5-7-dragging-movements): dragging needs a single-pointer alternative, also new in WCAG 2.2.
+- [2.5.5 Target Size (Enhanced)](/wcag/2-5-5-target-size-enhanced): the Level AAA version, at 44 by 44 CSS pixels.
+- [2.5.1 Pointer Gestures](/wcag/2-5-1-pointer-gestures): complex gestures need a simple single-pointer alternative.
+- [2.5.2 Pointer Cancellation](/wcag/2-5-2-pointer-cancellation): people can back out of an accidental press.
+- [2.5.7 Dragging Movements](/wcag/2-5-7-dragging-movements): dragging needs a single-pointer alternative, also new in WCAG 2.2.
 
-Another new WCAG 2.2 rule, explained the same way: [2.4.12 Focus Not Obscured (Enhanced)](/resources/wcag/2-4-12-focus-not-obscured-enhanced).
+Another new WCAG 2.2 rule, explained the same way: [2.4.12 Focus Not Obscured (Enhanced)](/wcag/2-4-12-focus-not-obscured-enhanced).

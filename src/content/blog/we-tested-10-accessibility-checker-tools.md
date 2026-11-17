@@ -74,7 +74,7 @@ So we built a test website with 35 known barriers, ran all ten tools against it 
 | Sa11y | 12 | 9 | 3 | 17 | 1 |
 | W3C Nu Html Checker | 9 | 6 | 3 | 11 | 2 |
 
-"Findings not about a planted barrier" are not all mistakes. Some were real problems we had not planted (several tools correctly noticed an `aria-label` on a plain `div` in our carousel), and many were repeats or general "check this" prompts. The clear false positives were Pa11y's: it reported three correctly labelled social icon links as missing [alt text](/resources/wcag/1-1-1-non-text-content).
+"Findings not about a planted barrier" are not all mistakes. Some were real problems we had not planted (several tools correctly noticed an `aria-label` on a plain `div` in our carousel), and many were repeats or general "check this" prompts. The clear false positives were Pa11y's: it reported three correctly labelled social icon links as missing [alt text](/wcag/1-1-1-non-text-content).
 
 ### Barrier-by-barrier results
 
@@ -123,11 +123,11 @@ So we built a test website with 35 known barriers, ran all ten tools against it 
 
 Five barriers slipped past all ten accessibility checker tools:
 
-- **A keyboard trap.** Our chat box swallowed the Tab key, so keyboard users could not leave it ([WCAG 2.1.2](/resources/wcag/2-1-2-no-keyboard-trap)).
-- **An [auto-advancing carousel](/resources/wcag/2-2-2-pause-stop-hide) with no pause button** ([WCAG 2.2.2](/resources/wcag/2-2-2-pause-stop-hide)).
-- **A [CAPTCHA](/resources/wcag/3-3-8-accessible-authentication-minimum) as the only way to sign in**, a cognitive test with no alternative ([WCAG 3.3.8](/resources/wcag/3-3-8-accessible-authentication-minimum)).
-- **An "added to cart" message that screen readers never announce** ([WCAG 4.1.3](/resources/wcag/4-1-3-status-messages)).
-- **Name and email fields without autocomplete**, which makes forms harder for people with memory or motor disabilities ([WCAG 1.3.5](/resources/wcag/1-3-5-identify-input-purpose)).
+- **A keyboard trap.** Our chat box swallowed the Tab key, so keyboard users could not leave it ([WCAG 2.1.2](/wcag/2-1-2-no-keyboard-trap)).
+- **An [auto-advancing carousel](/wcag/2-2-2-pause-stop-hide) with no pause button** ([WCAG 2.2.2](/wcag/2-2-2-pause-stop-hide)).
+- **A [CAPTCHA](/wcag/3-3-8-accessible-authentication-minimum) as the only way to sign in**, a cognitive test with no alternative ([WCAG 3.3.8](/wcag/3-3-8-accessible-authentication-minimum)).
+- **An "added to cart" message that screen readers never announce** ([WCAG 4.1.3](/wcag/4-1-3-status-messages)).
+- **Name and email fields without autocomplete**, which makes forms harder for people with memory or motor disabilities ([WCAG 1.3.5](/wcag/1-3-5-identify-input-purpose)).
 
 Seven more only ever appeared as "please check" prompts, including required fields marked by color alone, instructions that rely on shape and position, and focus outlines removed from every control. These are exactly the issues that show up in real complaints, and they are why a [manual keyboard test](/blog/keyboard-accessibility-testing) is not optional. Our guide to [automated vs. manual accessibility testing](/blog/automated-vs-manual-accessibility-testing) explains how to split the work.
 
@@ -140,7 +140,7 @@ We will be straightforward: in raw detection, AccessBell finished in the middle 
 What it did well:
 
 - **Zero noise.** Every one of its 20 findings pointed at a real problem. Only Lighthouse and AccessLint matched that record.
-- **WCAG 2.2 touch targets are on.** AccessBell was one of only three tools to catch our 16-pixel social icons ([WCAG 2.5.8](/resources/wcag/2-5-8-target-size-minimum)). axe-core ships with that rule switched off by default, so the default axe run missed them.
+- **WCAG 2.2 touch targets are on.** AccessBell was one of only three tools to catch our 16-pixel social icons ([WCAG 2.5.8](/wcag/2-5-8-target-size-minimum)). axe-core ships with that rule switched off by default, so the default axe run missed them.
 - **It tests the rendered page.** Pages load in a real Chrome browser, so contrast, ARIA and JavaScript-rendered content are tested as visitors see them.
 
 **Why it is still our recommendation.** The other nine are testing engines: you run them on one page, read the output, and run them again next time. AccessBell is the only tool here built to keep a whole site accessible over time. That includes:

@@ -4370,6 +4370,112 @@ body:has(.sticky-cta) {
   width: 16px;
   height: 16px;
 }
+.fact-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+.fact-list li {
+  margin: 0;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #fff;
+}
+.fact-list p {
+  margin: 0 0 8px;
+}
+.fact-list cite {
+  display: block;
+  font-style: normal;
+  font-size: 0.875rem;
+  color: var(--ink-500);
+}
+.level-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin: 18px 0;
+}
+.level-filter p {
+  margin: 0;
+  font-weight: 700;
+}
+.level-filter div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.level-filter input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.level-filter label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #fff;
+  cursor: pointer;
+  font-weight: 600;
+}
+.level-filter label span {
+  font-weight: 500;
+  color: var(--ink-500);
+}
+.level-filter input:focus-visible + label {
+  outline: 2px solid var(--sage-700);
+  outline-offset: 2px;
+}
+.level-filter input:checked + label {
+  background: var(--sage-100);
+  border-color: var(--sage-700);
+  color: var(--sage-800);
+}
+.sc-browser:has(#lvl-a:checked) tr[data-level="AA"],
+.sc-browser:has(#lvl-a:checked) tr[data-level="AAA"],
+.sc-browser:has(#lvl-aa:checked) tr[data-level="A"],
+.sc-browser:has(#lvl-aa:checked) tr[data-level="AAA"],
+.sc-browser:has(#lvl-aaa:checked) tr[data-level="A"],
+.sc-browser:has(#lvl-aaa:checked) tr[data-level="AA"] {
+  display: none;
+}
+.sc-browser:has(#lvl-a:checked) .gl:not(:has(tr[data-level="A"])),
+.sc-browser:has(#lvl-aa:checked) .gl:not(:has(tr[data-level="AA"])),
+.sc-browser:has(#lvl-aaa:checked) .gl:not(:has(tr[data-level="AAA"])) {
+  display: none;
+}
+.gl {
+  padding: 0 0 8px;
+}
+.gl h3 {
+  margin: 16px 18px 0;
+  font-size: 1rem;
+}
+.code-sample {
+  margin: 16px 0;
+}
+.code-sample figcaption {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  font-weight: 600;
+}
+.code-sample .fix-code {
+  margin-top: 8px;
+}
 .manual-list,
 .steps-list {
   padding-left: 22px;

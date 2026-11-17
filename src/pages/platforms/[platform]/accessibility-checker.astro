@@ -125,7 +125,7 @@ const schema = [
       <ul class="check-list">
         <li><Icon name="check" /><span>{cov.ruleCount} automated rules for WCAG 2.2 Level AA, or presets for WCAG 2.1 AA, the ADA, Section 508 and EN 301 549</span></li>
         <li><Icon name="check" /><span>Every issue found on the page, ranked by severity from critical to minor</span></li>
-        <li><Icon name="check" /><span>The WCAG success criteria each issue fails, which you can look up in our <a href="/resources/wcag">WCAG library</a></span></li>
+        <li><Icon name="check" /><span>The WCAG success criteria each issue fails, which you can look up in our <a href="/wcag">WCAG library</a></span></li>
       </ul>
       <h3>With a 3-day free trial</h3>
       <ul class="check-list">
@@ -154,7 +154,7 @@ const schema = [
           <li><a href={postPath(post)}>{post.data.title}</a><span>{post.data.description}</span></li>
         ))}
         <li><a href="/">Website Accessibility Checker</a><span>The same free scan for any website, whatever platform it runs on.</span></li>
-        <li><a href="/resources/wcag">WCAG Success Criteria Library</a><span>Look up any success criterion the scan flags, in plain language.</span></li>
+        <li><a href="/wcag">WCAG Success Criteria Library</a><span>Look up any success criterion the scan flags, in plain language.</span></li>
         <li><a href={platformAdaPath(p)}>{p.name} ADA Compliance Checker</a><span>The same scan with the ADA preset, plus the ADA risks specific to {p.name} sites.</span></li>
         <li><a href="/tools/statement-generator">Free Accessibility Statement Generator</a><span>Publish a statement once your {p.name} site's known issues are fixed.</span></li>
       </ul>

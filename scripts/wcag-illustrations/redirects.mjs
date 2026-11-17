@@ -1,4 +1,4 @@
-// Adds a /blog/wcag-* -> /resources/wcag/* redirect to vercel.json for every
+// Adds a /blog/wcag-* -> /wcag/* redirect to vercel.json for every
 // WCAG Codes Explained guide that does not have one yet. Run after adding guides.
 import fs from 'node:fs';
 import { resolve } from 'node:path';
@@ -14,7 +14,7 @@ const added = [];
 for (const id of ids) {
   if (have.has(`/blog/${id}`)) continue;
   const sc = id.match(/^wcag-(\d+)-(\d+)-(\d+)-/).slice(1).join('.');
-  added.push({ source: `/blog/${id}`, destination: `/resources/wcag/${sc.replace(/\./g, '-')}-${kebab(CRITERIA[sc].name)}`, permanent: true });
+  added.push({ source: `/blog/${id}`, destination: `/wcag/${sc.replace(/\./g, '-')}-${kebab(CRITERIA[sc].name)}`, permanent: true });
 }
 v.redirects = [...added, ...v.redirects];
 fs.writeFileSync(file, JSON.stringify(v, null, 2) + '\n');

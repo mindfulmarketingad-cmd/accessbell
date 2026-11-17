@@ -18,7 +18,7 @@ import { isWcagGuide, postPath } from '../../lib/posts';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
-  // WCAG Codes Explained guides are published at /resources/wcag instead.
+  // WCAG Codes Explained guides are published at /wcag instead.
   return posts.filter((p) => !isWcagGuide(p)).map((post) => ({ params: { slug: post.id }, props: { post, all: posts } }));
 }
 
@@ -149,7 +149,7 @@ const schema = [
             <ul>
               {moreGuides.map((g) => <li><a href={g.href}>{g.name}</a></li>)}
             </ul>
-            <p><a class="link-arrow" href="/resources/wcag">Browse every success criterion in the WCAG library <Icon name="arrow" /></a></p>
+            <p><a class="link-arrow" href="/wcag">Browse every success criterion in the WCAG library <Icon name="arrow" /></a></p>
           </nav>
         )}
 

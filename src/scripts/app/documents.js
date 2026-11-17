@@ -18,7 +18,7 @@ const CHECKS = {
   'pdf-bookmarks': 'Long document has bookmarks',
 };
 const kebab = (s) => s.toLowerCase().replace(/[()]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-const criterionPath = (sc) => `/resources/wcag/${sc.replace(/\./g, '-')}-${kebab(CRITERIA[sc]?.name || sc)}`;
+const criterionPath = (sc) => `/wcag/${sc.replace(/\./g, '-')}-${kebab(CRITERIA[sc]?.name || sc)}`;
 const fileName = (url) => {
   try {
     return decodeURIComponent(new URL(url).pathname.split('/').pop() || url);

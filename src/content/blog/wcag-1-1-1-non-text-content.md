@@ -30,7 +30,7 @@ faqs:
 
 1.1.1 Non-text Content is a Level A requirement under the **Perceivable** principle, in the guideline "Text Alternatives". It is the first success criterion in WCAG.
 
-**Non-text content** is anything that is not text: photos, illustrations, icons, logos, charts, diagrams, image buttons, image maps, audio and video, and [CAPTCHAs](/resources/wcag/3-3-8-accessible-authentication-minimum). **Text alternatives** are the words that stand in for it, most often the `alt` attribute on an image.
+**Non-text content** is anything that is not text: photos, illustrations, icons, logos, charts, diagrams, image buttons, image maps, audio and video, and [CAPTCHAs](/wcag/3-3-8-accessible-authentication-minimum). **Text alternatives** are the words that stand in for it, most often the `alt` attribute on an image.
 
 The key phrase is "serves the equivalent purpose". Alt text does not describe every pixel. It does the same job the image does on that page.
 
@@ -119,7 +119,7 @@ When an image is a link or a button, the text alternative should say what it doe
 
 ### Images of text: use the same words
 
-If an image contains text, such as a banner or a scanned sign, the alt text should include the same words. Better still, use real text styled with CSS, which also helps meet [1.4.5 Images of Text](/resources/wcag/1-4-5-images-of-text).
+If an image contains text, such as a banner or a scanned sign, the alt text should include the same words. Better still, use real text styled with CSS, which also helps meet [1.4.5 Images of Text](/wcag/1-4-5-images-of-text).
 
 ### Complex images: short alt plus full details
 
@@ -141,7 +141,7 @@ Charts, diagrams, maps and infographics hold more than a short alt can carry. Gi
 1.1.1 Non-text Content lists situations where a full equivalent is not possible or not needed. In each case you still provide a text label that identifies the content:
 
 - **Controls and inputs:** give them a name that describes their purpose.
-- **Audio and video:** give a short description that identifies them. Captions and transcripts are covered by the 1.2 guidelines, such as [1.2.9 Audio-only (Live)](/resources/wcag/1-2-9-audio-only-live).
+- **Audio and video:** give a short description that identifies them. Captions and transcripts are covered by the 1.2 guidelines, such as [1.2.9 Audio-only (Live)](/wcag/1-2-9-audio-only-live).
 - **Tests and exercises** that would be invalid in text, such as a hearing test: identify what they are.
 - **Sensory experiences**, such as a painting or a music performance: identify what they are.
 - **CAPTCHAs:** say what the CAPTCHA is for, and offer another form that uses a different sense, such as an audio CAPTCHA alongside a visual one.
@@ -157,13 +157,13 @@ Automated checkers are good at the first step. In [our test of 10 accessibility 
 4. **Check functional images.** Does every icon link and button have a name that says what it does?
 5. **Listen with a screen reader.** Tab through links and buttons, and read through key content to hear how images are announced.
 
-For a quick reference, see our [1.1.1 Non-text Content page](/resources/wcag/1-1-1-non-text-content) in the WCAG library, and the W3C's [Understanding 1.1.1 Non-text Content](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html).
+For a quick reference, see our [1.1.1 Non-text Content page](/wcag/1-1-1-non-text-content) in the WCAG library, and the W3C's [Understanding 1.1.1 Non-text Content](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html).
 
 ## Related Success Criteria
 
-- [1.4.5 Images of Text](/resources/wcag/1-4-5-images-of-text): use real text instead of images of text where possible.
-- [2.4.4 Link Purpose (In Context)](/resources/wcag/2-4-4-link-purpose-in-context): the purpose of each link, including image links, is clear.
-- [4.1.2 Name, Role, Value](/resources/wcag/4-1-2-name-role-value): every control has a name that assistive technology can read.
+- [1.4.5 Images of Text](/wcag/1-4-5-images-of-text): use real text instead of images of text where possible.
+- [2.4.4 Link Purpose (In Context)](/wcag/2-4-4-link-purpose-in-context): the purpose of each link, including image links, is clear.
+- [4.1.2 Name, Role, Value](/wcag/4-1-2-name-role-value): every control has a name that assistive technology can read.
 
 Want to find missing alt text across a page in seconds? [Run a free WCAG scan](/#scan), then review the results by hand.
 

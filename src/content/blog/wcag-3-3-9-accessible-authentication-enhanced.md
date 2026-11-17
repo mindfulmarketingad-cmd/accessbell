@@ -35,7 +35,7 @@ faqs:
 - **An alternative:** another way to sign in that needs no such test, or
 - **A mechanism:** a tool that does the hard part, such as a password manager filling in the password.
 
-The difference from [3.3.8 Accessible Authentication (Minimum)](/resources/wcag/3-3-8-accessible-authentication-minimum) is in the exceptions:
+The difference from [3.3.8 Accessible Authentication (Minimum)](/wcag/3-3-8-accessible-authentication-minimum) is in the exceptions:
 
 <figure>
   <img src="/images/wcag/3-3-9-accessible-authentication-enhanced/exceptions-compare.svg" width="800" height="440" loading="lazy" alt="Table comparing 3.3.8 Level AA and 3.3.9 Level AAA. Alternative method: allowed in both. Mechanism such as a password manager: allowed in both. Object recognition: allowed in 3.3.8, not in 3.3.9. Personal content: allowed in 3.3.8, not in 3.3.9.">
@@ -64,7 +64,7 @@ Removing the picture exceptions means the sign-in works for people whose difficu
 
 ## How to Meet 3.3.9 Accessible Authentication (Enhanced)
 
-First meet [3.3.8](/resources/wcag/3-3-8-accessible-authentication-minimum). Then remove any dependence on picture recognition.
+First meet [3.3.8](/wcag/3-3-8-accessible-authentication-minimum). Then remove any dependence on picture recognition.
 
 ### Replace picture and puzzle steps
 
@@ -99,7 +99,7 @@ If you keep passwords, do not fight the browser:
 <input id="password" name="password" type="password" autocomplete="current-password">
 ```
 
-Use the correct `autocomplete` values, such as `username`, `current-password`, `new-password` and `one-time-code`, and never block paste on a password or code field. Our guide to [3.3.8](/resources/wcag/3-3-8-accessible-authentication-minimum) covers one-time codes in more detail, and [3.3.2 Labels or Instructions](/resources/wcag/3-3-2-labels-or-instructions) covers the labels on the fields.
+Use the correct `autocomplete` values, such as `username`, `current-password`, `new-password` and `one-time-code`, and never block paste on a password or code field. Our guide to [3.3.8](/wcag/3-3-8-accessible-authentication-minimum) covers one-time codes in more detail, and [3.3.2 Labels or Instructions](/wcag/3-3-2-labels-or-instructions) covers the labels on the fields.
 
 ### If you must use a CAPTCHA
 
@@ -117,13 +117,13 @@ Automated tools cannot judge a whole login flow, so test by hand:
 4. **Try to sign in without typing or remembering anything.** Use a password manager or a passkey, and see whether every step still works.
 5. **Test with a screen reader and the keyboard,** since sign-in flows often trap both. See our [keyboard accessibility testing guide](/blog/keyboard-accessibility-testing).
 
-Login fields with missing names or labels are a separate, easy-to-catch failure of [4.1.2 Name, Role, Value](/resources/wcag/4-1-2-name-role-value), and a [free accessibility scan](/#scan) will find those.
+Login fields with missing names or labels are a separate, easy-to-catch failure of [4.1.2 Name, Role, Value](/wcag/4-1-2-name-role-value), and a [free accessibility scan](/#scan) will find those.
 
 ## Related Success Criteria
 
-- [3.3.8 Accessible Authentication (Minimum)](/resources/wcag/3-3-8-accessible-authentication-minimum): the Level AA version, with four exceptions.
-- [3.3.7 Redundant Entry](/resources/wcag/3-3-7-redundant-entry): do not ask for the same information twice in one process.
-- [1.3.5 Identify Input Purpose](/resources/wcag/1-3-5-identify-input-purpose): form fields say what they collect, which helps autofill.
-- [2.2.5 Re-authenticating](/resources/wcag/2-2-5-re-authenticating): when a session expires, people can continue without losing data.
+- [3.3.8 Accessible Authentication (Minimum)](/wcag/3-3-8-accessible-authentication-minimum): the Level AA version, with four exceptions.
+- [3.3.7 Redundant Entry](/wcag/3-3-7-redundant-entry): do not ask for the same information twice in one process.
+- [1.3.5 Identify Input Purpose](/wcag/1-3-5-identify-input-purpose): form fields say what they collect, which helps autofill.
+- [2.2.5 Re-authenticating](/wcag/2-2-5-re-authenticating): when a session expires, people can continue without losing data.
 
 Want to check your sign-in page for the issues software *can* catch? [Run a free WCAG scan](/#scan), or [start a 3-day free trial](/app/signup) to monitor up to 500 URLs per domain every day.

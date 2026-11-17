@@ -159,16 +159,16 @@ Automated tools cannot judge whether an order makes sense, so testing 1.3.2 Mean
 
 1. **Turn off CSS**, or open the browser's reader view, and read the page from top to bottom. Does it still make sense?
 2. **Listen with a screen reader.** Use NVDA or JAWS on Windows or VoiceOver on a Mac, and read the page with the arrow keys. Compare what you hear with what you see.
-3. **Press Tab through the page.** If focus jumps around the screen, the code order and visual order probably differ. That also breaks [2.4.3 Focus Order](/resources/wcag/2-4-3-focus-order). Our [keyboard accessibility testing guide](/blog/keyboard-accessibility-testing) covers this step in detail.
+3. **Press Tab through the page.** If focus jumps around the screen, the code order and visual order probably differ. That also breaks [2.4.3 Focus Order](/wcag/2-4-3-focus-order). Our [keyboard accessibility testing guide](/blog/keyboard-accessibility-testing) covers this step in detail.
 4. **Search your CSS** for `order:`, `row-reverse`, `column-reverse` and grid placement, and check each place they are used.
 5. **Look for spaces between letters** in headings, logos and buttons, and for tables used for layout.
 
-For a quick reference, see our [1.3.2 Meaningful Sequence page](/resources/wcag/1-3-2-meaningful-sequence) in the WCAG library. The W3C's [Understanding 1.3.2 Meaningful Sequence](https://www.w3.org/WAI/WCAG22/Understanding/meaningful-sequence.html) has more examples.
+For a quick reference, see our [1.3.2 Meaningful Sequence page](/wcag/1-3-2-meaningful-sequence) in the WCAG library. The W3C's [Understanding 1.3.2 Meaningful Sequence](https://www.w3.org/WAI/WCAG22/Understanding/meaningful-sequence.html) has more examples.
 
 ## Related Success Criteria
 
-- [1.3.1 Info and Relationships](/resources/wcag/1-3-1-info-and-relationships): structure such as headings, lists and tables is in the code, not just in the styling.
-- [1.3.3 Sensory Characteristics](/resources/wcag/1-3-3-sensory-characteristics): instructions do not rely on position, such as "the box on the right".
-- [2.4.3 Focus Order](/resources/wcag/2-4-3-focus-order): keyboard focus moves in an order that keeps meaning and operation.
+- [1.3.1 Info and Relationships](/wcag/1-3-1-info-and-relationships): structure such as headings, lists and tables is in the code, not just in the styling.
+- [1.3.3 Sensory Characteristics](/wcag/1-3-3-sensory-characteristics): instructions do not rely on position, such as "the box on the right".
+- [2.4.3 Focus Order](/wcag/2-4-3-focus-order): keyboard focus moves in an order that keeps meaning and operation.
 
 Want to find the issues software *can* catch while you check reading order by hand? [Run a free WCAG scan](/#scan) of any page.

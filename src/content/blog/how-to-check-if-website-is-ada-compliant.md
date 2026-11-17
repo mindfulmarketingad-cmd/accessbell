@@ -30,7 +30,7 @@ You do not need to be a developer. You need a browser, a keyboard and a list of 
 
 The ADA covers businesses that are open to the public, and the Department of Justice has said that includes the goods and services they offer online. Its [guidance on web accessibility and the ADA](https://www.ada.gov/resources/web-guidance/) explains that businesses can choose how they make their websites accessible, and points to existing standards such as WCAG for help.
 
-In practice, that means **WCAG 2.1 Level AA**, with **WCAG 2.2 Level AA** as the newer version. When you check your website for ADA compliance, you are really checking it against those success criteria. Our [ADA website compliance guide](/blog/ada-website-compliance-guide) covers the legal background in more detail, and the [WCAG Library](/resources/wcag) explains every criterion in plain English.
+In practice, that means **WCAG 2.1 Level AA**, with **WCAG 2.2 Level AA** as the newer version. When you check your website for ADA compliance, you are really checking it against those success criteria. Our [ADA website compliance guide](/blog/ada-website-compliance-guide) covers the legal background in more detail, and the [WCAG Library](/wcag) explains every criterion in plain English.
 
 The ADA.gov guidance also lists the barriers it sees most often:
 
@@ -73,9 +73,9 @@ Many people cannot use a mouse. They move through a page with the Tab key, Shift
 
 Put your mouse aside and try this on each page:
 
-1. Press **Tab** from the top of the page. Can you see where you are at every step? A visible outline or highlight should move from link to link. If it disappears, the page fails [2.4.7 Focus Visible](/resources/wcag/2-4-7-focus-visible).
-2. Does the focus move in a logical order, top to bottom and left to right? If it jumps around, check [2.4.3 Focus Order](/resources/wcag/2-4-3-focus-order).
-3. Can you open the menu, choose a product option, add to cart and get through checkout? Anything you can only do with a mouse fails [2.1.1 Keyboard](/resources/wcag/2-1-1-keyboard).
+1. Press **Tab** from the top of the page. Can you see where you are at every step? A visible outline or highlight should move from link to link. If it disappears, the page fails [2.4.7 Focus Visible](/wcag/2-4-7-focus-visible).
+2. Does the focus move in a logical order, top to bottom and left to right? If it jumps around, check [2.4.3 Focus Order](/wcag/2-4-3-focus-order).
+3. Can you open the menu, choose a product option, add to cart and get through checkout? Anything you can only do with a mouse fails [2.1.1 Keyboard](/wcag/2-1-1-keyboard).
 4. Open any pop-up or cookie banner. Can you close it with the keyboard, and does focus go back to the page afterwards?
 
 Our [keyboard accessibility testing guide](/blog/keyboard-accessibility-testing) covers this step in more depth.
@@ -87,7 +87,7 @@ People with low vision zoom in, sometimes a lot. In your browser, press **Ctrl**
 - Can you still read all the text, with nothing cut off or overlapping?
 - Do buttons and menus still work?
 
-Then zoom to 400% on a desktop-width window. The page should reflow into one column so you only scroll up and down, not sideways. These checks map to [1.4.4 Resize Text](/resources/wcag/1-4-4-resize-text) and [1.4.10 Reflow](/resources/wcag/1-4-10-reflow).
+Then zoom to 400% on a desktop-width window. The page should reflow into one column so you only scroll up and down, not sideways. These checks map to [1.4.4 Resize Text](/wcag/1-4-4-resize-text) and [1.4.10 Reflow](/wcag/1-4-10-reflow).
 
 ## Step 5: Check Your Forms
 
@@ -108,7 +108,7 @@ A screen reader needs the label to be connected to the field in the code. In HTM
 <input type="email" id="email" autocomplete="email">
 ```
 
-The automated scan in Step 2 catches most missing labels. These checks relate to [3.3.2 Labels or Instructions](/resources/wcag/3-3-2-labels-or-instructions) and [1.3.1 Info and Relationships](/resources/wcag/1-3-1-info-and-relationships).
+The automated scan in Step 2 catches most missing labels. These checks relate to [3.3.2 Labels or Instructions](/wcag/3-3-2-labels-or-instructions) and [1.3.1 Info and Relationships](/wcag/1-3-1-info-and-relationships).
 
 ## Step 6: Check Images and Alt Text
 
@@ -118,17 +118,17 @@ Your scan tells you which images have no alt text at all. Now check that the alt
 - Images that are only decoration should have an empty alt (`alt=""`) so screen readers skip them.
 - Images of text, such as a sale banner, need alt text that repeats the words.
 
-See [1.1.1 Non-text Content](/resources/wcag/1-1-1-non-text-content) for more examples.
+See [1.1.1 Non-text Content](/wcag/1-1-1-non-text-content) for more examples.
 
 ## Step 7: Check Color Contrast and Color-Only Information
 
 Normal text needs a contrast ratio of at least 4.5:1 against its background, and large text at least 3:1. Your scan flags most low-contrast text, but it can miss text over images and gradients. Check those with the free [WCAG Color Contrast Checker](/tools/contrast-checker) by entering your brand colors.
 
-Also look for anything that relies on color alone: a red border as the only sign of an error, links that are a different color but not underlined in a paragraph, or a "sale" price shown only in red. Add a word, an icon or an underline. The rules are in [1.4.3 Contrast (Minimum)](/resources/wcag/1-4-3-contrast-minimum) and [1.4.1 Use of Color](/resources/wcag/1-4-1-use-of-color).
+Also look for anything that relies on color alone: a red border as the only sign of an error, links that are a different color but not underlined in a paragraph, or a "sale" price shown only in red. Add a word, an icon or an underline. The rules are in [1.4.3 Contrast (Minimum)](/wcag/1-4-3-contrast-minimum) and [1.4.1 Use of Color](/wcag/1-4-1-use-of-color).
 
 ## Step 8: Check Videos and Audio
 
-If your site has video, every video with speech needs accurate captions, not only auto-generated ones you have never checked. Audio-only content such as a podcast needs a transcript. Video that starts playing by itself, or anything that moves for more than five seconds, needs a way to pause it. See [1.2.2 Captions (Prerecorded)](/resources/wcag/1-2-2-captions-prerecorded).
+If your site has video, every video with speech needs accurate captions, not only auto-generated ones you have never checked. Audio-only content such as a podcast needs a transcript. Video that starts playing by itself, or anything that moves for more than five seconds, needs a way to pause it. See [1.2.2 Captions (Prerecorded)](/wcag/1-2-2-captions-prerecorded).
 
 ## Step 9: Write Down What You Found and What You Fixed
 

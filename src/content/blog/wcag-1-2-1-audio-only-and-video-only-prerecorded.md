@@ -86,15 +86,15 @@ Podcast players, social video embeds and animated GIF tutorials on your pages ar
 ## How to Test for 1.2.1 Audio-only and Video-only (Prerecorded)
 
 1. **Find every audio and video file** on the site, including embeds from podcast hosts and video platforms.
-2. **Decide which type each one is:** audio-only, video-only or both sound and picture. Media with both is covered by [1.2.2 Captions (Prerecorded)](/resources/wcag/1-2-2-captions-prerecorded) and [1.2.3 Audio Description or Media Alternative (Prerecorded)](/resources/wcag/1-2-3-audio-description-or-media-alternative-prerecorded).
+2. **Decide which type each one is:** audio-only, video-only or both sound and picture. Media with both is covered by [1.2.2 Captions (Prerecorded)](/wcag/1-2-2-captions-prerecorded) and [1.2.3 Audio Description or Media Alternative (Prerecorded)](/wcag/1-2-3-audio-description-or-media-alternative-prerecorded).
 3. **Check an alternative exists** next to each one, or is clearly linked.
 4. **Compare it with the media.** Does it include everything said, or everything shown?
 
 ## Related Success Criteria
 
-- [1.2.2 Captions (Prerecorded)](/resources/wcag/1-2-2-captions-prerecorded): video with sound needs captions.
-- [1.2.3 Audio Description or Media Alternative (Prerecorded)](/resources/wcag/1-2-3-audio-description-or-media-alternative-prerecorded): video with sound needs its visuals described.
-- [1.2.9 Audio-only (Live)](/resources/wcag/1-2-9-audio-only-live): live audio needs a text alternative, at Level AAA.
-- [1.1.1 Non-text Content](/resources/wcag/1-1-1-non-text-content): media needs at least a short text label.
+- [1.2.2 Captions (Prerecorded)](/wcag/1-2-2-captions-prerecorded): video with sound needs captions.
+- [1.2.3 Audio Description or Media Alternative (Prerecorded)](/wcag/1-2-3-audio-description-or-media-alternative-prerecorded): video with sound needs its visuals described.
+- [1.2.9 Audio-only (Live)](/wcag/1-2-9-audio-only-live): live audio needs a text alternative, at Level AAA.
+- [1.1.1 Non-text Content](/wcag/1-1-1-non-text-content): media needs at least a short text label.
 
 [Run a free WCAG scan](/#scan) to find media on your pages, then check each recording has a transcript or description.

@@ -150,7 +150,7 @@ A validation error is a status message when it appears without moving focus. Giv
 <p id="email-error" role="alert">Enter an email address like name@example.com</p>
 ```
 
-`aria-describedby` has strong support. The newer `aria-errormessage` attribute was designed for exactly this job, but support is still uneven across browsers and assistive technology, so `aria-describedby` is the safer choice today. Without either one, a person who fills in a form and presses Submit may hear nothing and assume it worked. See [3.3.1 Error Identification](/resources/wcag/3-3-1-error-identification) for the wording requirements.
+`aria-describedby` has strong support. The newer `aria-errormessage` attribute was designed for exactly this job, but support is still uneven across browsers and assistive technology, so `aria-describedby` is the safer choice today. Without either one, a person who fills in a form and presses Submit may hear nothing and assume it worked. See [3.3.1 Error Identification](/wcag/3-3-1-error-identification) for the wording requirements.
 
 <figure>
   <img src="/images/wcag/4-1-3-status-messages/error-message-link.svg" width="800" height="412" loading="lazy" alt="An email field with a red outline holds sam@example and shows the error Enter an email address like name@example.com. The input has aria-invalid true and aria-describedby email-error, which matches the id of the error paragraph, so a screen reader reads the error with the field.">
@@ -173,13 +173,13 @@ The W3C lists missing roles as failure [F103, providing status messages that can
 4. **Check the code.** Each message should sit inside an element with `role="status"`, `role="alert"`, `role="log"`, `role="progressbar"` (with milestone text in a status region) or an `aria-live` attribute, and that element should be on the page before the message appears.
 5. **Check the tone.** Only urgent messages should interrupt.
 
-Our [keyboard accessibility testing guide](/blog/keyboard-accessibility-testing) covers the keyboard part of this routine. For a quick reference, see our [4.1.3 Status Messages page](/resources/wcag/4-1-3-status-messages) in the WCAG library, and the W3C's [Understanding 4.1.3 Status Messages](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html).
+Our [keyboard accessibility testing guide](/blog/keyboard-accessibility-testing) covers the keyboard part of this routine. For a quick reference, see our [4.1.3 Status Messages page](/wcag/4-1-3-status-messages) in the WCAG library, and the W3C's [Understanding 4.1.3 Status Messages](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html).
 
 ## Related Success Criteria
 
-- [4.1.2 Name, Role, Value](/resources/wcag/4-1-2-name-role-value): controls expose their name, role and state to assistive technology.
-- [3.3.1 Error Identification](/resources/wcag/3-3-1-error-identification): input errors are identified and described in text.
-- [3.2.2 On Input](/resources/wcag/3-2-2-on-input): changing a setting does not cause an unexpected change of context.
+- [4.1.2 Name, Role, Value](/wcag/4-1-2-name-role-value): controls expose their name, role and state to assistive technology.
+- [3.3.1 Error Identification](/wcag/3-3-1-error-identification): input errors are identified and described in text.
+- [3.2.2 On Input](/wcag/3-2-2-on-input): changing a setting does not cause an unexpected change of context.
 
 Want to find the issues software *can* catch while you test status messages by hand? [Run a free WCAG scan](/#scan) of any page.
 

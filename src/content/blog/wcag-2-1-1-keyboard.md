@@ -96,17 +96,17 @@ Automated tools cannot test 2.1.1 Keyboard well, so test by hand. Put the mouse 
 2. **Use each control.** Press Enter on links and buttons, Space on checkboxes and buttons, arrow keys in menus, tabs, radio groups and sliders.
 3. **Open and close everything:** menus, accordions, dialogs, date pickers and carousels. Check that Escape closes overlays.
 4. **Complete key tasks end to end:** search, sign up, add to cart, check out, submit a form.
-5. **Check that you never get stuck.** Being unable to Tab out of something is a separate failure, [2.1.2 No Keyboard Trap](/resources/wcag/2-1-2-no-keyboard-trap).
+5. **Check that you never get stuck.** Being unable to Tab out of something is a separate failure, [2.1.2 No Keyboard Trap](/wcag/2-1-2-no-keyboard-trap).
 
 Our [keyboard accessibility testing guide](/blog/keyboard-accessibility-testing) walks through a full keyboard test step by step.
 
 ## Related Success Criteria
 
-- [2.1.2 No Keyboard Trap](/resources/wcag/2-1-2-no-keyboard-trap): keyboard focus can always move away from a control.
-- [2.1.3 Keyboard (No Exception)](/resources/wcag/2-1-3-keyboard-no-exception): the Level AAA version, with no path-based exception.
-- [2.1.4 Character Key Shortcuts](/resources/wcag/2-1-4-character-key-shortcuts): single-key shortcuts can be turned off or changed.
-- [2.4.3 Focus Order](/resources/wcag/2-4-3-focus-order): focus moves in a logical order.
-- [2.4.7 Focus Visible](/resources/wcag/2-4-7-focus-visible): you can see which element has focus.
-- [4.1.2 Name, Role, Value](/resources/wcag/4-1-2-name-role-value): custom controls expose their role and state.
+- [2.1.2 No Keyboard Trap](/wcag/2-1-2-no-keyboard-trap): keyboard focus can always move away from a control.
+- [2.1.3 Keyboard (No Exception)](/wcag/2-1-3-keyboard-no-exception): the Level AAA version, with no path-based exception.
+- [2.1.4 Character Key Shortcuts](/wcag/2-1-4-character-key-shortcuts): single-key shortcuts can be turned off or changed.
+- [2.4.3 Focus Order](/wcag/2-4-3-focus-order): focus moves in a logical order.
+- [2.4.7 Focus Visible](/wcag/2-4-7-focus-visible): you can see which element has focus.
+- [4.1.2 Name, Role, Value](/wcag/4-1-2-name-role-value): custom controls expose their role and state.
 
 [Run a free WCAG scan](/#scan) to find the code-level warning signs, then test every task with the keyboard alone.

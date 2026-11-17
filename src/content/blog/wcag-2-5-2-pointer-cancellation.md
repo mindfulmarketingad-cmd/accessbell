@@ -89,9 +89,9 @@ Acting on the down-event is fine when releasing reverses it, such as press-and-h
 
 ## Related Success Criteria
 
-- [2.5.1 Pointer Gestures](/resources/wcag/2-5-1-pointer-gestures): complex gestures have single-pointer alternatives.
-- [2.5.7 Dragging Movements](/resources/wcag/2-5-7-dragging-movements): dragging has a single-pointer alternative, at Level AA.
-- [2.5.8 Target Size (Minimum)](/resources/wcag/2-5-8-target-size-minimum): targets are large enough to avoid accidental taps.
-- [3.3.4 Error Prevention (Legal, Financial, Data)](/resources/wcag/3-3-4-error-prevention-legal-financial-data): important actions can be checked or reversed.
+- [2.5.1 Pointer Gestures](/wcag/2-5-1-pointer-gestures): complex gestures have single-pointer alternatives.
+- [2.5.7 Dragging Movements](/wcag/2-5-7-dragging-movements): dragging has a single-pointer alternative, at Level AA.
+- [2.5.8 Target Size (Minimum)](/wcag/2-5-8-target-size-minimum): targets are large enough to avoid accidental taps.
+- [3.3.4 Error Prevention (Legal, Financial, Data)](/wcag/3-3-4-error-prevention-legal-financial-data): important actions can be checked or reversed.
 
 [Run a free WCAG scan](/#scan) for the automated checks, then press and slide off your buttons to test cancellation.

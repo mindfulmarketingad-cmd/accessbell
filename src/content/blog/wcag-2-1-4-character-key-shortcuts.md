@@ -89,9 +89,9 @@ If you are designing shortcuts, use a modifier key from the start. Remember to d
 
 ## Related Success Criteria
 
-- [2.1.1 Keyboard](/resources/wcag/2-1-1-keyboard): everything works with a keyboard.
-- [2.1.2 No Keyboard Trap](/resources/wcag/2-1-2-no-keyboard-trap): focus can always move on.
-- [2.5.3 Label in Name](/resources/wcag/2-5-3-label-in-name): another criterion that supports voice control users.
-- [3.2.2 On Input](/resources/wcag/3-2-2-on-input): input does not cause unexpected changes.
+- [2.1.1 Keyboard](/wcag/2-1-1-keyboard): everything works with a keyboard.
+- [2.1.2 No Keyboard Trap](/wcag/2-1-2-no-keyboard-trap): focus can always move on.
+- [2.5.3 Label in Name](/wcag/2-5-3-label-in-name): another criterion that supports voice control users.
+- [3.2.2 On Input](/wcag/3-2-2-on-input): input does not cause unexpected changes.
 
 [Run a free WCAG scan](/#scan) for the automated checks, then press single keys on your pages to look for shortcuts.

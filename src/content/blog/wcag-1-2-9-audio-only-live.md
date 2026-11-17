@@ -33,7 +33,7 @@ faqs:
 - **Live:** broadcast as it happens, not recorded and published later
 - **Audio-only:** there is sound but no video, like a radio stream or an audio-only event
 
-For that content, you provide a [text alternative](/resources/wcag/1-1-1-non-text-content) with equivalent information, while the audio is live. That usually means **real-time captions** or, when the speaker reads from a script, a **transcript** of that script. A good text alternative includes who is speaking and meaningful sounds, such as [applause] or [music].
+For that content, you provide a [text alternative](/wcag/1-1-1-non-text-content) with equivalent information, while the audio is live. That usually means **real-time captions** or, when the speaker reads from a script, a **transcript** of that script. A good text alternative includes who is speaking and meaningful sounds, such as [applause] or [music].
 
 <figure>
   <img src="/images/wcag/1-2-9-audio-only-live/live-captions.svg" width="800" height="330" loading="lazy" alt="A live audio player for Trail Talk Radio with a waveform and pause button. Beside it, a live captions panel shows the conversation as text with speaker labels, Host Sam and Guest Ana, and the sound cue [laughter].">
@@ -92,13 +92,13 @@ Automated checkers cannot tell whether a live stream has an equivalent text alte
 3. Compare a few minutes of captions to what is said. Check names, numbers, speaker labels and sounds.
 4. Confirm people can find and read the text with a keyboard, a screen reader and at 200% zoom.
 
-For a quick reference, see our [1.2.9 Audio-only (Live) page](/resources/wcag/1-2-9-audio-only-live) in the WCAG library.
+For a quick reference, see our [1.2.9 Audio-only (Live) page](/wcag/1-2-9-audio-only-live) in the WCAG library.
 
 ## Related Success Criteria
 
-- [1.2.1 Audio-only and Video-only (Prerecorded)](/resources/wcag/1-2-1-audio-only-and-video-only-prerecorded): recorded audio needs a transcript.
-- [1.2.4 Captions (Live)](/resources/wcag/1-2-4-captions-live): live video with audio needs captions, at Level AA.
-- [1.2.2 Captions (Prerecorded)](/resources/wcag/1-2-2-captions-prerecorded): recorded video needs captions.
+- [1.2.1 Audio-only and Video-only (Prerecorded)](/wcag/1-2-1-audio-only-and-video-only-prerecorded): recorded audio needs a transcript.
+- [1.2.4 Captions (Live)](/wcag/1-2-4-captions-live): live video with audio needs captions, at Level AA.
+- [1.2.2 Captions (Prerecorded)](/wcag/1-2-2-captions-prerecorded): recorded video needs captions.
 
 Want to find the accessibility issues software *can* catch around your media, such as unlabeled players and controls? [Run a free WCAG scan](/#scan).
 

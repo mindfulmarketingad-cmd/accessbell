@@ -35,7 +35,7 @@ It asks for two things:
 1. **Labels:** visible text that says what each field, checkbox, radio button or menu is for.
 2. **Instructions:** extra guidance where people need it, such as a required format ("DD/MM/YYYY"), a rule ("at least 8 characters"), or which fields are required.
 
-The goal is to prevent mistakes before they happen. Error messages after the fact are covered by [3.3.1 Error Identification](/resources/wcag/3-3-1-error-identification) and [3.3.3 Error Suggestion](/resources/wcag/3-3-3-error-suggestion).
+The goal is to prevent mistakes before they happen. Error messages after the fact are covered by [3.3.1 Error Identification](/wcag/3-3-1-error-identification) and [3.3.3 Error Suggestion](/wcag/3-3-3-error-suggestion).
 
 ## Why 3.3.2 Labels or Instructions Matters
 
@@ -95,7 +95,7 @@ Do the same for password rules, file size limits, character limits and anything 
 
 ### Mark required and optional fields in text
 
-Tell people which fields they must fill in, in words. Either mark each required field "(required)", or say at the top "All fields are required unless marked optional" and mark the optional ones. An asterisk works if you explain what it means at the start of the form. Do not use color alone to show required fields, which also fails [1.4.1 Use of Color](/resources/wcag/1-4-1-use-of-color).
+Tell people which fields they must fill in, in words. Either mark each required field "(required)", or say at the top "All fields are required unless marked optional" and mark the optional ones. An asterisk works if you explain what it means at the start of the form. Do not use color alone to show required fields, which also fails [1.4.1 Use of Color](/wcag/1-4-1-use-of-color).
 
 ### Label groups and every part of a group
 
@@ -142,14 +142,14 @@ Automated checkers find fields that have no label in the code, but they cannot t
 5. **Check groups.** Do radio buttons, checkboxes and split fields have a group label and a label for each part?
 6. **Zoom to 200% or use a screen magnifier.** Can you still see each label next to its field?
 
-For a quick reference, see our [3.3.2 Labels or Instructions page](/resources/wcag/3-3-2-labels-or-instructions) in the WCAG library, and the W3C's [Understanding 3.3.2 Labels or Instructions](https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html).
+For a quick reference, see our [3.3.2 Labels or Instructions page](/wcag/3-3-2-labels-or-instructions) in the WCAG library, and the W3C's [Understanding 3.3.2 Labels or Instructions](https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html).
 
 ## Related Success Criteria
 
-- [1.3.1 Info and Relationships](/resources/wcag/1-3-1-info-and-relationships): labels are connected to their fields in the code.
-- [2.4.6 Headings and Labels](/resources/wcag/2-4-6-headings-and-labels): headings and labels describe their topic or purpose.
-- [2.5.3 Label in Name](/resources/wcag/2-5-3-label-in-name): the visible label is part of the control's accessible name.
-- [3.3.8 Accessible Authentication (Minimum)](/resources/wcag/3-3-8-accessible-authentication-minimum): sign-in forms work with password managers and paste.
+- [1.3.1 Info and Relationships](/wcag/1-3-1-info-and-relationships): labels are connected to their fields in the code.
+- [2.4.6 Headings and Labels](/wcag/2-4-6-headings-and-labels): headings and labels describe their topic or purpose.
+- [2.5.3 Label in Name](/wcag/2-5-3-label-in-name): the visible label is part of the control's accessible name.
+- [3.3.8 Accessible Authentication (Minimum)](/wcag/3-3-8-accessible-authentication-minimum): sign-in forms work with password managers and paste.
 
 Want to find form fields with no label in the code? [Run a free WCAG scan](/#scan) of any page, then check your labels and instructions by hand.
 

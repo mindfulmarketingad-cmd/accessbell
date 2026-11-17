@@ -117,13 +117,13 @@ Parts of 1.4.8 can be measured in code, but judging it needs a person looking at
 4. **Resize:** zoom to 200% in a full-screen window and confirm you never scroll sideways to read a line.
 5. **Colors:** turn on a high-contrast or reading mode, or apply a custom style, and confirm the text still takes the new colors.
 
-Use our free [WCAG color contrast checker](/tools/contrast-checker) to confirm any colors you do set stay readable, and see our [1.4.8 Visual Presentation page](/resources/wcag/1-4-8-visual-presentation) in the WCAG library for a quick reference.
+Use our free [WCAG color contrast checker](/tools/contrast-checker) to confirm any colors you do set stay readable, and see our [1.4.8 Visual Presentation page](/wcag/1-4-8-visual-presentation) in the WCAG library for a quick reference.
 
 ## Related Success Criteria
 
-- [1.4.3 Contrast (Minimum)](/resources/wcag/1-4-3-contrast-minimum): text must have enough contrast with its background.
-- [1.4.4 Resize Text](/resources/wcag/1-4-4-resize-text): text can be resized to 200% without loss of content.
-- [1.4.10 Reflow](/resources/wcag/1-4-10-reflow): content fits a narrow window without two-way scrolling.
-- [1.4.12 Text Spacing](/resources/wcag/1-4-12-text-spacing): layouts must survive people increasing spacing themselves.
+- [1.4.3 Contrast (Minimum)](/wcag/1-4-3-contrast-minimum): text must have enough contrast with its background.
+- [1.4.4 Resize Text](/wcag/1-4-4-resize-text): text can be resized to 200% without loss of content.
+- [1.4.10 Reflow](/wcag/1-4-10-reflow): content fits a narrow window without two-way scrolling.
+- [1.4.12 Text Spacing](/wcag/1-4-12-text-spacing): layouts must survive people increasing spacing themselves.
 
 Want to see which readability and contrast issues software can catch on your pages? [Run a free WCAG scan](/#scan).

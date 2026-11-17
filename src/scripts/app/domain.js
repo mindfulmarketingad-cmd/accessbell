@@ -151,7 +151,7 @@ document.addEventListener('click', (e) => {
 
 const issueHref = (ruleId) => `/app/issue?id=${encodeURIComponent(id)}&rule=${encodeURIComponent(ruleId)}`;
 const kebab = (s) => s.toLowerCase().replace(/[()]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-const criterionPath = (c) => `/resources/wcag/${c.sc.replace(/\./g, '-')}-${kebab(c.name)}`;
+const criterionPath = (c) => `/wcag/${c.sc.replace(/\./g, '-')}-${kebab(c.name)}`;
 
 function popover(trigger, { tone, iconName, title, body }) {
   const was = openPop?.trigger === trigger;

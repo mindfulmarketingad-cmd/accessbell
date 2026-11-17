@@ -127,7 +127,7 @@ Check the contrast against the lightest part of the image behind the text, not a
 - **Decoration:** text that is purely decorative or not visible to anyone.
 - **Text in pictures:** text that is part of a picture with other significant visual content, such as a sign in a street photo.
 
-Contrast for icons, form field borders and chart elements is covered separately by [1.4.11 Non-text Contrast](/resources/wcag/1-4-11-non-text-contrast), which asks for 3:1.
+Contrast for icons, form field borders and chart elements is covered separately by [1.4.11 Non-text Contrast](/wcag/1-4-11-non-text-contrast), which asks for 3:1.
 
 ## How to Test for 1.4.3 Contrast (Minimum)
 
@@ -139,14 +139,14 @@ Contrast on plain backgrounds is one of the easiest things for software to find.
 4. **Check every state:** hover, focus, visited, selected and error states often use different colors.
 5. **Check the whole template:** navigation, footers, cookie banners and pop-ups are easy to miss.
 
-For a quick reference, see our [1.4.3 Contrast (Minimum) page](/resources/wcag/1-4-3-contrast-minimum) in the WCAG library, and the W3C's [Understanding 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html).
+For a quick reference, see our [1.4.3 Contrast (Minimum) page](/wcag/1-4-3-contrast-minimum) in the WCAG library, and the W3C's [Understanding 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html).
 
 ## Related Success Criteria
 
-- [1.4.6 Contrast (Enhanced)](/resources/wcag/1-4-6-contrast-enhanced): the Level AAA version, at 7:1 for normal text and 4.5:1 for large text.
-- [1.4.11 Non-text Contrast](/resources/wcag/1-4-11-non-text-contrast): icons, controls and graphics need 3:1.
-- [1.4.1 Use of Color](/resources/wcag/1-4-1-use-of-color): color is never the only way information is shown.
-- [1.4.8 Visual Presentation](/resources/wcag/1-4-8-visual-presentation): people can choose their own text and background colors.
+- [1.4.6 Contrast (Enhanced)](/wcag/1-4-6-contrast-enhanced): the Level AAA version, at 7:1 for normal text and 4.5:1 for large text.
+- [1.4.11 Non-text Contrast](/wcag/1-4-11-non-text-contrast): icons, controls and graphics need 3:1.
+- [1.4.1 Use of Color](/wcag/1-4-1-use-of-color): color is never the only way information is shown.
+- [1.4.8 Visual Presentation](/wcag/1-4-8-visual-presentation): people can choose their own text and background colors.
 
 Want to find low-contrast text across a page in seconds? [Run a free WCAG scan](/#scan), then check text on images by hand.
 

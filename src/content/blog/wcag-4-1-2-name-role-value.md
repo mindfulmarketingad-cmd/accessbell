@@ -99,7 +99,7 @@ Every interactive control needs an accessible name. In order of preference:
 <button type="button" aria-label="Close dialog"><svg aria-hidden="true">...</svg></button>
 ```
 
-Keep the name in step with the visible text. If a button shows "Search" but its `aria-label` says "Find", people using speech recognition who say "click Search" get no result. That is the point of [2.5.3 Label in Name](/resources/wcag/2-5-3-label-in-name). For form fields, see our guide to [3.3.2 Labels or Instructions](/resources/wcag/3-3-2-labels-or-instructions).
+Keep the name in step with the visible text. If a button shows "Search" but its `aria-label` says "Find", people using speech recognition who say "click Search" get no result. That is the point of [2.5.3 Label in Name](/wcag/2-5-3-label-in-name). For form fields, see our guide to [3.3.2 Labels or Instructions](/wcag/3-3-2-labels-or-instructions).
 
 ### Set the right role, and only when needed
 
@@ -139,7 +139,7 @@ button.addEventListener('click', () => {
 });
 ```
 
-Short updates that are not tied to a control, such as "Saved", fall under [4.1.3 Status Messages](/resources/wcag/4-1-3-status-messages) instead.
+Short updates that are not tied to a control, such as "Saved", fall under [4.1.3 Status Messages](/wcag/4-1-3-status-messages) instead.
 
 ### Common failures to watch for
 
@@ -166,10 +166,10 @@ Unlike some criteria, a lot of 4.1.2 can be checked automatically. Combine tools
 
 ## Related Success Criteria
 
-- [1.3.1 Info and Relationships](/resources/wcag/1-3-1-info-and-relationships): structure and labels are available in the code.
-- [2.1.1 Keyboard](/resources/wcag/2-1-1-keyboard): everything works from the keyboard.
-- [2.5.3 Label in Name](/resources/wcag/2-5-3-label-in-name): the accessible name contains the visible label.
-- [4.1.3 Status Messages](/resources/wcag/4-1-3-status-messages): updates are announced without moving focus.
+- [1.3.1 Info and Relationships](/wcag/1-3-1-info-and-relationships): structure and labels are available in the code.
+- [2.1.1 Keyboard](/wcag/2-1-1-keyboard): everything works from the keyboard.
+- [2.5.3 Label in Name](/wcag/2-5-3-label-in-name): the accessible name contains the visible label.
+- [4.1.3 Status Messages](/wcag/4-1-3-status-messages): updates are announced without moving focus.
 
 Want to find missing names and roles across your whole site? [Run a free WCAG scan](/#scan) of any page, or [start a 3-day free trial](/app/signup) to monitor up to 500 URLs per domain every day.
 

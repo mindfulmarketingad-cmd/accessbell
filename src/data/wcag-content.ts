@@ -1,4 +1,4 @@
-// Original, per-criterion copy for the /resources/wcag pages: one entry per
+// Original, per-criterion copy for the /wcag pages: one entry per
 // WCAG success criterion. Combined at build time with live axe-core rule
 // data (src/lib/checker-coverage.ts) and fix examples, so each page mixes
 // hand-written explanation with real, current tooling data.

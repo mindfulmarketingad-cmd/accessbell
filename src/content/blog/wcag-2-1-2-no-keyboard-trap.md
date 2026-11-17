@@ -72,7 +72,7 @@ Modal dialogs should keep focus inside while they are open, so people do not wan
 
 - The close button is a real, focusable `button`.
 - Escape closes the dialog.
-- Focus returns to the control that opened it, which also supports [2.4.3 Focus Order](/resources/wcag/2-4-3-focus-order).
+- Focus returns to the control that opened it, which also supports [2.4.3 Focus Order](/wcag/2-4-3-focus-order).
 
 ## How to Test for 2.1.2 No Keyboard Trap
 
@@ -86,9 +86,9 @@ Our [keyboard accessibility testing guide](/blog/keyboard-accessibility-testing)
 
 ## Related Success Criteria
 
-- [2.1.1 Keyboard](/resources/wcag/2-1-1-keyboard): everything works with a keyboard.
-- [2.4.3 Focus Order](/resources/wcag/2-4-3-focus-order): focus moves in a logical order, including into and out of dialogs.
-- [2.4.7 Focus Visible](/resources/wcag/2-4-7-focus-visible): you can see where focus is.
-- [2.2.2 Pause, Stop, Hide](/resources/wcag/2-2-2-pause-stop-hide): another criterion that applies to the whole page.
+- [2.1.1 Keyboard](/wcag/2-1-1-keyboard): everything works with a keyboard.
+- [2.4.3 Focus Order](/wcag/2-4-3-focus-order): focus moves in a logical order, including into and out of dialogs.
+- [2.4.7 Focus Visible](/wcag/2-4-7-focus-visible): you can see where focus is.
+- [2.2.2 Pause, Stop, Hide](/wcag/2-2-2-pause-stop-hide): another criterion that applies to the whole page.
 
 [Run a free WCAG scan](/#scan) for the code-level keyboard issues, then Tab through every embed to check nothing traps you.

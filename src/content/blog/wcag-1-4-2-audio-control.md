@@ -94,9 +94,9 @@ Ads, embedded players and chat widgets can autoplay sound on your page. Test the
 
 ## Related Success Criteria
 
-- [2.2.2 Pause, Stop, Hide](/resources/wcag/2-2-2-pause-stop-hide): moving content can be paused.
-- [1.4.7 Low or No Background Audio](/resources/wcag/1-4-7-low-or-no-background-audio): background sound is quiet behind speech, at Level AAA.
-- [2.1.2 No Keyboard Trap](/resources/wcag/2-1-2-no-keyboard-trap): another criterion that applies to the whole page.
-- [1.2.2 Captions (Prerecorded)](/resources/wcag/1-2-2-captions-prerecorded): video with sound needs captions.
+- [2.2.2 Pause, Stop, Hide](/wcag/2-2-2-pause-stop-hide): moving content can be paused.
+- [1.4.7 Low or No Background Audio](/wcag/1-4-7-low-or-no-background-audio): background sound is quiet behind speech, at Level AAA.
+- [2.1.2 No Keyboard Trap](/wcag/2-1-2-no-keyboard-trap): another criterion that applies to the whole page.
+- [1.2.2 Captions (Prerecorded)](/wcag/1-2-2-captions-prerecorded): video with sound needs captions.
 
 [Run a free WCAG scan](/#scan) for the automated checks, then load your pages with sound on to listen for autoplay.
