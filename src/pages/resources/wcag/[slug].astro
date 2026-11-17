@@ -13,7 +13,9 @@ import { faqSchema } from '../../../lib/schema';
 import { inlineMarkdown, stripMarkdown } from '../../../lib/inline-markdown';
 import { coverFor } from '../../../lib/covers';
 import { getWcagGuides } from '../../../lib/wcag-guides';
-import { guideSc } from '../../../lib/posts';
+import { guideSc, isWcagGuide, postPath } from '../../../lib/posts';
+import RelatedLinks from '../../../components/RelatedLinks.astro';
+import { moneyLinkFor, readingForCriterion } from '../../../lib/related-reading';
 import { CRITERIA, GUIDELINES } from '../../../../server/wcag-criteria.js';
 import { criterionSlug, criterionPath, understandingUrl, rulesForCriterion, checkersForCriterion } from '../../../lib/wcag-pages';
 import { checkerPath } from '../../../data/checkers';
@@ -57,6 +59,13 @@ const related = Object.values(CRITERIA)
 // Guides already end with their own related-criteria section.
 const guideHasRelated = !!rendered?.headings.some((h) => h.depth === 2 && /related/i.test(h.text));
 const series = (await getWcagGuides()).filter((g) => g.sc.join('.') !== c.sc);
+const money = moneyLinkFor(c.sc);
+const libraryPosts = await getCollection('blog', ({ data }) => !data.draft);
+const furtherReading = readingForCriterion(
+  c.sc,
+  path,
+  libraryPosts.map((p) => ({ href: postPath(p), title: p.data.title, body: p.body ?? '', guide: isWcagGuide(p) })),
+);
 
 const checkerNames = checkers.map((x) => x.name).join(', ');
 const automatedAnswer = rules.length
@@ -196,7 +205,7 @@ const schema = [
           ) : (
             <p>This criterion depends on meaning or context, so it needs a person to judge. AccessBell's report lists it for manual review rather than marking it pass or fail automatically, so it is not missed.</p>
           )}
-          <p><a href="/#scan">Run a free scan</a> to spot issues on your own pages.</p>
+          <p><a href="/#scan">Run a free scan</a> to spot issues on your own pages. To keep checking this criterion after that first scan, see <a href={money.href}>{money.label}</a>.</p>
 
           {example && (
             <>
@@ -230,6 +239,13 @@ const schema = [
           </ul>
           <p class="muted">This page explains a technical standard and is not legal advice. See our <a href="/disclaimer">disclaimer</a>.</p>
         </div>
+
+        <RelatedLinks
+          id="further-reading"
+          title="Further reading"
+          intro="Guides, checklists and tools that cover this success criterion."
+          links={furtherReading}
+        />
 
         {series.length > 0 && (
           <nav class="guide-series" aria-labelledby="more-guides">

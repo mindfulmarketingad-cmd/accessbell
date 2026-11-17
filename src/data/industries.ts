@@ -64,6 +64,11 @@ export const INDUSTRIES: Industry[] = [
         title: 'WCAG 2.2 Checklist for Online Stores',
         note: 'The nine new WCAG 2.2 success criteria, mapped to product pages, carts, and checkout.',
       },
+      {
+        href: '/resources/shopify-checkout-accessibility-study',
+        title: 'Shopify Checkout Accessibility Study',
+        note: 'The method for a planned checkout study. No results yet.',
+      },
     ],
   },
   {

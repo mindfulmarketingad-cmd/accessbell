@@ -87,6 +87,7 @@ Our [keyboard accessibility testing guide](/blog/keyboard-accessibility-testing)
 ## Related Success Criteria
 
 - [2.1.1 Keyboard](/resources/wcag/2-1-1-keyboard): everything works with a keyboard.
+- [2.1.3 Keyboard (No Exception)](/resources/wcag/2-1-3-keyboard-no-exception): the Level AAA version, with no path-based exception.
 - [2.4.3 Focus Order](/resources/wcag/2-4-3-focus-order): focus moves in a logical order, including into and out of dialogs.
 - [2.4.7 Focus Visible](/resources/wcag/2-4-7-focus-visible): you can see where focus is.
 - [2.2.2 Pause, Stop, Hide](/resources/wcag/2-2-2-pause-stop-hide): another criterion that applies to the whole page.

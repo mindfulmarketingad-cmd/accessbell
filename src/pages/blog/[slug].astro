@@ -15,6 +15,8 @@ import { inlineMarkdown, stripMarkdown } from '../../lib/inline-markdown';
 import { getWcagGuides, WCAG_GUIDES_CATEGORY } from '../../lib/wcag-guides';
 import { coverFor } from '../../lib/covers';
 import { isWcagGuide, postPath } from '../../lib/posts';
+import RelatedLinks from '../../components/RelatedLinks.astro';
+import { criteriaMentioned, topicLinksForPost } from '../../lib/related-reading';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -48,6 +50,11 @@ const cover = coverFor(post.id);
 const related = post.data.related
   .map((slug) => all.find((p) => p.id === slug))
   .filter((p): p is NonNullable<typeof p> => Boolean(p));
+
+const articleBody = post.body ?? '';
+const shown = new Set(related.map((p) => postPath(p)));
+const topicLinks = topicLinksForPost(post.id, post.data.category, articleBody).filter((link) => !shown.has(link.href));
+const criterionLinks = criteriaMentioned(articleBody).filter((link) => !topicLinks.some((t) => t.href === link.href) && !shown.has(link.href));
 
 const schema = [
   {
@@ -141,6 +148,19 @@ const schema = [
             </section>
           )}
         </div>
+
+        <RelatedLinks
+          id="related-wcag"
+          title="Related WCAG criteria"
+          intro="Success criteria this article discusses, with what each one requires and how to test it."
+          links={criterionLinks}
+        />
+        <RelatedLinks
+          id="related-reading"
+          title="Related reading"
+          intro="Other AccessBell guides on the same subject."
+          links={topicLinks}
+        />
 
         {moreGuides.length > 0 && (
           <nav class="guide-series" aria-labelledby="more-guides">

@@ -77,6 +77,6 @@ Newer tools, including ours, can suggest code fixes for common failures, such as
 
 Automated testing tells you what is broken across your whole site, every day. Manual testing tells you whether your site actually works for people. Use automation for coverage and people for judgment, and you will find more issues, fix them faster and keep them fixed.
 
-Start with the automated layer: [run a free scan](/#scan) to see how many issues a page has, then use the full report in AccessBell Pro as your first remediation list. For a structured list of what to check by hand, see our [WCAG 2.2 checklist](/blog/wcag-2-2-checklist). To record manual results, use our free [WCAG 2 AA checklist spreadsheet](/blog/wcag-2-aa-checklist).
+Start with the automated layer: [run a free scan](/#scan) to see how many issues a page has, then use the full report in AccessBell Pro as your first remediation list. For a structured list of what to check by hand, see our [WCAG 2.2 checklist](/blog/wcag-2-2-checklist). To record manual results, use our free [WCAG 2 AA checklist spreadsheet](/blog/wcag-2-aa-checklist). We also published [what 10 accessibility checker tools caught](/blog/we-tested-10-accessibility-checker-tools) when they were pointed at the same page, including the barriers every tool missed.
 
 If you are choosing a vendor that offers both, compare [digital accessibility platforms with ongoing monitoring and audits](/blog/digital-accessibility-platforms).

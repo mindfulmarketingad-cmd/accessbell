@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/link-audit.mjs && node scripts/structure-audit.mjs",
     "preview": "npm run build && node scripts/serve.mjs",
     "assets": "node scripts/generate-assets.mjs",
     "audit:links": "node scripts/link-audit.mjs",

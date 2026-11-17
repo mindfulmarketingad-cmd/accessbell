@@ -20,15 +20,15 @@ WCAG 2.2 added nine success criteria, summarized by the W3C in [What's New in WC
 
 | Criterion | Level | What it requires |
 | --- | --- | --- |
-| 2.4.11 Focus Not Obscured (Minimum) | AA | A focused element is not entirely hidden by author-created content such as sticky headers or cookie banners. |
-| 2.4.12 Focus Not Obscured (Enhanced) | AAA | No part of the focused element is hidden. |
-| 2.4.13 Focus Appearance | AAA | Focus indicators meet minimum size and contrast. |
-| 2.5.7 Dragging Movements | AA | Anything done by dragging can also be done with a single pointer without dragging. |
-| 2.5.8 Target Size (Minimum) | AA | Pointer targets are at least 24 by 24 CSS pixels, or have enough spacing, with some exceptions. |
-| 3.2.6 Consistent Help | A | Help mechanisms, such as contact details or a chat link, appear in the same relative order across pages. |
-| 3.3.7 Redundant Entry | A | Information a user already entered in a process is auto-filled or available to select. |
-| 3.3.8 Accessible Authentication (Minimum) | AA | Logging in does not require a cognitive function test, such as remembering a password or solving a puzzle, unless an alternative or assistance is provided. |
-| 3.3.9 Accessible Authentication (Enhanced) | AAA | Stricter version of 3.3.8 with fewer exceptions. |
+| [2.4.11 Focus Not Obscured (Minimum)](/resources/wcag/2-4-11-focus-not-obscured-minimum) | AA | A focused element is not entirely hidden by author-created content such as sticky headers or cookie banners. |
+| [2.4.12 Focus Not Obscured (Enhanced)](/resources/wcag/2-4-12-focus-not-obscured-enhanced) | AAA | No part of the focused element is hidden. |
+| [2.4.13 Focus Appearance](/resources/wcag/2-4-13-focus-appearance) | AAA | Focus indicators meet minimum size and contrast. |
+| [2.5.7 Dragging Movements](/resources/wcag/2-5-7-dragging-movements) | AA | Anything done by dragging can also be done with a single pointer without dragging. |
+| [2.5.8 Target Size (Minimum)](/resources/wcag/2-5-8-target-size-minimum) | AA | Pointer targets are at least 24 by 24 CSS pixels, or have enough spacing, with some exceptions. |
+| [3.2.6 Consistent Help](/resources/wcag/3-2-6-consistent-help) | A | Help mechanisms, such as contact details or a chat link, appear in the same relative order across pages. |
+| [3.3.7 Redundant Entry](/resources/wcag/3-3-7-redundant-entry) | A | Information a user already entered in a process is auto-filled or available to select. |
+| [3.3.8 Accessible Authentication (Minimum)](/resources/wcag/3-3-8-accessible-authentication-minimum) | AA | Logging in does not require a cognitive function test, such as remembering a password or solving a puzzle, unless an alternative or assistance is provided. |
+| [3.3.9 Accessible Authentication (Enhanced)](/resources/wcag/3-3-9-accessible-authentication-enhanced) | AAA | Stricter version of 3.3.8 with fewer exceptions. |
 
 ### What Was Removed
 

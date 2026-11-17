@@ -15,7 +15,7 @@ The **Issues** tab on a domain lists every rule that failed across your monitore
   - **Serious**: makes a task very hard.
   - **Moderate**: causes friction.
   - **Minor**: an annoyance.
-- **WCAG criteria**: the success criteria the rule relates to, with their level, for example WCAG 1.1.1 (A). "Best practice" means the rule is recommended but not required by WCAG.
+- **WCAG criteria**: the success criteria the rule relates to, with their level, for example [WCAG 1.1.1 Non-text Content](/resources/wcag/1-1-1-non-text-content) (A). "Best practice" means the rule is recommended but not required by WCAG.
 - **The number**: how many elements fail across all monitored pages.
 
 Use the **Severity** menu at the top of the tab to show one severity at a time.

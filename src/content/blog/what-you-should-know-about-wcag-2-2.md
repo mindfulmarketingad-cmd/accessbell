@@ -64,9 +64,9 @@ A focus indicator is the visual outline that shows which element is currently se
 
 | Criterion | Level | What it requires |
 | --- | --- | --- |
-| 2.4.11 Focus Not Obscured (Minimum) | AA | The focused element cannot be entirely hidden by sticky headers, cookie banners or chat widgets. |
+| [2.4.11 Focus Not Obscured (Minimum)](/resources/wcag/2-4-11-focus-not-obscured-minimum) | AA | The focused element cannot be entirely hidden by sticky headers, cookie banners or chat widgets. |
 | 2.4.12 Focus Not Obscured (Enhanced) | AAA | No part of the focused element can be hidden, even in complex overlapping layouts. |
-| 2.4.13 Focus Appearance | AAA | The focus indicator must meet a minimum size and contrast so it is easy to see. |
+| [2.4.13 Focus Appearance](/resources/wcag/2-4-13-focus-appearance) | AAA | The focus indicator must meet a minimum size and contrast so it is easy to see. |
 
 ### Input methods and gestures
 
@@ -74,22 +74,22 @@ These criteria cover how people interact with a page beyond a standard click, in
 
 | Criterion | Level | What it requires |
 | --- | --- | --- |
-| 2.5.7 Dragging Movements | AA | Anything done by dragging, such as a slider or reorderable list, needs a single-pointer alternative that does not require dragging. |
-| 2.5.8 Target Size (Minimum) | AA | Interactive targets are at least 24 by 24 CSS pixels, or have enough spacing between them, with some exceptions. |
+| [2.5.7 Dragging Movements](/resources/wcag/2-5-7-dragging-movements) | AA | Anything done by dragging, such as a slider or reorderable list, needs a single-pointer alternative that does not require dragging. |
+| [2.5.8 Target Size (Minimum)](/resources/wcag/2-5-8-target-size-minimum) | AA | Interactive targets are at least 24 by 24 CSS pixels, or have enough spacing between them, with some exceptions. |
 
 ### User assistance and consistency
 
 | Criterion | Level | What it requires |
 | --- | --- | --- |
-| 3.2.6 Consistent Help | A | Help mechanisms, such as a contact link or chat, appear in the same relative order on every page where they are offered. |
+| [3.2.6 Consistent Help](/resources/wcag/3-2-6-consistent-help) | A | Help mechanisms, such as a contact link or chat, appear in the same relative order on every page where they are offered. |
 
 ### Form usability and error prevention
 
 | Criterion | Level | What it requires |
 | --- | --- | --- |
-| 3.3.7 Redundant Entry | A | Information a user already entered earlier in a process is auto-filled or offered again, rather than asked for twice. |
-| 3.3.8 Accessible Authentication (Minimum) | AA | Logging in cannot depend solely on a cognitive function test, such as remembering a password or solving a puzzle, unless an alternative or assistance is available. |
-| 3.3.9 Accessible Authentication (Enhanced) | AAA | A stricter version of 3.3.8 with fewer exceptions. |
+| [3.3.7 Redundant Entry](/resources/wcag/3-3-7-redundant-entry) | A | Information a user already entered earlier in a process is auto-filled or offered again, rather than asked for twice. |
+| [3.3.8 Accessible Authentication (Minimum)](/resources/wcag/3-3-8-accessible-authentication-minimum) | AA | Logging in cannot depend solely on a cognitive function test, such as remembering a password or solving a puzzle, unless an alternative or assistance is available. |
+| [3.3.9 Accessible Authentication (Enhanced)](/resources/wcag/3-3-9-accessible-authentication-enhanced) | AAA | A stricter version of 3.3.8 with fewer exceptions. |
 
 Six of the nine new criteria apply at Level A or AA, the level most organizations target. For a full working checklist covering how to test each one, see our [WCAG 2.2 checklist](/blog/wcag-2-2-checklist).
 

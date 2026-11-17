@@ -75,6 +75,16 @@ const schema = [
 
         <SourceList ids={article.data.sources} />
 
+        <section class="guide-series" aria-labelledby="more-in-topic">
+          <h2 id="more-in-topic">More in {group.title}</h2>
+          <p>These guides sit with this one under <a href={categoryPath(group.id)}>{group.title}</a>. The <a href={HELP_BASE}>Help Center</a> lists every topic.</p>
+          <ul>
+            {group.articles.filter((a) => a.id !== article.id).map((a) => (
+              <li><a href={articlePath(a)}>{a.data.title}</a></li>
+            ))}
+          </ul>
+        </section>
+
         <nav class="help-pager" aria-label="More in this topic">
           {prev ? (
             <a href={articlePath(prev)} class="help-pager-prev"><small>Previous</small><span>{prev.data.title}</span></a>

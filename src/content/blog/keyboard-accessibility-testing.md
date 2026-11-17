@@ -31,7 +31,7 @@ A well-known complaint about [accessibility overlays](/comparisons/accessibe-vs-
 - People who are blind or have low vision typically navigate by keyboard alongside a screen reader.
 - People with motor disabilities may be unable to use a mouse at all, relying on a keyboard, switch device or voice-to-keyboard software.
 - Power users and people with repetitive strain injuries often navigate by keyboard by choice.
-- WCAG requires it directly: [2.1.1 Keyboard](/resources/wcag/2-1-1-keyboard) (Level A) requires all functionality to be operable through a keyboard interface, and [2.1.2 No Keyboard Trap](/resources/wcag/2-1-2-no-keyboard-trap) (Level A) requires that keyboard focus can always move away from any component.
+- WCAG requires it directly: [2.1.1 Keyboard](/resources/wcag/2-1-1-keyboard) (Level A) requires all functionality to be operable through a keyboard interface, and [2.1.2 No Keyboard Trap](/resources/wcag/2-1-2-no-keyboard-trap) (Level A) requires that keyboard focus can always move away from any component. [2.1.3 Keyboard (No Exception)](/resources/wcag/2-1-3-keyboard-no-exception) is the Level AAA version, with no exception for a keyboard path that depends on the mouse.
 
 Our [stories of web users with disabilities](/blog/stories-of-web-users-with-disabilities) show what this looks like for a reporter who cannot use a mouse.
 

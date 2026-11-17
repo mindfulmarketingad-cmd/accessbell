@@ -91,6 +91,7 @@ If you are designing shortcuts, use a modifier key from the start. Remember to d
 
 - [2.1.1 Keyboard](/resources/wcag/2-1-1-keyboard): everything works with a keyboard.
 - [2.1.2 No Keyboard Trap](/resources/wcag/2-1-2-no-keyboard-trap): focus can always move on.
+- [2.1.3 Keyboard (No Exception)](/resources/wcag/2-1-3-keyboard-no-exception): the Level AAA version, with no path-based exception.
 - [2.5.3 Label in Name](/resources/wcag/2-5-3-label-in-name): another criterion that supports voice control users.
 - [3.2.2 On Input](/resources/wcag/3-2-2-on-input): input does not cause unexpected changes.
 

@@ -16,7 +16,7 @@ Perceivable starts open. Each row shows:
 
 - **WCAG principle**, such as Perceivable
 - **Guideline**, the group the criterion belongs to, such as Text Alternatives or Navigable
-- **Success criterion**, its number and name, such as 1.1.1 Non-text Content
+- **Success criterion**, its number and name, such as [1.1.1 Non-text Content](/resources/wcag/1-1-1-non-text-content)
 - **Level**: A, AA or AAA
 
 ## Issues Column

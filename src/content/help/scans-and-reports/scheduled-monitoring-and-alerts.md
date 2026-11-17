@@ -29,4 +29,4 @@ To receive alerts, ask the Owner to give you the Admin role. See [Invite teammat
 
 Monitoring restarts on the next daily run once the subscription is active again.
 
-For the bigger picture, see [continuous website accessibility monitoring](/solutions/continuous-monitoring) and how it feeds the [Compliance Vault](/solutions/compliance-vault).
+For the bigger picture, see [continuous website accessibility monitoring](/solutions/continuous-monitoring), the [website accessibility monitoring tool guide](/resources/website-accessibility-monitoring-tool) for what a tool can flag and what a person still has to judge, and how monitoring feeds the [Compliance Vault](/solutions/compliance-vault).

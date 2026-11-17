@@ -44,3 +44,4 @@ AccessBell makes this clear in every report: items it cannot decide appear under
 - [Run a free scan](/resources/help-center/getting-started/run-a-free-scan)
 - [Add your first domain](/resources/help-center/getting-started/add-your-first-domain)
 - Browse our [free tools and guides](/resources), including checkers for each standard and an accessibility statement generator
+- Read [about AccessBell](/about) and the [website accessibility monitoring tool guide](/resources/website-accessibility-monitoring-tool) for what a scan can flag and what a person still has to judge

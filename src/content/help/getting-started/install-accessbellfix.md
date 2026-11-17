@@ -16,7 +16,7 @@ AccessBellFix is an optional, one-line script. Once it is on your site, you can 
 | Accessible name | Sets the [`aria-label`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-label) of a button, link or control | An icon-only search button |
 | Page language | Sets the `lang` attribute of the page | A page with no language set |
 
-These fixes help with WCAG 1.1.1 Non-text Content, 4.1.2 Name, Role, Value and 3.1.1 Language of Page. Fixing the source code is still the most robust option, because the fix then works everywhere, including for tools that do not run scripts. AccessBellFix is useful when you cannot change the code quickly, such as on a hosted platform or a theme you do not control.
+These fixes help with [WCAG 1.1.1 Non-text Content](/resources/wcag/1-1-1-non-text-content), [4.1.2 Name, Role, Value](/resources/wcag/4-1-2-name-role-value) and [3.1.1 Language of Page](/resources/wcag/3-1-1-language-of-page). Fixing the source code is still the most robust option, because the fix then works everywhere, including for tools that do not run scripts. AccessBellFix is useful when you cannot change the code quickly, such as on a hosted platform or a theme you do not control.
 
 ## Install the Snippet
 
