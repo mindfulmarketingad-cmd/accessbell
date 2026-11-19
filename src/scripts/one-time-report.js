@@ -21,6 +21,34 @@ const link = (href, content, cls) => {
   return a;
 };
 
+/**
+ * After a paid report, offer to keep this exact site monitored. The trial link
+ * carries ?domain= so signup is prefilled and the first monitored scan runs
+ * for the site in this report (same flow as the free scan's trial link).
+ */
+export function monitorTrialHref(hostname) {
+  const host = String(hostname || '').trim().toLowerCase().replace(/^www\./, '');
+  return host ? `/app/signup?domain=${encodeURIComponent(host)}` : '/app/signup';
+}
+
+function monitorOffer(hostname) {
+  const host = String(hostname || '').replace(/^www\./, '');
+  const box = document.createElement('section');
+  box.className = 'report-monitor-offer';
+  box.setAttribute('aria-labelledby', 'report-monitor-heading');
+  const h = text('h3', host ? `Keep ${host} fixed after this report` : 'Keep this site fixed after this report');
+  h.id = 'report-monitor-heading';
+  box.append(h);
+  box.append(text('p', 'This report is a snapshot. Pro rescans the site on a schedule, emails you when new issues appear, gives guided fix suggestions for each one, and keeps a dated record of what was fixed and when.'));
+  const btns = document.createElement('div');
+  btns.className = 'scan-cta-actions';
+  btns.append(link(monitorTrialHref(hostname), host ? `Start 3-day free trial for ${host}` : 'Start 3-day free trial', 'btn btn-accent btn-sm'));
+  btns.append(link('/pricing', 'Compare plans', 'btn btn-outline btn-sm'));
+  box.append(btns);
+  box.append(text('p', 'Then $29 per domain per month or $199 per year. A card is added at checkout, there is no charge until the trial ends, and the first charge has a 14-day money-back guarantee.', 'scan-cta-note'));
+  return box;
+}
+
 function showTokenForm(message) {
   mount.replaceChildren();
   const card = document.createElement('div');
@@ -225,9 +253,8 @@ function showReport(data) {
   printBtn.textContent = 'Print or save this page as PDF';
   printBtn.addEventListener('click', () => window.print());
   actions.append(printBtn);
-  actions.append(link('/app/signup', 'Save this report to your dashboard', 'btn btn-outline btn-sm'));
-  actions.append(link('/pricing', 'Keep it monitored with Pro — $29/mo', 'btn btn-outline btn-sm'));
   card.append(actions);
+  card.append(monitorOffer(data.hostname));
   card.append(text('p', 'This report records automated findings. Some checks need a person, and no tool can guarantee legal compliance on its own. See our disclaimer.', 'scan-cta-note'));
   // The mount still holds "Loading your report…". Replace it, or the page looks stuck.
   mount.replaceChildren();

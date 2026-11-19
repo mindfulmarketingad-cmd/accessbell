@@ -76,4 +76,8 @@ test('showReport removes the loading placeholder', async () => {
   assert.equal(mount.children[0].className, 'results-card scan-result');
   assert.match(dumped, /Domain Audit: nosh-flow-admin\.base44\.app/);
   assert.doesNotMatch(dumped, /Loading your report/);
+  // Paid buyers get a trial link prefilled with the site in this report.
+  assert.match(dumped, /\/app\/signup\?domain=nosh-flow-admin\.base44\.app/);
+  assert.match(dumped, /Start 3-day free trial for nosh-flow-admin\.base44\.app/);
+  assert.match(dumped, /no charge until the trial ends/);
 });
