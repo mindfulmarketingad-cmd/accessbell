@@ -5,26 +5,15 @@
 // built by the Inngest crawl; while it is pending this endpoint nudges the
 // crawl event again, so a lost webhook event self-heals.
 import { getPurchaseByToken, validToken, sendOneTimeAuditEvent } from '../server/app/one-time.js';
+import { sendDegradedAuditAlert } from '../server/app/email-sequences.js';
 import { one } from '../server/app/db.js';
-import { browserAudit } from '../server/browser-audit.js';
-import { audit } from '../server/audit.js';
-import { fetchPage } from '../server/fetch-page.js';
+import { runPaidCheck } from '../server/one-time-audit.js';
+import { redactSecrets } from '../server/redact.js';
 import { json, methodNotAllowed } from '../server/http.js';
 
 async function buildPageReport(purchase) {
-  let report = null;
-  if (process.env.BROWSER_WS_ENDPOINT) {
-    try {
-      report = await browserAudit(purchase.url, { standard: 'wcag22' });
-    } catch {
-      report = null;
-    }
-  }
-  if (!report) {
-    const page = await fetchPage(purchase.url);
-    report = { finalUrl: page.finalUrl, engine: 'html', ...audit(page.html, { standard: 'wcag22' }) };
-  }
-  return {
+  const { report, browserFallback } = await runPaidCheck(purchase.url);
+  const built = {
     product: 'page_report',
     hostname: purchase.hostname,
     url: purchase.url,
@@ -43,6 +32,11 @@ async function buildPageReport(purchase) {
       helpUrl: i.helpUrl || null,
     })),
   };
+  if (browserFallback) {
+    built.degraded = true;
+    built.browserFallback = { reason: browserFallback, pages: 1 };
+  }
+  return built;
 }
 
 export async function GET(request) {
@@ -66,9 +60,38 @@ export async function GET(request) {
   if (purchase.product === 'page_report') {
     try {
       const report = await buildPageReport(purchase);
+      // A browser failure must not be saved as a finished paid report.
+      if (report.degraded) {
+        try {
+          const res = await sendDegradedAuditAlert({
+            hostname: purchase.hostname,
+            url: purchase.url,
+            token,
+            product: purchase.product,
+            reason: report.browserFallback?.reason,
+            pagesScanned: 1,
+            pagesFellBack: 1,
+            idempotencyKey: `degraded-page-report/${token}`,
+          });
+          if (!res.ok) console.error('degraded page report alert not sent:', res.reason || 'error');
+        } catch (err) {
+          console.error('degraded page report alert failed', redactSecrets(err?.message || err));
+        }
+        await one(
+          `update app.one_time_purchases set delivery = 'failed', report = $2::jsonb
+            where token = $1 and status = 'paid' and delivery in ('pending', 'building', 'failed')`,
+          [token, JSON.stringify(report)],
+        );
+        return json(200, {
+          status: 'paid',
+          delivery: 'failed',
+          product: purchase.product,
+          hostname: purchase.hostname,
+        });
+      }
       await one(
         `update app.one_time_purchases set delivery = 'ready', report = $2::jsonb
-          where token = $1 and delivery in ('pending', 'building')`,
+          where token = $1 and delivery in ('pending', 'building', 'failed')`,
         [token, JSON.stringify(report)],
       );
       return json(200, {
@@ -80,7 +103,7 @@ export async function GET(request) {
         pdfUrl: `/api/one-time-pdf?token=${token}`,
       });
     } catch (err) {
-      console.error('one-time page report failed', err);
+      console.error('one-time page report failed', redactSecrets(err?.message || err));
       return json(200, {
         status: 'paid',
         delivery: 'pending',

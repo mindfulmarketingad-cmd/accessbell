@@ -12,6 +12,7 @@
 import { config } from './config.js';
 import { recordWelcomeEmail } from './tracking.js';
 import { marketingFooter, unsubscribeHeaders, funnelSendBlockers } from './unsubscribe.js';
+import { redactSecrets } from '../redact.js';
 
 async function sendEmail({ to, subject, text, replyTo, idempotencyKey, extraHeaders }) {
   const c = config();
@@ -292,6 +293,41 @@ export async function sendWelcomeSubscriberEmail({ to, key }) {
 export const sendReportLinkEmail = (a) => sendEmail({ to: a.to, ...reportLinkEmail(a) });
 export const sendPaymentReceivedEmail = (a) => sendEmail({ to: a.to, ...paymentReceivedEmail(a) });
 export const sendReportReadyEmail = (a) => sendEmail({ to: a.to, ...reportReadyEmail(a) });
+
+/** David is emailed when a paid report had to use the HTML checker. */
+export const DEGRADED_AUDIT_ALERT_TO = 'mindfulmarketingad@gmail.com';
+
+/** Internal alert. The reason is redacted again here so a websocket token cannot be mailed. */
+export function degradedAuditAlertEmail({ hostname, url, token, product, reason, pagesScanned, pagesFellBack }) {
+  const label = product === 'page_report' ? 'Page Report' : 'Domain Audit';
+  const why = redactSecrets(reason || 'browser unavailable');
+  return {
+    subject: `Paid ${label} fell back to HTML: ${hostname}`.slice(0, 150),
+    text: [
+      `A paid ${label} fell back to the plain HTML check because the browser failed.`,
+      'It was not marked ready, and the buyer was not sent the ready email.',
+      '',
+      `Host: ${hostname || ''}`,
+      `URL: ${url || ''}`,
+      `Token: ${token || ''}`,
+      `Reason: ${why}`,
+      `Pages scanned: ${pagesScanned ?? 0}`,
+      `Pages that used the HTML fallback: ${pagesFellBack ?? 0}`,
+      '',
+      'Re-run it once the browser is healthy:',
+      'POST /api/one-time-rerun',
+      'Header: x-admin-token: the SUBSCRIBER_ADMIN_TOKEN or ADMIN_TOKEN value',
+      `Body: {"token":"${token || ''}"}`,
+    ].join('\n'),
+  };
+}
+
+export const sendDegradedAuditAlert = (a) =>
+  sendEmail({
+    to: DEGRADED_AUDIT_ALERT_TO,
+    ...degradedAuditAlertEmail(a),
+    idempotencyKey: a.idempotencyKey,
+  });
 /**
  * Sequence (marketing) sender: refuses to send without the CAN-SPAM address
  * and unsubscribe key, and attaches the one-click unsubscribe headers.

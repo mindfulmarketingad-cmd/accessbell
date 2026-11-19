@@ -302,3 +302,75 @@ export async function browserAudit(
     await browser.close().catch(() => {});
   }
 }
+
+/**
+ * Same-origin `<a href>` URLs from the page after it has loaded in the browser.
+ * Client-rendered sites (Base44, React) often have no links in the raw HTML.
+ * Returns [] when no browser endpoint is configured. Throws if the browser
+ * cannot load the page; the caller records that and keeps the HTML links.
+ */
+export async function collectRenderedHrefs(input, { endpoint = process.env.BROWSER_WS_ENDPOINT } = {}) {
+  if (!endpoint) return [];
+  const url = assertSafeUrl(input);
+  const browser = await chromium.connectOverCDP(endpoint, { timeout: LIMITS.connectMs });
+  try {
+    const context = await browser.newContext({
+      ...DEVICES.desktop,
+      bypassCSP: true,
+      userAgent: 'Mozilla/5.0 (compatible; AccessBellBot/1.0; +https://www.accessbell.co/about)',
+    });
+    const page = await context.newPage();
+    await page.route('**/*', (route) => {
+      const req = route.request();
+      if (['image', 'media', 'font'].includes(req.resourceType())) return route.abort();
+      if (req.isNavigationRequest()) {
+        try {
+          assertSafeUrl(req.url());
+        } catch {
+          return route.abort('blockedbyclient');
+        }
+      }
+      return route.continue();
+    });
+    const response = await page.goto(url.toString(), { waitUntil: 'domcontentloaded', timeout: LIMITS.navigationMs });
+    if (response && response.status() >= 400) throw new Error(`HTTP ${response.status()}`);
+    await page.waitForLoadState('load', { timeout: LIMITS.settleMs }).catch(() => {});
+    // Nav links on a client-rendered app appear after load. Wait until one
+    // same-origin anchor exists, then a moment more so the rest can render.
+    await page
+      .waitForFunction(
+        () =>
+          [...document.querySelectorAll('a[href]')].some((a) => {
+            try {
+              return new URL(a.href, location.href).origin === location.origin;
+            } catch {
+              return false;
+            }
+          }),
+        null,
+        { timeout: 4000 },
+      )
+      .catch(() => {});
+    await page.waitForTimeout(1000);
+    const hrefs = await page.evaluate(() => {
+      const origin = location.origin;
+      const out = [];
+      for (const a of document.querySelectorAll('a[href]')) {
+        let abs;
+        try {
+          abs = new URL(a.getAttribute('href'), location.href);
+        } catch {
+          continue;
+        }
+        if (abs.origin !== origin) continue;
+        if (abs.protocol !== 'http:' && abs.protocol !== 'https:') continue;
+        abs.hash = '';
+        out.push(abs.toString());
+      }
+      return [...new Set(out)].slice(0, 1000);
+    });
+    return hrefs;
+  } finally {
+    await browser.close().catch(() => {});
+  }
+}

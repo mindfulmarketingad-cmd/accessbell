@@ -32,6 +32,7 @@ const handlers = {
   '/api/app': await import(join(root, 'api/app.js')),
   '/api/stripe-webhook': await import(join(root, 'api/stripe-webhook.js')),
   '/api/inngest': await import(join(root, 'api/inngest.js')).catch(() => ({})),
+  '/api/one-time-rerun': await import(join(root, 'api/one-time-rerun.js')),
 };
 
 async function tryFile(p) {
