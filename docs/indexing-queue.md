@@ -4,9 +4,11 @@ Pages waiting for a manual Google Search Console request. Each growth run: resub
 
 Statuses: `queued` → `requested` → `indexed` (or `error` with a note).
 
+Last run (2026-11-19): sitemap resubmitted, GSC "Success", 467 discovered pages. Request Indexing quota was already exceeded, so 0 requests went through. All 19 URLs stay `queued`; only `/blog/ada-lawsuit-mootness` was inspected, the other 18 were not checked.
+
 | URL | added | status | requested on | notes |
 | --- | --- | --- | --- | --- |
-| https://www.accessbell.co/blog/ada-lawsuit-mootness | 2026-11-19 | queued | | New page (Nov 19 growth run). Supports /blog/ada-lawsuit-process. |
+| https://www.accessbell.co/blog/ada-lawsuit-mootness | 2026-11-19 | queued | | New page (Nov 19 growth run). Supports /blog/ada-lawsuit-process. Nov 19: URL Inspection = "Discovered - currently not indexed"; Request Indexing failed (daily quota already exceeded). Retry first on Nov 20. |
 | https://www.accessbell.co/blog/ada-lawsuit-process | 2026-11-19 | queued | | Ranking page (pos 10.6); updated Nov 19 with links to the new page. |
 | https://www.accessbell.co/industries/restaurants | 2026-11-02 | queued | | Growth log Nov 2. |
 | https://www.accessbell.co/industries/hotels | 2026-11-03 | queued | | Growth log Nov 3. |

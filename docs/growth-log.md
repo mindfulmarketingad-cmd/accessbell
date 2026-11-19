@@ -14,7 +14,7 @@ A running record of shipped pages and conversion changes. One page and one site 
 
 **Backlink angle:** A one-page, sourced explainer of the mootness test for website ADA cases, with verbatim Supreme Court lines, the statutes, a 2026 website dismissal, and a table of what mootness does and does not end. Defense lawyers, insurers and journalists can cite it.
 
-**Indexing:** pending, see `docs/indexing-queue.md`.
+**Indexing:** sitemap resubmitted (467 discovered); Request Indexing quota already exceeded, 0 requested, 19 URLs queued. See `docs/indexing-queue.md`.
 
 ## 2026-11-13
 
