@@ -4,6 +4,13 @@
 // BROWSER_WS_ENDPOINT environment variable. Because pages render in a real
 // browser, this catches issues the HTML-only audit cannot: color contrast,
 // ARIA state and content rendered by JavaScript.
+//
+// Browserless's free plan allows two concurrent browsers and closes a session
+// after two minutes. A 429 from connectOverCDP means that cap was hit. Callers
+// scan pages one at a time on a single connection. Opening the connection is
+// retried after 5s, 15s and 30s, then the caller falls back to the HTML
+// checker. Connection errors include the websocket URL (and its token), so
+// this module never logs them. Callers redact before storing or logging.
 import axe from 'axe-core';
 import { chromium } from 'playwright-core';
 import { assertSafeUrl } from './net-guard.js';
@@ -17,6 +24,107 @@ const LIMITS = {
   maxSamples: 3,
   maxElements: 25,
 };
+
+/** Waits before each retry of a Browserless 429. Three retries, then give up. */
+export const BROWSER_RATE_LIMIT_DELAYS_MS = [5_000, 15_000, 30_000];
+
+/**
+ * Reuse one Browserless session only while it is younger than this.
+ * The free plan closes a session at two minutes. Starting another page on a
+ * session that is already this old could run past that cap, so the next page
+ * opens a new connection instead.
+ */
+export const BROWSER_SESSION_BUDGET_MS = 50_000;
+
+const TARGET_HTTP = /^HTTP \d{3}\b/;
+
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const defaultConnect = (endpoint, opts) => chromium.connectOverCDP(endpoint, opts);
+
+/**
+ * A 429 from Browserless (connectOverCDP), not a status the target site returned.
+ * Our own scanner writes target failures as "HTTP 404". Browserless writes
+ * "429" or "Too Many Requests" into the websocket error.
+ */
+export function isBrowserRateLimit(error) {
+  const s = String(error?.message || error || '');
+  if (!s || TARGET_HTTP.test(s)) return false;
+  return /\b429\b/.test(s) || /too many requests/i.test(s);
+}
+
+/**
+ * Open one Browserless session. On a 429, wait 5s, then 15s, then 30s, and
+ * try again. Any other error is thrown immediately. The attempt that still
+ * fails after the last wait is thrown for the caller to fall back to HTML.
+ * Nothing is logged: the error text contains the websocket URL.
+ */
+export async function connectBrowser(endpoint, { connect = defaultConnect, sleep = wait, delays = BROWSER_RATE_LIMIT_DELAYS_MS, timeout = LIMITS.connectMs } = {}) {
+  if (!endpoint) throw new Error('BROWSER_WS_ENDPOINT is not set');
+  const pauses = Array.isArray(delays) ? delays : BROWSER_RATE_LIMIT_DELAYS_MS;
+  let lastError;
+  for (let attempt = 0; attempt <= pauses.length; attempt++) {
+    try {
+      return await connect(endpoint, { timeout });
+    } catch (err) {
+      lastError = err;
+      if (!isBrowserRateLimit(err) || attempt === pauses.length) throw err;
+      await sleep(pauses[attempt]);
+    }
+  }
+  throw lastError;
+}
+
+/**
+ * One Browserless connection shared across pages. The first open uses the
+ * 429 backoff. A later reconnect (the session is older than the budget, or
+ * the browser has disconnected) tries once, so a batch cannot spend the
+ * backoff twice and run past the function time limit. After a failed open,
+ * later pages reuse that error and do not connect again.
+ */
+export function createBrowserLease({
+  endpoint,
+  connect,
+  sleep,
+  delays,
+  budgetMs = BROWSER_SESSION_BUDGET_MS,
+  now = Date.now,
+} = {}) {
+  let session = null;
+  let openedAt = 0;
+  let failure = null;
+  let usedRetry = false;
+
+  const drop = async () => {
+    const current = session;
+    session = null;
+    openedAt = 0;
+    if (current && typeof current.close === 'function') await current.close().catch(() => {});
+  };
+
+  return {
+    async current() {
+      if (failure) return { session: null, error: failure };
+      const alive = session && session.isConnected?.() !== false && now() - openedAt < budgetMs;
+      if (alive) return { session, error: null };
+      await drop();
+      try {
+        session = await connectBrowser(endpoint, { connect, sleep, delays: usedRetry ? [] : delays });
+        usedRetry = true;
+        openedAt = now();
+        return { session, error: null };
+      } catch (err) {
+        usedRetry = true;
+        failure = err;
+        session = null;
+        return { session: null, error: err };
+      }
+    },
+    async close() {
+      await drop();
+    },
+  };
+}
 
 /** A failing element for the issue details page: its HTML, CSS selector and what to fix. */
 const elementOf = (n) => ({
@@ -206,30 +314,19 @@ export function sanitizeHeaders(list) {
 const sameSite = (host, target) => host === target || host.endsWith('.' + target);
 
 /**
- * Load the page in remote Chromium and run axe-core.
- * Throws UnsafeUrlError for disallowed targets; any other error means the
- * browser path failed and the caller should fall back to the HTML audit.
- *
- * Options: standard (free-scan id or { id, label }), tags, device,
- * headers (sent only to the scanned site's own host), delayMs, scroll.
+ * Run axe-core in a browser that is already connected. Closes the page
+ * context, not the browser, so the caller can reuse the connection.
  */
-export async function browserAudit(
-  input,
-  { standard = 'wcag22', tags, device = 'desktop', headers = {}, delayMs = 0, scroll = false, screenshots = 0, endpoint = process.env.BROWSER_WS_ENDPOINT } = {},
-) {
-  if (!endpoint) throw new Error('BROWSER_WS_ENDPOINT is not set');
-  const url = assertSafeUrl(input);
+async function auditInBrowser(browser, url, { standard = 'wcag22', tags, device = 'desktop', headers = {}, delayMs = 0, scroll = false, screenshots = 0 } = {}) {
   const siteHost = url.hostname.replace(/^www\./, '');
   const extraHeaders = Object.keys(headers).length ? headers : null;
-
-  const browser = await chromium.connectOverCDP(endpoint, { timeout: LIMITS.connectMs });
+  // bypassCSP lets axe run on sites whose own Content-Security-Policy would block it.
+  const context = await browser.newContext({
+    ...(DEVICES[device] || DEVICES.desktop),
+    bypassCSP: true,
+    userAgent: `Mozilla/5.0 (compatible; AccessBellBot/1.0; +https://www.accessbell.co/about)${device === 'mobile' ? ' Mobile' : ''}`,
+  });
   try {
-    // bypassCSP lets axe run on sites whose own Content-Security-Policy would block it.
-    const context = await browser.newContext({
-      ...(DEVICES[device] || DEVICES.desktop),
-      bypassCSP: true,
-      userAgent: `Mozilla/5.0 (compatible; AccessBellBot/1.0; +https://www.accessbell.co/about)${device === 'mobile' ? ' Mobile' : ''}`,
-    });
     const page = await context.newPage();
 
     await page.route('**/*', (route) => {
@@ -299,6 +396,29 @@ export async function browserAudit(
       .catch(() => []);
     return { finalUrl, device, ...mapAxeResults(results, standard, shots), documents };
   } finally {
+    await context.close().catch(() => {});
+  }
+}
+
+/**
+ * Load the page in remote Chromium and run axe-core.
+ * Throws UnsafeUrlError for disallowed targets; any other error means the
+ * browser path failed and the caller should fall back to the HTML audit.
+ *
+ * Options: standard (free-scan id or { id, label }), tags, device,
+ * headers (sent only to the scanned site's own host), delayMs, scroll.
+ * `session` reuses an open connection instead of calling connectOverCDP.
+ * Without one, a 429 on connect is retried (5s, 15s, 30s) before this throws.
+ */
+export async function browserAudit(input, opts = {}) {
+  const endpoint = opts.endpoint !== undefined ? opts.endpoint : process.env.BROWSER_WS_ENDPOINT;
+  if (!opts.session && !endpoint) throw new Error('BROWSER_WS_ENDPOINT is not set');
+  const url = assertSafeUrl(input);
+  if (opts.session) return auditInBrowser(opts.session, url, opts);
+  const browser = await connectBrowser(endpoint, { connect: opts.connect, sleep: opts.sleep, delays: opts.delays });
+  try {
+    return await auditInBrowser(browser, url, opts);
+  } finally {
     await browser.close().catch(() => {});
   }
 }
@@ -309,10 +429,11 @@ export async function browserAudit(
  * Returns [] when no browser endpoint is configured. Throws if the browser
  * cannot load the page; the caller records that and keeps the HTML links.
  */
-export async function collectRenderedHrefs(input, { endpoint = process.env.BROWSER_WS_ENDPOINT } = {}) {
+export async function collectRenderedHrefs(input, opts = {}) {
+  const endpoint = opts.endpoint !== undefined ? opts.endpoint : process.env.BROWSER_WS_ENDPOINT;
   if (!endpoint) return [];
   const url = assertSafeUrl(input);
-  const browser = await chromium.connectOverCDP(endpoint, { timeout: LIMITS.connectMs });
+  const browser = await connectBrowser(endpoint, { connect: opts.connect, sleep: opts.sleep, delays: opts.delays });
   try {
     const context = await browser.newContext({
       ...DEVICES.desktop,

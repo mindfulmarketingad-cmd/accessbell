@@ -4,10 +4,11 @@ import { LIMITS } from './config.js';
 import { AppError, badRequest, notFound } from './errors.js';
 import { requireRole, requireSubscription } from './accounts.js';
 import { getPage, getDomain, DEFAULT_SETTINGS, linksFromHtml } from './domains.js';
-import { browserAudit, sanitizeHeaders } from '../browser-audit.js';
+import { browserAudit, createBrowserLease, sanitizeHeaders } from '../browser-audit.js';
 import { audit } from '../audit.js';
 import { fetchPage } from '../fetch-page.js';
 import { UnsafeUrlError } from '../net-guard.js';
+import { redactSecrets } from '../redact.js';
 import { tagsFor, standardFor } from '../wcag.js';
 import { recordDocuments, isPdfUrl } from './documents.js';
 import { startScanRun, finishScanRun, recordScanDuration } from './tracking.js';
@@ -33,24 +34,32 @@ async function stripOldShots(pageId, device, keepScanId) {
   );
 }
 
-export async function runAudit(url, settings, device, { browser = browserAudit, fetcher = fetchPage } = {}) {
+export async function runAudit(url, settings, device, { browser = browserAudit, fetcher = fetchPage, session = null, browserError = null, connect, sleep, delays } = {}) {
   const s = { ...DEFAULT_SETTINGS, ...settings };
   const standard = standardFor(s.wcagVersion, s.wcagLevel);
   const headerMap = sanitizeHeaders(s.headers);
-  if (process.env.BROWSER_WS_ENDPOINT) {
-    try {
-      return await browser(url, {
-        standard,
-        tags: tagsFor(s.wcagVersion, s.wcagLevel),
-        device,
-        headers: headerMap,
-        delayMs: s.delayMs,
-        scroll: s.scroll,
-        screenshots: SHOTS_PER_SCAN,
-      });
-    } catch (err) {
-      if (err instanceof UnsafeUrlError) throw err;
-      console.warn('browser scan failed, using HTML audit:', String(err?.message || err).split('\n')[0].replace(/(token|apiKey|key)=[^&\s]+/gi, '$1=***'));
+  if (browserError || process.env.BROWSER_WS_ENDPOINT || session) {
+    if (browserError) {
+      console.warn('browser scan failed, using HTML audit:', redactSecrets(browserError?.message || browserError));
+    } else {
+      try {
+        return await browser(url, {
+          standard,
+          tags: tagsFor(s.wcagVersion, s.wcagLevel),
+          device,
+          headers: headerMap,
+          delayMs: s.delayMs,
+          scroll: s.scroll,
+          screenshots: SHOTS_PER_SCAN,
+          session,
+          connect,
+          sleep,
+          delays,
+        });
+      } catch (err) {
+        if (err instanceof UnsafeUrlError) throw err;
+        console.warn('browser scan failed, using HTML audit:', redactSecrets(err?.message || err));
+      }
     }
   }
   const page = await fetcher(url);
@@ -59,9 +68,25 @@ export async function runAudit(url, settings, device, { browser = browserAudit, 
   return { ...report, finalUrl: page.finalUrl, device, engine: 'html', standard, documents };
 }
 
+/** One Browserless session for every device of this page. A test-supplied audit function keeps its own browser. */
+function leaseForScan(deps) {
+  if (deps?.browser) return null;
+  const endpoint = deps?.endpoint ?? process.env.BROWSER_WS_ENDPOINT;
+  if (!endpoint) return null;
+  return createBrowserLease({
+    endpoint,
+    connect: deps?.connect,
+    sleep: deps?.sleep,
+    delays: deps?.delays,
+    budgetMs: deps?.budgetMs,
+    now: deps?.now,
+  });
+}
+
 /**
  * Scan a page on every configured device, store the results as audit
  * evidence, and update the page's latest score. Returns the stored scans.
+ * Desktop and mobile share one browser connection.
  */
 export async function scanPage(page, { accountId, trigger = 'manual', userId = null, deps } = {}) {
   const settings = { ...DEFAULT_SETTINGS, ...page.settings };
@@ -69,54 +94,60 @@ export async function scanPage(page, { accountId, trigger = 'manual', userId = n
   const durations = [];
   const runStarted = Date.now();
   const runId = await startScanRun({ accountId, domainId: page.domain_id, pageId: page.id, kind: 'page', trigger });
-  for (const device of settings.devices) {
-    let row;
-    const t0 = Date.now();
-    try {
-      const r = await runAudit(page.url, settings, device, deps);
-      row = await one(
-        `insert into app.scans (account_id, domain_id, page_id, device, status, engine, standard, score, issues_count,
-                                summary, issues, passes, review, notes, final_url, trigger, created_by)
-         values ($1, $2, $3, $4, 'done', $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
-         returning id, device, status, score, issues_count, created_at`,
-        [
-          accountId, page.domain_id, page.id, device, r.engine, r.standard?.label || null, r.score, r.summary.issues,
-          JSON.stringify(r.summary), JSON.stringify(r.issues), JSON.stringify(r.passes),
-          JSON.stringify(r.review || []), JSON.stringify(r.notes || []), r.finalUrl, trigger, userId,
-        ],
-      );
-      if ((r.issues || []).some((i) => i.shot)) await stripOldShots(page.id, device, row.id);
-      // PDFs linked from the page are listed on the Documents tab for PDF checks.
-      if (r.documents?.length) {
-        await recordDocuments({ id: page.domain_id, hostname: page.hostname || new URL(page.url).hostname }, page.url, r.documents);
+  const lease = leaseForScan(deps);
+  try {
+    for (const device of settings.devices) {
+      const held = lease ? await lease.current() : { session: null, error: null };
+      let row;
+      const t0 = Date.now();
+      try {
+        const r = await runAudit(page.url, settings, device, { ...deps, session: held.session, browserError: held.error });
+        row = await one(
+          `insert into app.scans (account_id, domain_id, page_id, device, status, engine, standard, score, issues_count,
+                                  summary, issues, passes, review, notes, final_url, trigger, created_by)
+           values ($1, $2, $3, $4, 'done', $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
+           returning id, device, status, score, issues_count, created_at`,
+          [
+            accountId, page.domain_id, page.id, device, r.engine, r.standard?.label || null, r.score, r.summary.issues,
+            JSON.stringify(r.summary), JSON.stringify(r.issues), JSON.stringify(r.passes),
+            JSON.stringify(r.review || []), JSON.stringify(r.notes || []), r.finalUrl, trigger, userId,
+          ],
+        );
+        if ((r.issues || []).some((i) => i.shot)) await stripOldShots(page.id, device, row.id);
+        // PDFs linked from the page are listed on the Documents tab for PDF checks.
+        if (r.documents?.length) {
+          await recordDocuments({ id: page.domain_id, hostname: page.hostname || new URL(page.url).hostname }, page.url, r.documents);
+        }
+      } catch (err) {
+        const message = err?.expose ? err.message : 'The page could not be scanned.';
+        // Log the real cause so failed scans can be diagnosed (the stored message stays generic).
+        console.error('scan failed', JSON.stringify({ pageId: page.id, accountId, device, trigger, url: page.url, error: redactSecrets(err?.message || err) }));
+        row = await one(
+          `insert into app.scans (account_id, domain_id, page_id, device, status, error, trigger, created_by)
+           values ($1, $2, $3, $4, 'failed', $5, $6, $7)
+           returning id, device, status, error, created_at`,
+          [accountId, page.domain_id, page.id, device, message, trigger, userId],
+        );
       }
-    } catch (err) {
-      const message = err?.expose ? err.message : 'The page could not be scanned.';
-      // Log the real cause so failed scans can be diagnosed (the stored message stays generic).
-      console.error('scan failed', JSON.stringify({ pageId: page.id, accountId, device, trigger, url: page.url, error: String(err?.message || err).split('\n')[0].replace(/(token|apiKey|key)=[^&\s]+/gi, '$1=***').slice(0, 300) }));
-      row = await one(
-        `insert into app.scans (account_id, domain_id, page_id, device, status, error, trigger, created_by)
-         values ($1, $2, $3, $4, 'failed', $5, $6, $7)
-         returning id, device, status, error, created_at`,
-        [accountId, page.domain_id, page.id, device, message, trigger, userId],
+      stored.push(row);
+      durations.push([row?.id, Date.now() - t0]);
+    }
+    for (const [id, ms] of durations) await recordScanDuration(id, ms);
+
+    const done = stored.filter((s) => s.status === 'done');
+    if (done.length) {
+      // The page's headline numbers use its worst device result.
+      const worst = done.reduce((a, b) => (b.score < a.score ? b : a));
+      await query(
+        `update app.pages set last_scan_id = $2, last_score = $3, last_issues = $4, last_scanned_at = now() where id = $1`,
+        [page.id, worst.id, worst.score, Math.max(...done.map((d) => d.issues_count))],
       );
     }
-    stored.push(row);
-    durations.push([row?.id, Date.now() - t0]);
+    await finishScanRun(runId, { status: done.length ? 'done' : 'failed', durationMs: Date.now() - runStarted });
+    return stored;
+  } finally {
+    if (lease) await lease.close();
   }
-  for (const [id, ms] of durations) await recordScanDuration(id, ms);
-
-  const done = stored.filter((s) => s.status === 'done');
-  if (done.length) {
-    // The page's headline numbers use its worst device result.
-    const worst = done.reduce((a, b) => (b.score < a.score ? b : a));
-    await query(
-      `update app.pages set last_scan_id = $2, last_score = $3, last_issues = $4, last_scanned_at = now() where id = $1`,
-      [page.id, worst.id, worst.score, Math.max(...done.map((d) => d.issues_count))],
-    );
-  }
-  await finishScanRun(runId, { status: done.length ? 'done' : 'failed', durationMs: Date.now() - runStarted });
-  return stored;
 }
 
 /** Dashboard "Rescan" for one page. */

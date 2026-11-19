@@ -11,25 +11,29 @@
       "memory": 1024
     },
     "api/one-time-report.js": {
-      "maxDuration": 60,
+      "maxDuration": 180,
       "memory": 1024
     },
     "api/scan.js": {
-      "maxDuration": 60,
+      "maxDuration": 180,
       "memory": 1024
     },
     "api/contact.js": {
       "maxDuration": 10
     },
     "api/app.js": {
-      "maxDuration": 60,
+      "maxDuration": 300,
       "memory": 1024
     },
     "api/stripe-webhook.js": {
       "maxDuration": 20
     },
     "api/shopify.js": {
-      "maxDuration": 60,
+      "maxDuration": 300,
+      "memory": 1024
+    },
+    "api/inngest.js": {
+      "maxDuration": 300,
       "memory": 1024
     }
   },

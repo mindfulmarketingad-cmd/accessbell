@@ -5,11 +5,14 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { redactSecrets } from '../server/redact.js';
 import { collectRenderedHrefs } from '../server/browser-audit.js';
+import { BROWSER_RATE_LIMIT_DELAYS_MS, BROWSER_SESSION_BUDGET_MS } from '../server/browser-audit.js';
+import { monitorPageFn, oneTimeAuditFn, scanPageFn, shopifyFreeScanFn } from '../server/inngest/functions.js';
 import {
   aggregateOneTimeReport,
   discoverOneTimeUrls,
   isBrowserServiceFailure,
   isTargetHttpError,
+  ONE_TIME_SCAN_BATCH,
   runPaidCheck,
   scanOneTimeUrls,
 } from '../server/one-time-audit.js';
@@ -263,6 +266,125 @@ test('the degraded-audit alert goes to David and never includes the browser toke
       globalThis.fetch = original;
     }
   });
+});
+
+test('paid pages are scanned one at a time on a single browser connection', async () => {
+  const urls = ['https://example.com/a', 'https://example.com/b', 'https://example.com/c'];
+  let inFlight = 0;
+  let maxInFlight = 0;
+  let connects = 0;
+  let closes = 0;
+  const order = [];
+  const sessions = [];
+  const results = await scanOneTimeUrls(urls, {
+    endpoint: 'wss://example.test/chrome',
+    connect: async () => {
+      connects += 1;
+      const session = {
+        id: connects,
+        async close() {
+          closes += 1;
+        },
+      };
+      sessions.push(session);
+      return session;
+    },
+    sleep: async () => {
+      throw new Error('should not sleep');
+    },
+    browserAudit: async (url, opts) => {
+      inFlight += 1;
+      maxInFlight = Math.max(maxInFlight, inFlight);
+      order.push(url);
+      assert.equal(opts.session, sessions[0]);
+      await new Promise((resolve) => setTimeout(resolve, 15));
+      inFlight -= 1;
+      return { summary: { issues: 1, critical: 0, serious: 1, moderate: 0, minor: 0 }, score: 80, issues: [] };
+    },
+  });
+  assert.equal(maxInFlight, 1);
+  assert.deepEqual(order, urls);
+  assert.equal(connects, 1);
+  assert.equal(closes, 1);
+  assert.deepEqual(results.map((r) => r.url), urls);
+  assert.ok(results.every((r) => r.ok && !r.browserFallback));
+
+  let agedConnects = 0;
+  let clock = 0;
+  const aged = await scanOneTimeUrls(['https://example.com/a', 'https://example.com/b'], {
+    endpoint: 'wss://example.test/chrome',
+    budgetMs: 1_000,
+    now: () => clock,
+    connect: async () => {
+      agedConnects += 1;
+      return { id: agedConnects, async close() {} };
+    },
+    browserAudit: async (_url, opts) => {
+      clock += 1_000;
+      return { summary: { issues: 0 }, score: 100, issues: [], session: opts.session.id };
+    },
+  });
+  assert.equal(agedConnects, 2, 'a session older than the budget is replaced before the next page');
+  assert.equal(aged[0].ok, true);
+  assert.equal(aged[1].ok, true);
+
+  let idleConnects = 0;
+  assert.deepEqual(await scanOneTimeUrls([], {
+    connect: async () => {
+      idleConnects += 1;
+      return { async close() {} };
+    },
+  }), []);
+  assert.equal(idleConnects, 0);
+});
+
+test('a 429 is retried with backoff and then every page falls back without the token', async () => {
+  let connects = 0;
+  const waits = [];
+  const endpoint = `wss://production-sfo.browserless.io?token=supersecret`;
+  const results = await withEnv({ BROWSER_WS_ENDPOINT: endpoint }, async () => scanOneTimeUrls(
+    ['https://example.com/', 'https://example.com/orders'],
+    {
+      endpoint,
+      connect: async (url) => {
+        connects += 1;
+        throw new Error(`browserType.connectOverCDP: ${url} Unexpected server response: 429 Too Many Requests`);
+      },
+      sleep: async (ms) => waits.push(ms),
+      fetchPage: async (url) => ({ finalUrl: url, html: '<html><body><img src="a.png"></body></html>' }),
+    },
+  ));
+  assert.equal(connects, 4);
+  assert.deepEqual(waits, [5_000, 15_000, 30_000]);
+  assert.equal(results.length, 2);
+  assert.ok(results.every((r) => r.ok && r.browserFallback));
+  const stored = JSON.stringify(results);
+  assert.match(stored, /429/);
+  assert.doesNotMatch(stored, /supersecret/);
+  assert.match(stored, /wss:\/\/\[redacted\]/);
+  const report = aggregateOneTimeReport({ hostname: 'example.com', url: 'https://example.com/', pageResults: results });
+  assert.equal(report.degraded, true);
+  assert.doesNotMatch(report.browserFallback.reason, /supersecret/);
+});
+
+test('domain audits and monitoring crawls share one browser slot', () => {
+  const expected = { limit: 1, scope: 'env', key: '"browserless"' };
+  for (const fn of [monitorPageFn, scanPageFn, shopifyFreeScanFn, oneTimeAuditFn]) {
+    assert.deepEqual(fn.opts.concurrency, expected);
+  }
+  assert.equal(ONE_TIME_SCAN_BATCH, 2);
+  assert.deepEqual(BROWSER_RATE_LIMIT_DELAYS_MS, [5_000, 15_000, 30_000]);
+  assert.ok(BROWSER_SESSION_BUDGET_MS <= 50_000);
+  assert.ok(BROWSER_SESSION_BUDGET_MS < 120_000);
+  const retryWait = BROWSER_RATE_LIMIT_DELAYS_MS.reduce((sum, ms) => sum + ms, 0);
+  assert.ok(retryWait + ONE_TIME_SCAN_BATCH * 70_000 < 300_000);
+  const src = readFileSync(new URL('../server/inngest/functions.js', import.meta.url), 'utf8');
+  assert.match(src, /i \+= ONE_TIME_SCAN_BATCH/);
+  assert.doesNotMatch(src, /i \+= 25/);
+  const vercel = JSON.parse(readFileSync(new URL('../vercel.json', import.meta.url), 'utf8'));
+  assert.equal(vercel.functions['api/inngest.js'].maxDuration, 300);
+  assert.ok(vercel.functions['api/one-time-report.js'].maxDuration >= 120);
+  assert.ok(vercel.functions['api/app.js'].maxDuration >= 180);
 });
 
 test('admin re-run resets a domain audit and queues the crawl', async () => {
