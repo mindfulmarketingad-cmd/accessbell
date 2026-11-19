@@ -97,6 +97,7 @@ export const COVER_TOPICS = {
   'ada-lawsuit-process': { ui: 'scale', label: 'ADA', caption: 'The lawsuit process' },
   'ada-lawsuit-what-to-do': { ui: 'alert', label: 'ADA', caption: 'Sued? What to do next' },
   'ada-lawsuits-2026': { ui: 'chart', label: 'ADA', caption: '2026 lawsuits' },
+  'ada-lawsuit-mootness': { ui: 'shield', label: 'ADA', caption: 'Can a fix end the case?' },
   'how-long-does-an-ada-lawsuit-take': { ui: 'clock', label: 'ADA', caption: 'How long a lawsuit takes' },
   'ada-lawsuit-payouts': { ui: 'scale', label: 'ADA', caption: 'Lawsuit payouts' },
   'fix-website-after-ada-lawsuit': { ui: 'wrench', label: 'ADA', caption: 'Fix your website' },

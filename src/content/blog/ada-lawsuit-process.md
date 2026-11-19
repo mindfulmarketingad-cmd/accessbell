@@ -3,21 +3,24 @@ title: 'The ADA Lawsuit Process: What Happens From Complaint to Settlement'
 seoTitle: 'ADA Lawsuit Process: 8 Stages and a Realistic Timeline'
 description: 'Every stage of the ADA lawsuit process, from the 21-day deadline to respond through mediation, discovery and settlement, plus what to do first if you are sued.'
 pubDate: 2026-09-28
+updatedDate: 2026-11-19
 category: 'Compliance'
 contributors:
   - author: joseph-edwards
     role: Author
 history:
+  - date: 2026-11-19
+    note: 'Added a section link and FAQ answer on mootness: when a proven website fix can end the federal claim.'
   - date: 2026-09-28
     note: 'First published. Deadlines checked against the Federal Rules of Civil Procedure and the Federal Rules of Appellate Procedure.'
-related: ['ada-title-iii-law-for-businesses', 'ada-website-compliance-guide', 'automated-vs-manual-accessibility-testing']
+related: ['ada-lawsuit-mootness', 'ada-title-iii-law-for-businesses', 'ada-website-compliance-guide']
 faqs:
   - q: 'How long does an ADA lawsuit take?'
     a: 'Most ADA Title III cases settle within about 6 to 18 months of the complaint being filed. Cases that go through full discovery and motions take longer, and the rare case that goes to trial can last several years.'
   - q: 'Can a business be sued under the ADA because of its website?'
     a: 'Yes. Thousands of website accessibility lawsuits are filed every year under Title III of the ADA. The Department of Justice''s [guidance on web accessibility and the ADA](https://www.ada.gov/resources/web-guidance/) explains how it applies to websites. Courts disagree on whether a business that exists only online is covered, but many courts apply the ADA where a website is connected to a physical store or service. Read our [ADA website compliance guide](/blog/ada-website-compliance-guide) for the details.'
   - q: 'Does fixing my website end an ADA lawsuit?'
-    a: 'Not automatically. Courts often treat a voluntary fix as not ending the case unless it is clear the barriers will not return. Fixing the site still matters: it limits your exposure, supports a settlement and protects you from the next plaintiff.'
+    a: 'Not automatically. Courts often treat a voluntary fix as not ending the case unless it is clear the barriers will not return. In 2026 one federal court did dismiss a website claim as moot after the business proved the fix. Our guide to [ADA lawsuit mootness](/blog/ada-lawsuit-mootness) explains the test and the evidence it takes. Fixing the site still matters either way: it limits your exposure, supports a settlement and protects you from the next plaintiff.'
   - q: 'What is an ADA demand letter?'
     a: 'A demand letter is a letter from a lawyer claiming your website or building is inaccessible and asking you to fix it and pay attorney fees, usually before filing suit. It is not a lawsuit, but it should be taken seriously. Share it with a lawyer before you respond.'
   - q: 'Can an ADA lawsuit be filed in state court?'
@@ -108,6 +111,8 @@ If the case is not resolved early, both sides exchange evidence during **discove
 - Records of your accessibility policies, testing and fixes
 
 Discovery is where defense costs rise quickly. It is also why records of continuous monitoring and remediation are valuable: they show a documented, good-faith effort.
+
+Those same records can matter before discovery, too. A Title III plaintiff can only ask the court to order the barriers fixed, so if the site is fixed and will stay fixed, a defendant may argue the federal claim is moot. See [when fixing your website can end an ADA lawsuit](/blog/ada-lawsuit-mootness) for the Supreme Court test, a 2026 website case dismissed on that basis, and what mootness does not end.
 
 ## Stage 5: Settlement Negotiations
 

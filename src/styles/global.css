@@ -9049,3 +9049,47 @@ img.platform-logo-lg {
     break-inside: avoid;
   }
 }
+
+/* Paid report page: keep this site monitored (trial link carries ?domain=) */
+.report-monitor-offer {
+  margin: 20px clamp(20px, 3vw, 32px);
+  padding: 20px;
+  border: 1px solid var(--sage-100);
+  border-radius: var(--radius);
+  background: var(--sage-50);
+}
+.report-monitor-offer h3 {
+  margin: 0 0 8px;
+  font-size: 1.125rem;
+  color: var(--ink-900);
+  overflow-wrap: anywhere;
+}
+.report-monitor-offer p {
+  margin: 0 0 12px;
+  color: var(--ink-700);
+}
+.report-monitor-offer .scan-cta-note {
+  margin: 12px 0 0;
+  color: var(--ink-500);
+}
+
+/* Quotable key-facts box near the top of an article */
+.key-facts {
+  margin: 24px 0;
+  padding: 20px 24px;
+  border: 1px solid var(--sage-100);
+  border-left: 4px solid var(--sage-700);
+  border-radius: var(--radius);
+  background: var(--sage-50);
+}
+.key-facts h2 {
+  margin: 0 0 10px;
+  font-size: 1.125rem;
+}
+.key-facts ul {
+  margin: 0;
+  padding-left: 1.25em;
+}
+.key-facts li + li {
+  margin-top: 6px;
+}

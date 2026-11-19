@@ -2,6 +2,20 @@
 
 A running record of shipped pages and conversion changes. One page and one site improvement per entry.
 
+## 2026-11-19
+
+**New page:** `/blog/ada-lawsuit-mootness` — ADA Lawsuit Mootness: Can Fixing Your Website End the Case? It explains why a private Title III claim can become moot (42 U.S.C. § 12188(a)(1) gives private plaintiffs only the "preventive relief" of § 2000a-3(a)), quotes the Supreme Court's "absolutely clear" test (Laidlaw, 2000), "cannot automatically moot a case" and "formidable burden" (Already v. Nike, 2013) and the 2024 restatement in FBI v. Fikre, and walks through *Jones v. Moscot.com* (S.D.N.Y., dismissed as moot March 5, 2026). It lists what mootness does not end: state-law damages (Unruh, at least $4,000 per violation), refiling in state court under 28 U.S.C. § 1367(c)(3), DOJ damages and civil penalties under § 12188(b), and the next plaintiff. It also covers fees (Buckhannon rejects the catalyst theory under the ADA) and Acheson Hotels v. Laufer. A key-facts box sits near the top, followed by an evidence table, a "not legal advice" notice, the free scan, the 3-day Pro trial ($29 per domain per month or $199 per year, card at checkout, no charge until the trial ends, 14-day money-back on the first charge), the $19 Page Report and the $79 Domain Audit. `/blog/ada-lawsuit-process` (FAQ and the Discovery stage) and `/blog/ada-lawsuit-what-to-do` now link to it, and it links back to both.
+
+**Site improvement:** The paid report page (`/report`, after a $19 Page Report or $79 Domain Audit) now ends with "Keep {site} fixed after this report." The button, "Start 3-day free trial for {site}," opens signup with `?domain=` filled in, so the trial starts with the site the buyer just paid to audit. Trial terms appear next to it. The old buttons were "Save this report to your dashboard," which went to signup with no domain, and "Keep it monitored with Pro — $29/mo," which went to the pricing page.
+
+**Why:** Report buyers have already paid to find issues on one specific site, so they are the most likely trial starters. Before this change they had to re-enter the domain or go through pricing first, and the trial terms were not shown.
+
+**GSC supported:** `/blog/ada-lawsuit-process` is at position 10.6 with 96 impressions and 5 clicks (Oct 21–Nov 17). The new page answers that page's "Does fixing my website end an ADA lawsuit?" FAQ in depth.
+
+**Backlink angle:** A one-page, sourced explainer of the mootness test for website ADA cases, with verbatim Supreme Court lines, the statutes, a 2026 website dismissal, and a table of what mootness does and does not end. Defense lawyers, insurers and journalists can cite it.
+
+**Indexing:** pending, see `docs/indexing-queue.md`.
+
 ## 2026-11-13
 
 **New page:** `/resources/wix-accessibility-checklist` — Wix accessibility checklist. It quotes Wix’s statement that the Accessibility Wizard cannot guarantee compliance with local accessibility laws, the WCAG 2.2 basis of the wizard’s tasks, and the Level AA ratios the wizard prints. The shareable table is Wix’s own list of what the wizard does not support, including checkout, the side cart, Velo, the CMS, password-protected pages, and third-party apps. It also quotes the AI alt-text limit (not guaranteed accurate; SVG and GIF are excluded), the warning that old Wix Forms are not accessible, and ADA.gov’s March 18, 2022 position on goods and services offered on the web. The ticks stay in the browser. The free scan, the 3-day Pro trial ($29 per domain per month or $199 per year), the $19 Page Report, and the $79 Domain Audit are on the page.
