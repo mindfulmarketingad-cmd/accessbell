@@ -3,18 +3,29 @@
 // configured) links rendered in a real browser. Scan each one with the same
 // engine as the free scan. Pages that fail to load are recorded and skipped.
 //
+// Pages are scanned one at a time on a single Browserless connection. The free
+// plan allows two concurrent browsers; opening one per page (previously three
+// at a time) returned 429 from connectOverCDP, and the worker that failed
+// fastest then drained the rest of the queue into the HTML checker.
+//
 // A paid audit that falls back to the HTML checker because the browser failed
 // is marked degraded. The caller stores it as failed and alerts the owner
 // instead of emailing the buyer that a finished browser audit is ready.
 import { readSitemaps, linksFromHtml } from './app/domains.js';
-import { browserAudit, collectRenderedHrefs } from './browser-audit.js';
+import { browserAudit, collectRenderedHrefs, createBrowserLease } from './browser-audit.js';
 import { audit, scoreFrom } from './audit.js';
 import { fetchPage } from './fetch-page.js';
 import { redactSecrets } from './redact.js';
 
 const MAX_PAGES = 500;
 const SKIP_EXT = /\.(pdf|jpe?g|png|gif|webp|svg|ico|zip|gz|mp4|mp3|webm|css|js|json|xml|txt|docx?|xlsx?|pptx?)$/i;
-const CONCURRENCY = 3;
+
+/**
+ * Pages per Inngest step. Two serial browser scans, plus one 429 backoff
+ * (5s + 15s + 30s) and at most one extra connect, stay under the 300s
+ * function limit and under Browserless's two-minute session.
+ */
+export const ONE_TIME_SCAN_BATCH = 2;
 
 /** Our own "HTTP 404" means the target site responded. Browserless errors do not use this prefix. */
 export function isTargetHttpError(message) {
@@ -48,9 +59,27 @@ async function htmlAudit(url, standard, fetchImpl = fetchPage) {
 export async function runPaidCheck(url, deps = {}) {
   const browser = deps.browserAudit || browserAudit;
   const fetchImpl = deps.fetchPage || fetchPage;
-  if (process.env.BROWSER_WS_ENDPOINT) {
+  if (deps.browserError) {
+    const browserFallback = redactSecrets(deps.browserError?.message || deps.browserError);
     try {
-      const report = await browser(url, { standard: 'wcag22' });
+      const report = await htmlAudit(url, 'wcag22', fetchImpl);
+      return { report, browserFallback };
+    } catch (htmlErr) {
+      const error = new Error(redactSecrets(htmlErr?.message || htmlErr));
+      error.browserFallback = browserFallback;
+      throw error;
+    }
+  }
+  if (process.env.BROWSER_WS_ENDPOINT || deps.session || deps.endpoint) {
+    try {
+      const report = await browser(url, {
+        standard: 'wcag22',
+        session: deps.session,
+        endpoint: deps.endpoint,
+        connect: deps.connect,
+        sleep: deps.sleep,
+        delays: deps.delays,
+      });
       return { report, browserFallback: null };
     } catch (err) {
       const browserFallback = redactSecrets(err?.message || err);
@@ -115,16 +144,42 @@ export async function discoverOneTimeUrls(baseUrl, deps = {}) {
   return { urls: out.slice(0, MAX_PAGES), browserDiscoveryError };
 }
 
-/** Scan a list of URLs with a small worker pool. Returns per-page results in input order. */
+/**
+ * Scan URLs one at a time, in input order, on one Browserless connection.
+ * A 429 while opening that connection is retried (5s, 15s, 30s). If it still
+ * fails, every page in this batch uses the HTML checker and records the
+ * redacted reason. No further connections are opened.
+ * deps.browserAudit skips the shared connection so tests can replace the scan.
+ * deps.connect replaces connectOverCDP for tests.
+ */
 export async function scanOneTimeUrls(urls, deps = {}) {
   const results = new Array(urls.length);
-  let next = 0;
-  const worker = async () => {
-    while (next < urls.length) {
-      const i = next++;
+  if (!urls.length) return results;
+  const endpoint = deps.endpoint ?? process.env.BROWSER_WS_ENDPOINT;
+  const customAudit = typeof deps.browserAudit === 'function';
+  const manageSession = typeof deps.connect === 'function' || (Boolean(endpoint) && !customAudit);
+  const lease = manageSession
+    ? createBrowserLease({
+        endpoint,
+        connect: deps.connect,
+        sleep: deps.sleep,
+        delays: deps.delays,
+        budgetMs: deps.budgetMs,
+        now: deps.now,
+      })
+    : null;
+  try {
+    for (let i = 0; i < urls.length; i++) {
       const url = urls[i];
+      let session = null;
+      let browserError = null;
+      if (lease) {
+        const held = await lease.current();
+        session = held.session;
+        browserError = held.error;
+      }
       try {
-        const { report, browserFallback } = await runPaidCheck(url, deps);
+        const { report, browserFallback } = await runPaidCheck(url, { ...deps, session, browserError });
         const s = report.summary || {};
         results[i] = {
           url,
@@ -147,8 +202,9 @@ export async function scanOneTimeUrls(urls, deps = {}) {
         };
       }
     }
-  };
-  await Promise.all(Array.from({ length: Math.min(CONCURRENCY, urls.length) }, worker));
+  } finally {
+    if (lease) await lease.close();
+  }
   return results;
 }
 

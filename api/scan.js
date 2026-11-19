@@ -18,6 +18,7 @@ import { json, checkOrigin, clientIp, readJson, methodNotAllowed } from '../serv
 import { recordFreeScan } from '../server/app/free-scans.js';
 import { query } from '../server/app/db.js';
 import { ownerCounts } from '../src/scripts/shared/owner-priority.js';
+import { redactSecrets } from '../server/redact.js';
 
 const perMinute = createRateLimiter({ limit: 5, windowMs: 60_000 });
 const perHour = createRateLimiter({ limit: 30, windowMs: 60 * 60_000 });
@@ -115,8 +116,7 @@ export async function POST(request) {
         // Browser unreachable, page failed to load, etc. The HTML audit
         // either succeeds or produces a clear, user-facing error.
         // Error text can contain the endpoint URL; never log its token.
-        const reason = String((err && err.message) || err).split('\n')[0].replace(/(token|apiKey|key)=[^&\s]+/gi, '$1=***');
-        console.warn('browser scan failed, using HTML audit:', reason);
+        console.warn('browser scan failed, using HTML audit:', redactSecrets(err?.message || err));
         report = await htmlAudit(url, standard);
       }
     } else {

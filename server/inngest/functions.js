@@ -2,7 +2,7 @@
 import { Inngest } from 'inngest';
 import { pagesDueForMonitoring, monitorPage, sendRegressionAlert, sendReadyDigests } from '../app/monitoring.js';
 import { startOneTimeAudit, finishOneTimeAudit, failOneTimeAudit, storeDegradedOneTimeAudit } from '../app/one-time.js';
-import { discoverOneTimeUrls, scanOneTimeUrls, aggregateOneTimeReport } from '../one-time-audit.js';
+import { discoverOneTimeUrls, scanOneTimeUrls, aggregateOneTimeReport, ONE_TIME_SCAN_BATCH } from '../one-time-audit.js';
 import { sendReportReadyEmail, sendDegradedAuditAlert } from '../app/email-sequences.js';
 import { query } from '../app/db.js';
 import { freePagesDue, scanFreePage } from '../shopify/free-scans.js';
@@ -26,7 +26,20 @@ import {
   sendPageReportUpsell,
 } from '../app/email-sequences.js';
 
-export const inngest = new Inngest({ id: 'accessbell' });
+export const inngest = new Inngest({
+  id: 'accessbell',
+  // Hand the invocation back between steps before Vercel's 300s limit, so a
+  // scan batch is not started with only a few seconds left.
+  checkpointing: { maxRuntime: '20s' },
+});
+
+/**
+ * One Browserless session at a time, shared by audits and monitoring.
+ * The free plan allows two concurrent browsers. Background work uses one,
+ * which leaves the other slot for a single-page scan and stops connectOverCDP
+ * from returning 429.
+ */
+const browserConcurrency = { limit: 1, scope: 'env', key: '"browserless"' };
 
 /**
  * Funnel agent, dry-run by default (FUNNEL_EMAIL_LIVE=1 to send for real).
@@ -165,13 +178,13 @@ export const shopifyFreeScheduleFn = inngest.createFunction(
 );
 
 export const shopifyFreeScanFn = inngest.createFunction(
-  { id: 'shopify-free-scan', triggers: [{ event: 'app/shopify.free-scan' }], concurrency: { limit: 2 }, retries: 1 },
+  { id: 'shopify-free-scan', triggers: [{ event: 'app/shopify.free-scan' }], concurrency: browserConcurrency, retries: 1 },
   async ({ event, step }) => step.run('scan', () => scanFreePage(event.data.pageId)),
 );
 
-/** Rescan one page. Concurrency is capped to respect the browser provider's limits. */
+/** Rescan one page. One at a time, so monitoring does not open a second Browserless session. */
 export const monitorPageFn = inngest.createFunction(
-  { id: 'monitor-page', triggers: [{ event: 'app/page.monitor' }], concurrency: { limit: 3 }, retries: 2 },
+  { id: 'monitor-page', triggers: [{ event: 'app/page.monitor' }], concurrency: browserConcurrency, retries: 2 },
   async ({ event, step }) => {
     const result = await step.run('scan', () => monitorPage(event.data.pageId));
     if (!result.skipped && result.regressions.length) {
@@ -189,7 +202,7 @@ export const sendAlertDigestsFn = inngest.createFunction(
 
 /** A scan someone started from the dashboard ("Start Scan" or "Re-scan domain") for many pages. */
 export const scanPageFn = inngest.createFunction(
-  { id: 'scan-page', triggers: [{ event: 'app/page.scan' }], concurrency: { limit: 3 }, retries: 1 },
+  { id: 'scan-page', triggers: [{ event: 'app/page.scan' }], concurrency: browserConcurrency, retries: 1 },
   async ({ event, step }) => {
     const result = await step.run('scan', () => monitorPage(event.data.pageId, { trigger: 'manual', userId: event.data.userId || null }));
     if (!result.skipped && result.regressions.length) {
@@ -210,7 +223,7 @@ export const scanPageFn = inngest.createFunction(
  * stored as failed and the buyer is not emailed. An alert goes to the owner.
  */
 export const oneTimeAuditFn = inngest.createFunction(
-  { id: 'one-time-domain-audit', triggers: [{ event: 'app/one-time.audit' }], concurrency: { limit: 2 }, retries: 1 },
+  { id: 'one-time-domain-audit', triggers: [{ event: 'app/one-time.audit' }], concurrency: browserConcurrency, retries: 1 },
   async ({ event, step }) => {
     const started = await step.run('start', () => startOneTimeAudit(event.data.token));
     if (started.skipped) return started;
@@ -221,8 +234,11 @@ export const oneTimeAuditFn = inngest.createFunction(
       const urls = Array.isArray(discovered) ? discovered : discovered.urls;
       const browserDiscoveryError = Array.isArray(discovered) ? null : discovered.browserDiscoveryError;
       let pageResults = [];
-      for (let i = 0; i < urls.length; i += 25) {
-        const batch = await step.run(`scan-batch-${i}`, () => scanOneTimeUrls(urls.slice(i, i + 25)));
+      // Two pages per step, on one reused connection. A larger batch plus the
+      // 429 backoff (5s, 15s, 30s) would outlast the 300s function limit, and
+      // a longer session would be closed by Browserless's two-minute cap.
+      for (let i = 0; i < urls.length; i += ONE_TIME_SCAN_BATCH) {
+        const batch = await step.run(`scan-batch-${i}`, () => scanOneTimeUrls(urls.slice(i, i + ONE_TIME_SCAN_BATCH)));
         pageResults = pageResults.concat(batch);
       }
       const report = await step.run('aggregate', () =>
