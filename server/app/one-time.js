@@ -162,6 +162,53 @@ export async function failOneTimeAudit(token) {
   );
 }
 
+/**
+ * Keep a degraded paid audit (the browser failed and the HTML checker ran
+ * instead). delivery stays failed, so the buyer is not told it is ready.
+ * Only the run that still holds 'building' can write this.
+ */
+export async function storeDegradedOneTimeAudit(token, report) {
+  const row = await one(
+    `update app.one_time_purchases
+        set delivery = 'failed', report = $2::jsonb
+      where token = $1 and delivery = 'building'
+      returning token, delivery`,
+    [token, JSON.stringify(report)],
+  );
+  return { stored: Boolean(row) };
+}
+
+/**
+ * Admin re-run of a paid purchase. Clears the stored report and sets
+ * delivery back to pending. A domain audit is queued again (app/one-time.audit)
+ * so the crawl rebuilds and the ready email is sent. A page report is not
+ * queued: it rebuilds the next time the buyer opens the report link.
+ */
+export async function rerunPaidAudit(token, { dbOne = one, sendEvent = sendOneTimeAuditEvent } = {}) {
+  if (!validToken(token)) return { status: 400, body: { error: 'A 32-character report token is required.' } };
+  const row = await dbOne(
+    `update app.one_time_purchases
+        set delivery = 'pending', report = null
+      where token = $1 and status = 'paid'
+      returning token, product, hostname, delivery`,
+    [token],
+  );
+  if (!row) return { status: 404, body: { error: 'Purchase not found.' } };
+  const body = {
+    ok: true,
+    token: row.token,
+    product: row.product,
+    hostname: row.hostname,
+    delivery: 'pending',
+    queued: false,
+  };
+  if (row.product === 'domain_audit') {
+    await sendEvent(row.token);
+    body.queued = true;
+  }
+  return { status: 200, body };
+}
+
 // ---------- Abandoned-checkout reminders (ops-triggered, once per purchase) ----------
 
 /** Send one reminder for each pending purchase older than 24 hours that has not been reminded yet. */

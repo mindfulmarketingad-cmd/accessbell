@@ -74,16 +74,21 @@ function showPending(product, hostname, delivery) {
   mount.replaceChildren();
   const card = document.createElement('div');
   card.className = 'results-card';
-  card.append(text('h2', product === 'domain_audit' ? 'Your Domain Audit is being prepared' : 'Your report is being prepared'));
-  card.append(
-    text(
-      'p',
-      product === 'domain_audit'
-        ? `We are crawling up to 500 pages on ${hostname} and testing each one. We will email you the report link as soon as it is ready. This page will show the report then, too.`
-        : 'Your report is being built. Please refresh this page in a moment.',
-    ),
-  );
-  card.append(text('p', `Status: ${delivery}.`));
+  if (delivery === 'failed') {
+    card.append(text('h2', product === 'domain_audit' ? 'Your Domain Audit needs another pass' : 'Your report needs another pass'));
+    card.append(text('p', `The browser scan for ${hostname} did not finish, so this report was not marked ready. We have been notified and will rebuild it. Check again in a little while, or email hello@accessbell.co if you need it sooner.`));
+  } else {
+    card.append(text('h2', product === 'domain_audit' ? 'Your Domain Audit is being prepared' : 'Your report is being prepared'));
+    card.append(
+      text(
+        'p',
+        product === 'domain_audit'
+          ? `We are crawling up to 500 pages on ${hostname} and testing each one. We will email you the report link as soon as it is ready. This page will show the report then, too.`
+          : 'Your report is being built. Please refresh this page in a moment.',
+      ),
+    );
+    card.append(text('p', `Status: ${delivery}.`));
+  }
   const again = document.createElement('button');
   again.type = 'button';
   again.className = 'btn btn-outline btn-sm';
@@ -224,6 +229,8 @@ function showReport(data) {
   actions.append(link('/pricing', 'Keep it monitored with Pro — $29/mo', 'btn btn-outline btn-sm'));
   card.append(actions);
   card.append(text('p', 'This report records automated findings. Some checks need a person, and no tool can guarantee legal compliance on its own. See our disclaimer.', 'scan-cta-note'));
+  // The mount still holds "Loading your report…". Replace it, or the page looks stuck.
+  mount.replaceChildren();
   mount.append(card);
 }
 

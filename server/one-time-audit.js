@@ -1,35 +1,78 @@
 // Domain-audit crawl for one-time purchases: discover up to 500 same-host
-// pages from the sitemap and the home page's links, scan each one with the
-// same engine as the free scan (real browser when configured, HTML audit as
-// fallback), and aggregate the findings by rule. Pages that fail to load are
-// recorded and skipped; they never fail the whole audit.
+// pages from the sitemap, the home page's HTML, and (when Browserless is
+// configured) links rendered in a real browser. Scan each one with the same
+// engine as the free scan. Pages that fail to load are recorded and skipped.
+//
+// A paid audit that falls back to the HTML checker because the browser failed
+// is marked degraded. The caller stores it as failed and alerts the owner
+// instead of emailing the buyer that a finished browser audit is ready.
 import { readSitemaps, linksFromHtml } from './app/domains.js';
-import { browserAudit } from './browser-audit.js';
+import { browserAudit, collectRenderedHrefs } from './browser-audit.js';
 import { audit, scoreFrom } from './audit.js';
 import { fetchPage } from './fetch-page.js';
+import { redactSecrets } from './redact.js';
 
 const MAX_PAGES = 500;
 const SKIP_EXT = /\.(pdf|jpe?g|png|gif|webp|svg|ico|zip|gz|mp4|mp3|webm|css|js|json|xml|txt|docx?|xlsx?|pptx?)$/i;
 const CONCURRENCY = 3;
 
-async function htmlAudit(url, standard) {
-  const page = await fetchPage(url);
+/** Our own "HTTP 404" means the target site responded. Browserless errors do not use this prefix. */
+export function isTargetHttpError(message) {
+  return /^HTTP \d{3}\b/.test(String(message || ''));
+}
+
+/**
+ * Browserless auth (401), rate limit (429) and connection failures.
+ * A normal target-site status such as HTTP 404 is not one of these.
+ * 401 and 429 count even when they are written as "HTTP 401", because that
+ * is how a rejected browser session shows up.
+ */
+export function isBrowserServiceFailure(message) {
+  const s = String(message || '');
+  if (!s) return false;
+  if (/(?:^|[^\d])(401|429)(?:[^\d]|$)/.test(s)) return true;
+  if (isTargetHttpError(s)) return false;
+  return /wss?:\/\/\[redacted\]|browserless|connectOverCDP|websocket|ECONNREFUSED|ECONNRESET|ETIMEDOUT|ENOTFOUND|Unexpected server response/i.test(s);
+}
+
+async function htmlAudit(url, standard, fetchImpl = fetchPage) {
+  const page = await fetchImpl(url);
   return { finalUrl: page.finalUrl, engine: 'html', ...audit(page.html, { standard }) };
 }
 
-async function scanPage(url) {
+/**
+ * One page of a paid check. Uses the browser when BROWSER_WS_ENDPOINT is set.
+ * A browser failure falls back to the HTML checker and returns a redacted reason.
+ * deps.browserAudit and deps.fetchPage are test seams.
+ */
+export async function runPaidCheck(url, deps = {}) {
+  const browser = deps.browserAudit || browserAudit;
+  const fetchImpl = deps.fetchPage || fetchPage;
   if (process.env.BROWSER_WS_ENDPOINT) {
     try {
-      return await browserAudit(url, { standard: 'wcag22' });
-    } catch {
-      return htmlAudit(url, 'wcag22');
+      const report = await browser(url, { standard: 'wcag22' });
+      return { report, browserFallback: null };
+    } catch (err) {
+      const browserFallback = redactSecrets(err?.message || err);
+      try {
+        const report = await htmlAudit(url, 'wcag22', fetchImpl);
+        return { report, browserFallback };
+      } catch (htmlErr) {
+        const error = new Error(redactSecrets(htmlErr?.message || htmlErr));
+        error.browserFallback = browserFallback;
+        throw error;
+      }
     }
   }
-  return htmlAudit(url, 'wcag22');
+  return { report: await htmlAudit(url, 'wcag22', fetchImpl), browserFallback: null };
 }
 
-/** Same-host pages for the audit: the base URL first, then sitemap, then home-page links. */
-export async function discoverOneTimeUrls(baseUrl) {
+/** Same-host pages for the audit: the base URL first, then sitemap, home-page links, then rendered links. */
+export async function discoverOneTimeUrls(baseUrl, deps = {}) {
+  const fetchImpl = deps.fetchPage || fetchPage;
+  const readMaps = deps.readSitemaps || readSitemaps;
+  const links = deps.linksFromHtml || linksFromHtml;
+  const rendered = deps.renderedLinks || collectRenderedHrefs;
   const base = new URL(baseUrl);
   const origin = base.origin;
   const seen = new Set();
@@ -52,18 +95,28 @@ export async function discoverOneTimeUrls(baseUrl) {
   };
   consider(base.toString());
   try {
-    const fromSitemap = await readSitemaps(origin, fetchPage, []);
+    const fromSitemap = await readMaps(origin, fetchImpl, []);
     fromSitemap.forEach(consider);
   } catch {}
   try {
-    const home = await fetchPage(`${origin}/`);
-    linksFromHtml(home.html, home.finalUrl).forEach(consider);
+    const home = await fetchImpl(`${origin}/`);
+    links(home.html, home.finalUrl).forEach(consider);
   } catch {}
-  return out.slice(0, MAX_PAGES);
+  let browserDiscoveryError = null;
+  // SPAs such as Base44 ship an empty shell. Read anchors after the browser has loaded the page.
+  if (process.env.BROWSER_WS_ENDPOINT) {
+    try {
+      const hrefs = await rendered(base.toString());
+      for (const href of (Array.isArray(hrefs) ? hrefs : []).slice(0, 1000)) consider(href);
+    } catch (err) {
+      browserDiscoveryError = redactSecrets(err?.message || err);
+    }
+  }
+  return { urls: out.slice(0, MAX_PAGES), browserDiscoveryError };
 }
 
 /** Scan a list of URLs with a small worker pool. Returns per-page results in input order. */
-export async function scanOneTimeUrls(urls) {
+export async function scanOneTimeUrls(urls, deps = {}) {
   const results = new Array(urls.length);
   let next = 0;
   const worker = async () => {
@@ -71,7 +124,7 @@ export async function scanOneTimeUrls(urls) {
       const i = next++;
       const url = urls[i];
       try {
-        const report = await scanPage(url);
+        const { report, browserFallback } = await runPaidCheck(url, deps);
         const s = report.summary || {};
         results[i] = {
           url,
@@ -83,9 +136,15 @@ export async function scanOneTimeUrls(urls) {
           minor: s.minor || 0,
           score: report.score ?? scoreFrom(report.issues || []),
           issuesDetail: report.issues || [],
+          ...(browserFallback ? { browserFallback } : {}),
         };
       } catch (err) {
-        results[i] = { url, ok: false, error: String((err && err.message) || err).slice(0, 200) };
+        results[i] = {
+          url,
+          ok: false,
+          error: redactSecrets(err?.message || err).slice(0, 200),
+          ...(err?.browserFallback ? { browserFallback: err.browserFallback } : {}),
+        };
       }
     }
   };
@@ -94,7 +153,7 @@ export async function scanOneTimeUrls(urls) {
 }
 
 /** Aggregate per-page findings into one domain report. Samples stay bounded. */
-export function aggregateOneTimeReport({ hostname, url, pageResults }) {
+export function aggregateOneTimeReport({ hostname, url, pageResults, browserDiscoveryError = null }) {
   const byRule = new Map();
   const pages = [];
   const summary = { issues: 0, critical: 0, serious: 0, moderate: 0, minor: 0, rulesFailed: 0 };
@@ -102,7 +161,7 @@ export function aggregateOneTimeReport({ hostname, url, pageResults }) {
   for (const p of pageResults) {
     if (!p.ok) {
       failed++;
-      pages.push({ url: p.url, error: p.error });
+      pages.push({ url: p.url, error: p.error, ...(p.browserFallback ? { browserFallback: p.browserFallback } : {}) });
       continue;
     }
     summary.issues += p.issues;
@@ -110,7 +169,14 @@ export function aggregateOneTimeReport({ hostname, url, pageResults }) {
     summary.serious += p.serious;
     summary.moderate += p.moderate;
     summary.minor += p.minor;
-    pages.push({ url: p.url, issues: p.issues, critical: p.critical, serious: p.serious, score: p.score });
+    pages.push({
+      url: p.url,
+      issues: p.issues,
+      critical: p.critical,
+      serious: p.serious,
+      score: p.score,
+      ...(p.browserFallback ? { browserFallback: p.browserFallback } : {}),
+    });
     for (const issue of p.issuesDetail) {
       const key = issue.id || issue.title;
       let agg = byRule.get(key);
@@ -140,6 +206,23 @@ export function aggregateOneTimeReport({ hostname, url, pageResults }) {
     (a, b) => (IMPACT_ORDER[a.impact] ?? 9) - (IMPACT_ORDER[b.impact] ?? 9) || b.elementsAffected - a.elementsAffected,
   );
   summary.rulesFailed = issues.length;
+  const fallbacks = pageResults.filter((p) => p.browserFallback);
+  const serviceFailure = fallbacks.some((p) => isBrowserServiceFailure(p.browserFallback));
+  // Every page used the HTML checker, or the browser could not find any other pages.
+  const browserNeverRan = pageResults.length > 0 && fallbacks.length > 0 && pageResults.every((p) => !p.ok || p.browserFallback);
+  const discoveryCollapsed = Boolean(browserDiscoveryError) && pageResults.length <= 1;
+  const degraded = serviceFailure || browserNeverRan || discoveryCollapsed;
+  const browserFallback =
+    fallbacks.length || browserDiscoveryError
+      ? {
+          reason:
+            fallbacks.find((p) => isBrowserServiceFailure(p.browserFallback))?.browserFallback ||
+            fallbacks[0]?.browserFallback ||
+            browserDiscoveryError,
+          pages: fallbacks.length,
+          discovery: browserDiscoveryError,
+        }
+      : null;
   return {
     product: 'domain_audit',
     hostname,
@@ -151,5 +234,7 @@ export function aggregateOneTimeReport({ hostname, url, pageResults }) {
     summary,
     pages,
     issues,
+    degraded,
+    ...(browserFallback ? { browserFallback } : {}),
   };
 }

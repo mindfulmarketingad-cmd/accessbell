@@ -1,9 +1,9 @@
 // Inngest background functions: scheduled monitoring with fan-out.
 import { Inngest } from 'inngest';
 import { pagesDueForMonitoring, monitorPage, sendRegressionAlert, sendReadyDigests } from '../app/monitoring.js';
-import { startOneTimeAudit, finishOneTimeAudit, failOneTimeAudit } from '../app/one-time.js';
+import { startOneTimeAudit, finishOneTimeAudit, failOneTimeAudit, storeDegradedOneTimeAudit } from '../app/one-time.js';
 import { discoverOneTimeUrls, scanOneTimeUrls, aggregateOneTimeReport } from '../one-time-audit.js';
-import { sendReportReadyEmail } from '../app/email-sequences.js';
+import { sendReportReadyEmail, sendDegradedAuditAlert } from '../app/email-sequences.js';
 import { query } from '../app/db.js';
 import { freePagesDue, scanFreePage } from '../shopify/free-scans.js';
 import {
@@ -205,6 +205,9 @@ export const scanPageFn = inngest.createFunction(
  * Only the run that moves the purchase from pending to building proceeds, so
  * a duplicate event (webhook retry plus report-page nudge) cannot double-run
  * the crawl or double-send the ready email.
+ *
+ * If the browser failed and the HTML checker was used instead, the report is
+ * stored as failed and the buyer is not emailed. An alert goes to the owner.
  */
 export const oneTimeAuditFn = inngest.createFunction(
   { id: 'one-time-domain-audit', triggers: [{ event: 'app/one-time.audit' }], concurrency: { limit: 2 }, retries: 1 },
@@ -213,15 +216,42 @@ export const oneTimeAuditFn = inngest.createFunction(
     if (started.skipped) return started;
     const purchase = started.purchase;
     try {
-      const urls = await step.run('discover', () => discoverOneTimeUrls(purchase.url));
+      const discovered = await step.run('discover', () => discoverOneTimeUrls(purchase.url));
+      // A run that started before discovery returned { urls } still has a bare list.
+      const urls = Array.isArray(discovered) ? discovered : discovered.urls;
+      const browserDiscoveryError = Array.isArray(discovered) ? null : discovered.browserDiscoveryError;
       let pageResults = [];
       for (let i = 0; i < urls.length; i += 25) {
         const batch = await step.run(`scan-batch-${i}`, () => scanOneTimeUrls(urls.slice(i, i + 25)));
         pageResults = pageResults.concat(batch);
       }
       const report = await step.run('aggregate', () =>
-        aggregateOneTimeReport({ hostname: purchase.hostname, url: purchase.url, pageResults }),
+        aggregateOneTimeReport({
+          hostname: purchase.hostname,
+          url: purchase.url,
+          pageResults,
+          browserDiscoveryError,
+        }),
       );
+      if (report.degraded) {
+        await step.run('alert-degraded', async () => {
+          const res = await sendDegradedAuditAlert({
+            hostname: purchase.hostname,
+            url: purchase.url,
+            token: purchase.token,
+            product: purchase.product,
+            reason: report.browserFallback?.reason || browserDiscoveryError || 'browser unavailable',
+            pagesScanned: report.pagesScanned,
+            pagesFellBack: report.browserFallback?.pages || 0,
+            idempotencyKey: `degraded-audit/${purchase.token}/${report.scannedAt}`,
+          });
+          if (!res.ok && res.reason !== 'not-configured') throw new Error(`degraded audit alert failed: ${res.reason || 'error'}`);
+          if (!res.ok) console.error('degraded audit alert not sent: not-configured');
+          return { ok: res.ok, reason: res.reason || null };
+        });
+        await step.run('store-degraded', () => storeDegradedOneTimeAudit(purchase.token, report));
+        return { degraded: true, pages: report.pagesScanned, issues: report.summary?.issues || 0 };
+      }
       const stored = await step.run('store', () => finishOneTimeAudit(purchase.token, report));
       if (stored.ready) {
         await step.run('email', () =>
