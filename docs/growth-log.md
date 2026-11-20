@@ -14,7 +14,7 @@ A running record of shipped pages and conversion changes. One page and one site 
 
 **Backlink angle:** A sourced, two-year table of ADA website lawsuits by industry with company-size, repeat-defendant and widget figures in one place, each linked to the UsableNet PDFs, that journalists, agencies and trade associations can quote.
 
-**Indexing:** see `docs/indexing-queue.md`.
+**Indexing:** sitemap resubmitted ("Success", 467 discovered, last read Nov 20); all 19 previous backlog URLs confirmed indexed and removed from the queue; /blog/ada-website-lawsuits-by-industry unknown to Google, Request Indexing failed (Quota Exceeded), retry first next run; /blog/ada-lawsuits-2026 not inspected (quota). 0 requests succeeded, 2 URLs queued. See `docs/indexing-queue.md`.
 
 ## 2026-11-19
 
