@@ -226,30 +226,33 @@ function scoreBlock(score) {
   ]);
 }
 
+/** The homepage hides dollar amounts. Prices stay on /pricing and the checkout pages. */
+const showPrices = () => location.pathname !== '/';
+
 /** Domain Audit first, Pro second, Page Report as a smaller third option. */
 function pathSplit(trial, url, { compact = false, help = false } = {}) {
   const offers = el('div', { class: 'scan-offers' }, [
     el('div', { class: compact ? 'scan-paths scan-paths-compact' : 'scan-paths' }, [
       el('div', { class: 'scan-path scan-path-primary' }, [
         el('span', { class: 'scan-scope-label', text: 'Main next step' }),
-        el('h3', { text: 'Domain Audit — $79' }),
+        el('h3', { text: showPrices() ? 'Domain Audit — $79' : 'Domain Audit' }),
         compact
           ? null
           : el('p', { text: 'One-time full-site scan of up to 500 pages, with a prioritized fix list and report. No subscription.' }),
-        el('a', { class: 'btn btn-accent', href: auditHref(url), text: 'Get the Domain Audit — $79' }),
+        el('a', { class: 'btn btn-accent', href: auditHref(url), text: showPrices() ? 'Get the Domain Audit — $79' : 'Get the Domain Audit' }),
       ]),
       el('div', { class: 'scan-path' }, [
         el('span', { class: 'scan-scope-label', text: 'Keep it fixed' }),
         el('h3', { text: 'Pro monitoring' }),
         compact
           ? null
-          : el('p', { text: 'Ongoing scans of up to 500 URLs, email alerts, and fixes you approve, such as alt text, button names and the page language. Nothing is applied until you approve it. This is not an overlay. 3-day free trial, then $29 per domain per month or $199 per year.' }),
+          : el('p', { text: showPrices() ? 'Ongoing scans of up to 500 URLs, email alerts, and fixes you approve, such as alt text, button names and the page language. Nothing is applied until you approve it. This is not an overlay. 3-day free trial, then $29 per domain per month or $199 per year.' : 'Ongoing scans of up to 500 URLs, email alerts, and fixes you approve, such as alt text, button names and the page language. Nothing is applied until you approve it. This is not an overlay. 3-day free trial, then a monthly or yearly plan.' }),
         el('a', { class: 'btn btn-outline', href: trial, text: 'Start 3-day free trial' }),
       ]),
     ]),
     el('p', { class: 'scan-offer-tertiary' }, [
       'One page only? A ',
-      el('a', { href: pageReportHref(url), text: 'Page Report is $19' }),
+      el('a', { href: pageReportHref(url), text: showPrices() ? 'Page Report is $19' : 'Page Report' }),
       ' for this page. No account, and it does not renew.',
     ]),
     help ? helpPath(url) : null,
@@ -353,7 +356,7 @@ function riskPanel(urgent, url, trial) {
       ),
     ),
     el('div', { class: 'scan-risk-actions' }, [
-      el('a', { href: auditHref(url), text: 'Get a Domain Audit of the whole site — $79' }),
+      el('a', { href: auditHref(url), text: showPrices() ? 'Get a Domain Audit of the whole site — $79' : 'Get a Domain Audit of the whole site' }),
       el('a', { href: trial, text: 'Keep it fixed with Pro' }),
       el('a', { href: '/blog/ada-lawsuit-payouts', text: 'See what real ADA cases cost' }),
     ]),
@@ -464,7 +467,7 @@ function showResults(r, url, form) {
       el('div', { class: 'scan-scope-col scan-scope-audit' }, [
         el('span', { class: 'scan-scope-label', text: 'Domain Audit' }),
         el('strong', { text: 'The whole site, once' }),
-        el('span', { text: `$79 for up to 500 pages on ${host}, with a prioritized fix list` }),
+        el('span', { text: showPrices() ? `$79 for up to 500 pages on ${host}, with a prioritized fix list` : `Up to 500 pages on ${host}, with a prioritized fix list` }),
       ]),
       el('div', { class: 'scan-scope-col' }, [
         el('span', { class: 'scan-scope-label', text: 'Keep it fixed' }),
@@ -474,12 +477,14 @@ function showResults(r, url, form) {
     ]),
     el('p', { text: 'Checkout, forms, and other pages can have problems this page does not. The Domain Audit checks them once and returns a prioritized fix list. Pro checks them every day, and you can apply the fixes you approve.' }),
     el('div', { class: 'scan-scope-actions' }, [
-      el('a', { class: 'btn btn-accent', href: auditHref(url), text: 'Get the Domain Audit — $79' }),
+      el('a', { class: 'btn btn-accent', href: auditHref(url), text: showPrices() ? 'Get the Domain Audit — $79' : 'Get the Domain Audit' }),
       el('a', { class: 'btn btn-outline', href: trial, text: 'Keep it fixed with Pro' }),
       again,
     ]),
     el('p', { class: 'scan-cta-note' }, [
-      'The Domain Audit is $79 once. Pro is a 3-day free trial, then $29 per domain per month or $199 per year. Cancel before the trial ends and you will not be charged. ',
+      showPrices()
+        ? 'The Domain Audit is $79 once. Pro is a 3-day free trial, then $29 per domain per month or $199 per year. Cancel before the trial ends and you will not be charged. '
+        : 'The Domain Audit is a one-time full-site scan. Pro is a 3-day free trial, then a monthly or yearly plan. Cancel before the trial ends and you will not be charged. ',
       el('a', { href: auditHref(url), text: `Get the Domain Audit for ${host}` }),
       '.',
     ]),
@@ -497,7 +502,7 @@ function showResults(r, url, form) {
               ...ownerTags(i, r.finalUrl || url),
               // The most urgent problems get a direct route to a plan that fixes them.
               URGENT.has(i.impact)
-                ? el('a', { class: 'scan-fix-link', href: auditHref(url) }, ['Get the Domain Audit', el('span', { class: 'visually-hidden', text: `: ${main.plain.name}. One-time $79 full-site scan of ${host} with a prioritized fix list.` })])
+                ? el('a', { class: 'scan-fix-link', href: auditHref(url) }, ['Get the Domain Audit', el('span', { class: 'visually-hidden', text: showPrices() ? `: ${main.plain.name}. One-time $79 full-site scan of ${host} with a prioritized fix list.` : `: ${main.plain.name}. One-time full-site scan of ${host} with a prioritized fix list.` })])
                 : null,
             ]),
           ]);
@@ -531,11 +536,11 @@ function showResults(r, url, form) {
           ),
         ),
         el('div', { class: 'scan-teaser-actions' }, [
-          el('a', { class: 'btn btn-accent', href: auditHref(url), text: 'Get the Domain Audit — $79' }),
+          el('a', { class: 'btn btn-accent', href: auditHref(url), text: showPrices() ? 'Get the Domain Audit — $79' : 'Get the Domain Audit' }),
           el('a', { class: 'btn btn-outline', href: trial, text: 'Keep it fixed with Pro' }),
         ]),
         el('p', { class: 'scan-offer-tertiary' }, [
-          el('a', { href: pageReportHref(url), text: 'Page Report — $19 for this page' }),
+          el('a', { href: pageReportHref(url), text: showPrices() ? 'Page Report — $19 for this page' : 'Page Report for this page' }),
           ' · ',
           el('a', { href: `/contact?topic=help&site=${encodeURIComponent(url)}`, text: "I'd rather have help" }),
         ]),
@@ -594,7 +599,7 @@ function showResults(r, url, form) {
       el('li', { text: 'To keep it fixed, Pro monitors the domain and applies fixes you approve. Nothing is applied until you approve it. This is not an overlay.' }),
     ]),
     pathSplit(trial, url, { compact: true, help: true }),
-    el('p', { class: 'scan-cta-note' }, ['Domain Audit is $79 once. Pro is a 3-day free trial, then $29/mo or $199/year per domain. Cancel anytime. 14-day money-back guarantee on the first Pro charge. Already subscribed? ', el('a', { href: '/app/login', text: 'Log in to your dashboard' }), '.']),
+    el('p', { class: 'scan-cta-note' }, [showPrices() ? 'Domain Audit is $79 once. Pro is a 3-day free trial, then $29/mo or $199/year per domain. Cancel anytime. 14-day money-back guarantee on the first Pro charge. Already subscribed? ' : 'The Domain Audit is a one-time full-site scan. Pro is a 3-day free trial, then a monthly or yearly plan. Cancel anytime. 14-day money-back guarantee on the first Pro charge. Already subscribed? ', el('a', { href: '/app/login', text: 'Log in to your dashboard' }), '.']),
   ]);
   mount.replaceChildren(
     el('div', { class: 'results-card scan-result', role: 'region', 'aria-labelledby': 'scan-result-title' }, [

@@ -17,8 +17,9 @@ export function faqSchema(items: FaqItem[]) {
   };
 }
 
-/** SoftwareApplication with the published plan prices as offers. */
-export function softwareSchema() {
+/** SoftwareApplication. Pass `{ includePrices: false }` on the homepage so prices stay off that page. */
+export function softwareSchema(options?: { includePrices?: boolean }) {
+  const includePrices = options?.includePrices !== false;
   return {
     '@type': 'SoftwareApplication',
     '@id': `${SITE.url}/#software`,
@@ -29,7 +30,7 @@ export function softwareSchema() {
     url: SITE.url,
     description: SITE.description,
     publisher: { '@id': `${SITE.url}/#organization` },
-    offers: [
+    ...(includePrices ? { offers: [
       { '@type': 'Offer', name: 'Free scan', price: '0', priceCurrency: 'USD', url: `${SITE.url}/#scan` },
       {
         '@type': 'Offer',
@@ -61,7 +62,7 @@ export function softwareSchema() {
           billingDuration: 'P1Y',
         },
       },
-    ],
+    ] } : {}),
   };
 }
 

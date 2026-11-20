@@ -583,19 +583,8 @@ a:hover {
     padding-bottom: 0;
   }
 }
-.header-audit-short {
-  display: none;
-}
 .header-pro {
   white-space: nowrap;
-}
-@media (max-width: 720px) {
-  .header-audit-full {
-    display: none;
-  }
-  .header-audit-short {
-    display: inline;
-  }
 }
 @media (max-width: 560px) {
   .header-dashboard {

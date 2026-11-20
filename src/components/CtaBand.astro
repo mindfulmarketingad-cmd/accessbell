@@ -8,36 +8,45 @@ interface Props {
   text?: string;
   /** Show the scan form (homepage) or plain buttons (other pages). */
   withForm?: boolean;
+  /** Homepage hides dollar amounts until the visitor opens pricing or checkout. */
+  showPrices?: boolean;
 }
+const pricedText = `The free scan checks one public page. A Domain Audit is $${ONE_TIME.domainAudit.price} once: a full-site scan of up to ${PLAN.urlsPerDomain} pages with a prioritized fix list and report. Pro keeps it fixed after a 3-day free trial, then $${PLAN.price} per domain per month or $${PLAN.annualPrice} per year. Nothing is applied until you approve it. This is not an overlay.`;
+const quietText = `The free scan checks one public page. A Domain Audit is a one-time full-site scan of up to ${PLAN.urlsPerDomain} pages with a prioritized fix list and report. Pro keeps it fixed after a 3-day free trial. Nothing is applied until you approve it. This is not an overlay.`;
 const {
   title = 'Get a Domain Audit, Then Keep It Fixed',
-  text = `The free scan checks one public page. A Domain Audit is $${ONE_TIME.domainAudit.price} once: a full-site scan of up to ${PLAN.urlsPerDomain} pages with a prioritized fix list and report. Pro keeps it fixed after a 3-day free trial, then $${PLAN.price} per domain per month or $${PLAN.annualPrice} per year. Nothing is applied until you approve it. This is not an overlay.`,
+  text,
   withForm = false,
+  showPrices = true,
 } = Astro.props;
+const bandText = text ?? (showPrices ? pricedText : quietText);
+const auditLabel = showPrices ? `Get the Domain Audit — ${ONE_TIME.domainAudit.price}` : 'Get the Domain Audit';
 ---
 <section class="section-tight" aria-labelledby="cta-title">
   <div class="container">
     <div class="cta-band">
       <h2 id="cta-title">{title}</h2>
-      <p>{text}</p>
+      <p>{bandText}</p>
       {withForm ? (
         <>
-          <ScanForm id="cta" buttonLabel="Run free check" />
+          <ScanForm id="cta" buttonLabel="Run free check">
+            {showPrices ? null : <span slot="proof">Free scan of one public page, no account. Then get a Domain Audit of the whole site, or keep it fixed with Pro.</span>}
+          </ScanForm>
           <ul class="scan-meta">
             <li><Icon name="check" />Free, no account needed</li>
             <li><Icon name="check" />Results in under 30 seconds</li>
             <li><Icon name="check" />Mapped to WCAG success criteria</li>
           </ul>
           <div class="cta-actions">
-            <a class="btn btn-accent btn-lg" href={ONE_TIME.domainAudit.href}>Get the Domain Audit — ${ONE_TIME.domainAudit.price} <Icon name="arrow" /></a>
+            <a class="btn btn-accent btn-lg" href={ONE_TIME.domainAudit.href}>{auditLabel} <Icon name="arrow" /></a>
             <a class="btn btn-outline btn-lg" href={PLAN.ctaHref}>Keep it fixed with Pro</a>
           </div>
-          <p class="cta-note">The Domain Audit is ${ONE_TIME.domainAudit.price} once for up to {PLAN.urlsPerDomain} pages. Pro is a 3-day free trial, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. This is not an overlay. A <a href={ONE_TIME.pageReport.href}>Page Report</a> is ${ONE_TIME.pageReport.price} for one page.</p>
+          <p class="cta-note">{showPrices ? <>The Domain Audit is ${ONE_TIME.domainAudit.price} once for up to {PLAN.urlsPerDomain} pages. Pro is a 3-day free trial, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. This is not an overlay. A <a href={ONE_TIME.pageReport.href}>Page Report</a> is ${ONE_TIME.pageReport.price} for one page.</> : <>The Domain Audit is a one-time full-site scan. Pro is a 3-day free trial, then a monthly or yearly plan. You add a card at checkout and are not charged until the trial ends. This is not an overlay. A <a href={ONE_TIME.pageReport.href}>Page Report</a> covers one page.</>}</p>
         </>
       ) : (
         <>
           <div class="cta-actions">
-            <a class="btn btn-accent btn-lg" href={ONE_TIME.domainAudit.href}>Get the Domain Audit — ${ONE_TIME.domainAudit.price} <Icon name="arrow" /></a>
+            <a class="btn btn-accent btn-lg" href={ONE_TIME.domainAudit.href}>{auditLabel} <Icon name="arrow" /></a>
             <a class="btn btn-outline btn-lg" href={PLAN.ctaHref}>Keep it fixed with Pro</a>
           </div>
           <p class="cta-note">Pro is a 3-day free trial, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. Cancel before then and you will not be charged. A <a href={ONE_TIME.pageReport.href}>Page Report</a> is ${ONE_TIME.pageReport.price} for one page.</p>
