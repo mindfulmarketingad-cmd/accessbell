@@ -8,6 +8,8 @@ Last run (2026-11-19): sitemap resubmitted, GSC "Success", 467 discovered pages.
 
 | URL | added | status | requested on | notes |
 | --- | --- | --- | --- | --- |
+| https://www.accessbell.co/blog/ada-website-lawsuits-by-industry | 2026-11-20 | queued | | New page (Nov 20 growth run). Supports /blog/ada-lawsuits-2026. |
+| https://www.accessbell.co/blog/ada-lawsuits-2026 | 2026-11-20 | queued | | Ranking page (pos 9.0); updated Nov 20 with industry split and link to the new page. |
 | https://www.accessbell.co/blog/ada-lawsuit-mootness | 2026-11-19 | queued | | New page (Nov 19 growth run). Supports /blog/ada-lawsuit-process. Nov 19: URL Inspection = "Discovered - currently not indexed"; Request Indexing failed (daily quota already exceeded). Retry first on Nov 20. |
 | https://www.accessbell.co/blog/ada-lawsuit-process | 2026-11-19 | queued | | Ranking page (pos 10.6); updated Nov 19 with links to the new page. |
 | https://www.accessbell.co/industries/restaurants | 2026-11-02 | queued | | Growth log Nov 2. |

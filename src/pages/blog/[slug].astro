@@ -4,6 +4,7 @@ import { fitTitle } from '../../lib/titles';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
 import CtaBand from '../../components/CtaBand.astro';
+import ScanForm from '../../components/ScanForm.astro';
 import AuthorAvatar from '../../components/AuthorAvatar.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
 import { SITE } from '../../config/site';
@@ -128,7 +129,23 @@ const schema = [
         <TableOfContents headings={toc} variant="inline" />
         <div class="prose">
           <Content />
+        </div>
 
+        {/* Readers can run the free scan without leaving the article. Results open right below. */}
+        <section class="article-scan" id="check-your-site" aria-labelledby="article-scan-title">
+          <h2 id="article-scan-title">Check your own site in 30 seconds</h2>
+          <p>Paste any public page from your website. The free scan lists the automated accessibility issues on it, mapped to WCAG, right here on this page. No account needed.</p>
+          <div class="hero-checker">
+            <ScanForm id="article-scan" buttonLabel="Scan my page">
+              <span slot="proof">Free scan of one public page, no account. Want the whole site watched? <a href="/app/signup">Start a 3-day free trial</a> of Pro, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. A card is added at checkout, and you are not charged until the trial ends. Or get a <a href={ONE_TIME.pageReport.href}>Page Report</a> for ${ONE_TIME.pageReport.price} or a <a href={ONE_TIME.domainAudit.href}>Domain Audit</a> for ${ONE_TIME.domainAudit.price}. Neither renews.</span>
+            </ScanForm>
+          </div>
+        </section>
+        <section class="results article-results" id="scan-results" aria-live="polite" aria-busy="false" hidden>
+          <div data-results></div>
+        </section>
+
+        <div class="prose">
           {faqs.length > 0 && (
             <section class="article-faq" aria-labelledby="faq">
               <h2 id="faq">Frequently Asked Questions</h2>
@@ -193,7 +210,7 @@ const schema = [
           <h2>Monitor and fix, not only scan</h2>
           <p>A free scan lists issues on one page. Pro is a 3-day free trial, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. Nothing is applied until you approve it.</p>
           <a class="btn btn-accent btn-block" href="/app/signup">Start 3-day free trial <Icon name="arrow" /></a>
-          <p class="aside-card-links"><a href="/#scan">Free scan</a> · <a href={ONE_TIME.pageReport.href}>Page Report, ${ONE_TIME.pageReport.price}</a> · <a href={ONE_TIME.domainAudit.href}>Domain Audit, ${ONE_TIME.domainAudit.price}</a></p>
+          <p class="aside-card-links"><a href="#check-your-site">Free scan</a> · <a href={ONE_TIME.pageReport.href}>Page Report, ${ONE_TIME.pageReport.price}</a> · <a href={ONE_TIME.domainAudit.href}>Domain Audit, ${ONE_TIME.domainAudit.price}</a></p>
         </div>
       </aside>
     </div>
@@ -234,3 +251,7 @@ const schema = [
 
   <CtaBand />
 </BaseLayout>
+
+<script>
+  import '../../scripts/free-scan.js';
+</script>

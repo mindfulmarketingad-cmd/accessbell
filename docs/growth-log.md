@@ -2,6 +2,20 @@
 
 A running record of shipped pages and conversion changes. One page and one site improvement per entry.
 
+## 2026-11-20
+
+**New page:** `/blog/ada-website-lawsuits-by-industry` — Which Industries Get Sued for ADA Website Lawsuits? 2025–2026 Data. A key-facts box (last updated November 20, 2026) and a two-year table give UsableNet's industry split: e-commerce 70% of 2025 digital accessibility lawsuits and 79% in the first half of 2026, food service 21% and 14%, healthcare and fitness and wellness 2% each in 2025. It also reports company size (64% of 2025 suits under $25M revenue; 68% under $50M, 22% $50M–$1B, 10% over $1B in H1 2026), the top-500 e-commerce retailers sued (36% in 2025, 20% by mid-2026), 1,427 repeat-defendant suits (45% of federal cases) and 1,416 suits against sites already using a widget. Every figure links to the UsableNet 2025 Year-End or 2026 Midyear PDF; the public-accommodation categories cite 42 U.S.C. § 12181(7). A "what to check first" table links each sector to its industry page. The free scan, the 3-day Pro trial ($29 per domain per month or $199 per year, card at checkout, no charge until the trial ends), the $19 Page Report and the $79 Domain Audit are on the page. `/blog/ada-lawsuits-2026` (small-business paragraph, related posts, updated date) and `/blog/ada-lawsuit-what-to-do` ("How To Avoid the Next ADA Lawsuit") link to it; it links back to both and to `/blog/ada-demand-letter`.
+
+**Site improvement:** Every blog article now has a free scan form right after the article body ("Check your own site in 30 seconds"). Results open on the same page, below the form, and the line under it states the 3-day Pro trial terms and the $19 and $79 reports. The sidebar "Free scan" link now jumps to that form. Before, every scan link on a blog post sent readers to the homepage.
+
+**Why:** High-impression blog posts (the ADA lawsuit articles get most of the site's impressions) send almost no one to the product. A reader who has to leave the article to scan usually does not. Scanning in place puts the scan result, and the trial and report offers that follow it, in front of readers where they already are.
+
+**GSC supported:** `/blog/ada-lawsuits-2026` is at position 9.0 with 46 impressions (Oct 22–Nov 18). The new page covers the "which industries / which businesses get sued" angle that page only touches in one sentence, without repeating its by-state numbers or cases.
+
+**Backlink angle:** A sourced, two-year table of ADA website lawsuits by industry with company-size, repeat-defendant and widget figures in one place, each linked to the UsableNet PDFs, that journalists, agencies and trade associations can quote.
+
+**Indexing:** see `docs/indexing-queue.md`.
+
 ## 2026-11-19
 
 **New page:** `/blog/ada-lawsuit-mootness` — ADA Lawsuit Mootness: Can Fixing Your Website End the Case? It explains why a private Title III claim can become moot (42 U.S.C. § 12188(a)(1) gives private plaintiffs only the "preventive relief" of § 2000a-3(a)), quotes the Supreme Court's "absolutely clear" test (Laidlaw, 2000), "cannot automatically moot a case" and "formidable burden" (Already v. Nike, 2013) and the 2024 restatement in FBI v. Fikre, and walks through *Jones v. Moscot.com* (S.D.N.Y., dismissed as moot March 5, 2026). It lists what mootness does not end: state-law damages (Unruh, at least $4,000 per violation), refiling in state court under 28 U.S.C. § 1367(c)(3), DOJ damages and civil penalties under § 12188(b), and the next plaintiff. It also covers fees (Buckhannon rejects the catalyst theory under the ADA) and Acheson Hotels v. Laufer. A key-facts box sits near the top, followed by an evidence table, a "not legal advice" notice, the free scan, the 3-day Pro trial ($29 per domain per month or $199 per year, card at checkout, no charge until the trial ends, 14-day money-back on the first charge), the $19 Page Report and the $79 Domain Audit. `/blog/ada-lawsuit-process` (FAQ and the Discovery stage) and `/blog/ada-lawsuit-what-to-do` now link to it, and it links back to both.
