@@ -235,7 +235,7 @@ const faqs: FaqItem[] = [
   },
   {
     q: 'Is the AccessBell accessibility checker free?',
-    a: 'Yes. You can scan any public page for free with no account and see how many issues it has and how severe they are, with the most severe issues shown in full. The main next step is a one-time <a href="/solutions/domain-audit">Domain Audit</a> for $79: a full-site scan of up to 500 pages with a prioritized fix list and report. To keep it fixed, Pro starts with a 3-day free trial, then $29 per domain per month or $199 per domain per year. You add a card at checkout and are not charged until the trial ends. Pro adds continuous monitoring, fixes you approve (such as alt text, button names and the page language), and team features. Nothing is applied until you approve it. A <a href="/solutions/page-report">Page Report</a> is $19 for one page.',
+    a: 'Yes. You can scan any public page for free with no account and see how many issues it has and how severe they are, with the most severe issues shown in full. The main next step is a one-time <a href="/solutions/domain-audit">Domain Audit</a>: a full-site scan of up to 500 pages with a prioritized fix list and report. To keep it fixed, Pro starts with a 3-day free trial, then a monthly or yearly plan. You add a card at checkout and are not charged until the trial ends. Pro adds continuous monitoring, fixes you approve (such as alt text, button names and the page language), and team features. Nothing is applied until you approve it. A <a href="/solutions/page-report">Page Report</a> covers one page.',
   },
   {
     q: 'Which accessibility standards does AccessBell check?',
@@ -313,7 +313,7 @@ const challenges = [
     icon: 'card',
     title: 'Cost for small businesses',
     problem: 'Expert audits and enterprise platforms are often quoted in the thousands of dollars, and overlay pricing can rise with your traffic.',
-    fix: 'A one-time <a href="/solutions/domain-audit">Domain Audit is $79</a> for up to 500 pages and a prioritized fix list. To keep it fixed, a 3-day free trial, then $29 per domain per month or $199 per year. You add a card at checkout and are not charged until the trial ends. <a href="/pricing">See pricing</a>',
+    fix: 'A one-time <a href="/solutions/domain-audit">Domain Audit</a> covers up to 500 pages and a prioritized fix list. To keep it fixed, a 3-day free trial, then a monthly or yearly plan. You add a card at checkout and are not charged until the trial ends. <a href="/pricing">See pricing</a>',
   },
 ];
 
@@ -338,7 +338,7 @@ const HUBS = [
   title="Website Accessibility Monitoring Tool | AccessBell"
   description="Website accessibility monitoring tool. Scan one page free, then monitor and apply fixes you approve. Nothing is applied until you approve it. Not an overlay."
   imageAlt="AccessBell - Website Accessibility Monitoring Tool"
-  schema={[softwareSchema(), faqSchema(faqs)]}
+  schema={[softwareSchema({ includePrices: false }), faqSchema(faqs)]}
 >
   <section class="hero hero-scan" id="scan" aria-labelledby="hero-title">
     <div class="container">
@@ -346,17 +346,17 @@ const HUBS = [
         Website Accessibility Monitoring Tool <span class="accent">- Scan, Monitor and Fix</span>
       </h1>
       <p class="lead">
-        AccessBell is a website accessibility monitoring tool that helps you scan, monitor and fix. It is not an overlay. Start with a free scan of one public page against WCAG 2.2. The main next step is a one-time ${ONE_TIME.domainAudit.price} <a href="/solutions/domain-audit">Domain Audit</a>: a full-site scan of up to {PLAN.urlsPerDomain} pages with a prioritized fix list and report. To keep it fixed, Pro monitors the site and applies fixes you approve, such as alt text, button names and the page language. Nothing is applied until you approve it.
+        AccessBell is a website accessibility monitoring tool that helps you scan, monitor and fix. It is not an overlay. Start with a free scan of one public page against WCAG 2.2. The main next step is a one-time <a href="/solutions/domain-audit">Domain Audit</a>: a full-site scan of up to {PLAN.urlsPerDomain} pages with a prioritized fix list and report. To keep it fixed, Pro monitors the site and applies fixes you approve, such as alt text, button names and the page language. Nothing is applied until you approve it.
       </p>
       <div class="hero-checker">
         <ScanForm id="hero" buttonLabel="Scan my website">
           <span slot="proof">Free scan of one public page, no account. Then get the full site.</span>
         </ScanForm>
         <div class="hero-offers">
-          <a class="btn btn-accent btn-lg" href={ONE_TIME.domainAudit.href}>Get the Domain Audit — ${ONE_TIME.domainAudit.price} <Icon name="arrow" /></a>
+          <a class="btn btn-accent btn-lg" href={ONE_TIME.domainAudit.href}>Get the Domain Audit <Icon name="arrow" /></a>
           <a class="btn btn-outline btn-lg" href={PLAN.ctaHref}>Keep it fixed with Pro</a>
         </div>
-        <p class="hero-offer-note">The Domain Audit is ${ONE_TIME.domainAudit.price} once for up to {PLAN.urlsPerDomain} pages, with a prioritized fix list and report. No subscription. Pro is a 3-day free trial, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. 14-day money-back guarantee on the first Pro charge. <a href="/contact?topic=help">I'd rather have help</a>. A <a href={ONE_TIME.pageReport.href}>Page Report</a> is ${ONE_TIME.pageReport.price} for one page.</p>
+        <p class="hero-offer-note">The Domain Audit is a one-time full-site scan of up to {PLAN.urlsPerDomain} pages, with a prioritized fix list and report. No subscription. Pro is a 3-day free trial, then a monthly or yearly plan. You add a card at checkout and are not charged until the trial ends. 14-day money-back guarantee on the first Pro charge. <a href="/contact?topic=help">I'd rather have help</a>. A <a href={ONE_TIME.pageReport.href}>Page Report</a> covers one page.</p>
       </div>
       <p class="hero-demand">If a demand letter names missing alt text, unlabeled checkout fields, or buttons with no name, this scan shows whether this page has those barriers. A Domain Audit checks the rest of the site and returns a prioritized fix list. Pro keeps it fixed after that. The result is a finding list, not a legal opinion.</p>
       <ul class="trust-strip" aria-label="About this tool">
@@ -482,7 +482,7 @@ const HUBS = [
           <p>The next scan confirms the fix. <a href="/solutions/continuous-monitoring">Continuous accessibility monitoring</a> then watches up to 500 URLs per domain so the next edit does not bring the issue back.</p>
         </article>
       </div>
-      <p class="guide-note">AccessBell is a website accessibility monitoring tool. The free scan checks one page. It does not guarantee legal compliance. A <a href="/solutions/domain-audit">Domain Audit is $79</a> once for the whole site, Pro is $29 per domain per month or $199 per year after a 3-day free trial to keep it fixed, and a <a href="/solutions/page-report">Page Report is $19</a> for one page. Publish a <a href="/solutions/live-statement">Live Statement</a> that shows your last scan date. Read the <a href="/disclaimer">disclaimer</a>.</p>
+      <p class="guide-note">AccessBell is a website accessibility monitoring tool. The free scan checks one page. It does not guarantee legal compliance. A <a href="/solutions/domain-audit">Domain Audit</a> is a one-time scan of the whole site, Pro is a 3-day free trial then a monthly or yearly plan to keep it fixed, and a <a href="/solutions/page-report">Page Report</a> covers one page. Publish a <a href="/solutions/live-statement">Live Statement</a> that shows your last scan date. Read the <a href="/disclaimer">disclaimer</a>.</p>
     </div>
   </section>
 
@@ -818,11 +818,11 @@ const HUBS = [
         <span class="eyebrow">Scales with you</span>
         <h2 id="scale-title">An Accessibility Monitoring Tool for <span class="accent">Every Domain You Run</span></h2>
         <p class="lead">
-          Start with a free scan of a single page. The main report is a <a href="/solutions/domain-audit">Domain Audit for $79</a>: a one-time full-site scan with a prioritized fix list. To keep it fixed, Pro monitors every domain from one dashboard. A <a href="/solutions/page-report">Page Report is $19</a> for one page.
+          Start with a free scan of a single page. The main report is a <a href="/solutions/domain-audit">Domain Audit</a>: a one-time full-site scan with a prioritized fix list. To keep it fixed, Pro monitors every domain from one dashboard. A <a href="/solutions/page-report">Page Report</a> covers one page.
         </p>
         <ul class="check-list">
-          <li><Icon name="check" />Domain Audit: $79 once, up to 500 pages, no subscription</li>
-          <li><Icon name="check" />Pro: 3-day free trial, then $29 per domain per month or $199 per year. A card is added at checkout and you are not charged until the trial ends.</li>
+          <li><Icon name="check" />Domain Audit: one-time full-site scan, up to 500 pages, no subscription</li>
+          <li><Icon name="check" />Pro: 3-day free trial, then a monthly or yearly plan. A card is added at checkout and you are not charged until the trial ends.</li>
           <li><Icon name="check" />Up to 500 URLs per domain, unlimited rescans</li>
           <li><Icon name="check" />Role-based permissions for your team</li>
         </ul>
@@ -894,7 +894,7 @@ const HUBS = [
     </div>
   </section>
 
-  <CtaBand withForm />
+  <CtaBand withForm showPrices={false} />
 </BaseLayout>
 <script>
   import '../scripts/free-scan.js';
