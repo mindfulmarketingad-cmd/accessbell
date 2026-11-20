@@ -99,6 +99,6 @@ Where you were sued changes the rules:
 
 ## How To Avoid the Next ADA Lawsuit
 
-Once the case is resolved, the goal is not to be sued again. That means fixing the code, checking new pages as you publish them, and keeping proof. AccessBell helps you do all three: [continuous monitoring](/solutions/continuous-monitoring) rescans up to 500 pages per domain on a schedule and emails you when a new serious issue appears, and the [Compliance Vault](/solutions/compliance-vault) keeps a dated record of every scan and fix that you can hand to your lawyer.
+Once the case is resolved, the goal is not to be sued again. Repeat suits are common: UsableNet counted 1,427 lawsuits in 2025 against companies that had already been sued. Our breakdown of [which industries get sued for ADA website lawsuits](/blog/ada-website-lawsuits-by-industry) shows where that risk is highest. That means fixing the code, checking new pages as you publish them, and keeping proof. AccessBell helps you do all three: [continuous monitoring](/solutions/continuous-monitoring) rescans up to 500 pages per domain on a schedule and emails you when a new serious issue appears, and the [Compliance Vault](/solutions/compliance-vault) keeps a dated record of every scan and fix that you can hand to your lawyer.
 
 No tool can make a website 100% compliant or guarantee you will not be sued. But a site that has been tested, fixed and monitored is a much harder target. Start now: [run the free ADA compliance checker](/tools/ada-compliance-checker) on the pages named in your complaint.

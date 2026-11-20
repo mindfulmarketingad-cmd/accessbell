@@ -3,14 +3,17 @@ title: '2026 ADA Lawsuits: Recent Cases and How To Maneuver Them'
 seoTitle: '2026 ADA Lawsuits: Recent Cases and How To Maneuver Them'
 description: 'ADA lawsuits in 2026: the filing numbers, four recent website cases (Moscot, Cuddle Clones, Fashion Nova, Missouri) and what each teaches a business that is sued.'
 pubDate: 2026-10-14
+updatedDate: 2026-11-20
 category: 'Compliance'
 contributors:
   - author: anton-stewart
     role: Author
 history:
+  - date: 2026-11-20
+    note: 'Added the UsableNet 2025 industry split and a link to the new breakdown of ADA website lawsuits by industry.'
   - date: 2026-10-14
     note: 'First published. Filing numbers come from the Seyfarth Shaw 2025 year-end and 2026 mid-year reports. Case details come from the court orders as reported by Seyfarth Shaw.'
-related: ['ada-lawsuit-what-to-do', 'ada-lawsuit-payouts', 'ada-lawsuit-process']
+related: ['ada-website-lawsuits-by-industry', 'ada-lawsuit-what-to-do', 'ada-lawsuit-process']
 faqs:
   - q: 'How many ADA lawsuits were filed in 2026?'
     a: 'Seyfarth Shaw counted 5,006 federal ADA Title III lawsuits in the first half of 2026, above the average of 4,463 for the first half of the previous four years. At that pace, the full year could pass 10,000.'
@@ -48,7 +51,7 @@ These numbers include every kind of Title III case: parking lots, restrooms and 
   <figcaption>Website lawsuits as a share of federal ADA Title III lawsuits in 2025. Source: Seyfarth Shaw.</figcaption>
 </figure>
 
-Small businesses are the main target. UsableNet found that 64% of companies sued in the first half of 2025 had annual revenue under $25 million ([UsableNet](https://blog.usablenet.com/2025-midyear-accessibility-lawsuit-report-key-legal-trends)). Most are online stores, restaurants and service businesses, not big brands.
+Small businesses are the main target. UsableNet found that 64% of companies sued in the first half of 2025 had annual revenue under $25 million ([UsableNet](https://blog.usablenet.com/2025-midyear-accessibility-lawsuit-report-key-legal-trends)). Most are online stores, restaurants and service businesses, not big brands. UsableNet's industry split shows how lopsided it is: e-commerce was 70% of 2025 digital accessibility lawsuits and food service 21%. Our breakdown of [ADA website lawsuits by industry](/blog/ada-website-lawsuits-by-industry) has the full table, the 2026 midyear shares and what to check first in each sector.
 
 ## Four Recent ADA Lawsuits and What They Teach
 
