@@ -72,22 +72,35 @@ const faqs: FaqItem[] = [
         <span class="h1-kicker">Website Accessibility Monitoring Tool Pricing</span>
         Scan, Then <span class="accent">Monitor and Fix</span>
       </h1>
-      <p class="lead">Pro monitors up to {PLAN.urlsPerDomain} URLs per domain and lets you apply fixes you approve, such as alt text, button names and the page language. Nothing is applied until you approve it. This is not an overlay. ${PLAN.price} per domain per month, or ${PLAN.annualPrice} per year, after a 3-day free trial. You add a card at checkout and are not charged until the trial ends. Cancel before then and you will not be charged.</p>
-      <p class="price-contrast">
-        <strong>${PLAN.price} per domain</strong> a month, or ${PLAN.annualPrice} a year, for up to {PLAN.urlsPerDomain} URLs.
-        Comparable self-serve checkers in this category publish entry prices from about <strong>$69 per month</strong> when billed annually, often for far fewer URLs.
-        <a href="/blog/website-accessibility-checkers">That figure is in our checkers roundup</a>. Prices change, so confirm the other plan before you decide.
-      </p>
+      <p class="lead">The main report is a one-time Domain Audit: ${ONE_TIME.domainAudit.price} for a full-site scan of up to {PLAN.urlsPerDomain} pages, with a prioritized fix list. Start with a free scan of one page. To keep it fixed, Pro monitors the domain and applies fixes you approve, such as alt text, button names and the page language. Nothing is applied until you approve it. This is not an overlay. Pro is a 3-day free trial, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends.</p>
       <DemoVideo class="demo-cta-center" />
     </div>
   </section>
 
   <section class="section-tight pt-0" aria-labelledby="plan-title">
     <div class="container">
-      <article class="plan-single">
-        <div class="plan-single-main">
-          <span class="plan-flag-inline">One plan, every feature</span>
-          <h2 id="plan-title">{PLAN.name}</h2>
+      <div class="section-head">
+        <span class="eyebrow">Recommended first</span>
+        <h2 id="plan-title">Domain Audit, Then Pro, Then a Page Report</h2>
+        <p>The Domain Audit is the full-site report most teams buy once. Pro is how you keep it fixed. A Page Report covers a single page.</p>
+      </div>
+      <div class="offer-grid">
+        <article class="offer-card offer-card-recommended">
+          <span class="plan-flag-inline">Recommended</span>
+          <h3>Domain Audit</h3>
+          <p class="plan-price"><strong>${ONE_TIME.domainAudit.price}</strong><span>one-time</span></p>
+          <p>{ONE_TIME.domainAudit.blurb} No account, and it does not renew.</p>
+          <ul class="check-list">
+            <li><Icon name="check" />Full-site scan of up to {PLAN.urlsPerDomain} pages</li>
+            <li><Icon name="check" />Prioritized fix list and report</li>
+            <li><Icon name="check" />PDF evidence pack and a dated good-faith summary</li>
+            <li><Icon name="check" />One payment. Nothing renews.</li>
+          </ul>
+          <a class="btn btn-accent btn-block btn-lg" href={`${ONE_TIME.domainAudit.href}#buy`}>Get the Domain Audit — ${ONE_TIME.domainAudit.price} <Icon name="arrow" /></a>
+        </article>
+        <article class="offer-card">
+          <span class="plan-flag-inline">Keep it fixed</span>
+          <h3>{PLAN.name}</h3>
           <fieldset class="billing-toggle">
             <legend class="visually-hidden">Billing period</legend>
             <label><input type="radio" name="billing" value="monthly" checked /><span>Monthly</span></label>
@@ -96,67 +109,60 @@ const faqs: FaqItem[] = [
           <div class="billing-panel" data-billing="monthly">
             <p class="plan-price"><strong>${PLAN.price}</strong><span>/mo per domain</span></p>
             <p class="plan-billed">3-day free trial. You are not charged until it ends. 14-day money-back guarantee on the first charge. <a href="/resources/help-center/getting-started/start-your-free-trial">How the trial works</a>.</p>
-            <a class="btn btn-accent btn-block btn-lg" href={`${PLAN.ctaHref}?plan=monthly`}>{PLAN.cta} <Icon name="arrow" /></a>
           </div>
           <div class="billing-panel" data-billing="annual">
             <p class="plan-price"><strong>${PLAN.annualPrice}</strong><span>/year per domain</span></p>
-            <p class="plan-billed">3-day free trial, then billed yearly. Works out to ${(PLAN.annualPrice / 12).toFixed(2)}/mo, saving ${PLAN.price * 12 - PLAN.annualPrice} a year. You are not charged until the trial ends. 14-day money-back guarantee on the first charge. <a href="/resources/help-center/getting-started/start-your-free-trial">How the trial works</a>.</p>
-            <a class="btn btn-accent btn-block btn-lg" href={PLAN.annualCtaHref}>{PLAN.cta} <Icon name="arrow" /></a>
+            <p class="plan-billed">3-day free trial, then billed yearly. Works out to ${(PLAN.annualPrice / 12).toFixed(2)}/mo, saving ${PLAN.price * 12 - PLAN.annualPrice} a year. You are not charged until the trial ends. <a href="/resources/help-center/getting-started/start-your-free-trial">How the trial works</a>.</p>
           </div>
-          <p class="plan-alt">Not ready for a subscription? A <a href={ONE_TIME.pageReport.href}>Page Report</a> is ${ONE_TIME.pageReport.price} for one page, and a <a href={ONE_TIME.domainAudit.href}>Domain Audit</a> is ${ONE_TIME.domainAudit.price} for up to {PLAN.urlsPerDomain} pages. No account, and neither renews.</p>
-          <p class="plan-blurb">{PLAN.blurb}</p>
+          <p>{PLAN.blurb} Nothing is applied until you approve it. This is not an overlay.</p>
           <ul class="check-list">
             {PLAN.highlights.map((h) => <li><Icon name="check" />{h}</li>)}
           </ul>
-          <p class="plan-note">Need more than {PLAN.urlsPerDomain} URLs per domain? <a href="/contact?topic=sales">Talk to us</a>.</p>
-          <div class="path-grid">
-            <div>
-              <h3>Monitor and fix with AccessBell Pro</h3>
-              <p>Scheduled scans, email alerts, and fixes you approve, such as alt text, button names and the page language. Nothing is applied until you approve it. The trial is 3 days.</p>
-              <a class="btn btn-accent" href={PLAN.ctaHref}>Monitor and fix with AccessBell Pro</a>
-            </div>
-            <div>
-              <h3>I'd rather have help</h3>
-              <p>AccessBell does not staff a remediation team and does not guarantee a legal outcome. Send a note and we will reply about a quote or whether a partner introduction is available.</p>
-              <a class="btn btn-outline" href="/contact?topic=help">I'd rather have help</a>
-            </div>
+          <p class="price-contrast">
+            <strong>${PLAN.price} per domain</strong> a month, or ${PLAN.annualPrice} a year, for up to {PLAN.urlsPerDomain} URLs.
+            Comparable self-serve checkers in this category publish entry prices from about <strong>$69 per month</strong> when billed annually, often for far fewer URLs.
+            <a href="/blog/website-accessibility-checkers">That figure is in our checkers roundup</a>. Prices change, so confirm the other plan before you decide.
+          </p>
+          <div class="billing-panel" data-billing="monthly">
+            <a class="btn btn-block" href={`${PLAN.ctaHref}?plan=monthly`}>{PLAN.cta} <Icon name="arrow" /></a>
           </div>
-        </div>
-        <div class="plan-single-features">
-          <h3>Everything Included</h3>
-          <div class="feature-groups">
-            {FEATURE_GROUPS.map((g) => (
-              <div class="feature-group">
-                <h4>{g.title}</h4>
-                <ul class="check-list">
-                  {g.features.map((f) => <li><Icon name="check" />{f}</li>)}
-                </ul>
-              </div>
-            ))}
+          <div class="billing-panel" data-billing="annual">
+            <a class="btn btn-block" href={PLAN.annualCtaHref}>{PLAN.cta} <Icon name="arrow" /></a>
           </div>
-        </div>
-      </article>
+        </article>
+        <article class="offer-card">
+          <span class="plan-flag-inline">One page</span>
+          <h3>Page Report</h3>
+          <p class="plan-price"><strong>${ONE_TIME.pageReport.price}</strong><span>one-time</span></p>
+          <p>{ONE_TIME.pageReport.blurb} No account, and it does not renew.</p>
+          <ul class="check-list">
+            <li><Icon name="check" />One public page</li>
+            <li><Icon name="check" />Full issue detail and fixes</li>
+            <li><Icon name="check" />A PDF of that page</li>
+          </ul>
+          <a class="btn btn-outline btn-block" href={ONE_TIME.pageReport.href}>Get a Page Report — ${ONE_TIME.pageReport.price} <Icon name="arrow" /></a>
+        </article>
+      </div>
+      <p class="plan-note">Need more than {PLAN.urlsPerDomain} URLs, or would you rather have help? AccessBell does not staff a remediation team and does not guarantee a legal outcome. <a href="/contact?topic=sales">Talk to us</a> or <a href="/contact?topic=help">send a note</a>.</p>
     </div>
   </section>
 
-  <section class="section" aria-labelledby="onetime-title">
+  <section class="section section-surface" aria-labelledby="pro-includes-title">
     <div class="container">
       <div class="section-head">
-        <span class="eyebrow">One-time reports</span>
-        <h2 id="onetime-title">Need the Detail Once, Not a Subscription?</h2>
-        <p>Buy a single report for one page or your whole domain. No account, nothing renews.</p>
+        <span class="eyebrow">Pro monitoring</span>
+        <h2 id="pro-includes-title">What Pro Includes After the Domain Audit</h2>
+        <p>Use Pro when you want the site checked again, with alerts and fixes you approve. Every feature below is on the subscription, not on the one-time audit.</p>
       </div>
-      <div class="grid-2">
-        <div class="card">
-          <h3>Page Report — ${ONE_TIME.pageReport.price} one-time</h3>
-          <p>{ONE_TIME.pageReport.blurb}</p>
-          <p><a class="btn btn-outline" href={ONE_TIME.pageReport.href}>Get a Page Report <Icon name="arrow" /></a></p>
-        </div>
-        <div class="card">
-          <h3>Domain Audit — ${ONE_TIME.domainAudit.price} one-time</h3>
-          <p>{ONE_TIME.domainAudit.blurb}</p>
-          <p><a class="btn btn-outline" href={ONE_TIME.domainAudit.href}>Get a Domain Audit <Icon name="arrow" /></a></p>
-        </div>
+      <div class="feature-groups">
+        {FEATURE_GROUPS.map((g) => (
+          <div class="feature-group">
+            <h3>{g.title}</h3>
+            <ul class="check-list">
+              {g.features.map((f) => <li><Icon name="check" />{f}</li>)}
+            </ul>
+          </div>
+        ))}
       </div>
     </div>
   </section>
@@ -225,7 +231,8 @@ const faqs: FaqItem[] = [
           <li><Icon name="check" /><span><strong>Private by design.</strong> Your code is not used to train third-party models.</span></li>
         </ul>
         <p><a href="/solutions/automated-fixes">See how AccessBellFix can automatically fix website accessibility issues</a>, or read about <a href="/solutions/continuous-monitoring">continuous monitoring</a> and the <a href="/solutions/compliance-vault">Compliance Vault</a>. Comparing tools? See <a href="/comparisons">how AccessBell compares</a>.</p>
-        <a class="btn" href={PLAN.ctaHref}>{PLAN.cta} <Icon name="arrow" /></a>
+        <a class="btn" href={`${ONE_TIME.domainAudit.href}#buy`}>Get the Domain Audit — ${ONE_TIME.domainAudit.price} <Icon name="arrow" /></a>
+        <p><a href={PLAN.ctaHref}>Keep it fixed with Pro</a></p>
       </div>
       <div class="mock" role="img" aria-label="Illustration of a suggested code fix adding a label to an email input field">
         <div class="mock-bar" aria-hidden="true"><i></i><i></i><i></i><span>Suggested fix - WCAG 1.3.1</span></div>
@@ -288,7 +295,7 @@ const faqs: FaqItem[] = [
   <section class="section section-surface" aria-labelledby="monitor-tool-title">
     <div class="container cc-prose">
       <h2 id="monitor-tool-title">What This Accessibility Monitoring Tool Includes</h2>
-      <p>Pro is continuous accessibility monitoring for up to {PLAN.urlsPerDomain} URLs per domain: a daily scan, an email when a new critical or serious issue appears, and the failing code with a fix. Use it to fix accessibility issues on your website after the free scan, or buy a one-time Page Report or Domain Audit if you only need the detail once.</p>
+      <p>A Domain Audit is the one-time full-site report: up to {PLAN.urlsPerDomain} pages, a prioritized fix list, and a PDF. Pro is continuous accessibility monitoring after that: a daily scan, an email when a new critical or serious issue appears, and the failing code with a fix. A Page Report covers one page for ${ONE_TIME.pageReport.price}.</p>
       <p>Running Google Ads? A disapproval that says the destination is not accessible is about whether Google can reach the page, not about WCAG. <a href="/solutions/google-ads-accessibility">Fix ads compliance issues</a> starts with the policy Google named. AccessBell then checks the landing page people actually use. It is not an overlay, and it does not guarantee that an ad will be approved or that a site is legally compliant. See the <a href="/disclaimer">disclaimer</a>.</p>
     </div>
   </section>
@@ -304,5 +311,5 @@ const faqs: FaqItem[] = [
     </div>
   </section>
 
-  <CtaBand title="Scan, Then Monitor and Fix" text="Run a free scan of one page. Then start a 3-day free trial to monitor the domain and apply fixes you approve." />
+  <CtaBand title="Get the Domain Audit, Then Keep It Fixed" text="Run a free scan of one page. The main report is a one-time Domain Audit of the whole site. Pro keeps it fixed after a 3-day free trial." />
 </BaseLayout>

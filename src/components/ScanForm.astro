@@ -44,7 +44,7 @@ const { id, buttonLabel = 'Check accessibility', standard } = Astro.props;
 <p class="scan-proof scan-proof-form">
   <span data-scan-proof-count hidden></span>
   <slot name="proof">
-    <span>Free scan of one public page, no account. <a href="/app/signup">Start a 3-day free trial</a> of Pro, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. A card is added at checkout, and you are not charged until the trial ends. The first charge has a 14-day money-back guarantee. Guided fix suggestions apply only after you approve them. A <a href={ONE_TIME.pageReport.href}>Page Report</a> is ${ONE_TIME.pageReport.price} and a <a href={ONE_TIME.domainAudit.href}>Domain Audit</a> is ${ONE_TIME.domainAudit.price}. Neither renews.</span>
+    <span>Free scan of one public page, no account. The next step for the whole site is a <a href={ONE_TIME.domainAudit.href}>Domain Audit for ${ONE_TIME.domainAudit.price}</a>: up to {PLAN.urlsPerDomain} pages, a prioritized fix list, one time. To keep it fixed, <a href="/app/signup">start a 3-day free trial</a> of Pro, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. A card is added at checkout, and you are not charged until the trial ends. Nothing is applied until you approve it. This is not an overlay. A <a href={ONE_TIME.pageReport.href}>Page Report</a> is ${ONE_TIME.pageReport.price} for one page.</span>
   </slot>
 </p>
 <noscript><p class="scan-error">The free checker needs JavaScript enabled to display results.</p></noscript>
