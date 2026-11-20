@@ -4,6 +4,7 @@
  * video is silent, so the dialog also carries a text description (WCAG 1.2.1).
  */
 import Icon from './Icon.astro';
+import { ONE_TIME, PLAN } from '../data/pricing';
 interface Props {
   class?: string;
 }
@@ -38,8 +39,8 @@ const steps = [
       <p>The site in the demo is an example store with example results.</p>
     </details>
     <div class="demo-actions">
-      <a class="btn btn-green" href="/app/signup">Start 3-day free trial</a>
-      <a class="btn btn-outline" href="/#scan" data-demo-close-link>Run a free scan</a>
+      <a class="btn btn-green" href={ONE_TIME.domainAudit.href}>Get the Domain Audit — ${ONE_TIME.domainAudit.price}</a>
+      <a class="btn btn-outline" href={PLAN.ctaHref}>Keep it fixed with Pro</a>
     </div>
   </dialog>
 </div>

@@ -28,7 +28,7 @@ const { Content, headings } = await render(post);
 const url = `${SITE.url}/blog/${post.id}`;
 const minutes = readingTime(post.body ?? '');
 const { faqs, history } = post.data;
-// ADA, compliance, and lawsuit posts keep a mobile trial bar. Every article’s sidebar offers the trial.
+// ADA, compliance, and lawsuit posts keep a mobile bar for the Domain Audit. Every article’s sidebar leads with that audit.
 const adaCta = post.data.category === 'Compliance' || /(^|-)(ada|lawsuit)(-|$)/.test(post.id);
 
 const people = await getEntries(post.data.contributors.map((c) => c.author));
@@ -137,8 +137,12 @@ const schema = [
           <p>Paste any public page from your website. The free scan lists the automated accessibility issues on it, mapped to WCAG, right here on this page. No account needed.</p>
           <div class="hero-checker">
             <ScanForm id="article-scan" buttonLabel="Scan my page">
-              <span slot="proof">Free scan of one public page, no account. Want the whole site watched? <a href="/app/signup">Start a 3-day free trial</a> of Pro, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. A card is added at checkout, and you are not charged until the trial ends. Or get a <a href={ONE_TIME.pageReport.href}>Page Report</a> for ${ONE_TIME.pageReport.price} or a <a href={ONE_TIME.domainAudit.href}>Domain Audit</a> for ${ONE_TIME.domainAudit.price}. Neither renews.</span>
+              <span slot="proof">Free scan of one public page, no account. The next step for the whole site is a <a href={ONE_TIME.domainAudit.href}>Domain Audit for ${ONE_TIME.domainAudit.price}</a>: up to {PLAN.urlsPerDomain} pages, a prioritized fix list, one time. To keep it fixed, <a href="/app/signup">start a 3-day free trial</a> of Pro, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. A card is added at checkout, and you are not charged until the trial ends. A <a href={ONE_TIME.pageReport.href}>Page Report</a> is ${ONE_TIME.pageReport.price} for this page only.</span>
             </ScanForm>
+            <div class="cta-actions article-scan-actions">
+              <a class="btn btn-accent" href={ONE_TIME.domainAudit.href}>Get the Domain Audit — ${ONE_TIME.domainAudit.price} <Icon name="arrow" /></a>
+              <a class="btn btn-outline" href="/app/signup">Keep it fixed with Pro</a>
+            </div>
           </div>
         </section>
         <section class="results article-results" id="scan-results" aria-live="polite" aria-busy="false" hidden>
@@ -207,19 +211,20 @@ const schema = [
       <aside class="article-aside" aria-label="Article tools">
         <TableOfContents headings={toc} variant="aside" />
         <div class="aside-card aside-card-accent">
-          <h2>Monitor and fix, not only scan</h2>
-          <p>A free scan lists issues on one page. Pro is a 3-day free trial, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. You add a card at checkout and are not charged until the trial ends. Nothing is applied until you approve it.</p>
-          <a class="btn btn-accent btn-block" href="/app/signup">Start 3-day free trial <Icon name="arrow" /></a>
-          <p class="aside-card-links"><a href="#check-your-site">Free scan</a> · <a href={ONE_TIME.pageReport.href}>Page Report, ${ONE_TIME.pageReport.price}</a> · <a href={ONE_TIME.domainAudit.href}>Domain Audit, ${ONE_TIME.domainAudit.price}</a></p>
+          <h2>Domain Audit for the whole site</h2>
+          <p>The free scan checks one page. A Domain Audit is ${ONE_TIME.domainAudit.price} once for up to {PLAN.urlsPerDomain} pages, with a prioritized fix list and report. Pro keeps it fixed: a 3-day free trial, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. Nothing is applied until you approve it. This is not an overlay.</p>
+          <a class="btn btn-accent btn-block" href={ONE_TIME.domainAudit.href}>Get the Domain Audit — ${ONE_TIME.domainAudit.price} <Icon name="arrow" /></a>
+          <a class="btn btn-outline btn-block" href="/app/signup">Keep it fixed with Pro</a>
+          <p class="aside-card-links"><a href="#check-your-site">Free scan</a> · <a href={ONE_TIME.pageReport.href}>Page Report, ${ONE_TIME.pageReport.price}</a></p>
         </div>
       </aside>
     </div>
   </article>
 
   {adaCta && (
-    <div class="sticky-cta" role="complementary" aria-label="Start a 3-day free trial">
-      <p><strong>3-day free trial.</strong> <span>Then ${PLAN.price} per domain per month, or ${PLAN.annualPrice} per year. No charge until the trial ends.</span></p>
-      <a class="btn btn-accent btn-sm" href="/app/signup">Start free trial</a>
+    <div class="sticky-cta" role="complementary" aria-label="Get a Domain Audit">
+      <p><strong>Domain Audit — ${ONE_TIME.domainAudit.price}.</strong> <span>Full-site scan, once. Pro keeps it fixed after a 3-day trial.</span></p>
+      <a class="btn btn-accent btn-sm" href={ONE_TIME.domainAudit.href}>Get the audit</a>
     </div>
   )}
 

@@ -583,8 +583,29 @@ a:hover {
     padding-bottom: 0;
   }
 }
+.header-audit-short {
+  display: none;
+}
+.header-pro {
+  white-space: nowrap;
+}
+@media (max-width: 720px) {
+  .header-audit-full {
+    display: none;
+  }
+  .header-audit-short {
+    display: inline;
+  }
+}
 @media (max-width: 560px) {
-  .header-link {
+  .header-dashboard {
+    display: none;
+  }
+  .header-pro {
+    padding-inline: 8px;
+    font-size: 0.875rem;
+  }
+  .site-header .brand > span {
     display: none;
   }
   .header-inner {
@@ -5000,6 +5021,20 @@ body:has(.sticky-cta) {
 .footer-cta {
   font-size: 0.9375rem;
 }
+.footer-cta-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+.footer-pro {
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+.footer-pro:hover {
+  color: var(--sage);
+}
 .footer-nav {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -5186,6 +5221,7 @@ h2[tabindex='-1']:focus {
     grid-template-columns: 1fr 1fr;
   }
 }
+.feature-group h3,
 .feature-group h4 {
   font-size: 0.8125rem;
   letter-spacing: 0.06em;
@@ -6851,8 +6887,129 @@ h2[tabindex='-1']:focus {
   margin: 4px 0 20px;
 }
 .plan-single:has(input[value='monthly']:checked) [data-billing='annual'],
-.plan-single:has(input[value='annual']:checked) [data-billing='monthly'] {
+.plan-single:has(input[value='annual']:checked) [data-billing='monthly'],
+.offer-card:has(input[value='monthly']:checked) [data-billing='annual'],
+.offer-card:has(input[value='annual']:checked) [data-billing='monthly'] {
   display: none;
+}
+.offer-grid {
+  display: grid;
+  gap: 20px;
+  align-items: stretch;
+}
+@media (min-width: 980px) {
+  .offer-grid {
+    grid-template-columns: 1.12fr 1fr 0.88fr;
+  }
+}
+.offer-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: #fff;
+  padding: clamp(20px, 3vw, 28px);
+  box-shadow: var(--shadow-sm);
+}
+.offer-card h2,
+.offer-card h3 {
+  margin: 8px 0 0;
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: var(--ink-900);
+}
+.offer-card .plan-price {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 4px 0;
+}
+.offer-card .plan-price strong {
+  font-size: 2.75rem;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.offer-card .plan-price span,
+.offer-card .plan-billed,
+.offer-card > p {
+  color: var(--ink-700);
+}
+.offer-card .plan-billed {
+  margin: 0 0 8px;
+  font-size: 0.875rem;
+}
+.offer-card .check-list {
+  margin: 4px 0 16px;
+  text-align: left;
+}
+.offer-card > .btn,
+.offer-card > .billing-panel:has(.btn) {
+  margin-top: auto;
+}
+.offer-card .btn {
+  white-space: normal;
+  text-align: center;
+}
+.offer-card .billing-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  max-width: none;
+  margin-top: 8px;
+}
+.offer-card .billing-toggle label > span {
+  justify-content: center;
+  width: 100%;
+  padding: 8px 10px;
+  white-space: normal;
+  text-align: center;
+}
+.offer-card .price-contrast {
+  margin: 12px 0 0;
+  max-width: none;
+  font-size: 0.875rem;
+}
+.offer-card .price-contrast strong {
+  font-size: 1rem;
+}
+.offer-card .billing-panel {
+  max-width: none;
+}
+.offer-card .billing-panel .plan-price {
+  justify-content: flex-start;
+}
+.offer-card .billing-panel .btn {
+  margin: 8px 0 0;
+}
+.offer-card-recommended {
+  border: 2px solid var(--sage);
+  background: var(--sage-50);
+  box-shadow: var(--shadow-lg);
+}
+.offer-card .plan-flag-inline {
+  align-self: flex-start;
+}
+.hero-offers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 18px;
+}
+.hero-offer-note {
+  max-width: 46rem;
+  margin: 14px auto 0;
+  text-align: center;
+  color: var(--ink-700);
+}
+.article-scan-actions {
+  justify-content: flex-start;
+  margin-top: 16px;
+}
+.aside-card .btn-block + .btn {
+  margin-top: 8px;
 }
 
 /* ---------- Free scan: results and trial prompt ---------- */
@@ -7057,9 +7214,29 @@ h2[tabindex='-1']:focus {
   font-size: 1.125rem;
   color: var(--ink-900);
 }
-.scan-scope-pro {
+.scan-scope-pro,
+.scan-scope-audit {
   border: 2px solid var(--sage);
   background: var(--sage-50);
+}
+@media (min-width: 760px) {
+  .scan-scope-compare.scan-scope-compare-3 {
+    grid-template-columns: 1fr 1.15fr 1fr;
+  }
+}
+.scan-path-primary {
+  border: 2px solid var(--sage);
+  background: var(--sage-50);
+}
+.scan-offer-tertiary {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--ink-500);
+}
+.scan-help-block {
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
 }
 .scan-scope-label {
   font-size: 0.75rem;

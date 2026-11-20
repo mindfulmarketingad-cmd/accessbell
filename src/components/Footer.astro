@@ -1,5 +1,6 @@
 ---
 import { FOOTER_GROUPS, SITE } from '../config/site';
+import { ONE_TIME, PLAN } from '../data/pricing';
 import LogoMark from './LogoMark.astro';
 
 const year = new Date().getFullYear();
@@ -29,8 +30,11 @@ const socials = [
           <LogoMark />
           <span>Access<span class="brand-bell">Bell</span></span>
         </a>
-        <p class="footer-tagline">An accessibility monitoring tool that helps you find WCAG and ADA issues and fix them.</p>
-        <a class="btn btn-accent footer-cta" href="/app/signup">Start 3-day free trial</a>
+        <p class="footer-tagline">Scan, monitor and fix WCAG and ADA issues. Not an overlay. The main report is a one-time Domain Audit. Pro keeps it fixed.</p>
+        <div class="footer-cta-row">
+          <a class="btn btn-accent footer-cta" href={ONE_TIME.domainAudit.href}>Get the Domain Audit — ${ONE_TIME.domainAudit.price}</a>
+          <a class="footer-pro" href={PLAN.ctaHref}>Keep it fixed with Pro</a>
+        </div>
       </div>
       <nav class="footer-nav" aria-label="Footer">
         {FOOTER_GROUPS.map((g) => (

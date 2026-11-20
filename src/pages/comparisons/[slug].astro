@@ -10,6 +10,7 @@ import { SITE } from '../../config/site';
 import { faqSchema } from '../../lib/schema';
 import { formatDate } from '../../lib/format';
 import { COMPARISONS, ROWS, CATEGORY_LABEL, comparisonPath, similarTo, type Comparison } from '../../data/comparisons';
+import { ONE_TIME, PLAN } from '../../data/pricing';
 
 export function getStaticPaths() {
   return COMPARISONS.map((c) => ({ params: { slug: c.slug }, props: { c } }));
@@ -159,7 +160,7 @@ const schema = [
       <ul class="related-guides">
         {related.map((post) => post && <li><a href={postPath(post)}>{post.data.title}</a><span>{post.data.description}</span></li>)}
         <li><a href="/solutions">AccessBell solutions</a><span>Continuous monitoring, URL monitoring, automated fixes and the Compliance Vault.</span></li>
-        <li><a href="/pricing">AccessBell pricing</a><span>One plan per domain with every feature.</span></li>
+        <li><a href="/pricing">AccessBell pricing</a><span>A ${ONE_TIME.domainAudit.price} Domain Audit for the whole site, then Pro to keep it fixed.</span></li>
       </ul>
       <h3>Other Comparisons</h3>
       <ul class="cmp-links">
@@ -173,9 +174,10 @@ const schema = [
     <div class="container">
       <div class="cta-band">
         <h2 id="cmp-final">See AccessBell on Your Own Site</h2>
-        <p>Run a free scan with no account, watch the demo, or start a 3-day free trial to monitor every page on your domain.</p>
+        <p>Run a free scan with no account, or get a ${ONE_TIME.domainAudit.price} Domain Audit of the whole site. Pro keeps it fixed after a 3-day free trial.</p>
         <div class="cmp-cta cmp-cta-center">
-          <a class="btn btn-accent" href="/app/signup">Start 3-day free trial <Icon name="arrow" /></a>
+          <a class="btn btn-accent" href={ONE_TIME.domainAudit.href}>Get the Domain Audit — ${ONE_TIME.domainAudit.price} <Icon name="arrow" /></a>
+          <a class="btn btn-outline" href={PLAN.ctaHref}>Keep it fixed with Pro</a>
           <DemoVideo />
         </div>
       </div>
