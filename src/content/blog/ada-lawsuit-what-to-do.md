@@ -3,14 +3,17 @@ title: 'Got an ADA Lawsuit in 2026? What To Do Next, Step by Step'
 seoTitle: 'Got an ADA Lawsuit in 2026? What To Do Next, Step by Step'
 description: 'Just served with an ADA lawsuit over your website? What to do in the first week, step by step: deadlines, your lawyer, your insurer, evidence and fixing the site.'
 pubDate: 2026-10-14
+updatedDate: 2026-11-23
 category: 'Compliance'
 contributors:
   - author: joseph-edwards
     role: Author
 history:
+  - date: 2026-11-23
+    note: 'Added a link to the step-by-step guide on looking up the plaintiff''s other ADA lawsuits.'
   - date: 2026-10-14
     note: 'First published. Deadlines checked against the Federal Rules of Civil Procedure. Case examples checked against the court orders and the Seyfarth Shaw ADA Title III blog.'
-related: ['ada-lawsuit-process', 'ada-demand-letter', 'what-happens-after-being-sued-for-ada-website-compliance']
+related: ['ada-lawsuit-process', 'how-to-look-up-ada-lawsuits', 'ada-demand-letter']
 faqs:
   - q: 'How long do I have to respond to an ADA lawsuit?'
     a: 'In federal court, 21 days after you are served with the summons and complaint, or 60 days if you agreed to waive formal service. State courts set their own deadlines, so check the summons and ask your lawyer on day one.'
@@ -65,7 +68,7 @@ Automated testing does not cover everything. Our guide on [how to check if your 
 
 ### Step 6: Look Up the Plaintiff's Other Lawsuits
 
-Many website cases are filed by the same plaintiffs and firms against dozens of businesses. You can search federal dockets on [PACER](https://pacer.uscourts.gov/) or the free [CourtListener](https://www.courtlistener.com/) database. Give what you find to your lawyer. Courts have started to look harder at serial filings: in February 2026, Judge Jeannette Vargas in the Southern District of New York ordered discovery and a hearing on whether the plaintiff in *Fernandez v. Cuddle Clones* had really tried to buy from the site, after noting more than 57 similar suits ([Seyfarth Shaw](https://www.adatitleiii.com/2026/02/ny-judge-questions-plaintiffs-pet-plushie-purchase-tale-orders-jurisdictional-discovery-in-website-access-suit/)).
+Many website cases are filed by the same plaintiffs and firms against dozens of businesses. You can search federal dockets on [PACER](https://pacer.uscourts.gov/) or the free [CourtListener](https://www.courtlistener.com/) database. Give what you find to your lawyer. Our guide on [how to look up ADA lawsuits against a business or a plaintiff](/blog/how-to-look-up-ada-lawsuits) shows the free and paid searches, the nature of suit code to filter on and what to record for each case. Courts have started to look harder at serial filings: in February 2026, Judge Jeannette Vargas in the Southern District of New York ordered discovery and a hearing on whether the plaintiff in *Fernandez v. Cuddle Clones* had really tried to buy from the site, after noting more than 57 similar suits ([Seyfarth Shaw](https://www.adatitleiii.com/2026/02/ny-judge-questions-plaintiffs-pet-plushie-purchase-tale-orders-jurisdictional-discovery-in-website-access-suit/)).
 
 ### Step 7: Start Fixing the Website, and Keep a Dated Record
 

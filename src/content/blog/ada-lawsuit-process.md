@@ -76,6 +76,7 @@ What to do immediately:
 - **Contact a lawyer** with ADA defense experience.
 - **Notify your insurer**, since some policies cover defense costs but require prompt notice.
 - **Preserve evidence.** Keep website versions, scan reports, accessibility statements, remediation tickets and communications.
+- **Look up the plaintiff's other cases.** See [how to look up ADA lawsuits](/blog/how-to-look-up-ada-lawsuits) in PACER and the free RECAP Archive.
 
 ## Stage 2: The Deadline to Respond
 
