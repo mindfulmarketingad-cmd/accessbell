@@ -14,7 +14,7 @@ A running record of shipped pages and conversion changes. One page and one site 
 
 **Backlink angle:** A practical, sourced how-to for court records that defense lawyers, business associations and journalists can cite: the 446 code, PACER's real fee rules and the free RECAP route in one table.
 
-**Indexing:** Today's GSC results (sitemap resubmission, URL Inspection and Request Indexing) will be added here by the separate indexing run.
+**Indexing:** sitemap resubmitted (467 discovered, pre-refresh); `/blog/how-to-look-up-ada-lawsuits` was "Discovered – currently not indexed", Request Indexing done Nov 23; `/blog/ada-lawsuit-what-to-do`, `/blog/ada-website-lawsuits-by-industry`, `/blog/ada-lawsuits-2026` and `/blog/ada-lawsuit-process` confirmed indexed ("URL is on Google") and removed from the queue. 1 request used, no quota error; 1 URL queued (requested). See `docs/indexing-queue.md`.
 
 ## 2026-11-20
 
