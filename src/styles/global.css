@@ -9288,3 +9288,15 @@ img.platform-logo-lg {
 .article-results {
   padding-block: 0 24px;
 }
+
+/* Domain Audit hero note when the visitor arrives from a free scan (?url=). */
+.scan-handoff {
+  max-width: 40rem;
+  margin: 0 auto 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border, #cbd5e1);
+  border-radius: 0.5rem;
+  background: var(--surface, #f8fafc);
+  color: inherit;
+}
+.scan-handoff[hidden] { display: none; }
