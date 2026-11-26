@@ -14,7 +14,7 @@ A running record of shipped pages and conversion changes. One page and one site 
 
 **Backlink angle:** A sourced calculator contractors, architects and facility managers can cite: rise times 12, a run no taller than 30 inches, a 60-inch landing, and handrails above 6 inches, each tied to the 2010 ADA Standards section number and to ADA.gov and the Access Board.
 
-**Indexing:** sitemap resubmitted, 469 discovered, 1 page newly confirmed indexed; Request Indexing for the new page to follow after deploy. `/blog/how-to-look-up-ada-lawsuits` confirmed "URL is on Google" on Nov 26 and removed from the queue. See `docs/indexing-queue.md`.
+**Indexing:** sitemap resubmitted, 469 discovered pages. Confirmed indexed ("URL is on Google") on Nov 26 and removed from the queue: `/blog/how-to-look-up-ada-lawsuits`, `/blog/ada-requirements-for-ramps`. `/tools/ada-ramp-slope-calculator` URL Inspection = "URL is unknown to Google"; Request Indexing returned "Quota Exceeded" (attempted 2026-11-26, kept queued, retry first next run). 0 Request Indexing succeeded, quota exceeded. See `docs/indexing-queue.md`.
 
 ## 2026-11-23
 
