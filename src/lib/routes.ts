@@ -43,6 +43,7 @@ const STATIC: Omit<RouteEntry, 'lastmod'>[] = [
   { path: '/tools/pdf-accessibility-checker', label: 'Free PDF Accessibility Checker', note: 'Check PDFs for WCAG and PDF/UA issues in your browser', group: 'main' },
   { path: '/tools/chart-color-checker', label: 'Chart and Infographic Color Checker', note: 'Free chart color checker for color blindness and contrast', group: 'main' },
   { path: '/tools/contrast-checker', label: 'WCAG Color Contrast Checker', note: 'Free color contrast ratio checker', group: 'main' },
+  { path: '/tools/ada-ramp-slope-calculator', label: 'ADA Ramp Slope Calculator', note: 'Minimum run, landings and handrails from the 2010 ADA Standards', group: 'main' },
   { path: '/platforms', label: 'Accessibility Checkers by Platform', note: 'WordPress, Shopify, Webflow, Squarespace and Wix', group: 'main' },
   { path: '/industries', label: 'Accessibility Checkers by Industry', note: 'Hotels, restaurants, e-commerce, healthcare and more', group: 'main' },
   { path: '/state-accessibility-laws', label: 'Website Accessibility Laws by State', note: 'State laws and a free checker for each', group: 'main' },
@@ -85,8 +86,10 @@ export async function getRoutes(): Promise<RouteEntry[]> {
                 ? new Date('2026-11-11T00:00:00Z')
                 : r.path === '/resources/squarespace-accessibility-checklist'
                   ? new Date('2026-11-12T00:00:00Z')
-                  : r.path === '/resources/wix-accessibility-checklist'
-                    ? new Date('2026-11-13T00:00:00Z')
+                : r.path === '/resources/wix-accessibility-checklist'
+                  ? new Date('2026-11-13T00:00:00Z')
+                  : r.path === '/tools/ada-ramp-slope-calculator'
+                    ? new Date('2026-11-26T00:00:00Z')
                     : undefined,
     })),
     ...CHECKERS.map((c) => ({ path: checkerPath(c), label: c.name, note: `Free WCAG ${c.version} Level ${c.level} scan`, group: 'main' as const })),

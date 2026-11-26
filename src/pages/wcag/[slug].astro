@@ -4,9 +4,11 @@ import { fitTitle } from '../../lib/titles';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
 import CtaBand from '../../components/CtaBand.astro';
+import ScanForm from '../../components/ScanForm.astro';
 import AuthorAvatar from '../../components/AuthorAvatar.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
 import { SITE } from '../../config/site';
+import { PLAN, ONE_TIME } from '../../data/pricing';
 import { formatDate, readingTime } from '../../lib/format';
 import { authorPath, authorSchema } from '../../lib/authors';
 import { faqSchema } from '../../lib/schema';
@@ -277,7 +279,7 @@ const schema = [
           ) : (
             !full && <p>This criterion depends on meaning or context, so it needs a person to judge. AccessBell's report lists it for manual review rather than marking it pass or fail automatically, so it is not missed.</p>
           )}
-          <p><a href="/#scan">Check your site for this</a> with a free scan of one public page. AccessBell is a <a href="/resources/website-accessibility-monitoring-tool">website accessibility monitoring tool</a>, not an overlay.</p>
+          <p><a href="#check-your-site">Check your site for this</a> with a free scan of one public page, on this page. AccessBell is a <a href="/resources/website-accessibility-monitoring-tool">website accessibility monitoring tool</a>, not an overlay.</p>
 
           {deep && (
             <>
@@ -335,6 +337,23 @@ const schema = [
           <p class="muted">This page explains a technical standard and is not legal advice. See our <a href="/disclaimer">disclaimer</a>.</p>
         </div>
 
+        <section class="article-scan" id="check-your-site" aria-labelledby="wcag-scan-title">
+          <h2 id="wcag-scan-title">Check your own site in 30 seconds</h2>
+          <p>Paste any public page. The free scan lists automated issues for WCAG {c.sc} {c.name} and the other rules a scan can see, right here. No account needed.</p>
+          <div class="hero-checker">
+            <ScanForm id="wcag-scan" buttonLabel="Scan my page">
+              <span slot="proof">Free scan of one public page, no account. The next step for the whole site is a <a href={ONE_TIME.domainAudit.href}>Domain Audit for ${ONE_TIME.domainAudit.price}</a>: up to {PLAN.urlsPerDomain} pages, a prioritized fix list, one time. To keep it fixed, <a href="/app/signup">start a 3-day free trial</a> of Pro, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. A card is added at checkout, and you are not charged until the trial ends. A <a href={ONE_TIME.pageReport.href}>Page Report</a> is ${ONE_TIME.pageReport.price} for this page only.</span>
+            </ScanForm>
+            <div class="cta-actions article-scan-actions">
+              <a class="btn btn-accent" href={ONE_TIME.domainAudit.href}>Get the Domain Audit — ${ONE_TIME.domainAudit.price} <Icon name="arrow" /></a>
+              <a class="btn btn-outline" href="/app/signup">Keep it fixed with Pro</a>
+            </div>
+          </div>
+        </section>
+        <section class="results article-results" id="scan-results" aria-live="polite" aria-busy="false" hidden>
+          <div data-results></div>
+        </section>
+
         {series.length > 0 && (
           <nav class="guide-series" aria-labelledby="more-guides">
             <h2 id="more-guides">More WCAG Codes Explained</h2>
@@ -376,10 +395,12 @@ const schema = [
 
       <aside class="article-aside" aria-label="Page tools">
         <TableOfContents headings={toc} variant="aside" />
-        <div class="aside-card">
-          <h2>Check your site for this</h2>
-          <p>Run a free scan to spot WCAG {c.sc} issues and every other automated check on your page.</p>
-          <a class="btn btn-block" href="/#scan">Check your site for this <Icon name="arrow" /></a>
+        <div class="aside-card aside-card-accent">
+          <h2>Domain Audit for the whole site</h2>
+          <p>The free scan checks one page for WCAG {c.sc}. A Domain Audit is ${ONE_TIME.domainAudit.price} once for up to {PLAN.urlsPerDomain} pages, with a prioritized fix list. Pro keeps it fixed: a 3-day free trial, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. A card is added at checkout, and you are not charged until the trial ends.</p>
+          <a class="btn btn-accent btn-block" href={ONE_TIME.domainAudit.href}>Get the Domain Audit — ${ONE_TIME.domainAudit.price} <Icon name="arrow" /></a>
+          <a class="btn btn-outline btn-block" href="/app/signup">Keep it fixed with Pro</a>
+          <p class="aside-card-links"><a href="#check-your-site">Free scan</a> · <a href={ONE_TIME.pageReport.href}>Page Report, ${ONE_TIME.pageReport.price}</a></p>
         </div>
       </aside>
     </div>
@@ -390,3 +411,6 @@ const schema = [
     text={`The free scan checks one public page for ${c.sc} ${c.name} and the other rules an automated test can see. AccessBell is a website accessibility monitoring tool, not an overlay. The main report is a one-time Domain Audit. Pro keeps the site monitored.`}
   />
 </BaseLayout>
+<script>
+  import '../../scripts/free-scan.js';
+</script>
