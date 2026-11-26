@@ -12,7 +12,7 @@ export type Tool = {
   icon: string;
   tag: string;
   text: string;
-  group: 'scan' | 'design' | 'documents';
+  group: 'scan' | 'design' | 'documents' | 'facility';
 };
 
 export const TOOLS: Tool[] = [
@@ -65,6 +65,14 @@ export const TOOLS: Tool[] = [
     group: 'documents',
   },
   {
+    href: '/tools/ada-ramp-slope-calculator',
+    keyword: 'ADA Ramp Slope Calculator',
+    icon: 'scale',
+    tag: 'Free calculator',
+    text: 'Enter a rise to get the minimum 1:12 run, landings after each 30-inch rise, and whether handrails are required under the 2010 ADA Standards.',
+    group: 'facility',
+  },
+  {
     href: '/tools/statement-generator',
     keyword: 'Free Accessibility Statement Generator',
     icon: 'doc',
@@ -78,4 +86,5 @@ export const TOOL_GROUPS: { id: Tool['group']; title: string; text: string }[] =
   { id: 'scan', title: 'Free Website Accessibility Checkers', text: 'Scan a live page against the standard you need to meet.' },
   { id: 'design', title: 'Free Color and Design Accessibility Tools', text: 'Check colors and graphics before they ship.' },
   { id: 'documents', title: 'Free Accessibility Tools for Documents and Statements', text: 'Check PDFs and publish your accessibility statement.' },
+  { id: 'facility', title: 'Free ADA Facility Calculators', text: 'Check a ramp rise against the 2010 ADA Standards for slope, landings and handrails.' },
 ];

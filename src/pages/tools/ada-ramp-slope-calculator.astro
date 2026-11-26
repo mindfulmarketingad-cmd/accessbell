@@ -1,0 +1,207 @@
+---
+import CtaBand from '../../components/CtaBand.astro';
+import MoreTools from '../../components/MoreTools.astro';
+import ScanForm from '../../components/ScanForm.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import Faq from '../../components/Faq.astro';
+import { faqSchema, type FaqItem } from '../../lib/schema';
+import { SITE } from '../../config/site';
+import { ONE_TIME, PLAN } from '../../data/pricing';
+import { computeRamp } from '../../scripts/ramp-calculator.js';
+
+const PATH = '/tools/ada-ramp-slope-calculator';
+const UPDATED = '2026-11-26';
+const example = computeRamp({ rise: 24 });
+const STANDARDS = 'https://www.ada.gov/law-and-regs/design-standards/2010-stds/';
+const CHAPTER4 = 'https://www.access-board.gov/ada/chapter/ch04/';
+const CHAPTER5 = 'https://www.access-board.gov/ada/chapter/ch05/';
+const GUIDE = 'https://www.access-board.gov/ada/guides/chapter-4-ramps-and-curb-ramps/';
+
+const faqs: FaqItem[] = [
+  {
+    q: 'What slope does the ADA ramp slope calculator treat as the maximum?',
+    a: '1:12. Section 405.2 of the 2010 ADA Standards says a ramp run shall have a running slope not steeper than 1:12. That is 12 inches of run for every inch of rise. The <a href="https://www.access-board.gov/ada/guides/chapter-4-ramps-and-curb-ramps/" rel="noopener noreferrer">Access Board guide</a> also writes 1:12 as 8.33 percent.',
+  },
+  {
+    q: 'How does the ADA ramp slope calculator get the minimum run?',
+    a: 'It multiplies the rise in inches by 12. A 24-inch rise needs a ramp run of at least 288 inches, which is 24 feet, before landings. That length is the 1:12 limit in section 405.2. A longer, gentler run still meets the standard.',
+  },
+  {
+    q: 'When does an ADA ramp need another landing?',
+    a: 'Section 405.6 limits any one ramp run to 30 inches of rise. Section 405.7 requires a landing at the top and bottom of every run, and section 405.7.3 requires that landing to be at least 60 inches long. A rise over 30 inches needs more than one run, with a landing between them. A turn needs a 60 by 60 inch landing (405.7.4).',
+  },
+  {
+    q: 'When are handrails required on an ADA ramp?',
+    a: 'Section 405.8 requires handrails on a ramp run with a rise greater than 6 inches. Section 505.2 says those handrails go on both sides. The gripping surface is 34 to 38 inches above the ramp (505.4), and the rail extends 12 inches horizontally past the top and bottom of the run (505.10.1). A run that rises 6 inches or less does not need handrails under 405.8.',
+  },
+  {
+    q: 'Does this ADA ramp slope calculator check curb ramps?',
+    a: 'No. Curb ramps follow section 406. Section 406.1 says a curb ramp complies with 406, with 405.2 through 405.5, and with 405.10. It does not apply the 60-inch landing or the 405.8 handrail rule. A curb-ramp landing at the top is 36 inches long (406.4). Use the <a href="/blog/ada-requirements-for-ramps">ADA requirements for ramps</a> guide for curb ramps.',
+  },
+  {
+    q: 'Is a result from this calculator a permit or a legal opinion?',
+    a: 'No. It applies the published 2010 ADA Standards numbers to the rise you type. Local building codes can be stricter, and an existing building can have a different duty under the ADA. It is not a design, an inspection or legal advice. Read the <a href="/disclaimer">disclaimer</a>.',
+  },
+];
+
+const schema = [
+  {
+    '@type': 'WebApplication',
+    name: 'ADA Ramp Slope Calculator',
+    url: `${SITE.url}${PATH}`,
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'Any',
+    description: 'Calculates the minimum ADA ramp run, landings and handrails from a rise, using the 2010 ADA Standards sections 405 and 505.',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    publisher: { '@id': `${SITE.url}/#organization` },
+  },
+  faqSchema(faqs),
+];
+---
+<BaseLayout
+  title="ADA Ramp Slope Calculator | AccessBell"
+  description="Free ADA ramp slope calculator for the 2010 ADA Standards. Enter a rise for the minimum 1:12 run, a slope check, 60-inch landings, and handrails."
+  breadcrumbs={[{ label: 'Tools', href: '/tools' }, { label: 'ADA Ramp Slope Calculator', href: PATH }]}
+  schema={schema}
+>
+  <section class="gen-hero" aria-labelledby="ramp-title">
+    <div class="container">
+      <span class="gen-hero-icon"><Icon name="scale" /></span>
+      <h1 id="ramp-title">ADA Ramp Slope <span class="accent">Calculator</span></h1>
+      <p class="lead">An ADA ramp slope calculator applies the 2010 ADA Standards to a rise you enter. It returns the shortest run at a 1:12 slope, checks a run length you already have, splits the rise into runs of 30 inches or less, counts the 60-inch landings, and says whether handrails are required. The rules come from section 405 and section 505 of the 2010 ADA Standards for Accessible Design. This is general information, not a design or a permit.</p>
+      <p class="ramp-updated">Last updated <time datetime={UPDATED}>November 26, 2026</time>. Figures are from the <a href={STANDARDS} rel="noopener noreferrer">2010 ADA Standards for Accessible Design</a> on ADA.gov and the <a href={CHAPTER4} rel="noopener noreferrer">Access Board's chapter 4</a>.</p>
+    </div>
+  </section>
+
+  <div class="container cc-prose ramp-page">
+    <section class="key-facts" aria-labelledby="key-facts">
+      <h2 id="key-facts">ADA Ramp Slope Calculator: Key Facts</h2>
+      <ul>
+        <li>Maximum running slope is 1:12, from section 405.2. Each inch of rise needs at least 12 inches of run. The <a href={GUIDE} rel="noopener noreferrer">Access Board ramp guide</a> writes that maximum as 8.33 percent.</li>
+        <li>Maximum cross slope is 1:48 (405.3).</li>
+        <li>Maximum rise of one ramp run is 30 inches (405.6). A taller rise needs another run and a landing between the runs.</li>
+        <li>Minimum clear width is 36 inches, measured between handrails where handrails are installed (405.5).</li>
+        <li>Minimum landing length is 60 inches (405.7.3), at the top and bottom of every run. A change in direction needs 60 by 60 inches (405.7.4).</li>
+        <li>Handrails are required on both sides when a ramp run rises more than 6 inches (405.8 and 505.2).</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="ramp-tool-title">
+      <h2 id="ramp-tool-title">Check an ADA Ramp Slope</h2>
+      <p>The 24-inch rise is an example, not a typical building. Replace it with the height you measured. A walking surface flatter than or equal to 1:20 is not a ramp (section 403.3). The full written rules are in <a href="/blog/ada-requirements-for-ramps">ADA requirements for ramps</a>.</p>
+
+      <div class="ramp-tool" data-ramp>
+        <form novalidate>
+          <div class="ramp-fields">
+            <div class="field">
+              <label for="ramp-rise">Total rise (inches)</label>
+              <input id="ramp-rise" name="rise" type="number" inputmode="decimal" min="0" max="10000" step="any" value="24" required aria-describedby="ramp-rise-help ramp-rise-error" />
+              <p class="help" id="ramp-rise-help">Vertical height to climb. 12 inches is 1 foot. The starting value is only an example.</p>
+              <p class="field-error" id="ramp-rise-error" data-error="rise" hidden></p>
+            </div>
+            <div class="field">
+              <label for="ramp-run">Ramp run you have (inches, optional)</label>
+              <input id="ramp-run" name="run" type="number" inputmode="decimal" min="0" max="200000" step="any" aria-describedby="ramp-run-help ramp-run-error" />
+              <p class="help" id="ramp-run-help">Horizontal length of the sloped run, not counting landings. Leave blank to see only the minimum 1:12 run.</p>
+              <p class="field-error" id="ramp-run-error" data-error="run" hidden></p>
+            </div>
+            <div class="field">
+              <label for="ramp-cross">Cross slope (1 in this many inches, optional)</label>
+              <input id="ramp-cross" name="cross" type="number" inputmode="decimal" min="0" max="1000" step="any" aria-describedby="ramp-cross-help ramp-cross-error" />
+              <p class="help" id="ramp-cross-help">48 means a 1:48 cross slope, the maximum in section 405.3. Leave blank to skip.</p>
+              <p class="field-error" id="ramp-cross-error" data-error="cross" hidden></p>
+            </div>
+          </div>
+          <button class="btn btn-accent" type="submit">Calculate ADA ramp slope</button>
+          <p class="ramp-privacy">The math stays in this browser. Nothing you enter is sent to AccessBell.</p>
+        </form>
+
+        <div class="ramp-results" aria-labelledby="ramp-result-title">
+          <h3 id="ramp-result-title" tabindex="-1" data-ramp-heading>ADA ramp slope result</h3>
+          <p class="visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-ramp-live></p>
+          <dl class="ramp-metrics">
+            <div><dt>Minimum run at 1:12</dt><dd data-ramp-min-run>{example.minimumRun}</dd></div>
+            <div><dt>Ramp runs (30 in rise max)</dt><dd data-ramp-runs>{example.runs}</dd></div>
+            <div><dt>Rise of each run</dt><dd data-ramp-per-run>{example.perRun}</dd></div>
+            <div><dt>Intermediate landings</dt><dd data-ramp-intermediate>{example.intermediate}</dd></div>
+            <div><dt>Landings, including top and bottom</dt><dd data-ramp-landings>{example.landings}</dd></div>
+            <div><dt>Each landing, clear length</dt><dd data-ramp-landing-each>{example.landingEach}</dd></div>
+            <div><dt>Landing length, straight ramp</dt><dd data-ramp-landing-total>{example.landingTotal}</dd></div>
+            <div><dt>Minimum length, run plus landings</dt><dd data-ramp-total>{example.totalLength}</dd></div>
+            <div><dt>Clear width</dt><dd data-ramp-width>{example.clearWidth}</dd></div>
+          </dl>
+          <p class="ramp-call"><span class="tag tag-moderate" data-ramp-hand-tag>{example.handrailTag}</span> <span data-ramp-hand-text>{example.handrailText}</span></p>
+          <p class="ramp-call"><span class="tag" data-ramp-slope-tag hidden></span> <span data-ramp-slope-text>Enter a run length to check it against 1:12.</span></p>
+          <p class="ramp-call"><span class="tag" data-ramp-cross-tag hidden></span> <span data-ramp-cross-text>Enter a cross slope to check it against 1:48. Leave it blank to skip.</span></p>
+          <p class="ramp-note">Landings in this total are 60 inches each along a straight ramp. A turn needs 60 by 60 inches (405.7.4). A door next to a landing can require more floor (405.7.5). Those extras are not added to the length above.</p>
+        </div>
+        <noscript><p>JavaScript is off, so the fields will not recalculate. Multiply the rise in inches by 12 for the minimum run at 1:12. A rise over 30 inches needs another run and a 60-inch landing between runs. A run that rises more than 6 inches needs handrails on both sides.</p></noscript>
+      </div>
+    </section>
+
+    <h2 id="how-it-calculates">How the ADA Ramp Slope Calculator Uses Section 405</h2>
+    <p>Section 405 of the <a href={STANDARDS} rel="noopener noreferrer">2010 ADA Standards</a> is the ramp chapter the Department of Justice adopted. The <a href={CHAPTER4} rel="noopener noreferrer">Access Board publishes the same text</a> with the section numbers used below. A ramp, in that chapter, is the sloped part of an accessible route that is steeper than 1:20. Anything at 1:20 or flatter is a walking surface under section 403.3, and it does not pick up ramp landings or the 405.8 handrail rule.</p>
+    <p>The running slope is the slope in the direction of travel. For new construction, 405.2 caps it at 1:12. The calculator's minimum run is that cap: rise times 12. If you type a run you already have, it divides that run by the rise and compares the ratio with 1:12, with 1:20, and with Table 405.2.</p>
+    <p>Table 405.2 is only for existing sites, buildings and facilities, and only where space limitations make the steeper slope necessary. A slope steeper than 1:12 but not steeper than 1:10 may rise 6 inches at most. A slope steeper than 1:10 but not steeper than 1:8 may rise 3 inches at most. A slope steeper than 1:8 is not permitted. The calculator says "existing site only" when the rise you entered is inside that limit. It does not call a steeper slope a pass for new construction.</p>
+    <p>Cross slope is the side-to-side tilt. Section 405.3 caps a ramp run at 1:48. The same 1:48 limit applies to walking surfaces (403.3) and to landings (405.7.1, which allows no slope steeper than 1:48). Enter 48 to check a cross slope that is exactly at the limit.</p>
+
+    <h2 id="landings-handrails">ADA Ramp Slope Rules for Landings and Handrails</h2>
+    <p>Section 405.6 says the rise for any ramp run shall be 30 inches maximum. The calculator counts the fewest runs that stay inside that limit, and it splits the rise evenly across them. A landing is required at the top and bottom of each run (405.7). The clear length of a landing is 60 inches minimum (405.7.3), and the landing has to be at least as wide as the widest run leading to it (405.7.2). On a straight ramp, the number of landings is the number of runs plus one.</p>
+    <p>The length the calculator adds for landings is the 60-inch minimum times that count. It is a straight-ramp floor, not a switchback. Where the ramp changes direction, 405.7.4 requires 60 by 60 inches clear, and handrails cannot overlap that square. Read the worked examples in <a href="/blog/ada-requirements-for-ramps">ADA requirements for ramps</a> if you are laying out a turn, a door, or edge protection.</p>
+    <p>Handrails come from 405.8 and <a href={CHAPTER5} rel="noopener noreferrer">section 505</a>. A ramp run with a rise greater than 6 inches needs handrails. Section 505.2 puts them on both sides. The top of the gripping surface is 34 inches minimum and 38 inches maximum above the ramp surface (505.4). Ramp handrails extend horizontally above the landing for 12 inches minimum beyond the top and bottom of the run (505.10.1). The calculator answers the yes-or-no question from the rise. It does not size the rail diameter, the 1-1/2 inch wall clearance, or the structural load, which the ADA Standards leave to the building code.</p>
+    <p>Two exceptions sit outside this yes-or-no answer. Section 405.8 has an exception for some employee work areas that are designed so handrails can be added later. Section 505.2 has an exception for aisle ramps in assembly areas, where a handrail on one side or within the aisle width can be enough. Curb ramps are outside 405.8 entirely, because section 406.1 does not apply it. The <a href="/blog/ada-requirements-for-ramps">ramp guide</a> covers those cases.</p>
+
+    <h2 id="not-checked">What This ADA Ramp Slope Calculator Does Not Check</h2>
+    <p>The calculator does not measure a ramp. You supply the rise, and the run and cross slope if you have them. It does not know about edge protection (405.9), wet conditions (405.10), or the firm, stable, slip-resistant surface in section 302. It does not apply a local code that asks for a wider ramp or a gentler slope. It is not a substitute for the drawings an architect or a code official reviews.</p>
+    <p>It also does not check the route beyond the ramp. An accessible bathroom has its own measurements, covered in <a href="/blog/ada-requirements-for-bathrooms">ADA requirements for bathrooms</a>. A business that is open to the public has a separate duty for the website people use before they arrive. <a href="https://www.ada.gov/resources/web-guidance/" rel="noopener noreferrer">ADA.gov's web guidance</a> (March 18, 2022) describes access to the goods and services a public accommodation offers online. The free scan below checks one public page. It is not a finding about the ramp.</p>
+    <p>More free checkers are on the <a href="/tools">free accessibility tools</a> page, including the <a href="/tools/ada-compliance-checker">ADA compliance checker</a> for a web page.</p>
+
+    <section class="article-scan" id="check-your-site" aria-labelledby="ramp-scan-title">
+      <h2 id="ramp-scan-title">Check your website in 30 seconds</h2>
+      <p>The ramp is the physical route. The website is the one people use first. Paste any public page. The free scan lists the automated accessibility issues on it, on this page. No account needed.</p>
+      <div class="hero-checker">
+        <ScanForm id="ramp-scan" buttonLabel="Scan my page">
+          <span slot="proof">Free scan of one public page, no account. The next step for the whole site is a <a href={ONE_TIME.domainAudit.href}>Domain Audit for ${ONE_TIME.domainAudit.price}</a>: up to {PLAN.urlsPerDomain} pages, a prioritized fix list, one time. To keep it fixed, <a href="/app/signup">start a 3-day free trial</a> of Pro, then ${PLAN.price} per domain per month or ${PLAN.annualPrice} per year. A card is added at checkout, and you are not charged until the trial ends. A <a href={ONE_TIME.pageReport.href}>Page Report</a> is ${ONE_TIME.pageReport.price} for this page only.</span>
+        </ScanForm>
+        <div class="cta-actions article-scan-actions">
+          <a class="btn btn-accent" href="/app/signup">Start 3-day free trial <Icon name="arrow" /></a>
+          <a class="btn btn-outline" href={ONE_TIME.domainAudit.href}>Domain Audit — ${ONE_TIME.domainAudit.price}</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section class="results" id="scan-results" aria-live="polite" aria-busy="false" hidden>
+    <div class="container" data-results></div>
+  </section>
+
+  <section class="section section-surface" aria-labelledby="ramp-faq-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">FAQ</span>
+        <h2 id="ramp-faq-title">ADA Ramp Slope Calculator Questions</h2>
+      </div>
+      <Faq items={faqs} />
+    </div>
+  </section>
+
+  <div class="container cc-prose">
+    <h2 id="sources">Sources for the ADA Ramp Slope Calculator</h2>
+    <ul>
+      <li><a href={STANDARDS} rel="noopener noreferrer">U.S. Department of Justice: 2010 ADA Standards for Accessible Design</a>, including sections 403, 405, 406 and 505.</li>
+      <li><a href={CHAPTER4} rel="noopener noreferrer">U.S. Access Board: ADA Standards, Chapter 4, Accessible Routes</a>, sections 405 and 406.</li>
+      <li><a href={GUIDE} rel="noopener noreferrer">U.S. Access Board: Guide to the ADA Standards, Chapter 4, Ramps and Curb Ramps</a>.</li>
+      <li><a href={CHAPTER5} rel="noopener noreferrer">U.S. Access Board: ADA Standards, Chapter 5</a>, section 505 handrails.</li>
+      <li><a href="https://www.ada.gov/resources/web-guidance/" rel="noopener noreferrer">U.S. Department of Justice: Guidance on Web Accessibility and the ADA</a>, March 18, 2022. This page is about websites, not ramp geometry.</li>
+    </ul>
+    <p>This page explains published design standards. It is not legal advice. See the <a href="/disclaimer">disclaimer</a>.</p>
+  </div>
+
+  <MoreTools current={PATH} />
+  <CtaBand title="Scan the Website, Then Keep It Fixed" text={`The ramp calculator does not test a website. A free scan checks one public page. A Domain Audit is $${ONE_TIME.domainAudit.price} once: up to ${PLAN.urlsPerDomain} pages and a prioritized fix list. Pro keeps that work going after a 3-day free trial.`} />
+</BaseLayout>
+<script>
+  import '../../scripts/ramp-calculator.js';
+  import '../../scripts/free-scan.js';
+</script>

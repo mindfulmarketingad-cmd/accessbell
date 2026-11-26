@@ -3,12 +3,14 @@ title: 'The ADA Lawsuit Process: What Happens From Complaint to Settlement'
 seoTitle: 'ADA Lawsuit Process: 8 Stages and a Realistic Timeline'
 description: 'Every stage of the ADA lawsuit process, from the 21-day deadline to respond through mediation, discovery and settlement, plus what to do first if you are sued.'
 pubDate: 2026-09-28
-updatedDate: 2026-11-19
+updatedDate: 2026-11-26
 category: 'Compliance'
 contributors:
   - author: joseph-edwards
     role: Author
 history:
+  - date: 2026-11-26
+    note: 'Linked the physical-barrier sentence to the ADA ramp slope calculator.'
   - date: 2026-11-19
     note: 'Added a section link and FAQ answer on mootness: when a proven website fix can end the federal claim.'
   - date: 2026-09-28
@@ -31,7 +33,7 @@ faqs:
 
 The **ADA lawsuit process** is the path a disability access case takes in federal court: the business is served with a complaint, has **21 days** to respond, often goes through mediation or settlement talks, and in most cases signs a settlement within **6 to 18 months**. Very few cases reach trial. For real case timelines, read [how long an ADA lawsuit takes](/blog/how-long-does-an-ada-lawsuit-take).
 
-This guide walks through each stage of an [ADA Title III](/blog/ada-title-iii-law-for-businesses) lawsuit, how long each one takes and what happens next. It also covers what to do in the first days after you are served; for a full checklist, see [what to do after an ADA lawsuit](/blog/ada-lawsuit-what-to-do). Most examples involve website accessibility cases, but the same federal court process applies to cases about physical barriers.
+This guide walks through each stage of an [ADA Title III](/blog/ada-title-iii-law-for-businesses) lawsuit, how long each one takes and what happens next. It also covers what to do in the first days after you are served; for a full checklist, see [what to do after an ADA lawsuit](/blog/ada-lawsuit-what-to-do). Most examples involve website accessibility cases, but the same federal court process applies to cases about physical barriers, including a ramp that is too steep. The [ADA ramp slope calculator](/tools/ada-ramp-slope-calculator) checks a rise against the 2010 Standards for slope, landings and handrails.
 
 *This article is general information, not legal advice. Court rules and deadlines vary. If you have been served with a lawsuit or [demand letter](/blog/ada-demand-letter), speak with a lawyer experienced in ADA defense right away.*
 

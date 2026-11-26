@@ -38,6 +38,7 @@ export const GET: APIRoute = async () => {
         link('All free tools', '/resources'),
         ...CHECKERS.map((c) => link(c.name, checkerPath(c), c.description)),
         link('WCAG Color Contrast Checker', '/tools/contrast-checker', 'Check the contrast ratio of any text and background colors against WCAG AA and AAA.'),
+        link('ADA Ramp Slope Calculator', '/tools/ada-ramp-slope-calculator', 'Minimum ramp run, landings and handrails from a rise, using the 2010 ADA Standards sections 405 and 505.'),
         link('Free PDF Accessibility Checker', '/tools/pdf-accessibility-checker', 'Check a PDF for WCAG and PDF/UA issues in the browser, with no upload.'),
         link('Chart and Infographic Color Checker', '/tools/chart-color-checker', 'Check chart colors for 3:1 contrast and color blindness.'),
         link('Accessibility Statement Generator', '/tools/statement-generator', 'Create a custom accessibility statement for your website.'),

@@ -3,11 +3,14 @@ title: 'ADA Requirements for Ramps: Slope, Width, Landings and Handrails'
 seoTitle: 'ADA Ramp Requirements: Slope, Width, Handrails'
 description: 'ADA requirements for ramps explained: 1:12 maximum slope, 36-inch clear width, 60-inch landings, handrails, edge protection and rules for existing buildings.'
 pubDate: 2026-09-28
+updatedDate: 2026-11-26
 category: 'Compliance'
 contributors:
   - author: joseph-edwards
     role: Author
 history:
+  - date: 2026-11-26
+    note: 'Linked the ramp-length section to the ADA ramp slope calculator for the 1:12 run, 30-inch runs, landings and handrails.'
   - date: 2026-09-28
     note: 'First published. Every measurement checked against sections 405 and 505 of the 2010 ADA Standards for Accessible Design.'
 related: ['ada-requirements-for-bathrooms', 'ada-website-compliance-guide']
@@ -78,7 +81,7 @@ The cross slope is the side-to-side tilt. It can be no steeper than **1:48** (40
 
 ## How Long Does an ADA Ramp Need to Be?
 
-Multiply the total rise in inches by 12 to find the minimum ramp length at a 1:12 slope. Because a single run can rise no more than 30 inches, higher rises need more than one run, with level landings between them.
+Multiply the total rise in inches by 12 to find the minimum ramp length at a 1:12 slope. Because a single run can rise no more than 30 inches, higher rises need more than one run, with level landings between them. The [ADA ramp slope calculator](/tools/ada-ramp-slope-calculator) does that arithmetic for any rise: the minimum run, the number of runs, the 60-inch landings, and whether handrails are required.
 
 | Total rise | Minimum ramp length (1:12) | Runs | Intermediate landings | Handrails needed |
 | --- | --- | --- | --- | --- |
